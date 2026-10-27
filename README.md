@@ -20,6 +20,15 @@
 4. [ROADMAP.md](ROADMAP.md) — 作業順序・品質ゲート
 5. [docs/STATCAST_STATUS.md](docs/STATCAST_STATUS.md) — 統計研究の進捗と限界
 
+## 開発の進め方
+
+- [設計・実装・レビュー運用](docs/WORKFLOW.md)：2つのCodexチャットはGitHubの設計PR・実装PRで意思決定を共有。
+- [現在の引き継ぎ状況](docs/HANDOFF.md)：承認済み設計、関連PR、未解決事項を確認。
+- [ADR（設計決定記録）のひな型](docs/adr/0000-template.md)：各案の根拠・反証・トレードオフ・承認記録。
+- [AGENTS.md](AGENTS.md)：Codexが守る作業ルール、UIの簡潔さに関する方針。
+
+設計案ができたことと、ユーザーが設計を採用したことを混同しない。**未承認の設計PRから実装を開始せず、採用済み設計をmainで共有してから実装PRを作る**。
+
 ## 関連リポジトリ
 
 **Statcast Phase 1研究**：https://github.com/thrsth45h/statcast-swing-model-v1
