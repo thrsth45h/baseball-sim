@@ -10,7 +10,7 @@
 - 研究基盤、モデル候補M0/M1/M2、データ取得・品質監査・バージョン付き推論JSONを実装。
 - 正確な選球眼の測定や能力13/17への換算は未達。
 
-## Phase 1b — 通年モデル検証（修正レビュー合格・PR未マージ）
+## Phase 1b — 通年モデル検証（レビュー合格・mainにマージ済み）
 
 PR #1: https://github.com/thrsth45h/statcast-swing-model-v1/pull/1
 
@@ -18,7 +18,7 @@ PR #1: https://github.com/thrsth45h/statcast-swing-model-v1/pull/1
 - 2023学習、2024検証、2025評価を維持。2025年6月のpilot既閲覧という限界を記録。
 - 331打者でaとdの年度間順位相関を確認。ただしdが認知的な選球眼とは実証されていない。
 - GitHub Actions（最新commit `2341496`）は成功、112テストの結果が報告された。モデル未確定・製品用の1〜20係数未設定。
-- **再開checkpointの入力不一致を見逃す問題は修正済み。2026-10-28再レビューでマージ可能と判断。PR #1はユーザーによるマージ待ち**。
+- **再開checkpointの入力不一致を見逃す問題は修正済み。2026-10-28再レビュー後にPR #1をsquashマージ（merge SHA `f3b65653d90b004ea8bfaf233b94231876233980`）**。
 - 詳細: [docs/STATCAST_STATUS.md](docs/STATCAST_STATUS.md)。
 
 ## Phase 1c — 製品用の「選球眼」の操作的定義（提案）
