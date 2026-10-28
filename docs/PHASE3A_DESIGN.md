@@ -2,6 +2,7 @@
 
 - 版: `phase3a-design-v0.1`、2026-10-28 日本時間。
 - 状態: **Accepted。2026-10-29、研究対象・登録145ファイルの年度別確認・区分抽選・worker実装の説明に対し、本人が「この研究範囲で進める（推奨）」を選択して承認。**
+- 実施: worker実装・責任者の独立レビュー・修正確認後、[研究PR #7](https://github.com/thrsth45h/statcast-swing-model-v1/pull/7)をmain `c155a6c0af899f2946dbcc4292c680a121fe781b`へマージ済み。[完了・数値・限界](STATCAST_STATUS.md)を参照。研究範囲の完了であり、能力較正やゲーム採用の承認ではない。
 - 基準: ゲームmain `0b200959f81333b629485f4dc9fca476206921b1`、研究main `2af9657854b70a3dd1ce3db7dd8ae296cdd8745d`。
 - 関連: D007–D008、D022–D023、D029（OPEN）、D037、D038（研究範囲のみCONFIRMED）、[ADR-0004](adr/0004-phase3a-binned-joint-study.md)、[設計点検](PHASE3A_REVIEW.md)。
 
