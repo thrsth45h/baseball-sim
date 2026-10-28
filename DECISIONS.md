@@ -46,6 +46,7 @@
 | D033 | REJECTED_OR_DEFERRED | 重複する公開「野球IQ」、バント専門能力の早期確定。 |
 | D034 | REJECTED_OR_DEFERRED | 球威・球質の二重加算、固定総合PA上限、成績依存の安易な好調バフ。 |
 | D035 | CONFIRMED | NPBよりトレードが活発なMLB寄りの編成を志向。具体的な頻度は未確定。 |
+| D036 | CONFIRMED | [Phase 2a設計v0.1](docs/PHASE2A_DESIGN.md)の研究範囲とworker実装開始を承認。通常スイングの接触/空振り予測・4タグ・C0/C1/C2比較・2023学習/2024選択/既閲覧2025再現比較。旧研究保存、能力較正・ゲーム統合は含めない。2026-10-28の本人回答「うん」、[承認PR #7](https://github.com/thrsth45h/baseball-sim/pull/7)。D029はOPENのまま。 |
 
 ## 仕様変更手順
 
