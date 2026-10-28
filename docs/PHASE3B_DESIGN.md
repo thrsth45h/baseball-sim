@@ -1,10 +1,10 @@
 # Phase 3b — EV/LAの区分内情報と数値生成の最小研究
 
 - 版: `phase3b-design-v0.1`、2026-10-29 日本時間。
-- 状態: **Proposed。本人の仕様承認待ち。実装開始・マージ・製品採用は未承認。**
-- 設計PR: [ゲームPR #13](https://github.com/thrsth45h/baseball-sim/pull/13)（Draft、未マージ）。
+- 状態: **Accepted。2026-10-29、本人が設計PR #13を示した範囲確認に「設計PR #13の研究範囲・仮設定で進める（推奨）」と回答。研究範囲・明示仮設定・worker実装開始を承認。製品採用・能力較正は含めない。**
+- 設計PR: [ゲームPR #13](https://github.com/thrsth45h/baseball-sim/pull/13)。設計マージ後にworker実装へ進む。
 - 基準: ゲームmain `b79501ccdfe9acb6d15de52f971cb6470bc239ad`、研究main `c155a6c0af899f2946dbcc4292c680a121fe781b`。
-- 関連: D022–D023、D029（OPEN）、D038（Phase 3aのみCONFIRMED）、D039（OPEN）、[ADR-0005](adr/0005-phase3b-numeric-generator.md)、[設計点検](PHASE3B_REVIEW.md)、[前段階](PHASE3A_DESIGN.md)。
+- 関連: D022–D023、D029（OPEN）、D038（Phase 3aのみCONFIRMED）、D039（研究範囲のみCONFIRMED）、[ADR-0005](adr/0005-phase3b-numeric-generator.md)、[設計点検](PHASE3B_REVIEW.md)、[前段階](PHASE3A_DESIGN.md)。
 
 ## 1. 相談する範囲
 
@@ -106,7 +106,7 @@ H0は粗セル内のB条件付き分布、H1は細セル内のB条件付き分�
 
 ## 8. worker実装・受入れと独立レビュー
 
-本人承認・設計マージ後、研究側の新規`baseball_calibration.phase3b`・専用テスト・`reports/phase3b`/`data/phase3b`だけの新規出力をworkerへ委任する。既存モジュールは読取り利用可、旧ファイルを変更しない。root README案内のみ例外。依存版は維持する。
+本人承認を受領済み。設計マージ後、研究側の新規`baseball_calibration.phase3b`・専用テスト・`reports/phase3b`/`data/phase3b`だけの新規出力をworkerへ委任する。既存モジュールは読取り利用可、旧ファイルを変更しない。root README案内のみ例外。依存版は維持する。
 
 CLIはsynthetic smoke、2023 fit、凍結後evaluate、数値sampleを分ける。smokeは実入力を開かず、synthetic/非実学習と表示し、実データ成果物へ流用しない。新規出力先のみ許可し、入力との重なり・既存出力への上書き・途中キャッシュからの再開を拒否する。chunk処理、各工程30分・peak RSS 2GiBを停止目安とし、超過を成功扱いで隠さない。
 
@@ -125,6 +125,6 @@ workerは別出力先で2回実行し、数値・モデル・入力同一性の�
 
 ## 9. 承認と後続工程
 
-相談対象は、上記の限定記録集合、900区分比較、合計擬似度数1・尾部尺度5等の明示仮定、数値抽選、worker実装の研究範囲。D039は本人承認までOPEN。承認後に本設計・ADRをAcceptedとし、設計PRマージ→worker実装→責任者レビュー/修正→問題がなければ継続許可で実装PRマージ、を行う。
+承認対象は、上記の限定記録集合、900区分比較、合計擬似度数1・尾部尺度5等の明示仮定、数値抽選、worker実装の研究範囲。2026-10-29、本人が「設計PR #13の研究範囲・仮設定で進める（推奨）」を選択したため、本設計・ADRをAccepted、D039を研究範囲のみCONFIRMEDとした。設計PRマージ→worker実装→責任者レビュー/修正→問題がなければ継続許可で実装PRマージ、を行う。
 
 能力1〜20、実測不能な全接触分布、方向/守備/走塁、ゲーム採用は別承認。D029はOPENを維持する。
