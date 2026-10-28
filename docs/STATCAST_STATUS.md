@@ -103,3 +103,16 @@ raw3標本は119列、processedは27列で、軌道係数はrawに存在する�
 - `trained_on_real_data=true`、`ability_calibrated=false`、`cognitive_identification=not_established`、`product_adoption=false`。スイング選択・対戦・戦略の影響が残る条件付き予測で、公開三振回避能力の真値や因果的技能の推定ではない。
 
 詳細は[研究レポート](https://github.com/thrsth45h/statcast-swing-model-v1/blob/e5a0c18ba2b9f1cdec068c3822a6fb863c0fec25/reports/phase2a/REPORT.md)とPRの独立レビュー記録を参照。次のPhase 2b結果分岐、打席K/BB/球数、公開能力較正、ゲーム統合は未実装・未承認。
+
+## Phase 2b分類・欠損監査（完了・mainへマージ済み）
+
+[承認設計PR #9](https://github.com/thrsth45h/baseball-sim/pull/9)、`phase2b-label-audit-v0.1`、D037に基づきworkerへ委任。責任者の独立レビュー・修正確認後に[研究PR #6](https://github.com/thrsth45h/statcast-swing-model-v1/pull/6)をマージした。研究main `2af9657854b70a3dd1ce3db7dd8ae296cdd8745d`。監査実装の完了であり、物理的な分類の完成ではない。
+
+- 既存processed 3年とD6指定raw各年1chunkの生バイトhash・来歴を照合。指定列を全行集計し、年度の旧5description分母・タグを保存した。hit_into_play内のsac_bunt接頭辞記録は429 / 452 / 560件。
+- raw標本は2023/2024/2025で14,707 / 690 / 631行。適格対応14,629 / 683 / 623、非対応78 / 7 / 8。対応行のdescription/eventsはnull安全に一致。hit_into_play内のfoul territory記述field_outは62 / 3 / 4件。
+- raw hit_into_playのEV/LA両有限は2,464 / 123 / 88、両欠損13 / 0 / 2件。2023にはEV欠損・LA有限3件もある。有限値を全て直接実測と呼ばず、元データの一部推定値の存在も記した。限定標本から年全体の測定率・混入率・欠損の無作為性を推定しない。
+- 全300テスト、最終headのPython 3.11/3.12 CI成功。責任者も別スナップショットで全300テストと修正版の新28テスト、実入力の監査再実行を確認。Phase2b関数を使わず事前に作った期待値と集計・入力hash・成果物hash435項目が一致し、提出版のplan/audit/REPORTとバイト一致した。
+- 観察フラグへの該当／非該当を除外原因の確定と混同する表現を指摘し、workerが修正。全非対応行の原因確定はnot_establishedのまま。レビューによる追加の分類・除外は行っていない。
+- 旧220パス中219は不変、既存変更はroot READMEの案内のみ。旧Phase2a REPORT/READMEはhash索引の対象なので保持し、[別冊訂正](https://github.com/thrsth45h/statcast-swing-model-v1/blob/2af9657854b70a3dd1ce3db7dd8ae296cdd8745d/reports/phase2a/ERRATA.md)を追加。旧索引と掲載12ファイル、新公開索引9件も照合した。旧コード・モデル・数値・ラベル・凍結契約は変更していない。
+
+[監査レポートと集計](https://github.com/thrsth45h/statcast-swing-model-v1/blob/2af9657854b70a3dd1ce3db7dd8ae296cdd8745d/reports/phase2b/label-audit/REPORT.md)を参照。全バント除外、物理的フェア／ファウルの正解、記録3分類の新規学習、能力較正、ゲーム統合は未完了・未承認。D029はOPENを維持する。
