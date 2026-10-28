@@ -1,7 +1,7 @@
 # ADR-0004: 記録集合のEV/LAを固定区分の同時分布として比較する
 
 - Status: **Proposed**
-- 設計PR: 作成後に記録。
+- 設計PR: [ゲームPR #11（Draft）](https://github.com/thrsth45h/baseball-sim/pull/11)。
 - DECISIONS ID: 提案D038（OPEN）。D029はOPENを維持。
 - ユーザーの明示承認: **未承認**。「次へ」は設計相談の開始で、未提示の新しい学習仕様の承認と扱わない。
 - 対象: `phase3a-design-v0.1`
