@@ -29,14 +29,15 @@ PR #1: https://github.com/thrsth45h/statcast-swing-model-v1/pull/1
 - 下位プロ選手への尺度外挿と1〜20の閾値、未知選手とスカウト誤差は、検証可能な基準が整ってから決定。
 - [研究PR #2](https://github.com/thrsth45h/statcast-swing-model-v1/pull/2)をmainへマージ済み（`6d82eddaa51d72126c011e14a0d511634d58e300`）。不完全な知覚と積極性を分けた合成研究用実装。製品用の能力係数や認知妥当性は未検証。
 
-## Phase 1d — 識別検証・仮定への感度・実データ接続（合成研究完了、実入力監査が次工程）
+## Phase 1d — 識別検証・仮定への感度・実データ接続（合成研究・D6実入力監査完了）
 
 - [研究設計](docs/PHASE1D_DESIGN.md)、[ADR-0001](docs/adr/0001-phase1d-research-scope.md) を参照。研究範囲の承認・設計マージは[ゲームPR #4](https://github.com/thrsth45h/baseball-sim/pull/4)本文に記録。元文書のProposedは作成時点の表記で、能力係数・製品採用は未承認。
 - 合成の生成条件と推論仮定を分け、同程度に振る条件での識別、分散項の効果、識別不能な反例、仮定を崩した感度を検証する計画。
 - 比較用の周辺確率・Statcastの入力情報境界・M0/M1/M2との比較契約を定義する。今回の範囲にMLBへの新規学習・公開能力1〜20の換算・ゲーム統合は含めない。
 - 合成研究の完成と認知妥当性・製品採用を区別し、既存研究・結果を維持する。
 - [研究PR #3](https://github.com/thrsth45h/statcast-swing-model-v1/pull/3)をmainへマージ済み（`cba081a13d53684e037738b53a65bdce2abea9a3`）。240テスト、7世界×3seedの完全実行と再現性をレビュー側でも確認。
-- **次は既存データへのD6入力監査**。[実行手順と実装担当への依頼文](docs/PHASE1D_DATA_AUDIT_HANDOFF.md)に従い、rawと処理済みの情報を区別する。現時点の実データ監査は明示入力なしで未実施。新規学習・能力換算・ゲーム統合を開始する工程ではない。
+- D6実入力監査も[研究PR #4](https://github.com/thrsth45h/statcast-swing-model-v1/pull/4)で完了・マージ済み（`4bf94dee60de9e33cfd7f16e7439cac34a36a6fc`）。処理済み3ファイルとraw3 chunkを来歴・ハッシュ・スキーマ・先頭標本で確認。[実行手順](docs/PHASE1D_DATA_AUDIT_HANDOFF.md)は実施済み手順の記録として残す。
+- 真正な早期観測・主観的知覚は未確認。次の実装範囲は設計判断で具体化する。合成W0式の実CSVへの流用、能力換算、ゲーム採用を承認したものではない。
 
 ## Phase 2 — 空振り・コンタクト
 
