@@ -41,7 +41,7 @@ PR #1: https://github.com/thrsth45h/statcast-swing-model-v1/pull/1
 
 ## Phase 2 — 空振り・コンタクト
 
-- 最初の[Phase 2a研究案](docs/PHASE2A_DESIGN.md)は**Proposed、詳細仕様・実装開始は未承認**。[ADR-0002](docs/adr/0002-phase2a-contact-research.md)、[技術点検](docs/PHASE2A_REVIEW.md)を参照。方向の確認を詳細仕様の承認と扱わない。
+- 最初の[Phase 2a研究設計v0.1](docs/PHASE2A_DESIGN.md)は**研究範囲・worker実装開始をユーザー承認済み**。D036、[承認PR #7](https://github.com/thrsth45h/baseball-sim/pull/7)、[ADR-0002](docs/adr/0002-phase2a-contact-research.md)、[技術点検](docs/PHASE2A_REVIEW.md)を参照。製品採用・能力較正を承認したものではない。
 - 2a案は通常スイングの接触／空振りの二値予測と、通常ファウル・ファウルチップ・インプレーのタグ保持。結果の分岐モデル、三振回避能力の較正、ゲームへの統合は別段階とする。
 
 - スイングを条件とした空振り・接触、ファウル・インプレー分岐の確率を推定。
