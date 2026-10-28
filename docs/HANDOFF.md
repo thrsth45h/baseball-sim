@@ -10,7 +10,9 @@
 
 ## 現在の到達点
 
-- 次工程は[Phase 3b設計v0.1](PHASE3B_DESIGN.md)・[ADR-0005](adr/0005-phase3b-numeric-generator.md)・[設計PR #13](https://github.com/thrsth45h/baseball-sim/pull/13)。同じ記録集合の粗72区分確率を揃えた細900区分比較と数値抽選。**2026-10-29、本人が「設計PR #13の研究範囲・仮設定で進める（推奨）」と回答し承認。Accepted・D039は研究範囲のみCONFIRMED。** 設計マージ後に専用領域でworkerへ実装委任する。能力・物理的妥当性・ゲーム採用の承認へ拡張しない。
+- [Phase 3b設計v0.1](PHASE3B_DESIGN.md)・[ADR-0005](adr/0005-phase3b-numeric-generator.md)も研究実装完了。2026-10-29、本人が「設計PR #13の研究範囲・仮設定で進める（推奨）」と承認し、[設計PR #13](https://github.com/thrsth45h/baseball-sim/pull/13)をマージ後、workerへ直接委任。責任者の独立レビュー後に[研究PR #8](https://github.com/thrsth45h/statcast-swing-model-v1/pull/8)をmain `35c9fe6fbe2b01c02b7253ed336526e6960cd4fe`へマージした。D039は研究範囲のみCONFIRMEDで、能力・物理的妥当性・ゲーム採用へ承認を拡張しない。
+- Phase 3bは全439テスト・Python3.11/3.12のPR CI成功。責任者の別実行で12成果物がバイト一致し、worker未参照の事前凍結期待値と1,232項目が一致。公開46ファイルと新77/旧134のhash登録をGit blobも含めて確認。旧285パス中、README案内以外284は不変。2024尾部6件での悪化・2025尾部3件の差0も報告した。[詳細](STATCAST_STATUS.md)を参照。
+- 次工程は記録集合から物理生成への接続条件を相談する段階。方向・全接触への外挿・守備・能力・ゲーム統合の新しい実装は未承認。Phase 3bの作業領域`work/phase3b-numeric-worker`とレビュー領域`work/phase3b-review-97c741d`、ignoredの再実行出力は保持している。レビュー領域の最終HEADは`c2be7b0c4ee959e96d9e56c1ba62bed6b55d8242`で、研究mainと同じtree。
 - Phase 1bの2023〜2025年通年研究、Phase 1cの合成知覚プロトタイプ、Phase 1dの合成識別研究・入力監査機能が研究側mainへマージ済み。
 - Phase 1dは別の実装担当によるコードを設計・レビュー担当が点検。レビュー側でも240テスト成功、完全実行の設定・数値集計・積分結果の3ファイルが提出版とバイト単位で一致。対象headのPython 3.11／3.12 CI成功を確認した。
 - 主要ΔAUC=0.13308019、95%区間[0.12948814, 0.13627906]は固定した合成課題内の結果。MLB選手の能力差・認知妥当性・製品係数の実測値ではない。
@@ -39,6 +41,8 @@
 | Phase 2b分類・欠損監査と訂正 | [研究PR #6](https://github.com/thrsth45h/statcast-swing-model-v1/pull/6) | `2af9657854b70a3dd1ce3db7dd8ae296cdd8745d` |
 | Phase 3a設計・研究実装承認 | [ゲームPR #11](https://github.com/thrsth45h/baseball-sim/pull/11) | `1ff2f4ae74616daca14f3ebb8c4b7d732f6486e7` |
 | Phase 3a固定72区分の分布・抽選 | [研究PR #7](https://github.com/thrsth45h/statcast-swing-model-v1/pull/7) | `c155a6c0af899f2946dbcc4292c680a121fe781b` |
+| Phase 3b設計・研究仮設定・実装承認 | [ゲームPR #13](https://github.com/thrsth45h/baseball-sim/pull/13) | `ebf37343da4932f9bd483753b691c366c510a3f2` |
+| Phase 3b区分内情報比較・EV/LA数値抽選 | [研究PR #8](https://github.com/thrsth45h/statcast-swing-model-v1/pull/8) | `35c9fe6fbe2b01c02b7253ed336526e6960cd4fe` |
 
 Phase 1d設計書・ADRのProposedは作成時の表記。研究範囲の採用・マージ記録はゲームPR #4本文にある。研究実装の独立レビュー・ユーザー許可・マージ記録は研究PR #3本文にある。これは製品採用・能力係数の承認ではない。
 

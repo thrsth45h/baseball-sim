@@ -2,7 +2,8 @@
 
 - 版: `phase3b-design-v0.1`、2026-10-29 日本時間。
 - 状態: **Accepted。2026-10-29、本人が設計PR #13を示した範囲確認に「設計PR #13の研究範囲・仮設定で進める（推奨）」と回答。研究範囲・明示仮設定・worker実装開始を承認。製品採用・能力較正は含めない。**
-- 設計PR: [ゲームPR #13](https://github.com/thrsth45h/baseball-sim/pull/13)。設計マージ後にworker実装へ進む。
+- 設計PR: [ゲームPR #13](https://github.com/thrsth45h/baseball-sim/pull/13)、main `ebf37343da4932f9bd483753b691c366c510a3f2`へマージ済み。
+- 実施: worker実装・責任者の独立レビュー後、[研究PR #8](https://github.com/thrsth45h/statcast-swing-model-v1/pull/8)をmain `35c9fe6fbe2b01c02b7253ed336526e6960cd4fe`へマージ済み。[数値・検証・限界](STATCAST_STATUS.md)を参照。研究範囲の完了であり、尾部仮定・能力・製品採用の妥当性確認ではない。
 - 基準: ゲームmain `b79501ccdfe9acb6d15de52f971cb6470bc239ad`、研究main `c155a6c0af899f2946dbcc4292c680a121fe781b`。
 - 関連: D022–D023、D029（OPEN）、D038（Phase 3aのみCONFIRMED）、D039（研究範囲のみCONFIRMED）、[ADR-0005](adr/0005-phase3b-numeric-generator.md)、[設計点検](PHASE3B_REVIEW.md)、[前段階](PHASE3A_DESIGN.md)。
 
