@@ -1,6 +1,7 @@
 # ADR-0005: 粗区分確率を揃えて区分内情報と数値抽選を検証する
 
 - Status: **Proposed — 本人の仕様承認待ち**
+- 設計PR: [ゲームPR #13](https://github.com/thrsth45h/baseball-sim/pull/13)（Draft、未マージ）。
 - DECISIONS ID: D039（OPEN）、D029はOPENを維持。
 - 対象: [Phase 3b設計v0.1](../PHASE3B_DESIGN.md)
 - ユーザーの「次へ」は次案の検討指示。本案の詳細や実装開始の承認とは扱わない。

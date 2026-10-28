@@ -2,6 +2,7 @@
 
 - 版: `phase3b-design-v0.1`、2026-10-29 日本時間。
 - 状態: **Proposed。本人の仕様承認待ち。実装開始・マージ・製品採用は未承認。**
+- 設計PR: [ゲームPR #13](https://github.com/thrsth45h/baseball-sim/pull/13)（Draft、未マージ）。
 - 基準: ゲームmain `b79501ccdfe9acb6d15de52f971cb6470bc239ad`、研究main `c155a6c0af899f2946dbcc4292c680a121fe781b`。
 - 関連: D022–D023、D029（OPEN）、D038（Phase 3aのみCONFIRMED）、D039（OPEN）、[ADR-0005](adr/0005-phase3b-numeric-generator.md)、[設計点検](PHASE3B_REVIEW.md)、[前段階](PHASE3A_DESIGN.md)。
 
