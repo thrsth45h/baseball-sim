@@ -2,7 +2,7 @@
 
 - Status: **Proposed**
 - 関連Issue: 設計PRで兼ねる。
-- 設計PR: 作成後に記録。
+- 設計PR: [ゲームPR #9（Draft）](https://github.com/thrsth45h/baseball-sim/pull/9)。
 - DECISIONS ID: 提案D037（OPEN）。D036の既存実装・数値を保存。
 - ユーザーの明示承認記録: **未承認**
 - 対象フェーズ: Phase 2b分類監査、`phase2b-label-audit-v0.1`
