@@ -52,9 +52,9 @@ Phase 1d設計書・ADRのProposedは作成時の表記。研究範囲の採用�
 
 成果物は[監査レポート](https://github.com/thrsth45h/statcast-swing-model-v1/blob/2af9657854b70a3dd1ce3db7dd8ae296cdd8745d/reports/phase2b/label-audit/REPORT.md)と[別冊訂正](https://github.com/thrsth45h/statcast-swing-model-v1/blob/2af9657854b70a3dd1ce3db7dd8ae296cdd8745d/reports/phase2a/ERRATA.md)。workerは専用branch `impl/phase2b-label-audit`、レビュー済みhead `378e6de884c5c42cce67af5bb4f8dea497d051a5`。再現runは同worktreeのGit除外 `data/phase2b/replay-02` に保持。
 
-**次は、監査を踏まえて記録の条件付き予測とゲーム内の物理的な生成対象を分け、研究範囲を設計・相談する。新しい分岐モデルの学習・実装仕様は未承認。** 分類完全性、欠損の無作為性、直接測定か推定かの個別判定、能力較正を監査完了から推論しない。
+**次は承認済みPhase 3aの区分分布研究を実装する。** 記録集合とゲーム内の物理的な生成対象は区別し、分類完全性、欠損の無作為性、直接測定か推定かの個別判定、能力較正を監査完了から推論しない。
 
-具体案は[設計PR #11（Draft）](https://github.com/thrsth45h/baseball-sim/pull/11)、[Phase 3a設計v0.1](PHASE3A_DESIGN.md)、[設計点検](PHASE3A_REVIEW.md)、[ADR-0004](adr/0004-phase3a-binned-joint-study.md)。数値の残るhit_into_play記録集合について速度・角度の72区分を作り、周辺割合を揃えた独立抽選と同時抽選を比較する研究。D038 OPEN、仕様・入力145登録の年度別確認・worker実装開始は未承認。「次へ」を未提示の仕様承認には拡張していない。次の実装担当へはユーザーの承認と設計マージ後に直接委任する。別サブエージェントに依頼したのは読み取り専用の設計批判のみ。
+正本は[設計PR #11](https://github.com/thrsth45h/baseball-sim/pull/11)、[Phase 3a設計v0.1](PHASE3A_DESIGN.md)、[設計点検](PHASE3A_REVIEW.md)、[ADR-0004](adr/0004-phase3a-binned-joint-study.md)。数値の残るhit_into_play記録集合について速度・角度の72区分を作り、周辺割合を揃えた独立抽選と同時抽選を比較する研究。2026-10-29、具体的な研究対象・入力145登録・区分抽選・worker実装を説明した質問に本人が「この研究範囲で進める（推奨）」を選択して承認。D038は研究範囲のみCONFIRMED。「次へ」だけを承認とは扱っていない。設計マージ後にworkerへ直接委任し、責任者が独立レビューする。能力換算・連続値・方向・物理フェア・守備・得点・ゲーム統合は含めない。
 
 ユーザーは2026-10-28にPhase 2の方向を選択。その後、設計PR #7と具体的なv0.1の範囲を示した「workerに研究用実装を委任してよいですか？」への **「うん」** を、研究仕様と実装開始の明示承認として記録した。D036、[承認PR #7](https://github.com/thrsth45h/baseball-sim/pull/7)を参照。
 
