@@ -39,6 +39,8 @@ Phase 1d設計書・ADRのProposedは作成時の表記。研究範囲の採用�
 
 ユーザーは2026-10-28の相談で **Phase 2の空振り・コンタクト研究へ進む方向**を選択した。これは研究方向の確認であり、未提示の詳細なモデル・ラベル・評価計画や実装開始の承認ではない。責任者が具体的な研究仕様をまとめて承認を得た後、workerへ実装を割り当てる。
 
+具体案は[Phase 2a設計v0.1](PHASE2A_DESIGN.md)、[ADR-0002](adr/0002-phase2a-contact-research.md)、[技術点検](PHASE2A_REVIEW.md)。通常スイングの二値接触予測、4タグ保持、C0/C1/C2比較、2023学習・2024選択・2025既閲覧年度への再現比較を提案する。**詳細仕様・実装開始は承認待ち。workerはまだ実装していない。**
+
 [D6監査レポート](https://github.com/thrsth45h/statcast-swing-model-v1/blob/4bf94dee60de9e33cfd7f16e7439cac34a36a6fc/reports/phase1d/real-input-audit/REPORT.md)と、実施した[監査手順](PHASE1D_DATA_AUDIT_HANDOFF.md)を参照。rawは119列、processedは27列。rawに軌道係数6列はあるが、推定に用いた時間窓や打者の主観的知覚の観測は立証できず、`not_verified / no_independent_early_observation` を維持する。
 
 入力の同一性とスキーマは確認できたが、全raw145 chunkの現物・全年度の値を再検査したわけではない。事後的な行動予測比較の入力列はある一方、新方式のMLB用潜在観測・周辺確率・座標/スコア契約は未整備。人工W0のGaussian式を実CSVへ流用しない。
