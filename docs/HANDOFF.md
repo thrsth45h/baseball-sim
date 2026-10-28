@@ -16,6 +16,8 @@
 - D6の実データ入力監査も[研究PR #4](https://github.com/thrsth45h/statcast-swing-model-v1/pull/4)で完了・マージ済み。2023〜2025年の処理済み3ファイルと選定raw3 chunkの来歴・ハッシュ・スキーマ・先頭標本を確認。旧 `not_run:no_explicit_input` 記録は履歴として保存し、新しい監査結果と区別する。
 - レビュー側でも元ファイル6件と関連来歴計15件、raw選定規則、提出49ファイルのGit blob hashを照合し、12通りの監査関数の再実行結果が提出版と一致。既存149パスに変更・削除なし、対象headのPython 3.11／3.12 CI成功を確認した。
 - Androidアプリ本体、公開能力1〜20の較正、ゲームへのモデル採用は未完了。既存M0/M1/M2・Phase 1b/1cの結果・推論契約は維持する。
+- Phase 2aもworker実装・責任者の独立コードレビュー・修正を経て[研究PR #5](https://github.com/thrsth45h/statcast-swing-model-v1/pull/5)をマージ済み。全272テストとPython 3.11／3.12 CI成功。責任者の別チェックアウトで全量学習・評価を再実行し、数値・モデル等11ファイルがworker版とバイト一致。別式による特徴・候補選択・指標・区間も1e-12以内で一致した。
+- レビューで公開reference JSONのcheckout改行依存による誤拒否を再現し、workerへ直接修正依頼。元入力の生バイトhash保護を保ち、全metadata内容による参照照合と回帰テストを追加した。ユーザーによる仲介は行っていない。
 
 ## 確認済みPRとcommit
 
@@ -28,6 +30,8 @@
 | Phase 1d研究設計v1.1 | [ゲームPR #4](https://github.com/thrsth45h/baseball-sim/pull/4) | `cecc3c372ae45c22561b97a59f731f463849f198` |
 | Phase 1d研究実装 | [研究PR #3](https://github.com/thrsth45h/statcast-swing-model-v1/pull/3) | `cba081a13d53684e037738b53a65bdce2abea9a3` |
 | D6既存実データ入力監査 | [研究PR #4](https://github.com/thrsth45h/statcast-swing-model-v1/pull/4) | `4bf94dee60de9e33cfd7f16e7439cac34a36a6fc` |
+| Phase 2a設計・研究実装承認 | [ゲームPR #7](https://github.com/thrsth45h/baseball-sim/pull/7) | `0804552fe4ae691506d00285bf9315375fbada66` |
+| Phase 2a接触予測研究 | [研究PR #5](https://github.com/thrsth45h/statcast-swing-model-v1/pull/5) | `e5a0c18ba2b9f1cdec068c3822a6fb863c0fec25` |
 
 Phase 1d設計書・ADRのProposedは作成時の表記。研究範囲の採用・マージ記録はゲームPR #4本文にある。研究実装の独立レビュー・ユーザー許可・マージ記録は研究PR #3本文にある。これは製品採用・能力係数の承認ではない。
 
@@ -35,17 +39,21 @@ Phase 1d設計書・ADRのProposedは作成時の表記。研究範囲の採用�
 
 ## 次工程
 
-**D6監査は完了。Phase 2a設計v0.1の研究範囲とworker実装開始をユーザー承認済み。責任者が専用作業領域を用意し、worker実装・独立レビュー・修正・統合を直接進行する。**
+**Phase 2aは研究実装・独立レビュー・マージまで完了。次はPhase 2bの結果分岐を設計・相談する。詳細仕様と実装開始は未承認。**
 
 ユーザーは2026-10-28にPhase 2の方向を選択。その後、設計PR #7と具体的なv0.1の範囲を示した「workerに研究用実装を委任してよいですか？」への **「うん」** を、研究仕様と実装開始の明示承認として記録した。D036、[承認PR #7](https://github.com/thrsth45h/baseball-sim/pull/7)を参照。
 
-正本は[Phase 2a設計v0.1](PHASE2A_DESIGN.md)、[ADR-0002](adr/0002-phase2a-contact-research.md)、[技術点検](PHASE2A_REVIEW.md)。通常スイングの二値接触予測、4タグ保持、C0/C1/C2比較、2023学習・2024選択・2025既閲覧年度への再現比較。**能力較正・ゲーム統合は含めない。** 研究側基準mainは `4bf94dee60de9e33cfd7f16e7439cac34a36a6fc`。実装の詳細状態はこれから作成する研究側PRで共有する。
+正本は[Phase 2a設計v0.1](PHASE2A_DESIGN.md)、[ADR-0002](adr/0002-phase2a-contact-research.md)、[設計時点検](PHASE2A_REVIEW.md)。通常スイングの二値接触予測、4タグ保持、C0/C1/C2比較、2023学習・2024選択・2025既閲覧年度への再現比較。**能力較正・ゲーム統合は含めない。** 実装・責任者のレビュー記録は研究PR #5を参照。workerの専用ブランチは `impl/phase2a-contact`。元の199追跡パスは内容不変。
+
+2024はlambda10/C2を選択。2025の主要ΔLog Loss=C2−C1は−0.005506800386609、固定500回の試合対応bootstrap区間は[−0.005927426032991, −0.005080158586316]。C2のLog Loss/Brier/AUC改善と、ECE悪化（C1=0.00908137、C2=0.01041255）を両方報告した。既閲覧年度の観測スイングに条件付けた予測で、認知的技能や公開三振回避能力の真値ではない。
+
+フルモデルと再実行成果物は責任者が用意した専用作業領域のGit除外 `data/phase2a/real-fit-04` / `05`、`real-evaluate-04` / `05` に保存。公開は約210KBの集計・設定・hash・人工例のみ。新しいworkerへデータを渡す際は責任者が実パスと同一性を確認し、ユーザーに取次ぎを求めない。
 
 [D6監査レポート](https://github.com/thrsth45h/statcast-swing-model-v1/blob/4bf94dee60de9e33cfd7f16e7439cac34a36a6fc/reports/phase1d/real-input-audit/REPORT.md)と、実施した[監査手順](PHASE1D_DATA_AUDIT_HANDOFF.md)を参照。rawは119列、processedは27列。rawに軌道係数6列はあるが、推定に用いた時間窓や打者の主観的知覚の観測は立証できず、`not_verified / no_independent_early_observation` を維持する。
 
 入力の同一性とスキーマは確認できたが、全raw145 chunkの現物・全年度の値を再検査したわけではない。事後的な行動予測比較の入力列はある一方、新方式のMLB用潜在観測・周辺確率・座標/スコア契約は未整備。人工W0のGaussian式を実CSVへ流用しない。
 
-新規学習は承認済みPhase 2aの接触予測に限る。監査完了を理由に選球眼の認知能力推定・公開能力較正・製品採用を開始しない。
+Phase 2bの通常ファウル・ファウルチップ・インプレー分岐は、範囲と評価・接続方法を相談してから別設計PRにする。Phase 2a完了を理由に選球眼の認知能力推定・公開能力較正・打席遷移・製品採用を開始しない。
 
 ## 継続する運用指示
 
