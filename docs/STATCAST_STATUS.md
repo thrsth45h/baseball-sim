@@ -1,4 +1,4 @@
-# Statcastスイング判断モデル：研究進捗（2026-10-28）
+# Statcastスイング判断モデル：研究進捗（2026-10-29）
 
 研究コードの正本：https://github.com/thrsth45h/statcast-swing-model-v1
 
@@ -116,3 +116,27 @@ raw3標本は119列、processedは27列で、軌道係数はrawに存在する�
 - 旧220パス中219は不変、既存変更はroot READMEの案内のみ。旧Phase2a REPORT/READMEはhash索引の対象なので保持し、[別冊訂正](https://github.com/thrsth45h/statcast-swing-model-v1/blob/2af9657854b70a3dd1ce3db7dd8ae296cdd8745d/reports/phase2a/ERRATA.md)を追加。旧索引と掲載12ファイル、新公開索引9件も照合した。旧コード・モデル・数値・ラベル・凍結契約は変更していない。
 
 [監査レポートと集計](https://github.com/thrsth45h/statcast-swing-model-v1/blob/2af9657854b70a3dd1ce3db7dd8ae296cdd8745d/reports/phase2b/label-audit/REPORT.md)を参照。全バント除外、物理的フェア／ファウルの正解、記録3分類の新規学習、能力較正、ゲーム統合は未完了・未承認。D029はOPENを維持する。
+
+## Phase 3a固定72区分の分布・抽選（研究完了・mainへマージ済み）
+
+[承認設計PR #11](https://github.com/thrsth45h/baseball-sim/pull/11)、`phase3a-design-v0.1`、D038に基づきworkerが実装。責任者の独立レビュー・修正確認後、[研究PR #7](https://github.com/thrsth45h/statcast-swing-model-v1/pull/7)をmain `c155a6c0af899f2946dbcc4292c680a121fe781b`へマージした。
+
+対象は登録rawのR・hit_into_play・EV/LA数値適格の記録集合で、旧processedの位置・球速等の条件は継承しない。旧研究の母集団・コード・モデル・数値・凍結文書・索引は保存。バント・捕球されたファウル等の完全除外や、全接触の物理分布を示す研究ではない。
+
+| 年 | 登録ファイル | 登録行 | hit_into_play | 欠損による除外 | 採用 |
+|---|---:|---:|---:|---:|---:|
+| 2023 | 47 | 720,684 | 124,246 | 360 | 123,886 |
+| 2024 | 49 | 711,899 | 124,207 | 375 | 123,832 |
+| 2025 | 49 | 712,528 | 124,899 | 449 | 124,450 |
+
+変換不能・非有限・範囲外による排他的除外は各年0。全145登録のhash・行数・schema・必要9列の読取り、全rawのキー/重複・日付/年度/R、対象EV/LAの分母と除外、年度間重複を確認。必要列以外の全データ値を再検証したとは扱わない。
+
+- 2023だけで72セルとepsilon0.01の研究用平滑化を固定。J0はJ1と同じ速度・角度の周辺分布を持つ。2024で候補選択・設定変更せず、既閲覧2025を再現比較した。
+- 2025カテゴリLog LossはJ0=3.748952105439、J1=3.643953700041。主差J1−J0は−0.104998405397、2,430対象試合の対応付き500回bootstrap区間[−0.107178779512, −0.102401600251]、無効0。固定モデルの条件付き区間で、再学習・将来年度の不確実性を含まない。
+- 全368テスト・最終headのPython3.11/3.12 CI成功。責任者も別Git worktreeで全368テスト・fit/evaluate/sampleを実行。workerを参照しない別実装の期待値と1,137項目が一致し、公開10成果物は責任者の再実行とバイト一致した。
+- レビューでは、hashを整合させてJ0/J1を取り違えた確率表を受理する問題を人工例で再現。workerが保存count/N・固定epsilonからの閉形式、同一周辺・J0積構造・恒等式を検証する処理と4回帰を追加。raw再推定を評価へ入れず修正し、03/04で全工程を再実行した。
+- 既存237パス中236は不変、既存変更はroot READMEの案内のみ。公開hash68登録をworking/Git blob両方で照合。旧Phase2a/2bの索引も保持した。個票・個人パス・選手ID・実連続ペアを公開していない。
+
+この結果は、限定記録集合における粗い組合せの年度間予測情報を示す。区分内の連続値・方向・物理フェア・捕球・得点・個人能力・ゲームへの十分性は示さない。epsilonはNで消えない研究仮設定で、測定誤差や能力係数ではない。`trained_on_real_data=true`と、能力較正・認知識別・製品採用の未達を分ける。D029はOPEN。
+
+[報告・集計](https://github.com/thrsth45h/statcast-swing-model-v1/blob/c155a6c0af899f2946dbcc4292c680a121fe781b/reports/phase3a/real-03/evaluate/REPORT.md)、[再現手順と限界](https://github.com/thrsth45h/statcast-swing-model-v1/blob/c155a6c0af899f2946dbcc4292c680a121fe781b/reports/phase3a/README.md)を参照。次工程は記録集合から物理生成への接続条件の設計相談で、新しい実装仕様は未承認。
