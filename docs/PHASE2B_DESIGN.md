@@ -2,6 +2,7 @@
 
 - 版: `phase2b-label-audit-v0.1`、2026-10-28 日本時間。
 - 状態: **Accepted。2026-10-28、平易な説明後の本人回答「勝手に進めて良い」により、分類・欠損監査と説明訂正、worker実装開始を承認。**
+- 実施: worker実装・責任者の独立レビュー・修正後、[研究PR #6](https://github.com/thrsth45h/statcast-swing-model-v1/pull/6)をマージ済み。研究main `2af9657854b70a3dd1ce3db7dd8ae296cdd8745d`。[完了記録と限界](STATCAST_STATUS.md)を参照。監査の完了は分類完全性や製品採用の承認ではない。
 - 基準: ゲームmain `456a727ee291ecb0d1c3513778c25dc8810bc720`、研究main `e5a0c18ba2b9f1cdec068c3822a6fb863c0fec25`。
 - 関連: D007–D008、D022–D023、D029（OPEN）、D036、D037（監査範囲のみCONFIRMED）、[ADR-0003](adr/0003-phase2b-label-audit.md)、[Phase 2a設計](PHASE2A_DESIGN.md)。
 

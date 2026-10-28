@@ -18,6 +18,7 @@
 - Androidアプリ本体、公開能力1〜20の較正、ゲームへのモデル採用は未完了。既存M0/M1/M2・Phase 1b/1cの結果・推論契約は維持する。
 - Phase 2aもworker実装・責任者の独立コードレビュー・修正を経て[研究PR #5](https://github.com/thrsth45h/statcast-swing-model-v1/pull/5)をマージ済み。全272テストとPython 3.11／3.12 CI成功。責任者の別チェックアウトで全量学習・評価を再実行し、数値・モデル等11ファイルがworker版とバイト一致。別式による特徴・候補選択・指標・区間も1e-12以内で一致した。
 - レビューで公開reference JSONのcheckout改行依存による誤拒否を再現し、workerへ直接修正依頼。元入力の生バイトhash保護を保ち、全metadata内容による参照照合と回帰テストを追加した。ユーザーによる仲介は行っていない。
+- Phase 2bの分類・入力欠損監査もworker実装・責任者の独立レビュー・修正を経て[研究PR #6](https://github.com/thrsth45h/statcast-swing-model-v1/pull/6)をマージ済み。研究main `2af9657854b70a3dd1ce3db7dd8ae296cdd8745d`。全300テスト・最終headのPython 3.11/3.12 CI成功、責任者の別実行と独立期待値435項目も一致。旧数値・モデル・ラベル・旧Phase2a文書とhash索引を保存し、別冊訂正を追加した。
 
 ## 確認済みPRとcommit
 
@@ -32,6 +33,8 @@
 | D6既存実データ入力監査 | [研究PR #4](https://github.com/thrsth45h/statcast-swing-model-v1/pull/4) | `4bf94dee60de9e33cfd7f16e7439cac34a36a6fc` |
 | Phase 2a設計・研究実装承認 | [ゲームPR #7](https://github.com/thrsth45h/baseball-sim/pull/7) | `0804552fe4ae691506d00285bf9315375fbada66` |
 | Phase 2a接触予測研究 | [研究PR #5](https://github.com/thrsth45h/statcast-swing-model-v1/pull/5) | `e5a0c18ba2b9f1cdec068c3822a6fb863c0fec25` |
+| Phase 2b分類監査の設計・承認 | [ゲームPR #9](https://github.com/thrsth45h/baseball-sim/pull/9) | `3782e1e6facd291de1ab095725ccc887c583d129` |
+| Phase 2b分類・欠損監査と訂正 | [研究PR #6](https://github.com/thrsth45h/statcast-swing-model-v1/pull/6) | `2af9657854b70a3dd1ce3db7dd8ae296cdd8745d` |
 
 Phase 1d設計書・ADRのProposedは作成時の表記。研究範囲の採用・マージ記録はゲームPR #4本文にある。研究実装の独立レビュー・ユーザー許可・マージ記録は研究PR #3本文にある。これは製品採用・能力係数の承認ではない。
 
@@ -39,15 +42,21 @@ Phase 1d設計書・ADRのProposedは作成時の表記。研究範囲の採用�
 
 ## 次工程
 
-2026-10-28の再開時、限定rawと既存適格入力の一対一照合から、hit_into_playに記録上の犠牲バント4件とファウル地域のfield_out 62件を確認した。「通常スイングだけ」「fair_in_playがフェアを保証」という従来説明は訂正が必要。旧二値ターゲット・機械可読結果・数値は保存する。限定標本の証拠・根拠hash・代替案は[Phase 2b分類監査案](PHASE2B_DESIGN.md)を参照。
+2026-10-28の再開時、限定rawと既存適格入力の一対一照合から、hit_into_playに記録上の犠牲バント4件とファウル地域のfield_out 62件を確認した。「通常スイングだけ」「fair_in_playがフェアを保証」という従来説明を訂正し、旧二値ターゲット・機械可読結果・数値を保存した。限定標本の証拠・根拠hash・代替案は[Phase 2b設計](PHASE2B_DESIGN.md)を参照。
 
-**次は、分岐の学習に先立つ分類・入力監査。[設計PR #9](https://github.com/thrsth45h/baseball-sim/pull/9)、D037 CONFIRMED／ADR-0003 Accepted。** 2026-10-28、平易な説明後の本人回答「勝手に進めて良い」により、旧結果を保存した分類・欠損監査と説明訂正、worker実装開始を承認。先行した反例確認は読み取り専用で、設計マージ後に監査の実装を委任する。新しい予測学習・能力較正・ゲーム統合は含めない。
+**分類・入力監査は実装・独立レビュー・マージまで完了。[設計PR #9](https://github.com/thrsth45h/baseball-sim/pull/9)、D037 CONFIRMED／ADR-0003 Accepted。** 2026-10-28、平易な説明後の本人回答「勝手に進めて良い」により、旧結果を保存した監査と説明訂正を承認。責任者がworkerへ直接委任し、レビュー指摘を直接修正依頼して[研究PR #6](https://github.com/thrsth45h/statcast-swing-model-v1/pull/6)を統合した。新しい予測学習・能力較正・ゲーム統合は含めない。
 
-**Phase 2aは研究実装・独立レビュー・マージまで完了。Phase 2bは分類監査の実装から始め、結果分岐の予測モデルは監査結果を受けて別に設計・承認する。**
+年度hit_into_play内のsac_bunt接頭辞記録は2023/2024/2025で429 / 452 / 560件。raw標本は14,707 / 690 / 631行で、適格対応14,629 / 683 / 623、非対応78 / 7 / 8。対応hit_into_play内のfoul territory記述のfield_outは62 / 3 / 4件。全バントや物理的な真値の完全判定ではなく、標本比率を年全体へ外挿しない。
+
+責任者は修正版を別チェックアウトで再実行し、提出版とplan/audit/REPORTがバイト一致。旧220パス中、既存変更はroot READMEの案内のみで219パス不変。旧Phase2a索引と掲載12ファイル、新公開索引9件のworking/Git blob hashも検証した。観察フラグの非該当を「原因未確認」と呼んでいた表現はworkerが修正し、全非対応行で原因確定はnot_establishedを明記した。
+
+成果物は[監査レポート](https://github.com/thrsth45h/statcast-swing-model-v1/blob/2af9657854b70a3dd1ce3db7dd8ae296cdd8745d/reports/phase2b/label-audit/REPORT.md)と[別冊訂正](https://github.com/thrsth45h/statcast-swing-model-v1/blob/2af9657854b70a3dd1ce3db7dd8ae296cdd8745d/reports/phase2a/ERRATA.md)。workerは専用branch `impl/phase2b-label-audit`、レビュー済みhead `378e6de884c5c42cce67af5bb4f8dea497d051a5`。再現runは同worktreeのGit除外 `data/phase2b/replay-02` に保持。
+
+**次は、監査を踏まえて記録の条件付き予測とゲーム内の物理的な生成対象を分け、研究範囲を設計・相談する。新しい分岐モデルの学習・実装仕様は未承認。** 分類完全性、欠損の無作為性、直接測定か推定かの個別判定、能力較正を監査完了から推論しない。
 
 ユーザーは2026-10-28にPhase 2の方向を選択。その後、設計PR #7と具体的なv0.1の範囲を示した「workerに研究用実装を委任してよいですか？」への **「うん」** を、研究仕様と実装開始の明示承認として記録した。D036、[承認PR #7](https://github.com/thrsth45h/baseball-sim/pull/7)を参照。
 
-正本は[Phase 2a設計v0.1](PHASE2A_DESIGN.md)、[ADR-0002](adr/0002-phase2a-contact-research.md)、[設計時点検](PHASE2A_REVIEW.md)。通常スイングの二値接触予測、4タグ保持、C0/C1/C2比較、2023学習・2024選択・2025既閲覧年度への再現比較。**能力較正・ゲーム統合は含めない。** 実装・責任者のレビュー記録は研究PR #5を参照。workerの専用ブランチは `impl/phase2a-contact`。元の199追跡パスは内容不変。
+Phase 2aの正本は[設計v0.1](PHASE2A_DESIGN.md)、[ADR-0002](adr/0002-phase2a-contact-research.md)、[設計時点検](PHASE2A_REVIEW.md)。指定5description適格行への二値接触予測、4タグ保持、C0/C1/C2比較、2023学習・2024選択・2025既閲覧年度への再現比較。**能力較正・ゲーム統合は含めない。** 実装・責任者のレビュー記録は研究PR #5を参照。workerの専用ブランチは `impl/phase2a-contact`。その実装時点では元の199追跡パスは内容不変。
 
 2024はlambda10/C2を選択。2025の主要ΔLog Loss=C2−C1は−0.005506800386609、固定500回の試合対応bootstrap区間は[−0.005927426032991, −0.005080158586316]。C2のLog Loss/Brier/AUC改善と、ECE悪化（C1=0.00908137、C2=0.01041255）を両方報告した。既閲覧年度の観測スイングに条件付けた予測で、認知的技能や公開三振回避能力の真値ではない。
 
