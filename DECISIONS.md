@@ -47,7 +47,7 @@
 | D034 | REJECTED_OR_DEFERRED | 球威・球質の二重加算、固定総合PA上限、成績依存の安易な好調バフ。 |
 | D035 | CONFIRMED | NPBよりトレードが活発なMLB寄りの編成を志向。具体的な頻度は未確定。 |
 | D036 | CONFIRMED | [Phase 2a設計v0.1](docs/PHASE2A_DESIGN.md)の研究範囲とworker実装開始を承認。通常スイングの接触/空振り予測・4タグ・C0/C1/C2比較・2023学習/2024選択/既閲覧2025再現比較。旧研究保存、能力較正・ゲーム統合は含めない。2026-10-28の本人回答「うん」、[承認PR #7](https://github.com/thrsth45h/baseball-sim/pull/7)。D029はOPENのまま。 |
-| D037 | OPEN | [Phase 2b分類監査案v0.1](docs/PHASE2B_DESIGN.md)。hit_into_playの記録バント／ファウル地域アウトの反例を受け、旧Phase 2a結果を保存して説明を訂正し、既存processed 3年・D6指定raw 3 chunkで分類・入力欠損を監査する案。通常スイング完全抽出・物理フェア判定・新しい予測学習・能力較正・ゲーム統合は含めない。詳細仕様・worker実装開始は未承認。 |
+| D037 | CONFIRMED | [Phase 2b分類監査v0.1](docs/PHASE2B_DESIGN.md)の監査・説明訂正とworker実装開始を承認。旧Phase 2a結果を保存し、既存processed 3年・D6指定raw 3 chunkで分類・入力欠損を監査する。通常スイング完全抽出・物理フェア判定・新しい予測学習・能力較正・ゲーム統合は含めない。2026-10-28、平易な説明後の本人回答「勝手に進めて良い」、[設計PR #9](https://github.com/thrsth45h/baseball-sim/pull/9)。D029はOPENのまま。 |
 
 D036は当時承認された研究範囲の記録として保持する。「通常スイングのみ」「fair_in_play＝物理的フェア」という解釈は保証できないことを後に確認した。実際の5description母集団と旧数値は変えず、[設計書冒頭の注記](docs/PHASE2A_DESIGN.md)を優先して解釈する。
 

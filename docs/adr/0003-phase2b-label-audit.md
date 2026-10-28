@@ -1,10 +1,10 @@
 # ADR-0003: 結果分岐の予測を追加する前に記録ラベルを監査する
 
-- Status: **Proposed**
+- Status: **Accepted**
 - 関連Issue: 設計PRで兼ねる。
-- 設計PR: [ゲームPR #9（Draft）](https://github.com/thrsth45h/baseball-sim/pull/9)。
-- DECISIONS ID: 提案D037（OPEN）。D036の既存実装・数値を保存。
-- ユーザーの明示承認記録: **未承認**
+- 設計PR: [ゲームPR #9](https://github.com/thrsth45h/baseball-sim/pull/9)。
+- DECISIONS ID: D037（監査範囲のみCONFIRMED）。D036の既存実装・数値を保存。
+- ユーザーの明示承認記録: **2026-10-28、分類・欠損の監査と説明訂正の平易な説明後、本人が「勝手に進めて良い」と回答。** 「どゆこと？」は承認と扱わず、その後の指示を根拠とする。
 - 対象フェーズ: Phase 2b分類監査、`phase2b-label-audit-v0.1`
 
 ## 現状と問題
@@ -31,4 +31,4 @@ Phase 2aの計算は指定5descriptionを対象とするが、限定raw照合で
 
 ## 判断を求めること／承認後
 
-Aの監査・説明訂正とworker実装開始を相談中。承認が得られるまでProposed／D037 OPENを維持し、workerに実装を開始させない。承認後に範囲・本人回答を記録して設計をマージする。
+Aの監査・説明訂正とworker実装開始を承認済み。設計マージ後に専用領域で委任し、責任者が独立レビューする。新しい予測学習・能力較正・ゲーム統合などの採用は承認していない。

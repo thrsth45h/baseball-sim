@@ -90,7 +90,7 @@ raw3標本は119列、processedは27列で、軌道係数はrawに存在する�
 
 ## Phase 2a（研究実装・独立レビュー完了、mainへマージ済み）
 
-> 後続の意味確認: 下記と旧研究レポートの「通常スイング」表現は、指定5descriptionの適格行と読み替える。限定rawの照合でhit_into_play内に記録上の犠牲バント4件とファウル地域field_out 62件を確認し、旧fair_in_playタグも物理的なフェアを保証しないと分かった。接触二値の数値は固定母集団の結果として保存する。全年度の混入率は未確認。[証拠・訂正とPhase 2b監査案](PHASE2B_DESIGN.md)を参照。新仕様・worker実装は未承認。
+> 後続の意味確認: 下記と旧研究レポートの「通常スイング」表現は、指定5descriptionの適格行と読み替える。限定rawの照合でhit_into_play内に記録上の犠牲バント4件とファウル地域field_out 62件を確認し、旧fair_in_playタグも物理的なフェアを保証しないと分かった。接触二値の数値は固定母集団の結果として保存する。全年度の混入率は未確認。[証拠・訂正と承認済みPhase 2b監査](PHASE2B_DESIGN.md)を参照。監査・説明訂正のworker実装開始を承認済みで、分岐予測の学習・ゲーム統合は含めない。
 
 [承認設計PR #7](https://github.com/thrsth45h/baseball-sim/pull/7)、`phase2a-design-v0.1`、D036に基づきworkerが実装。責任者が独立レビューし、指摘をworkerが修正後、[研究PR #5](https://github.com/thrsth45h/statcast-swing-model-v1/pull/5)をマージした。研究mainは `e5a0c18ba2b9f1cdec068c3822a6fb863c0fec25`。
 

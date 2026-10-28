@@ -41,10 +41,10 @@ PR #1: https://github.com/thrsth45h/statcast-swing-model-v1/pull/1
 
 ## Phase 2 — 空振り・コンタクト
 
-2026-10-28の追加確認で、旧タグfair_in_playは物理的フェアを保証せず、5description母集団にも記録上の犠牲バントが含まれると判明した。旧数値を保存し、「通常スイングだけ」という説明を訂正する。次の最初の工程として[Phase 2b分類・入力監査v0.1](docs/PHASE2B_DESIGN.md)を提案中（D037 OPEN）。新しい分岐予測の学習・ゲーム接続の実装は別承認とする。
+2026-10-28の追加確認で、旧タグfair_in_playは物理的フェアを保証せず、5description母集団にも記録上の犠牲バントが含まれると判明した。旧数値を保存し、「通常スイングだけ」という説明を訂正する。次の最初の工程として[Phase 2b分類・入力監査v0.1](docs/PHASE2B_DESIGN.md)を承認済み（D037 CONFIRMED）。新しい分岐予測の学習・ゲーム接続の実装は別承認とする。
 
 - 最初の[Phase 2a研究設計v0.1](docs/PHASE2A_DESIGN.md)は**worker実装・責任者の独立レビュー・修正を経て研究実装をマージ済み**。D036、[承認PR #7](https://github.com/thrsth45h/baseball-sim/pull/7)、[実装PR #5](https://github.com/thrsth45h/statcast-swing-model-v1/pull/5)、[ADR-0002](docs/adr/0002-phase2a-contact-research.md)を参照。研究main `e5a0c18ba2b9f1cdec068c3822a6fb863c0fec25`。製品採用・能力較正を承認したものではない。
-- 272テスト・Python 3.11/3.12 CI成功。責任者の全量再実行で11成果物がworker版と一致。C2の予測損失改善とECE悪化を併記し、既閲覧2025を未使用holdoutと扱わない。次のPhase 2bは結果分岐の設計相談から始め、詳細仕様・実装は未承認。
+- 272テスト・Python 3.11/3.12 CI成功。責任者の全量再実行で11成果物がworker版と一致。C2の予測損失改善とECE悪化を併記し、既閲覧2025を未使用holdoutと扱わない。次のPhase 2bは承認済み分類監査を実装し、結果分岐の予測学習は別承認とする。
 - 2a案は通常スイングの接触／空振りの二値予測と、通常ファウル・ファウルチップ・インプレーのタグ保持。結果の分岐モデル、三振回避能力の較正、ゲームへの統合は別段階とする。
 
 - スイングを条件とした空振り・接触、ファウル・インプレー分岐の確率を推定。
