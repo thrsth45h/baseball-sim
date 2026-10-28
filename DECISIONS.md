@@ -48,6 +48,7 @@
 | D035 | CONFIRMED | NPBよりトレードが活発なMLB寄りの編成を志向。具体的な頻度は未確定。 |
 | D036 | CONFIRMED | [Phase 2a設計v0.1](docs/PHASE2A_DESIGN.md)の研究範囲とworker実装開始を承認。通常スイングの接触/空振り予測・4タグ・C0/C1/C2比較・2023学習/2024選択/既閲覧2025再現比較。旧研究保存、能力較正・ゲーム統合は含めない。2026-10-28の本人回答「うん」、[承認PR #7](https://github.com/thrsth45h/baseball-sim/pull/7)。D029はOPENのまま。 |
 | D037 | CONFIRMED | [Phase 2b分類監査v0.1](docs/PHASE2B_DESIGN.md)の監査・説明訂正とworker実装開始を承認。旧Phase 2a結果を保存し、既存processed 3年・D6指定raw 3 chunkで分類・入力欠損を監査する。通常スイング完全抽出・物理フェア判定・新しい予測学習・能力較正・ゲーム統合は含めない。2026-10-28、平易な説明後の本人回答「勝手に進めて良い」、[設計PR #9](https://github.com/thrsth45h/baseball-sim/pull/9)。D029はOPENのまま。 |
+| D038 | CONFIRMED | [Phase 3a設計v0.1](docs/PHASE3A_DESIGN.md)の研究範囲とworker実装開始を承認。登録R・hit_into_play・EV/LA数値適格の記録集合を72区分へ分け、同じ周辺を持つ独立J0／同時J1を比較・区分抽選。既存raw145登録を年度別に照合、2023fit凍結後2024診断／既閲覧2025比較。旧研究保存、能力換算・連続値・方向・物理フェア判定・守備・ゲーム統合なし。2026-10-29の本人回答「この研究範囲で進める（推奨）」、[設計PR #11](https://github.com/thrsth45h/baseball-sim/pull/11)。D029はOPEN。 |
 
 D036は当時承認された研究範囲の記録として保持する。「通常スイングのみ」「fair_in_play＝物理的フェア」という解釈は保証できないことを後に確認した。実際の5description母集団と旧数値は変えず、[設計書冒頭の注記](docs/PHASE2A_DESIGN.md)を優先して解釈する。
 
