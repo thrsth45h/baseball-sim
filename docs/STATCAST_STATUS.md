@@ -207,3 +207,7 @@ EV≥120は2023学習1件、2024が6件、2025が3件。2024尾部の条件付�
 新runは旧データ/モデルを計算に使わず、既存回帰テストは従来fixtureを使う。公開helperはraw入力を開かないが、旧model.json等をhash保護のためバイト読取りする。この三つの役割を区別して記録した。
 
 [研究説明・再現手順](https://github.com/thrsth45h/statcast-swing-model-v1/blob/cd8217a44788cf830c5554b71b04a27a98ce620c/reports/phase3d/README.md)、[worker検証記録](https://github.com/thrsth45h/statcast-swing-model-v1/blob/cd8217a44788cf830c5554b71b04a27a98ce620c/reports/phase3d/VALIDATION.md)、[責任者レビュー](PHASE3D_REVIEW.md)を参照。空気抵抗なし・半径0・即時の最大速度・反応前禁止・高さ上限/入力範囲は未較正の人工仮定。実際の捕球/守備認知・MLB妥当性・実データ/3b接続・能力・公式記録・ゲーム採用は未検証・未実施。次の新しい実装範囲は設計相談とする。
+
+## Phase 4a（ゲーム側の限定ルール参照・承認済み）
+
+2026-10-29、本人が「設計PR #19の範囲で進める（推奨）」と回答し、[設計v0.1](PHASE4A_DESIGN.md)・[ADR-0008](adr/0008-phase4a-count-reference.md)の限定ルール範囲・規則版・ゲーム側Python参照実装/CIとworker実装開始を承認した。裁定済みの合成8イベントからカウント/限定終端/打球受渡しを更新する契約を、ゲームrepoのPython参照実装・96遷移表/16列で検証する。設計マージ後にworkerへ委任する。Statcast研究や3dの到達機会をイベントへ変換せず、研究repoは変更しない。完全な打席生成・確率・能力・公式成績・Android/セーブ技術の採用ではない。D042は限定参照範囲のみCONFIRMED、D029/D031/D032はOPENを維持する。
