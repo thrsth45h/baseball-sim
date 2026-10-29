@@ -60,6 +60,8 @@ Phase 1d設計書・ADRのProposedは作成時の表記。研究範囲の採用�
 
 ## 次工程
 
+次工程案は[設計PR #19](https://github.com/thrsth45h/baseball-sim/pull/19)をDraft・未マージで提示した。本人の新仕様承認は未受領。承認後に設計をマージし、専用workerへ実装を委任する。現時点で生産コード/CIの追加は行っていない。
+
 **Phase 3dは承認済み合成研究の実装・独立レビュー・修正・マージまで完了した。** 次は[Phase 4a案](PHASE4A_DESIGN.md)・[ADR-0008](adr/0008-phase4a-count-reference.md)を相談する。ゲーム側で合成8イベントからカウント/限定終端/打球受渡しを更新する参照実装と、言語非依存96表/16列・専用CIを作る提案。D042 OPEN/ADR Proposed、未承認・実装未着手。Pythonは検算用でAndroid/DBの技術採用ではない。研究完了を理由に能力換算・捕球確率・既存研究/3b/3dの接続を開始せず、D029/D031/D032はOPEN。既存worktree・ignoredの履歴/再実行資料は保護する。開始時に両repoのclean状態・最新main・未マージPRなしを確認し、ゲームmain `110526fa500ecfeddc058241bc7da46d5648bb66`から`design/phase4a-count-rules`を作成した。
 
 2026-10-28の再開時、限定rawと既存適格入力の一対一照合から、hit_into_playに記録上の犠牲バント4件とファウル地域のfield_out 62件を確認した。「通常スイングだけ」「fair_in_playがフェアを保証」という従来説明を訂正し、旧二値ターゲット・機械可読結果・数値を保存した。限定標本の証拠・根拠hash・代替案は[Phase 2b設計](PHASE2B_DESIGN.md)を参照。

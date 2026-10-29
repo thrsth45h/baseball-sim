@@ -3,7 +3,7 @@
 - Status: **Proposed / 未承認**
 - DECISIONS: D042 OPEN、D029/D031/D032 OPENを維持。
 - 対象: [Phase 4a設計v0.1](../PHASE4A_DESIGN.md)
-- 設計PR: 作成後に記録。
+- 設計PR: [ゲームPR #19](https://github.com/thrsth45h/baseball-sim/pull/19)（Draft・未マージ）。
 - ユーザーの明示承認記録: **未承認**。「次へ」を未提示の新仕様の承認と扱わない。
 
 ## 現状と問題

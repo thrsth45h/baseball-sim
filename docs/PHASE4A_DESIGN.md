@@ -4,7 +4,7 @@
 - 状態: **Proposed / 未承認**。今回の「次へ」は案の検討指示として扱う。
 - 基準: ゲームmain `110526fa500ecfeddc058241bc7da46d5648bb66`、研究main `cd8217a44788cf830c5554b71b04a27a98ce620c`。
 - 関連: D004、D022–D023、D029/D031/D032 OPEN、D042 OPEN、[ADR-0008](adr/0008-phase4a-count-reference.md)、[設計点検](PHASE4A_REVIEW.md)。
-- 設計PR: 作成後に記録。承認・設計マージまでworkerの実装を開始しない。
+- 設計PR: [ゲームPR #19](https://github.com/thrsth45h/baseball-sim/pull/19)（Draft・未マージ）。承認・設計マージまでworkerの実装を開始しない。
 
 ## 1. 次に作るものと、今回作らないもの
 
