@@ -9,6 +9,7 @@ __pycache__/
 *.pyc
 data/raw/
 data/processed/
+data/prototypes/
 *.parquet
 *.sqlite
 *.db

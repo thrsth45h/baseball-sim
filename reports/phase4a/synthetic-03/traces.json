@@ -1,0 +1,1660 @@
+{
+  "ability_calibrated": false,
+  "android_integrated": false,
+  "connected_to_phase3d": false,
+  "connected_to_statcast": false,
+  "design": "phase4a-design-v0.1",
+  "official_stats_generated": false,
+  "probability_model": false,
+  "product_adoption": false,
+  "scenarios": [
+    {
+      "events": [],
+      "final_state": {
+        "balls": 0,
+        "pitches_seen": 0,
+        "status": "active",
+        "strikes": 0
+      },
+      "id": "empty",
+      "initial_state": {
+        "balls": 0,
+        "pitches_seen": 0,
+        "status": "active",
+        "strikes": 0
+      },
+      "trace": []
+    },
+    {
+      "events": [
+        "called_ball"
+      ],
+      "final_state": {
+        "balls": 1,
+        "pitches_seen": 1,
+        "status": "active",
+        "strikes": 0
+      },
+      "id": "one_ball",
+      "initial_state": {
+        "balls": 0,
+        "pitches_seen": 0,
+        "status": "active",
+        "strikes": 0
+      },
+      "trace": [
+        {
+          "after": {
+            "balls": 1,
+            "pitches_seen": 1,
+            "status": "active",
+            "strikes": 0
+          },
+          "before": {
+            "balls": 0,
+            "pitches_seen": 0,
+            "status": "active",
+            "strikes": 0
+          },
+          "event": "called_ball",
+          "ordinal": 1
+        }
+      ]
+    },
+    {
+      "events": [
+        "called_strike_caught"
+      ],
+      "final_state": {
+        "balls": 0,
+        "pitches_seen": 1,
+        "status": "active",
+        "strikes": 1
+      },
+      "id": "one_called_strike",
+      "initial_state": {
+        "balls": 0,
+        "pitches_seen": 0,
+        "status": "active",
+        "strikes": 0
+      },
+      "trace": [
+        {
+          "after": {
+            "balls": 0,
+            "pitches_seen": 1,
+            "status": "active",
+            "strikes": 1
+          },
+          "before": {
+            "balls": 0,
+            "pitches_seen": 0,
+            "status": "active",
+            "strikes": 0
+          },
+          "event": "called_strike_caught",
+          "ordinal": 1
+        }
+      ]
+    },
+    {
+      "events": [
+        "called_ball",
+        "called_ball",
+        "called_ball",
+        "called_ball"
+      ],
+      "final_state": {
+        "balls": 4,
+        "pitches_seen": 4,
+        "status": "walk_awarded",
+        "strikes": 0
+      },
+      "id": "four_balls",
+      "initial_state": {
+        "balls": 0,
+        "pitches_seen": 0,
+        "status": "active",
+        "strikes": 0
+      },
+      "trace": [
+        {
+          "after": {
+            "balls": 1,
+            "pitches_seen": 1,
+            "status": "active",
+            "strikes": 0
+          },
+          "before": {
+            "balls": 0,
+            "pitches_seen": 0,
+            "status": "active",
+            "strikes": 0
+          },
+          "event": "called_ball",
+          "ordinal": 1
+        },
+        {
+          "after": {
+            "balls": 2,
+            "pitches_seen": 2,
+            "status": "active",
+            "strikes": 0
+          },
+          "before": {
+            "balls": 1,
+            "pitches_seen": 1,
+            "status": "active",
+            "strikes": 0
+          },
+          "event": "called_ball",
+          "ordinal": 2
+        },
+        {
+          "after": {
+            "balls": 3,
+            "pitches_seen": 3,
+            "status": "active",
+            "strikes": 0
+          },
+          "before": {
+            "balls": 2,
+            "pitches_seen": 2,
+            "status": "active",
+            "strikes": 0
+          },
+          "event": "called_ball",
+          "ordinal": 3
+        },
+        {
+          "after": {
+            "balls": 4,
+            "pitches_seen": 4,
+            "status": "walk_awarded",
+            "strikes": 0
+          },
+          "before": {
+            "balls": 3,
+            "pitches_seen": 3,
+            "status": "active",
+            "strikes": 0
+          },
+          "event": "called_ball",
+          "ordinal": 4
+        }
+      ]
+    },
+    {
+      "events": [
+        "called_strike_caught",
+        "called_ball",
+        "swinging_strike_caught",
+        "called_ball",
+        "ordinary_foul_uncaught",
+        "called_ball",
+        "called_ball"
+      ],
+      "final_state": {
+        "balls": 4,
+        "pitches_seen": 7,
+        "status": "walk_awarded",
+        "strikes": 2
+      },
+      "id": "mixed_walk",
+      "initial_state": {
+        "balls": 0,
+        "pitches_seen": 0,
+        "status": "active",
+        "strikes": 0
+      },
+      "trace": [
+        {
+          "after": {
+            "balls": 0,
+            "pitches_seen": 1,
+            "status": "active",
+            "strikes": 1
+          },
+          "before": {
+            "balls": 0,
+            "pitches_seen": 0,
+            "status": "active",
+            "strikes": 0
+          },
+          "event": "called_strike_caught",
+          "ordinal": 1
+        },
+        {
+          "after": {
+            "balls": 1,
+            "pitches_seen": 2,
+            "status": "active",
+            "strikes": 1
+          },
+          "before": {
+            "balls": 0,
+            "pitches_seen": 1,
+            "status": "active",
+            "strikes": 1
+          },
+          "event": "called_ball",
+          "ordinal": 2
+        },
+        {
+          "after": {
+            "balls": 1,
+            "pitches_seen": 3,
+            "status": "active",
+            "strikes": 2
+          },
+          "before": {
+            "balls": 1,
+            "pitches_seen": 2,
+            "status": "active",
+            "strikes": 1
+          },
+          "event": "swinging_strike_caught",
+          "ordinal": 3
+        },
+        {
+          "after": {
+            "balls": 2,
+            "pitches_seen": 4,
+            "status": "active",
+            "strikes": 2
+          },
+          "before": {
+            "balls": 1,
+            "pitches_seen": 3,
+            "status": "active",
+            "strikes": 2
+          },
+          "event": "called_ball",
+          "ordinal": 4
+        },
+        {
+          "after": {
+            "balls": 2,
+            "pitches_seen": 5,
+            "status": "active",
+            "strikes": 2
+          },
+          "before": {
+            "balls": 2,
+            "pitches_seen": 4,
+            "status": "active",
+            "strikes": 2
+          },
+          "event": "ordinary_foul_uncaught",
+          "ordinal": 5
+        },
+        {
+          "after": {
+            "balls": 3,
+            "pitches_seen": 6,
+            "status": "active",
+            "strikes": 2
+          },
+          "before": {
+            "balls": 2,
+            "pitches_seen": 5,
+            "status": "active",
+            "strikes": 2
+          },
+          "event": "called_ball",
+          "ordinal": 6
+        },
+        {
+          "after": {
+            "balls": 4,
+            "pitches_seen": 7,
+            "status": "walk_awarded",
+            "strikes": 2
+          },
+          "before": {
+            "balls": 3,
+            "pitches_seen": 6,
+            "status": "active",
+            "strikes": 2
+          },
+          "event": "called_ball",
+          "ordinal": 7
+        }
+      ]
+    },
+    {
+      "events": [
+        "called_strike_caught",
+        "called_strike_caught",
+        "called_strike_caught"
+      ],
+      "final_state": {
+        "balls": 0,
+        "pitches_seen": 3,
+        "status": "strikeout_out",
+        "strikes": 3
+      },
+      "id": "called_strikeout",
+      "initial_state": {
+        "balls": 0,
+        "pitches_seen": 0,
+        "status": "active",
+        "strikes": 0
+      },
+      "trace": [
+        {
+          "after": {
+            "balls": 0,
+            "pitches_seen": 1,
+            "status": "active",
+            "strikes": 1
+          },
+          "before": {
+            "balls": 0,
+            "pitches_seen": 0,
+            "status": "active",
+            "strikes": 0
+          },
+          "event": "called_strike_caught",
+          "ordinal": 1
+        },
+        {
+          "after": {
+            "balls": 0,
+            "pitches_seen": 2,
+            "status": "active",
+            "strikes": 2
+          },
+          "before": {
+            "balls": 0,
+            "pitches_seen": 1,
+            "status": "active",
+            "strikes": 1
+          },
+          "event": "called_strike_caught",
+          "ordinal": 2
+        },
+        {
+          "after": {
+            "balls": 0,
+            "pitches_seen": 3,
+            "status": "strikeout_out",
+            "strikes": 3
+          },
+          "before": {
+            "balls": 0,
+            "pitches_seen": 2,
+            "status": "active",
+            "strikes": 2
+          },
+          "event": "called_strike_caught",
+          "ordinal": 3
+        }
+      ]
+    },
+    {
+      "events": [
+        "swinging_strike_caught",
+        "swinging_strike_caught",
+        "swinging_strike_caught"
+      ],
+      "final_state": {
+        "balls": 0,
+        "pitches_seen": 3,
+        "status": "strikeout_out",
+        "strikes": 3
+      },
+      "id": "swinging_strikeout",
+      "initial_state": {
+        "balls": 0,
+        "pitches_seen": 0,
+        "status": "active",
+        "strikes": 0
+      },
+      "trace": [
+        {
+          "after": {
+            "balls": 0,
+            "pitches_seen": 1,
+            "status": "active",
+            "strikes": 1
+          },
+          "before": {
+            "balls": 0,
+            "pitches_seen": 0,
+            "status": "active",
+            "strikes": 0
+          },
+          "event": "swinging_strike_caught",
+          "ordinal": 1
+        },
+        {
+          "after": {
+            "balls": 0,
+            "pitches_seen": 2,
+            "status": "active",
+            "strikes": 2
+          },
+          "before": {
+            "balls": 0,
+            "pitches_seen": 1,
+            "status": "active",
+            "strikes": 1
+          },
+          "event": "swinging_strike_caught",
+          "ordinal": 2
+        },
+        {
+          "after": {
+            "balls": 0,
+            "pitches_seen": 3,
+            "status": "strikeout_out",
+            "strikes": 3
+          },
+          "before": {
+            "balls": 0,
+            "pitches_seen": 2,
+            "status": "active",
+            "strikes": 2
+          },
+          "event": "swinging_strike_caught",
+          "ordinal": 3
+        }
+      ]
+    },
+    {
+      "events": [
+        "called_strike_caught",
+        "swinging_strike_caught",
+        "foul_tip_caught"
+      ],
+      "final_state": {
+        "balls": 0,
+        "pitches_seen": 3,
+        "status": "strikeout_out",
+        "strikes": 3
+      },
+      "id": "foul_tip_strikeout",
+      "initial_state": {
+        "balls": 0,
+        "pitches_seen": 0,
+        "status": "active",
+        "strikes": 0
+      },
+      "trace": [
+        {
+          "after": {
+            "balls": 0,
+            "pitches_seen": 1,
+            "status": "active",
+            "strikes": 1
+          },
+          "before": {
+            "balls": 0,
+            "pitches_seen": 0,
+            "status": "active",
+            "strikes": 0
+          },
+          "event": "called_strike_caught",
+          "ordinal": 1
+        },
+        {
+          "after": {
+            "balls": 0,
+            "pitches_seen": 2,
+            "status": "active",
+            "strikes": 2
+          },
+          "before": {
+            "balls": 0,
+            "pitches_seen": 1,
+            "status": "active",
+            "strikes": 1
+          },
+          "event": "swinging_strike_caught",
+          "ordinal": 2
+        },
+        {
+          "after": {
+            "balls": 0,
+            "pitches_seen": 3,
+            "status": "strikeout_out",
+            "strikes": 3
+          },
+          "before": {
+            "balls": 0,
+            "pitches_seen": 2,
+            "status": "active",
+            "strikes": 2
+          },
+          "event": "foul_tip_caught",
+          "ordinal": 3
+        }
+      ]
+    },
+    {
+      "events": [
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught"
+      ],
+      "final_state": {
+        "balls": 0,
+        "pitches_seen": 2,
+        "status": "active",
+        "strikes": 2
+      },
+      "id": "fouls_to_two",
+      "initial_state": {
+        "balls": 0,
+        "pitches_seen": 0,
+        "status": "active",
+        "strikes": 0
+      },
+      "trace": [
+        {
+          "after": {
+            "balls": 0,
+            "pitches_seen": 1,
+            "status": "active",
+            "strikes": 1
+          },
+          "before": {
+            "balls": 0,
+            "pitches_seen": 0,
+            "status": "active",
+            "strikes": 0
+          },
+          "event": "ordinary_foul_uncaught",
+          "ordinal": 1
+        },
+        {
+          "after": {
+            "balls": 0,
+            "pitches_seen": 2,
+            "status": "active",
+            "strikes": 2
+          },
+          "before": {
+            "balls": 0,
+            "pitches_seen": 1,
+            "status": "active",
+            "strikes": 1
+          },
+          "event": "ordinary_foul_uncaught",
+          "ordinal": 2
+        }
+      ]
+    },
+    {
+      "events": [
+        "called_strike_caught",
+        "swinging_strike_caught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught"
+      ],
+      "final_state": {
+        "balls": 0,
+        "pitches_seen": 5,
+        "status": "active",
+        "strikes": 2
+      },
+      "id": "two_strike_fouls",
+      "initial_state": {
+        "balls": 0,
+        "pitches_seen": 0,
+        "status": "active",
+        "strikes": 0
+      },
+      "trace": [
+        {
+          "after": {
+            "balls": 0,
+            "pitches_seen": 1,
+            "status": "active",
+            "strikes": 1
+          },
+          "before": {
+            "balls": 0,
+            "pitches_seen": 0,
+            "status": "active",
+            "strikes": 0
+          },
+          "event": "called_strike_caught",
+          "ordinal": 1
+        },
+        {
+          "after": {
+            "balls": 0,
+            "pitches_seen": 2,
+            "status": "active",
+            "strikes": 2
+          },
+          "before": {
+            "balls": 0,
+            "pitches_seen": 1,
+            "status": "active",
+            "strikes": 1
+          },
+          "event": "swinging_strike_caught",
+          "ordinal": 2
+        },
+        {
+          "after": {
+            "balls": 0,
+            "pitches_seen": 3,
+            "status": "active",
+            "strikes": 2
+          },
+          "before": {
+            "balls": 0,
+            "pitches_seen": 2,
+            "status": "active",
+            "strikes": 2
+          },
+          "event": "ordinary_foul_uncaught",
+          "ordinal": 3
+        },
+        {
+          "after": {
+            "balls": 0,
+            "pitches_seen": 4,
+            "status": "active",
+            "strikes": 2
+          },
+          "before": {
+            "balls": 0,
+            "pitches_seen": 3,
+            "status": "active",
+            "strikes": 2
+          },
+          "event": "ordinary_foul_uncaught",
+          "ordinal": 4
+        },
+        {
+          "after": {
+            "balls": 0,
+            "pitches_seen": 5,
+            "status": "active",
+            "strikes": 2
+          },
+          "before": {
+            "balls": 0,
+            "pitches_seen": 4,
+            "status": "active",
+            "strikes": 2
+          },
+          "event": "ordinary_foul_uncaught",
+          "ordinal": 5
+        }
+      ]
+    },
+    {
+      "events": [
+        "bunt_foul_uncaught",
+        "bunt_foul_uncaught",
+        "bunt_foul_uncaught"
+      ],
+      "final_state": {
+        "balls": 0,
+        "pitches_seen": 3,
+        "status": "strikeout_out",
+        "strikes": 3
+      },
+      "id": "three_bunt_fouls",
+      "initial_state": {
+        "balls": 0,
+        "pitches_seen": 0,
+        "status": "active",
+        "strikes": 0
+      },
+      "trace": [
+        {
+          "after": {
+            "balls": 0,
+            "pitches_seen": 1,
+            "status": "active",
+            "strikes": 1
+          },
+          "before": {
+            "balls": 0,
+            "pitches_seen": 0,
+            "status": "active",
+            "strikes": 0
+          },
+          "event": "bunt_foul_uncaught",
+          "ordinal": 1
+        },
+        {
+          "after": {
+            "balls": 0,
+            "pitches_seen": 2,
+            "status": "active",
+            "strikes": 2
+          },
+          "before": {
+            "balls": 0,
+            "pitches_seen": 1,
+            "status": "active",
+            "strikes": 1
+          },
+          "event": "bunt_foul_uncaught",
+          "ordinal": 2
+        },
+        {
+          "after": {
+            "balls": 0,
+            "pitches_seen": 3,
+            "status": "strikeout_out",
+            "strikes": 3
+          },
+          "before": {
+            "balls": 0,
+            "pitches_seen": 2,
+            "status": "active",
+            "strikes": 2
+          },
+          "event": "bunt_foul_uncaught",
+          "ordinal": 3
+        }
+      ]
+    },
+    {
+      "events": [
+        "called_strike_caught",
+        "swinging_strike_caught",
+        "bunt_foul_uncaught"
+      ],
+      "final_state": {
+        "balls": 0,
+        "pitches_seen": 3,
+        "status": "strikeout_out",
+        "strikes": 3
+      },
+      "id": "bunt_foul_after_two",
+      "initial_state": {
+        "balls": 0,
+        "pitches_seen": 0,
+        "status": "active",
+        "strikes": 0
+      },
+      "trace": [
+        {
+          "after": {
+            "balls": 0,
+            "pitches_seen": 1,
+            "status": "active",
+            "strikes": 1
+          },
+          "before": {
+            "balls": 0,
+            "pitches_seen": 0,
+            "status": "active",
+            "strikes": 0
+          },
+          "event": "called_strike_caught",
+          "ordinal": 1
+        },
+        {
+          "after": {
+            "balls": 0,
+            "pitches_seen": 2,
+            "status": "active",
+            "strikes": 2
+          },
+          "before": {
+            "balls": 0,
+            "pitches_seen": 1,
+            "status": "active",
+            "strikes": 1
+          },
+          "event": "swinging_strike_caught",
+          "ordinal": 2
+        },
+        {
+          "after": {
+            "balls": 0,
+            "pitches_seen": 3,
+            "status": "strikeout_out",
+            "strikes": 3
+          },
+          "before": {
+            "balls": 0,
+            "pitches_seen": 2,
+            "status": "active",
+            "strikes": 2
+          },
+          "event": "bunt_foul_uncaught",
+          "ordinal": 3
+        }
+      ]
+    },
+    {
+      "events": [
+        "foul_fly_caught"
+      ],
+      "final_state": {
+        "balls": 0,
+        "pitches_seen": 1,
+        "status": "caught_foul_out",
+        "strikes": 0
+      },
+      "id": "caught_foul_first",
+      "initial_state": {
+        "balls": 0,
+        "pitches_seen": 0,
+        "status": "active",
+        "strikes": 0
+      },
+      "trace": [
+        {
+          "after": {
+            "balls": 0,
+            "pitches_seen": 1,
+            "status": "caught_foul_out",
+            "strikes": 0
+          },
+          "before": {
+            "balls": 0,
+            "pitches_seen": 0,
+            "status": "active",
+            "strikes": 0
+          },
+          "event": "foul_fly_caught",
+          "ordinal": 1
+        }
+      ]
+    },
+    {
+      "events": [
+        "bunt_foul_uncaught",
+        "bunt_foul_uncaught",
+        "foul_fly_caught"
+      ],
+      "final_state": {
+        "balls": 0,
+        "pitches_seen": 3,
+        "status": "caught_foul_out",
+        "strikes": 2
+      },
+      "id": "caught_foul_after_two",
+      "initial_state": {
+        "balls": 0,
+        "pitches_seen": 0,
+        "status": "active",
+        "strikes": 0
+      },
+      "trace": [
+        {
+          "after": {
+            "balls": 0,
+            "pitches_seen": 1,
+            "status": "active",
+            "strikes": 1
+          },
+          "before": {
+            "balls": 0,
+            "pitches_seen": 0,
+            "status": "active",
+            "strikes": 0
+          },
+          "event": "bunt_foul_uncaught",
+          "ordinal": 1
+        },
+        {
+          "after": {
+            "balls": 0,
+            "pitches_seen": 2,
+            "status": "active",
+            "strikes": 2
+          },
+          "before": {
+            "balls": 0,
+            "pitches_seen": 1,
+            "status": "active",
+            "strikes": 1
+          },
+          "event": "bunt_foul_uncaught",
+          "ordinal": 2
+        },
+        {
+          "after": {
+            "balls": 0,
+            "pitches_seen": 3,
+            "status": "caught_foul_out",
+            "strikes": 2
+          },
+          "before": {
+            "balls": 0,
+            "pitches_seen": 2,
+            "status": "active",
+            "strikes": 2
+          },
+          "event": "foul_fly_caught",
+          "ordinal": 3
+        }
+      ]
+    },
+    {
+      "events": [
+        "called_ball",
+        "called_ball",
+        "called_ball",
+        "called_strike_caught",
+        "swinging_strike_caught",
+        "fair_ball_handoff"
+      ],
+      "final_state": {
+        "balls": 3,
+        "pitches_seen": 6,
+        "status": "fair_play_pending",
+        "strikes": 2
+      },
+      "id": "fair_full_count",
+      "initial_state": {
+        "balls": 0,
+        "pitches_seen": 0,
+        "status": "active",
+        "strikes": 0
+      },
+      "trace": [
+        {
+          "after": {
+            "balls": 1,
+            "pitches_seen": 1,
+            "status": "active",
+            "strikes": 0
+          },
+          "before": {
+            "balls": 0,
+            "pitches_seen": 0,
+            "status": "active",
+            "strikes": 0
+          },
+          "event": "called_ball",
+          "ordinal": 1
+        },
+        {
+          "after": {
+            "balls": 2,
+            "pitches_seen": 2,
+            "status": "active",
+            "strikes": 0
+          },
+          "before": {
+            "balls": 1,
+            "pitches_seen": 1,
+            "status": "active",
+            "strikes": 0
+          },
+          "event": "called_ball",
+          "ordinal": 2
+        },
+        {
+          "after": {
+            "balls": 3,
+            "pitches_seen": 3,
+            "status": "active",
+            "strikes": 0
+          },
+          "before": {
+            "balls": 2,
+            "pitches_seen": 2,
+            "status": "active",
+            "strikes": 0
+          },
+          "event": "called_ball",
+          "ordinal": 3
+        },
+        {
+          "after": {
+            "balls": 3,
+            "pitches_seen": 4,
+            "status": "active",
+            "strikes": 1
+          },
+          "before": {
+            "balls": 3,
+            "pitches_seen": 3,
+            "status": "active",
+            "strikes": 0
+          },
+          "event": "called_strike_caught",
+          "ordinal": 4
+        },
+        {
+          "after": {
+            "balls": 3,
+            "pitches_seen": 5,
+            "status": "active",
+            "strikes": 2
+          },
+          "before": {
+            "balls": 3,
+            "pitches_seen": 4,
+            "status": "active",
+            "strikes": 1
+          },
+          "event": "swinging_strike_caught",
+          "ordinal": 5
+        },
+        {
+          "after": {
+            "balls": 3,
+            "pitches_seen": 6,
+            "status": "fair_play_pending",
+            "strikes": 2
+          },
+          "before": {
+            "balls": 3,
+            "pitches_seen": 5,
+            "status": "active",
+            "strikes": 2
+          },
+          "event": "fair_ball_handoff",
+          "ordinal": 6
+        }
+      ]
+    },
+    {
+      "events": [
+        "called_strike_caught",
+        "swinging_strike_caught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught"
+      ],
+      "final_state": {
+        "balls": 0,
+        "pitches_seen": 34,
+        "status": "active",
+        "strikes": 2
+      },
+      "id": "long_foul_run",
+      "initial_state": {
+        "balls": 0,
+        "pitches_seen": 0,
+        "status": "active",
+        "strikes": 0
+      },
+      "trace": [
+        {
+          "after": {
+            "balls": 0,
+            "pitches_seen": 1,
+            "status": "active",
+            "strikes": 1
+          },
+          "before": {
+            "balls": 0,
+            "pitches_seen": 0,
+            "status": "active",
+            "strikes": 0
+          },
+          "event": "called_strike_caught",
+          "ordinal": 1
+        },
+        {
+          "after": {
+            "balls": 0,
+            "pitches_seen": 2,
+            "status": "active",
+            "strikes": 2
+          },
+          "before": {
+            "balls": 0,
+            "pitches_seen": 1,
+            "status": "active",
+            "strikes": 1
+          },
+          "event": "swinging_strike_caught",
+          "ordinal": 2
+        },
+        {
+          "after": {
+            "balls": 0,
+            "pitches_seen": 3,
+            "status": "active",
+            "strikes": 2
+          },
+          "before": {
+            "balls": 0,
+            "pitches_seen": 2,
+            "status": "active",
+            "strikes": 2
+          },
+          "event": "ordinary_foul_uncaught",
+          "ordinal": 3
+        },
+        {
+          "after": {
+            "balls": 0,
+            "pitches_seen": 4,
+            "status": "active",
+            "strikes": 2
+          },
+          "before": {
+            "balls": 0,
+            "pitches_seen": 3,
+            "status": "active",
+            "strikes": 2
+          },
+          "event": "ordinary_foul_uncaught",
+          "ordinal": 4
+        },
+        {
+          "after": {
+            "balls": 0,
+            "pitches_seen": 5,
+            "status": "active",
+            "strikes": 2
+          },
+          "before": {
+            "balls": 0,
+            "pitches_seen": 4,
+            "status": "active",
+            "strikes": 2
+          },
+          "event": "ordinary_foul_uncaught",
+          "ordinal": 5
+        },
+        {
+          "after": {
+            "balls": 0,
+            "pitches_seen": 6,
+            "status": "active",
+            "strikes": 2
+          },
+          "before": {
+            "balls": 0,
+            "pitches_seen": 5,
+            "status": "active",
+            "strikes": 2
+          },
+          "event": "ordinary_foul_uncaught",
+          "ordinal": 6
+        },
+        {
+          "after": {
+            "balls": 0,
+            "pitches_seen": 7,
+            "status": "active",
+            "strikes": 2
+          },
+          "before": {
+            "balls": 0,
+            "pitches_seen": 6,
+            "status": "active",
+            "strikes": 2
+          },
+          "event": "ordinary_foul_uncaught",
+          "ordinal": 7
+        },
+        {
+          "after": {
+            "balls": 0,
+            "pitches_seen": 8,
+            "status": "active",
+            "strikes": 2
+          },
+          "before": {
+            "balls": 0,
+            "pitches_seen": 7,
+            "status": "active",
+            "strikes": 2
+          },
+          "event": "ordinary_foul_uncaught",
+          "ordinal": 8
+        },
+        {
+          "after": {
+            "balls": 0,
+            "pitches_seen": 9,
+            "status": "active",
+            "strikes": 2
+          },
+          "before": {
+            "balls": 0,
+            "pitches_seen": 8,
+            "status": "active",
+            "strikes": 2
+          },
+          "event": "ordinary_foul_uncaught",
+          "ordinal": 9
+        },
+        {
+          "after": {
+            "balls": 0,
+            "pitches_seen": 10,
+            "status": "active",
+            "strikes": 2
+          },
+          "before": {
+            "balls": 0,
+            "pitches_seen": 9,
+            "status": "active",
+            "strikes": 2
+          },
+          "event": "ordinary_foul_uncaught",
+          "ordinal": 10
+        },
+        {
+          "after": {
+            "balls": 0,
+            "pitches_seen": 11,
+            "status": "active",
+            "strikes": 2
+          },
+          "before": {
+            "balls": 0,
+            "pitches_seen": 10,
+            "status": "active",
+            "strikes": 2
+          },
+          "event": "ordinary_foul_uncaught",
+          "ordinal": 11
+        },
+        {
+          "after": {
+            "balls": 0,
+            "pitches_seen": 12,
+            "status": "active",
+            "strikes": 2
+          },
+          "before": {
+            "balls": 0,
+            "pitches_seen": 11,
+            "status": "active",
+            "strikes": 2
+          },
+          "event": "ordinary_foul_uncaught",
+          "ordinal": 12
+        },
+        {
+          "after": {
+            "balls": 0,
+            "pitches_seen": 13,
+            "status": "active",
+            "strikes": 2
+          },
+          "before": {
+            "balls": 0,
+            "pitches_seen": 12,
+            "status": "active",
+            "strikes": 2
+          },
+          "event": "ordinary_foul_uncaught",
+          "ordinal": 13
+        },
+        {
+          "after": {
+            "balls": 0,
+            "pitches_seen": 14,
+            "status": "active",
+            "strikes": 2
+          },
+          "before": {
+            "balls": 0,
+            "pitches_seen": 13,
+            "status": "active",
+            "strikes": 2
+          },
+          "event": "ordinary_foul_uncaught",
+          "ordinal": 14
+        },
+        {
+          "after": {
+            "balls": 0,
+            "pitches_seen": 15,
+            "status": "active",
+            "strikes": 2
+          },
+          "before": {
+            "balls": 0,
+            "pitches_seen": 14,
+            "status": "active",
+            "strikes": 2
+          },
+          "event": "ordinary_foul_uncaught",
+          "ordinal": 15
+        },
+        {
+          "after": {
+            "balls": 0,
+            "pitches_seen": 16,
+            "status": "active",
+            "strikes": 2
+          },
+          "before": {
+            "balls": 0,
+            "pitches_seen": 15,
+            "status": "active",
+            "strikes": 2
+          },
+          "event": "ordinary_foul_uncaught",
+          "ordinal": 16
+        },
+        {
+          "after": {
+            "balls": 0,
+            "pitches_seen": 17,
+            "status": "active",
+            "strikes": 2
+          },
+          "before": {
+            "balls": 0,
+            "pitches_seen": 16,
+            "status": "active",
+            "strikes": 2
+          },
+          "event": "ordinary_foul_uncaught",
+          "ordinal": 17
+        },
+        {
+          "after": {
+            "balls": 0,
+            "pitches_seen": 18,
+            "status": "active",
+            "strikes": 2
+          },
+          "before": {
+            "balls": 0,
+            "pitches_seen": 17,
+            "status": "active",
+            "strikes": 2
+          },
+          "event": "ordinary_foul_uncaught",
+          "ordinal": 18
+        },
+        {
+          "after": {
+            "balls": 0,
+            "pitches_seen": 19,
+            "status": "active",
+            "strikes": 2
+          },
+          "before": {
+            "balls": 0,
+            "pitches_seen": 18,
+            "status": "active",
+            "strikes": 2
+          },
+          "event": "ordinary_foul_uncaught",
+          "ordinal": 19
+        },
+        {
+          "after": {
+            "balls": 0,
+            "pitches_seen": 20,
+            "status": "active",
+            "strikes": 2
+          },
+          "before": {
+            "balls": 0,
+            "pitches_seen": 19,
+            "status": "active",
+            "strikes": 2
+          },
+          "event": "ordinary_foul_uncaught",
+          "ordinal": 20
+        },
+        {
+          "after": {
+            "balls": 0,
+            "pitches_seen": 21,
+            "status": "active",
+            "strikes": 2
+          },
+          "before": {
+            "balls": 0,
+            "pitches_seen": 20,
+            "status": "active",
+            "strikes": 2
+          },
+          "event": "ordinary_foul_uncaught",
+          "ordinal": 21
+        },
+        {
+          "after": {
+            "balls": 0,
+            "pitches_seen": 22,
+            "status": "active",
+            "strikes": 2
+          },
+          "before": {
+            "balls": 0,
+            "pitches_seen": 21,
+            "status": "active",
+            "strikes": 2
+          },
+          "event": "ordinary_foul_uncaught",
+          "ordinal": 22
+        },
+        {
+          "after": {
+            "balls": 0,
+            "pitches_seen": 23,
+            "status": "active",
+            "strikes": 2
+          },
+          "before": {
+            "balls": 0,
+            "pitches_seen": 22,
+            "status": "active",
+            "strikes": 2
+          },
+          "event": "ordinary_foul_uncaught",
+          "ordinal": 23
+        },
+        {
+          "after": {
+            "balls": 0,
+            "pitches_seen": 24,
+            "status": "active",
+            "strikes": 2
+          },
+          "before": {
+            "balls": 0,
+            "pitches_seen": 23,
+            "status": "active",
+            "strikes": 2
+          },
+          "event": "ordinary_foul_uncaught",
+          "ordinal": 24
+        },
+        {
+          "after": {
+            "balls": 0,
+            "pitches_seen": 25,
+            "status": "active",
+            "strikes": 2
+          },
+          "before": {
+            "balls": 0,
+            "pitches_seen": 24,
+            "status": "active",
+            "strikes": 2
+          },
+          "event": "ordinary_foul_uncaught",
+          "ordinal": 25
+        },
+        {
+          "after": {
+            "balls": 0,
+            "pitches_seen": 26,
+            "status": "active",
+            "strikes": 2
+          },
+          "before": {
+            "balls": 0,
+            "pitches_seen": 25,
+            "status": "active",
+            "strikes": 2
+          },
+          "event": "ordinary_foul_uncaught",
+          "ordinal": 26
+        },
+        {
+          "after": {
+            "balls": 0,
+            "pitches_seen": 27,
+            "status": "active",
+            "strikes": 2
+          },
+          "before": {
+            "balls": 0,
+            "pitches_seen": 26,
+            "status": "active",
+            "strikes": 2
+          },
+          "event": "ordinary_foul_uncaught",
+          "ordinal": 27
+        },
+        {
+          "after": {
+            "balls": 0,
+            "pitches_seen": 28,
+            "status": "active",
+            "strikes": 2
+          },
+          "before": {
+            "balls": 0,
+            "pitches_seen": 27,
+            "status": "active",
+            "strikes": 2
+          },
+          "event": "ordinary_foul_uncaught",
+          "ordinal": 28
+        },
+        {
+          "after": {
+            "balls": 0,
+            "pitches_seen": 29,
+            "status": "active",
+            "strikes": 2
+          },
+          "before": {
+            "balls": 0,
+            "pitches_seen": 28,
+            "status": "active",
+            "strikes": 2
+          },
+          "event": "ordinary_foul_uncaught",
+          "ordinal": 29
+        },
+        {
+          "after": {
+            "balls": 0,
+            "pitches_seen": 30,
+            "status": "active",
+            "strikes": 2
+          },
+          "before": {
+            "balls": 0,
+            "pitches_seen": 29,
+            "status": "active",
+            "strikes": 2
+          },
+          "event": "ordinary_foul_uncaught",
+          "ordinal": 30
+        },
+        {
+          "after": {
+            "balls": 0,
+            "pitches_seen": 31,
+            "status": "active",
+            "strikes": 2
+          },
+          "before": {
+            "balls": 0,
+            "pitches_seen": 30,
+            "status": "active",
+            "strikes": 2
+          },
+          "event": "ordinary_foul_uncaught",
+          "ordinal": 31
+        },
+        {
+          "after": {
+            "balls": 0,
+            "pitches_seen": 32,
+            "status": "active",
+            "strikes": 2
+          },
+          "before": {
+            "balls": 0,
+            "pitches_seen": 31,
+            "status": "active",
+            "strikes": 2
+          },
+          "event": "ordinary_foul_uncaught",
+          "ordinal": 32
+        },
+        {
+          "after": {
+            "balls": 0,
+            "pitches_seen": 33,
+            "status": "active",
+            "strikes": 2
+          },
+          "before": {
+            "balls": 0,
+            "pitches_seen": 32,
+            "status": "active",
+            "strikes": 2
+          },
+          "event": "ordinary_foul_uncaught",
+          "ordinal": 33
+        },
+        {
+          "after": {
+            "balls": 0,
+            "pitches_seen": 34,
+            "status": "active",
+            "strikes": 2
+          },
+          "before": {
+            "balls": 0,
+            "pitches_seen": 33,
+            "status": "active",
+            "strikes": 2
+          },
+          "event": "ordinary_foul_uncaught",
+          "ordinal": 34
+        }
+      ]
+    }
+  ],
+  "schema": "phase4a-count-reference-v1",
+  "scope": "partial_count_rules",
+  "source_kind": "synthetic_fixture"
+}

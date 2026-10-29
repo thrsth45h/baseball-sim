@@ -1,0 +1,328 @@
+{
+  "ability_calibrated": false,
+  "android_integrated": false,
+  "approved_design": {
+    "decision": "D042 limited reference only",
+    "game_main": "1c5b738671a452305a4be874c57f77cd8ad5db10",
+    "url": "https://github.com/thrsth45h/baseball-sim/pull/19"
+  },
+  "connected_to_phase3d": false,
+  "connected_to_statcast": false,
+  "count_semantics": {
+    "fair_play_pending": "counter handoff only; hit/out unresolved, no assertion of legal PA incompletion",
+    "memory_chunk_replay": true,
+    "pitches_seen": "accepted event count in the eight-event subset, not league official pitch totals",
+    "product_save_format": false,
+    "trace_ordinal": "n+1 before each event; never reset for a chunk"
+  },
+  "design": "phase4a-design-v0.1",
+  "fixed_scenarios": [
+    {
+      "events": [],
+      "expected_final": {
+        "balls": 0,
+        "pitches_seen": 0,
+        "status": "active",
+        "strikes": 0
+      },
+      "id": "empty"
+    },
+    {
+      "events": [
+        "called_ball"
+      ],
+      "expected_final": {
+        "balls": 1,
+        "pitches_seen": 1,
+        "status": "active",
+        "strikes": 0
+      },
+      "id": "one_ball"
+    },
+    {
+      "events": [
+        "called_strike_caught"
+      ],
+      "expected_final": {
+        "balls": 0,
+        "pitches_seen": 1,
+        "status": "active",
+        "strikes": 1
+      },
+      "id": "one_called_strike"
+    },
+    {
+      "events": [
+        "called_ball",
+        "called_ball",
+        "called_ball",
+        "called_ball"
+      ],
+      "expected_final": {
+        "balls": 4,
+        "pitches_seen": 4,
+        "status": "walk_awarded",
+        "strikes": 0
+      },
+      "id": "four_balls"
+    },
+    {
+      "events": [
+        "called_strike_caught",
+        "called_ball",
+        "swinging_strike_caught",
+        "called_ball",
+        "ordinary_foul_uncaught",
+        "called_ball",
+        "called_ball"
+      ],
+      "expected_final": {
+        "balls": 4,
+        "pitches_seen": 7,
+        "status": "walk_awarded",
+        "strikes": 2
+      },
+      "id": "mixed_walk"
+    },
+    {
+      "events": [
+        "called_strike_caught",
+        "called_strike_caught",
+        "called_strike_caught"
+      ],
+      "expected_final": {
+        "balls": 0,
+        "pitches_seen": 3,
+        "status": "strikeout_out",
+        "strikes": 3
+      },
+      "id": "called_strikeout"
+    },
+    {
+      "events": [
+        "swinging_strike_caught",
+        "swinging_strike_caught",
+        "swinging_strike_caught"
+      ],
+      "expected_final": {
+        "balls": 0,
+        "pitches_seen": 3,
+        "status": "strikeout_out",
+        "strikes": 3
+      },
+      "id": "swinging_strikeout"
+    },
+    {
+      "events": [
+        "called_strike_caught",
+        "swinging_strike_caught",
+        "foul_tip_caught"
+      ],
+      "expected_final": {
+        "balls": 0,
+        "pitches_seen": 3,
+        "status": "strikeout_out",
+        "strikes": 3
+      },
+      "id": "foul_tip_strikeout"
+    },
+    {
+      "events": [
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught"
+      ],
+      "expected_final": {
+        "balls": 0,
+        "pitches_seen": 2,
+        "status": "active",
+        "strikes": 2
+      },
+      "id": "fouls_to_two"
+    },
+    {
+      "events": [
+        "called_strike_caught",
+        "swinging_strike_caught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught"
+      ],
+      "expected_final": {
+        "balls": 0,
+        "pitches_seen": 5,
+        "status": "active",
+        "strikes": 2
+      },
+      "id": "two_strike_fouls"
+    },
+    {
+      "events": [
+        "bunt_foul_uncaught",
+        "bunt_foul_uncaught",
+        "bunt_foul_uncaught"
+      ],
+      "expected_final": {
+        "balls": 0,
+        "pitches_seen": 3,
+        "status": "strikeout_out",
+        "strikes": 3
+      },
+      "id": "three_bunt_fouls"
+    },
+    {
+      "events": [
+        "called_strike_caught",
+        "swinging_strike_caught",
+        "bunt_foul_uncaught"
+      ],
+      "expected_final": {
+        "balls": 0,
+        "pitches_seen": 3,
+        "status": "strikeout_out",
+        "strikes": 3
+      },
+      "id": "bunt_foul_after_two"
+    },
+    {
+      "events": [
+        "foul_fly_caught"
+      ],
+      "expected_final": {
+        "balls": 0,
+        "pitches_seen": 1,
+        "status": "caught_foul_out",
+        "strikes": 0
+      },
+      "id": "caught_foul_first"
+    },
+    {
+      "events": [
+        "bunt_foul_uncaught",
+        "bunt_foul_uncaught",
+        "foul_fly_caught"
+      ],
+      "expected_final": {
+        "balls": 0,
+        "pitches_seen": 3,
+        "status": "caught_foul_out",
+        "strikes": 2
+      },
+      "id": "caught_foul_after_two"
+    },
+    {
+      "events": [
+        "called_ball",
+        "called_ball",
+        "called_ball",
+        "called_strike_caught",
+        "swinging_strike_caught",
+        "fair_ball_handoff"
+      ],
+      "expected_final": {
+        "balls": 3,
+        "pitches_seen": 6,
+        "status": "fair_play_pending",
+        "strikes": 2
+      },
+      "id": "fair_full_count"
+    },
+    {
+      "events": [
+        "called_strike_caught",
+        "swinging_strike_caught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught"
+      ],
+      "expected_final": {
+        "balls": 0,
+        "pitches_seen": 34,
+        "status": "active",
+        "strikes": 2
+      },
+      "id": "long_foul_run"
+    }
+  ],
+  "implementation": {
+    "bundle_sha256": "cb17a585d49a6775c522656cef91c9f1036b9d38d0f3f7f913454dd3ea035031",
+    "python": "3.12.14",
+    "python_implementation": "CPython",
+    "sources_and_fixtures": {
+      "prototypes/__init__.py": "585d0f84ef1ad8a270f4fa95929ba4ea422084e321ce178d9f6db3846633f36d",
+      "prototypes/phase4a/.gitattributes": "a79691a93b46e49ce460c26ef22afcc03d6eca1e63bf2edbc20e96159510f6c9",
+      "prototypes/phase4a/__init__.py": "087d5c49cf5d02f5031ca5b5e9dc6922e22feaa022fe875b0e6e58b7a4b935ca",
+      "prototypes/phase4a/__main__.py": "c1b4ea3711514ee88e94b6ded67aaf9b3b9388ac2aaa88b00da74d5ec6ea24e7",
+      "prototypes/phase4a/fixtures.py": "2c1b7ef5b5b37fdd96fbe98d4cfdd6243024b7f8fb79e1daf92805bb3a8d2c85",
+      "prototypes/phase4a/fixtures/scenarios.json": "f469ed635749c16cecaf10bdafacc03bff5f019645591ccd9f185a4d16f3b2c2",
+      "prototypes/phase4a/fixtures/transitions.json": "8fcc74506f961afe2aa680fbc6bd3ebe30cdb0e0ee7bc5ad0ac83885bb3d79de",
+      "prototypes/phase4a/io.py": "dc62b28391e034869411c4c33fb1d07c6698cbb9d6d9b468063cb67a7682212b",
+      "prototypes/phase4a/model.py": "587d42bf642a8cd54eb755e09700e9954e840b3fe649bdcab9185f8add583e1a",
+      "prototypes/phase4a/runner.py": "baff31d21ac53a453e86a7d4cf22dae1eac6fd857c017419f3cbdf0de9b5b49f"
+    },
+    "text_hash_rule": "UTF-8; CRLF and CR normalized to LF before SHA256",
+    "third_party_runtime_dependencies": []
+  },
+  "limitations": [
+    "adjudicated synthetic event fixtures only, not estimated event probabilities",
+    "no Statcast description/events mapping, no Phase3d opportunity-to-catch mapping",
+    "no EV/LA backfill or old model imports",
+    "not a complete PA/game engine",
+    "Python reference does not select Android language/architecture/DB; D029/D031/D032 OPEN"
+  ],
+  "official_stats_generated": false,
+  "probability_model": false,
+  "product_adoption": false,
+  "rules": {
+    "complete_league_rules_adopted": false,
+    "edition": "MLB Official Baseball Rules 2026",
+    "sections": [
+      "5.04(c)",
+      "5.05(a)(1-2)",
+      "5.05(b)(1)",
+      "5.09(a)(1-4)",
+      "9.15(a)(4)",
+      "Definitions: STRIKE, FOUL TIP"
+    ],
+    "url": "https://mktg.mlbstatic.com/mlb/official-information/2026-official-baseball-rules.pdf"
+  },
+  "scenario_count": 16,
+  "schema": "phase4a-count-reference-v1",
+  "scope": "partial_count_rules",
+  "source_kind": "synthetic_fixture",
+  "transition_count": 96,
+  "unsupported": [
+    "uncaught or catch-unknown strikes, including third strikes",
+    "ambiguous strike/foul",
+    "HBP, interference, intentional walk, automatic ball/strike, canceled calls",
+    "runner/scoring/inning play, official statistics, statistical generation"
+  ]
+}

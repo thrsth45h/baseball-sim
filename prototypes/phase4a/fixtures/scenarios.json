@@ -1,0 +1,261 @@
+{
+  "design": "phase4a-design-v0.1",
+  "scenarios": [
+    {
+      "events": [],
+      "expected_final": {
+        "balls": 0,
+        "pitches_seen": 0,
+        "status": "active",
+        "strikes": 0
+      },
+      "id": "empty"
+    },
+    {
+      "events": [
+        "called_ball"
+      ],
+      "expected_final": {
+        "balls": 1,
+        "pitches_seen": 1,
+        "status": "active",
+        "strikes": 0
+      },
+      "id": "one_ball"
+    },
+    {
+      "events": [
+        "called_strike_caught"
+      ],
+      "expected_final": {
+        "balls": 0,
+        "pitches_seen": 1,
+        "status": "active",
+        "strikes": 1
+      },
+      "id": "one_called_strike"
+    },
+    {
+      "events": [
+        "called_ball",
+        "called_ball",
+        "called_ball",
+        "called_ball"
+      ],
+      "expected_final": {
+        "balls": 4,
+        "pitches_seen": 4,
+        "status": "walk_awarded",
+        "strikes": 0
+      },
+      "id": "four_balls"
+    },
+    {
+      "events": [
+        "called_strike_caught",
+        "called_ball",
+        "swinging_strike_caught",
+        "called_ball",
+        "ordinary_foul_uncaught",
+        "called_ball",
+        "called_ball"
+      ],
+      "expected_final": {
+        "balls": 4,
+        "pitches_seen": 7,
+        "status": "walk_awarded",
+        "strikes": 2
+      },
+      "id": "mixed_walk"
+    },
+    {
+      "events": [
+        "called_strike_caught",
+        "called_strike_caught",
+        "called_strike_caught"
+      ],
+      "expected_final": {
+        "balls": 0,
+        "pitches_seen": 3,
+        "status": "strikeout_out",
+        "strikes": 3
+      },
+      "id": "called_strikeout"
+    },
+    {
+      "events": [
+        "swinging_strike_caught",
+        "swinging_strike_caught",
+        "swinging_strike_caught"
+      ],
+      "expected_final": {
+        "balls": 0,
+        "pitches_seen": 3,
+        "status": "strikeout_out",
+        "strikes": 3
+      },
+      "id": "swinging_strikeout"
+    },
+    {
+      "events": [
+        "called_strike_caught",
+        "swinging_strike_caught",
+        "foul_tip_caught"
+      ],
+      "expected_final": {
+        "balls": 0,
+        "pitches_seen": 3,
+        "status": "strikeout_out",
+        "strikes": 3
+      },
+      "id": "foul_tip_strikeout"
+    },
+    {
+      "events": [
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught"
+      ],
+      "expected_final": {
+        "balls": 0,
+        "pitches_seen": 2,
+        "status": "active",
+        "strikes": 2
+      },
+      "id": "fouls_to_two"
+    },
+    {
+      "events": [
+        "called_strike_caught",
+        "swinging_strike_caught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught"
+      ],
+      "expected_final": {
+        "balls": 0,
+        "pitches_seen": 5,
+        "status": "active",
+        "strikes": 2
+      },
+      "id": "two_strike_fouls"
+    },
+    {
+      "events": [
+        "bunt_foul_uncaught",
+        "bunt_foul_uncaught",
+        "bunt_foul_uncaught"
+      ],
+      "expected_final": {
+        "balls": 0,
+        "pitches_seen": 3,
+        "status": "strikeout_out",
+        "strikes": 3
+      },
+      "id": "three_bunt_fouls"
+    },
+    {
+      "events": [
+        "called_strike_caught",
+        "swinging_strike_caught",
+        "bunt_foul_uncaught"
+      ],
+      "expected_final": {
+        "balls": 0,
+        "pitches_seen": 3,
+        "status": "strikeout_out",
+        "strikes": 3
+      },
+      "id": "bunt_foul_after_two"
+    },
+    {
+      "events": [
+        "foul_fly_caught"
+      ],
+      "expected_final": {
+        "balls": 0,
+        "pitches_seen": 1,
+        "status": "caught_foul_out",
+        "strikes": 0
+      },
+      "id": "caught_foul_first"
+    },
+    {
+      "events": [
+        "bunt_foul_uncaught",
+        "bunt_foul_uncaught",
+        "foul_fly_caught"
+      ],
+      "expected_final": {
+        "balls": 0,
+        "pitches_seen": 3,
+        "status": "caught_foul_out",
+        "strikes": 2
+      },
+      "id": "caught_foul_after_two"
+    },
+    {
+      "events": [
+        "called_ball",
+        "called_ball",
+        "called_ball",
+        "called_strike_caught",
+        "swinging_strike_caught",
+        "fair_ball_handoff"
+      ],
+      "expected_final": {
+        "balls": 3,
+        "pitches_seen": 6,
+        "status": "fair_play_pending",
+        "strikes": 2
+      },
+      "id": "fair_full_count"
+    },
+    {
+      "events": [
+        "called_strike_caught",
+        "swinging_strike_caught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught",
+        "ordinary_foul_uncaught"
+      ],
+      "expected_final": {
+        "balls": 0,
+        "pitches_seen": 34,
+        "status": "active",
+        "strikes": 2
+      },
+      "id": "long_foul_run"
+    }
+  ],
+  "schema": "phase4a-count-reference-v1",
+  "source_kind": "synthetic_fixture"
+}
