@@ -2,6 +2,7 @@
 
 - Status: **Proposed / 未承認**
 - 対象: [Phase 4c設計v0.1](../PHASE4C_DESIGN.md)、D044 OPEN。D029/D031/D032 OPENを維持。
+- 設計PR: [ゲームPR #25](https://github.com/thrsth45h/baseball-sim/pull/25)。
 - ユーザーの明示承認記録: **未承認**。「次へ」を未提示の接続仕様/worker実装開始の承認とは扱わない。
 
 ## 現状と問題

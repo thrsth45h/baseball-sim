@@ -4,6 +4,7 @@
 - 状態: **Proposed / 未承認**。「次へ」は設計開始の依頼として扱い、新しい接続仕様・worker実装開始の承認とは扱わない。
 - 基準: ゲームmain `197add4704dc1f8fe64d41037ede25cf73ba6876`、研究main `cd8217a44788cf830c5554b71b04a27a98ce620c`。
 - 関連: D004/D022、D042/D043の既存限定契約、D044 OPEN、D029/D031/D032 OPEN、[ADR-0010](adr/0010-phase4c-pitch-half-reference.md)、[設計点検](PHASE4C_REVIEW.md)。
+- 設計PR: [ゲームPR #25](https://github.com/thrsth45h/baseball-sim/pull/25)。本人の範囲承認待ち。
 
 ## 1. 目的・代替案・今回の範囲
 
