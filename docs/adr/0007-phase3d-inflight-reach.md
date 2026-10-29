@@ -1,7 +1,7 @@
 # ADR-0007: 飛行中の幾何的到達機会を、実際の捕球から分けて検証する
 
 - Status: **Proposed / 未承認**
-- 設計PR: 作成後に記録。
+- 設計PR: [ゲームPR #17](https://github.com/thrsth45h/baseball-sim/pull/17)（Draft・未マージ）。
 - DECISIONS: D041 OPEN、D029 OPENを維持。
 - 対象: [Phase 3d設計v0.1](../PHASE3D_DESIGN.md)
 - ユーザーの明示承認記録: **未承認**。「つぎへ」は案の検討として扱い、この仕様の承認とは扱わない。

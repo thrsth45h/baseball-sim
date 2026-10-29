@@ -4,7 +4,7 @@
 - 状態: **Proposed / 未承認**。次工程を検討する指示を、下記の新仕様の承認とは扱わない。
 - 基準: ゲームmain `586ff3f8440db9064b657d2121e26ea1018cbd7a`、研究main `015b9fdcd18565270b8ce888bd703aead8c63864`。
 - 関連: D022–D023、D029 OPEN、D040 CONFIRMED（3cのみ）、D041 OPEN、[ADR-0007](adr/0007-phase3d-inflight-reach.md)、[設計点検](PHASE3D_REVIEW.md)。
-- 設計PR: 作成後に記録する。**承認・設計マージまでworkerの研究実装を開始しない。**
+- 設計PR: [ゲームPR #17](https://github.com/thrsth45h/baseball-sim/pull/17)（Draft・未マージ）。**承認・設計マージまでworkerの研究実装を開始しない。**
 
 ## 1. 今回決める範囲
 
