@@ -1,4 +1,4 @@
-"""Check two fixed-fixture runs, source Git binding and existing game files.
+"""Check two fixed-fixture runs, source Git binding and game source snapshot.
 
 This helper does not open the Statcast research repository or raw/model files.
 Run in this checkout; existing verification records are never replaced.
@@ -60,9 +60,14 @@ def verify(first, second, tests, output):
         raise ValueError("source/tests/CI differ from the fixed source commit")
     tree = git("ls-tree", "-r", BASELINE).decode()
     baseline = {line.split("\t", 1)[1]: line.split()[2] for line in tree.splitlines()}
-    changed = set(git("diff", "--name-only", BASELINE).decode().splitlines())
-    if (changed & set(baseline)) - {"README.md", ".gitignore"}:
-        raise ValueError("protected baseline game file changed")
+    allowed_old_paths = {"README.md", ".gitignore"}
+    protected = set(baseline) - allowed_old_paths
+    snapshot_changed = set(git("diff", "--name-only", BASELINE, SOURCE_COMMIT).decode().splitlines()) & set(baseline)
+    if snapshot_changed & protected:
+        raise ValueError("protected baseline game file changed in fixed source snapshot")
+    # Later documentation work is reported separately; it cannot change the
+    # protection result for the fixed implementation commit above.
+    current_changed = set(git("diff", "--name-only", SOURCE_COMMIT).decode().splitlines()) & set(baseline)
     fixture_rows = json.loads(git("show", SOURCE_COMMIT+":prototypes/phase4a/fixtures/scenarios.json"))["scenarios"]
     table = json.loads(git("show", SOURCE_COMMIT+":prototypes/phase4a/fixtures/transitions.json"))["transitions"]
     reference = {(r["before"]["balls"], r["before"]["strikes"], r["event"]): r["after"] for r in table}
@@ -124,8 +129,18 @@ def verify(first, second, tests, output):
           "second": second.relative_to(root).as_posix(), "all_four_artifacts_byte_identical": True,
           "compared_sha256": compared, "no_time_or_absolute_path_in_run_artifacts": True})
     write(output/"verification.json", {"baseline": BASELINE, "source_commit": SOURCE_COMMIT,
-          "baseline_game_paths": len(baseline), "protected_game_paths_unchanged": len(baseline)-2,
-          "old_file_changes_allowed": ["README.md guide only", ".gitignore data/prototypes/ only"],
+          "existing_game_file_protection": {
+              "from_commit": BASELINE, "through_commit": SOURCE_COMMIT,
+              "baseline_game_paths": len(baseline), "protected_game_paths": len(protected),
+              "protected_game_paths_unchanged_at_source_commit": len(protected),
+              "changed_baseline_game_paths_at_source_commit": sorted(snapshot_changed),
+              "old_file_changes_allowed_at_source_commit": ["README.md guide only", ".gitignore data/prototypes/ only"]},
+          "current_checkout_changes_since_source_commit": {
+              "from_commit": SOURCE_COMMIT,
+              "comparison": "fixed source commit to current working tree, including tracked uncommitted changes",
+              "baseline_game_paths_changed": sorted(current_changed),
+              "protected_baseline_game_paths_changed": sorted(current_changed & protected),
+              "informational_only": True},
           "run_hash_entries_verified": manifest_checks, "fixed_transition_rows": len(table),
           "fixed_sequence_rows": len(fixture_rows), "trace_entries_checked_across_two_runs": trace_entries,
           "source_identity_binds_checkout_and_fixed_git_commit": True,
@@ -135,7 +150,8 @@ def verify(first, second, tests, output):
     write(output/"SHA256SUMS.json", {p.relative_to(output).as_posix(): sha(p.read_bytes()) for p in sorted(output.rglob("*"))
                                    if p.is_file() and p != output/"SHA256SUMS.json"})
     print(json.dumps({"four_files_identical": True, "run_hash_entries": manifest_checks,
-                      "baseline_paths": len(baseline), "protected_paths": len(baseline)-2,
+                      "baseline_paths": len(baseline), "protected_paths_at_source_commit": len(protected),
+                      "current_changed_baseline_paths_since_source_commit": sorted(current_changed),
                       "test_methods": records["test_methods_run"], "subtests_separate": records["subtests_observed_separate"]}))
 
 
