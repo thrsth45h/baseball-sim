@@ -1,10 +1,10 @@
 # Phase 3d — 合成軌道に対する飛行中の幾何的到達機会
 
 - 版: `phase3d-design-v0.1`、2026-10-29 日本時間。
-- 状態: **Proposed / 未承認**。次工程を検討する指示を、下記の新仕様の承認とは扱わない。
+- 状態: **Accepted**。2026-10-29、本人が本PRの範囲を示す確認に「設計PR #17の範囲・仮設定で進める（推奨）」と回答。合成研究の範囲・明示仮設定とworker実装開始を承認した。
 - 基準: ゲームmain `586ff3f8440db9064b657d2121e26ea1018cbd7a`、研究main `015b9fdcd18565270b8ce888bd703aead8c63864`。
-- 関連: D022–D023、D029 OPEN、D040 CONFIRMED（3cのみ）、D041 OPEN、[ADR-0007](adr/0007-phase3d-inflight-reach.md)、[設計点検](PHASE3D_REVIEW.md)。
-- 設計PR: [ゲームPR #17](https://github.com/thrsth45h/baseball-sim/pull/17)（Draft・未マージ）。**承認・設計マージまでworkerの研究実装を開始しない。**
+- 関連: D022–D023、D029 OPEN、D040 CONFIRMED（3cのみ）、D041 CONFIRMED（3d合成研究のみ）、[ADR-0007](adr/0007-phase3d-inflight-reach.md)、[設計点検](PHASE3D_REVIEW.md)。
+- 設計PR: [ゲームPR #17](https://github.com/thrsth45h/baseball-sim/pull/17)。**設計マージ後にworkerの研究実装を開始する。**
 
 ## 1. 今回決める範囲
 
@@ -143,4 +143,4 @@ CLIは`python -m baseball_calibration.phase3d run --output data/phase3d/run-01`�
 
 `source_kind=synthetic`、`trained_on_real_data=false`、`connected_to_phase3b=false`、`uses_true_future_trajectory=true`、`fielder_policy_modeled=false`、`catch_success_modeled=false`、`MLB_validity=not_established`、`ability_calibrated=false`、`product_adoption=false`を明示する。各run30分・peak RSS2GiBを停止目安とし、超過/未解消を報告する。Android性能評価にはしない。
 
-**相談するのは以上の合成研究範囲・仮設定とworker実装開始。現時点では未承認。** 承認があればD041をこの範囲だけCONFIRMEDとし、設計をマージしてから委任する。実際の捕球確率・認知/行動・実データ/3b接続・能力・公式記録・ゲーム採用は別承認。D029はOPENを維持する。
+**2026-10-29、本人が「設計PR #17の範囲・仮設定で進める（推奨）」を選択し、以上の合成研究範囲・明示仮設定とworker実装開始を承認した。** D041をこの範囲だけCONFIRMEDとし、設計をマージしてから委任する。実際の捕球確率・認知/行動・実データ/3b接続・能力・公式記録・ゲーム採用は別承認。D029はOPENを維持する。
