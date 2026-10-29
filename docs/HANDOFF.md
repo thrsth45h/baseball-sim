@@ -10,6 +10,7 @@
 
 ## 現在の到達点
 
+- 次案は[Phase 3c設計v0.1](PHASE3C_DESIGN.md)・[ADR-0006](adr/0006-phase3c-synthetic-flight.md)。固定人工条件の軌道・地面到達と、守備者1人の移動距離余裕までの最小試作を提案。**Proposed・D040 OPEN、本人の仕様承認待ちで実装未開始。** 実データ/3b接続・捕球・能力・ゲーム採用は含めない。
 - [Phase 3b設計v0.1](PHASE3B_DESIGN.md)・[ADR-0005](adr/0005-phase3b-numeric-generator.md)も研究実装完了。2026-10-29、本人が「設計PR #13の研究範囲・仮設定で進める（推奨）」と承認し、[設計PR #13](https://github.com/thrsth45h/baseball-sim/pull/13)をマージ後、workerへ直接委任。責任者の独立レビュー後に[研究PR #8](https://github.com/thrsth45h/statcast-swing-model-v1/pull/8)をmain `35c9fe6fbe2b01c02b7253ed336526e6960cd4fe`へマージした。D039は研究範囲のみCONFIRMEDで、能力・物理的妥当性・ゲーム採用へ承認を拡張しない。
 - Phase 3bは全439テスト・Python3.11/3.12のPR CI成功。責任者の別実行で12成果物がバイト一致し、worker未参照の事前凍結期待値と1,232項目が一致。公開46ファイルと新77/旧134のhash登録をGit blobも含めて確認。旧285パス中、README案内以外284は不変。2024尾部6件での悪化・2025尾部3件の差0も報告した。[詳細](STATCAST_STATUS.md)を参照。
 - 次工程は記録集合から物理生成への接続条件を相談する段階。方向・全接触への外挿・守備・能力・ゲーム統合の新しい実装は未承認。Phase 3bの作業領域`work/phase3b-numeric-worker`とレビュー領域`work/phase3b-review-97c741d`、ignoredの再実行出力は保持している。レビュー領域の最終HEADは`c2be7b0c4ee959e96d9e56c1ba62bed6b55d8242`で、研究mainと同じtree。
