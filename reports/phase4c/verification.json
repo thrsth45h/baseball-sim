@@ -1,0 +1,59 @@
+{
+  "ability_calibrated": false,
+  "android_integrated": false,
+  "baseline": "06256f8a4f0f8795709f56365f1ea212e2090092",
+  "compatibility_cells": 12,
+  "compatible_pairs": 5,
+  "connected_to_phase3d": false,
+  "connected_to_phase4a": true,
+  "connected_to_phase4b": true,
+  "connected_to_statcast": false,
+  "control_cells": 12,
+  "current_checkout_changes_since_source_commit": {
+    "baseline_game_paths_changed": [],
+    "comparison": "fixed source to current working tree, including tracked uncommitted changes",
+    "from_commit": "a1d2cbc4ae9f949babb2f350be9ed41193f477b5",
+    "informational_only": true,
+    "protected_baseline_game_paths_changed": []
+  },
+  "current_source_tests_dependencies_ci_match_fixed_source": true,
+  "existing_game_file_protection": {
+    "baseline_game_paths": 93,
+    "changed_baseline_game_paths_at_source_commit": [
+      "README.md"
+    ],
+    "from_commit": "06256f8a4f0f8795709f56365f1ea212e2090092",
+    "old_file_changes_allowed_at_source_commit": [
+      "README.md guide only"
+    ],
+    "protected_game_paths": 92,
+    "protected_game_paths_unchanged_at_source_commit": 92,
+    "through_commit": "a1d2cbc4ae9f949babb2f350be9ed41193f477b5"
+  },
+  "existing_game_git_metadata_read_for_integrity": true,
+  "fixed_sequence_rows": 18,
+  "official_stats_generated": false,
+  "old_dependency_source_paths": [
+    "prototypes/__init__.py",
+    "prototypes/phase4a/__init__.py",
+    "prototypes/phase4a/model.py",
+    "prototypes/phase4b/__init__.py",
+    "prototypes/phase4b/model.py"
+  ],
+  "old_reference_fixture_git_blobs_read_for_trace_validation": [
+    "prototypes/phase4a/fixtures/transitions.json",
+    "prototypes/phase4b/fixtures/transitions.json"
+  ],
+  "old_rule_functions_imported_by_helper": false,
+  "probability_model": false,
+  "product_adoption": false,
+  "public_git_blob_check": "separate check after committing",
+  "raw_or_fitted_model_artifacts_opened": false,
+  "research_repository_opened_by_helper": false,
+  "run_hash_entries_verified": 6,
+  "scope": "partial_pitch_half_orchestration",
+  "source_commit": "a1d2cbc4ae9f949babb2f350be9ed41193f477b5",
+  "source_identity_binds_checkout_and_fixed_git_commit": true,
+  "source_kind": "synthetic_fixture",
+  "trace_entries_checked_across_two_runs": 164
+}
