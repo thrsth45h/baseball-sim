@@ -105,6 +105,8 @@
 
 [Phase 4a設計](docs/PHASE4A_DESIGN.md)は2026-10-29に本人が[設計PR #19](https://github.com/thrsth45h/baseball-sim/pull/19)の範囲とworker実装開始を承認（D042は限定参照範囲のみCONFIRMED）。worker実装・責任者の独立レビューと修正確認を経て、[実装PR #20](https://github.com/thrsth45h/baseball-sim/pull/20)をmain `4d3a92392d5adb4be9ddd2db4ef16ab3ca3a9977`へマージ済み。裁定済み合成8イベントからカウント/限定終端/打球受渡しを更新するPython検算用参照で、言語非依存96遷移表/16列を保持する。全33 test method・Python3.11/3.12 CI成功、別式の独立期待値との照合と再実行一致を確認した。[レビュー](docs/PHASE4A_REVIEW.md)を参照。確率生成・既存研究接続・完全な試合/公式成績・Android技術/製品セーブの採用は含めず、D029/D031/D032はOPENを維持する。
 
+次の[Phase 4b設計](docs/PHASE4B_DESIGN.md)は、2026-10-29に本人が[設計PR #22](https://github.com/thrsth45h/baseball-sim/pull/22)の範囲とworker実装開始を承認（D043は限定参照のみCONFIRMED）。追加進塁なし四球、打者1人アウト/走者据置き、合法フェンス越え本塁打という確定済み合成入力に限り、塁占有・アウト・当該半回得点を更新する。三アウトで残塁snapshotを保持して停止。4a statusや研究結果からの自動変換、走塁判断、完全な試合、公式個人成績・能力・Android技術は含めない。設計マージ後にworkerへ委任する。
+
 ## 7. MLB Statcast研究方針と現状
 
 - 詳細データはMLB Statcast。FanGraphsの研究や指標の定義を参考にし、NPB詳細有料データを用いない。

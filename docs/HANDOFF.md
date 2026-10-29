@@ -58,6 +58,7 @@
 | Phase 3d飛行中の幾何的到達時刻集合 | [研究PR #10](https://github.com/thrsth45h/statcast-swing-model-v1/pull/10) | `cd8217a44788cf830c5554b71b04a27a98ce620c` |
 | Phase 4a限定ルール参照の設計・実装承認 | [ゲームPR #19](https://github.com/thrsth45h/baseball-sim/pull/19) | `1c5b738671a452305a4be874c57f77cd8ad5db10` |
 | Phase 4aカウント/限定終端の参照実装 | [ゲームPR #20](https://github.com/thrsth45h/baseball-sim/pull/20) | `4d3a92392d5adb4be9ddd2db4ef16ab3ca3a9977` |
+| Phase 4a補助検証の時点訂正・完了記録 | [ゲームPR #21](https://github.com/thrsth45h/baseball-sim/pull/21) | `340602d94466d4af1f07ea559d458650d2e5c85e` |
 
 Phase 1d設計書・ADRのProposedは作成時の表記。研究範囲の採用・マージ記録はゲームPR #4本文にある。研究実装の独立レビュー・ユーザー許可・マージ記録は研究PR #3本文にある。これは製品採用・能力係数の承認ではない。
 
@@ -65,7 +66,9 @@ Phase 1d設計書・ADRのProposedは作成時の表記。研究範囲の採用�
 
 ## 次工程
 
-**Phase 4aの承認済み実装は完了。次の新しい実装範囲は未承認。** まず次工程の対象・代替案・受入れ条件を設計して本人と相談する。4a完了を理由に確率生成、能力換算、走者/得点、捕球成功、既存研究/3b/3d接続を開始しない。D042は限定参照のみCONFIRMED/ADR Accepted、D029/D031/D032はOPENを維持する。実行手順は[公開README](../reports/phase4a/README.md)、検証は[実装レビュー](PHASE4A_REVIEW.md)。既存worktree・ignoredの履歴/再実行資料を保護し、次回開始時も両repoのbranch/HEAD/未保存変更/最新mainと未マージPRを確認する。
+**Phase 4aの承認済み実装は完了。次のPhase 4bは以下の限定範囲で承認済み。** 4a完了だけを理由に確率生成、能力換算、捕球成功、既存研究/3b/3d接続を開始しない。D042/D043はそれぞれ限定参照のみCONFIRMED、D029/D031/D032はOPENを維持する。4a実行手順は[公開README](../reports/phase4a/README.md)、検証は[実装レビュー](PHASE4A_REVIEW.md)。既存worktree・ignoredの履歴/再実行資料を保護し、次回開始時も両repoのbranch/HEAD/未保存変更/最新mainと未マージPRを確認する。
+
+2026-10-29、本人が「設計PR #22の範囲で進める（推奨）」と回答し、[Phase 4b設計](PHASE4B_DESIGN.md)・[ADR-0009](adr/0009-phase4b-base-out-reference.md)の限定範囲/入力条件/規則版・ゲーム側Python参照/CIとworker実装開始を承認した（[設計PR #22](https://github.com/thrsth45h/baseball-sim/pull/22)、[点検記録](PHASE4B_REVIEW.md)）。**D043は限定参照のみCONFIRMED/ADR Accepted。** 確定済み合成3プレーから塁占有・アウト・半回得点を更新し、72表/16列と三アウト停止・残塁保持を検証する。4aとの自動接続はせず、走塁判断/単打/併殺/サヨナラ/公式個人成績/能力/Androidは別設計。設計マージ後にworkerへ委任し、責任者が独立レビュー/直接修正依頼を行う。
 
 2026-10-28の再開時、限定rawと既存適格入力の一対一照合から、hit_into_playに記録上の犠牲バント4件とファウル地域のfield_out 62件を確認した。「通常スイングだけ」「fair_in_playがフェアを保証」という従来説明を訂正し、旧二値ターゲット・機械可読結果・数値を保存した。限定標本の証拠・根拠hash・代替案は[Phase 2b設計](PHASE2B_DESIGN.md)を参照。
 
