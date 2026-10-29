@@ -1,0 +1,14 @@
+{
+  "duration_seconds": 0.4426870999741368,
+  "errors": 0,
+  "failures": 0,
+  "phase": "phase4c",
+  "python": "3.12.14",
+  "skipped": 0,
+  "source_commit": "a1d2cbc4ae9f949babb2f350be9ed41193f477b5",
+  "subtests_observed_separate": 3020,
+  "successful": true,
+  "test_case_directories_preserved": true,
+  "test_methods_run": 28,
+  "windows_real_junction_cases": 4
+}

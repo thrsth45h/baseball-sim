@@ -1,0 +1,65 @@
+{
+  "design": "phase4c-design-v0.1",
+  "compatibility": [
+    {
+      "status": "walk_awarded",
+      "completed_play": "walk_forced_only",
+      "allowed": true
+    },
+    {
+      "status": "walk_awarded",
+      "completed_play": "batter_out_runners_hold",
+      "allowed": false
+    },
+    {
+      "status": "walk_awarded",
+      "completed_play": "legal_over_fence_home_run",
+      "allowed": false
+    },
+    {
+      "status": "strikeout_out",
+      "completed_play": "walk_forced_only",
+      "allowed": false
+    },
+    {
+      "status": "strikeout_out",
+      "completed_play": "batter_out_runners_hold",
+      "allowed": true
+    },
+    {
+      "status": "strikeout_out",
+      "completed_play": "legal_over_fence_home_run",
+      "allowed": false
+    },
+    {
+      "status": "caught_foul_out",
+      "completed_play": "walk_forced_only",
+      "allowed": false
+    },
+    {
+      "status": "caught_foul_out",
+      "completed_play": "batter_out_runners_hold",
+      "allowed": true
+    },
+    {
+      "status": "caught_foul_out",
+      "completed_play": "legal_over_fence_home_run",
+      "allowed": false
+    },
+    {
+      "status": "fair_play_pending",
+      "completed_play": "walk_forced_only",
+      "allowed": false
+    },
+    {
+      "status": "fair_play_pending",
+      "completed_play": "batter_out_runners_hold",
+      "allowed": true
+    },
+    {
+      "status": "fair_play_pending",
+      "completed_play": "legal_over_fence_home_run",
+      "allowed": true
+    }
+  ]
+}

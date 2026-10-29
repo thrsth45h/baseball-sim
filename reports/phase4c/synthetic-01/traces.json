@@ -1,0 +1,4111 @@
+{
+  "ability_calibrated": false,
+  "android_integrated": false,
+  "connected_to_phase3d": false,
+  "connected_to_phase4a": true,
+  "connected_to_phase4b": true,
+  "connected_to_statcast": false,
+  "design": "phase4c-design-v0.1",
+  "official_stats_generated": false,
+  "probability_model": false,
+  "product_adoption": false,
+  "scenarios": [
+    {
+      "actions": [],
+      "final_stage": "between_batters",
+      "final_state": {
+        "count": null,
+        "half": {
+          "bases": [
+            false,
+            false,
+            false
+          ],
+          "outs": 0,
+          "runs": 0
+        }
+      },
+      "id": "empty_between",
+      "initial_state": {
+        "count": null,
+        "half": {
+          "bases": [
+            false,
+            false,
+            false
+          ],
+          "outs": 0,
+          "runs": 0
+        }
+      },
+      "trace": []
+    },
+    {
+      "actions": [
+        {
+          "kind": "begin_batter"
+        }
+      ],
+      "final_stage": "pitching",
+      "final_state": {
+        "count": {
+          "balls": 0,
+          "pitches_seen": 0,
+          "status": "active",
+          "strikes": 0
+        },
+        "half": {
+          "bases": [
+            false,
+            false,
+            false
+          ],
+          "outs": 0,
+          "runs": 0
+        }
+      },
+      "id": "begin_only",
+      "initial_state": {
+        "count": null,
+        "half": {
+          "bases": [
+            false,
+            false,
+            false
+          ],
+          "outs": 0,
+          "runs": 0
+        }
+      },
+      "trace": [
+        {
+          "action": {
+            "kind": "begin_batter"
+          },
+          "after": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 0,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "before": {
+            "count": null,
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "runs_added": 0
+        }
+      ]
+    },
+    {
+      "actions": [
+        {
+          "kind": "begin_batter"
+        },
+        {
+          "event": "called_ball",
+          "kind": "pitch"
+        }
+      ],
+      "final_stage": "pitching",
+      "final_state": {
+        "count": {
+          "balls": 1,
+          "pitches_seen": 1,
+          "status": "active",
+          "strikes": 0
+        },
+        "half": {
+          "bases": [
+            false,
+            false,
+            false
+          ],
+          "outs": 0,
+          "runs": 0
+        }
+      },
+      "id": "one_ball",
+      "initial_state": {
+        "count": null,
+        "half": {
+          "bases": [
+            false,
+            false,
+            false
+          ],
+          "outs": 0,
+          "runs": 0
+        }
+      },
+      "trace": [
+        {
+          "action": {
+            "kind": "begin_batter"
+          },
+          "after": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 0,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "before": {
+            "count": null,
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "runs_added": 0
+        },
+        {
+          "action": {
+            "event": "called_ball",
+            "kind": "pitch"
+          },
+          "after": {
+            "count": {
+              "balls": 1,
+              "pitches_seen": 1,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "before": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 0,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "runs_added": 0
+        }
+      ]
+    },
+    {
+      "actions": [
+        {
+          "kind": "begin_batter"
+        },
+        {
+          "event": "called_ball",
+          "kind": "pitch"
+        },
+        {
+          "event": "called_ball",
+          "kind": "pitch"
+        },
+        {
+          "event": "called_ball",
+          "kind": "pitch"
+        },
+        {
+          "event": "called_ball",
+          "kind": "pitch"
+        }
+      ],
+      "final_stage": "awaiting_resolution",
+      "final_state": {
+        "count": {
+          "balls": 4,
+          "pitches_seen": 4,
+          "status": "walk_awarded",
+          "strikes": 0
+        },
+        "half": {
+          "bases": [
+            false,
+            false,
+            false
+          ],
+          "outs": 0,
+          "runs": 0
+        }
+      },
+      "id": "walk_await",
+      "initial_state": {
+        "count": null,
+        "half": {
+          "bases": [
+            false,
+            false,
+            false
+          ],
+          "outs": 0,
+          "runs": 0
+        }
+      },
+      "trace": [
+        {
+          "action": {
+            "kind": "begin_batter"
+          },
+          "after": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 0,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "before": {
+            "count": null,
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "runs_added": 0
+        },
+        {
+          "action": {
+            "event": "called_ball",
+            "kind": "pitch"
+          },
+          "after": {
+            "count": {
+              "balls": 1,
+              "pitches_seen": 1,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "before": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 0,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "runs_added": 0
+        },
+        {
+          "action": {
+            "event": "called_ball",
+            "kind": "pitch"
+          },
+          "after": {
+            "count": {
+              "balls": 2,
+              "pitches_seen": 2,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "before": {
+            "count": {
+              "balls": 1,
+              "pitches_seen": 1,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "runs_added": 0
+        },
+        {
+          "action": {
+            "event": "called_ball",
+            "kind": "pitch"
+          },
+          "after": {
+            "count": {
+              "balls": 3,
+              "pitches_seen": 3,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "before": {
+            "count": {
+              "balls": 2,
+              "pitches_seen": 2,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "runs_added": 0
+        },
+        {
+          "action": {
+            "event": "called_ball",
+            "kind": "pitch"
+          },
+          "after": {
+            "count": {
+              "balls": 4,
+              "pitches_seen": 4,
+              "status": "walk_awarded",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "before": {
+            "count": {
+              "balls": 3,
+              "pitches_seen": 3,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "runs_added": 0
+        }
+      ]
+    },
+    {
+      "actions": [
+        {
+          "kind": "begin_batter"
+        },
+        {
+          "event": "called_ball",
+          "kind": "pitch"
+        },
+        {
+          "event": "called_ball",
+          "kind": "pitch"
+        },
+        {
+          "event": "called_ball",
+          "kind": "pitch"
+        },
+        {
+          "event": "called_ball",
+          "kind": "pitch"
+        },
+        {
+          "completed_play": "walk_forced_only",
+          "kind": "resolve"
+        }
+      ],
+      "final_stage": "between_batters",
+      "final_state": {
+        "count": null,
+        "half": {
+          "bases": [
+            true,
+            false,
+            false
+          ],
+          "outs": 0,
+          "runs": 0
+        }
+      },
+      "id": "walk_applied",
+      "initial_state": {
+        "count": null,
+        "half": {
+          "bases": [
+            false,
+            false,
+            false
+          ],
+          "outs": 0,
+          "runs": 0
+        }
+      },
+      "trace": [
+        {
+          "action": {
+            "kind": "begin_batter"
+          },
+          "after": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 0,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "before": {
+            "count": null,
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "runs_added": 0
+        },
+        {
+          "action": {
+            "event": "called_ball",
+            "kind": "pitch"
+          },
+          "after": {
+            "count": {
+              "balls": 1,
+              "pitches_seen": 1,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "before": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 0,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "runs_added": 0
+        },
+        {
+          "action": {
+            "event": "called_ball",
+            "kind": "pitch"
+          },
+          "after": {
+            "count": {
+              "balls": 2,
+              "pitches_seen": 2,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "before": {
+            "count": {
+              "balls": 1,
+              "pitches_seen": 1,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "runs_added": 0
+        },
+        {
+          "action": {
+            "event": "called_ball",
+            "kind": "pitch"
+          },
+          "after": {
+            "count": {
+              "balls": 3,
+              "pitches_seen": 3,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "before": {
+            "count": {
+              "balls": 2,
+              "pitches_seen": 2,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "runs_added": 0
+        },
+        {
+          "action": {
+            "event": "called_ball",
+            "kind": "pitch"
+          },
+          "after": {
+            "count": {
+              "balls": 4,
+              "pitches_seen": 4,
+              "status": "walk_awarded",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "before": {
+            "count": {
+              "balls": 3,
+              "pitches_seen": 3,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "runs_added": 0
+        },
+        {
+          "action": {
+            "completed_play": "walk_forced_only",
+            "kind": "resolve"
+          },
+          "after": {
+            "count": null,
+            "half": {
+              "bases": [
+                true,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "before": {
+            "count": {
+              "balls": 4,
+              "pitches_seen": 4,
+              "status": "walk_awarded",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "runs_added": 0
+        }
+      ]
+    },
+    {
+      "actions": [
+        {
+          "kind": "begin_batter"
+        },
+        {
+          "event": "called_ball",
+          "kind": "pitch"
+        },
+        {
+          "event": "called_ball",
+          "kind": "pitch"
+        },
+        {
+          "event": "called_ball",
+          "kind": "pitch"
+        },
+        {
+          "event": "called_ball",
+          "kind": "pitch"
+        },
+        {
+          "completed_play": "walk_forced_only",
+          "kind": "resolve"
+        }
+      ],
+      "final_stage": "between_batters",
+      "final_state": {
+        "count": null,
+        "half": {
+          "bases": [
+            true,
+            true,
+            false
+          ],
+          "outs": 0,
+          "runs": 0
+        }
+      },
+      "id": "second_base_walk",
+      "initial_state": {
+        "count": null,
+        "half": {
+          "bases": [
+            false,
+            true,
+            false
+          ],
+          "outs": 0,
+          "runs": 0
+        }
+      },
+      "trace": [
+        {
+          "action": {
+            "kind": "begin_batter"
+          },
+          "after": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 0,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                false,
+                true,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "before": {
+            "count": null,
+            "half": {
+              "bases": [
+                false,
+                true,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "runs_added": 0
+        },
+        {
+          "action": {
+            "event": "called_ball",
+            "kind": "pitch"
+          },
+          "after": {
+            "count": {
+              "balls": 1,
+              "pitches_seen": 1,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                false,
+                true,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "before": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 0,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                false,
+                true,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "runs_added": 0
+        },
+        {
+          "action": {
+            "event": "called_ball",
+            "kind": "pitch"
+          },
+          "after": {
+            "count": {
+              "balls": 2,
+              "pitches_seen": 2,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                false,
+                true,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "before": {
+            "count": {
+              "balls": 1,
+              "pitches_seen": 1,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                false,
+                true,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "runs_added": 0
+        },
+        {
+          "action": {
+            "event": "called_ball",
+            "kind": "pitch"
+          },
+          "after": {
+            "count": {
+              "balls": 3,
+              "pitches_seen": 3,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                false,
+                true,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "before": {
+            "count": {
+              "balls": 2,
+              "pitches_seen": 2,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                false,
+                true,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "runs_added": 0
+        },
+        {
+          "action": {
+            "event": "called_ball",
+            "kind": "pitch"
+          },
+          "after": {
+            "count": {
+              "balls": 4,
+              "pitches_seen": 4,
+              "status": "walk_awarded",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                false,
+                true,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "before": {
+            "count": {
+              "balls": 3,
+              "pitches_seen": 3,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                false,
+                true,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "runs_added": 0
+        },
+        {
+          "action": {
+            "completed_play": "walk_forced_only",
+            "kind": "resolve"
+          },
+          "after": {
+            "count": null,
+            "half": {
+              "bases": [
+                true,
+                true,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "before": {
+            "count": {
+              "balls": 4,
+              "pitches_seen": 4,
+              "status": "walk_awarded",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                false,
+                true,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "runs_added": 0
+        }
+      ]
+    },
+    {
+      "actions": [
+        {
+          "kind": "begin_batter"
+        },
+        {
+          "event": "called_ball",
+          "kind": "pitch"
+        },
+        {
+          "event": "called_ball",
+          "kind": "pitch"
+        },
+        {
+          "event": "called_ball",
+          "kind": "pitch"
+        },
+        {
+          "event": "called_ball",
+          "kind": "pitch"
+        },
+        {
+          "completed_play": "walk_forced_only",
+          "kind": "resolve"
+        }
+      ],
+      "final_stage": "between_batters",
+      "final_state": {
+        "count": null,
+        "half": {
+          "bases": [
+            true,
+            true,
+            true
+          ],
+          "outs": 2,
+          "runs": 8
+        }
+      },
+      "id": "loaded_walk",
+      "initial_state": {
+        "count": null,
+        "half": {
+          "bases": [
+            true,
+            true,
+            true
+          ],
+          "outs": 2,
+          "runs": 7
+        }
+      },
+      "trace": [
+        {
+          "action": {
+            "kind": "begin_batter"
+          },
+          "after": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 0,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                true,
+                true,
+                true
+              ],
+              "outs": 2,
+              "runs": 7
+            }
+          },
+          "before": {
+            "count": null,
+            "half": {
+              "bases": [
+                true,
+                true,
+                true
+              ],
+              "outs": 2,
+              "runs": 7
+            }
+          },
+          "runs_added": 0
+        },
+        {
+          "action": {
+            "event": "called_ball",
+            "kind": "pitch"
+          },
+          "after": {
+            "count": {
+              "balls": 1,
+              "pitches_seen": 1,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                true,
+                true,
+                true
+              ],
+              "outs": 2,
+              "runs": 7
+            }
+          },
+          "before": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 0,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                true,
+                true,
+                true
+              ],
+              "outs": 2,
+              "runs": 7
+            }
+          },
+          "runs_added": 0
+        },
+        {
+          "action": {
+            "event": "called_ball",
+            "kind": "pitch"
+          },
+          "after": {
+            "count": {
+              "balls": 2,
+              "pitches_seen": 2,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                true,
+                true,
+                true
+              ],
+              "outs": 2,
+              "runs": 7
+            }
+          },
+          "before": {
+            "count": {
+              "balls": 1,
+              "pitches_seen": 1,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                true,
+                true,
+                true
+              ],
+              "outs": 2,
+              "runs": 7
+            }
+          },
+          "runs_added": 0
+        },
+        {
+          "action": {
+            "event": "called_ball",
+            "kind": "pitch"
+          },
+          "after": {
+            "count": {
+              "balls": 3,
+              "pitches_seen": 3,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                true,
+                true,
+                true
+              ],
+              "outs": 2,
+              "runs": 7
+            }
+          },
+          "before": {
+            "count": {
+              "balls": 2,
+              "pitches_seen": 2,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                true,
+                true,
+                true
+              ],
+              "outs": 2,
+              "runs": 7
+            }
+          },
+          "runs_added": 0
+        },
+        {
+          "action": {
+            "event": "called_ball",
+            "kind": "pitch"
+          },
+          "after": {
+            "count": {
+              "balls": 4,
+              "pitches_seen": 4,
+              "status": "walk_awarded",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                true,
+                true,
+                true
+              ],
+              "outs": 2,
+              "runs": 7
+            }
+          },
+          "before": {
+            "count": {
+              "balls": 3,
+              "pitches_seen": 3,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                true,
+                true,
+                true
+              ],
+              "outs": 2,
+              "runs": 7
+            }
+          },
+          "runs_added": 0
+        },
+        {
+          "action": {
+            "completed_play": "walk_forced_only",
+            "kind": "resolve"
+          },
+          "after": {
+            "count": null,
+            "half": {
+              "bases": [
+                true,
+                true,
+                true
+              ],
+              "outs": 2,
+              "runs": 8
+            }
+          },
+          "before": {
+            "count": {
+              "balls": 4,
+              "pitches_seen": 4,
+              "status": "walk_awarded",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                true,
+                true,
+                true
+              ],
+              "outs": 2,
+              "runs": 7
+            }
+          },
+          "runs_added": 1
+        }
+      ]
+    },
+    {
+      "actions": [
+        {
+          "kind": "begin_batter"
+        },
+        {
+          "event": "called_strike_caught",
+          "kind": "pitch"
+        },
+        {
+          "event": "called_strike_caught",
+          "kind": "pitch"
+        },
+        {
+          "event": "called_strike_caught",
+          "kind": "pitch"
+        }
+      ],
+      "final_stage": "awaiting_resolution",
+      "final_state": {
+        "count": {
+          "balls": 0,
+          "pitches_seen": 3,
+          "status": "strikeout_out",
+          "strikes": 3
+        },
+        "half": {
+          "bases": [
+            false,
+            false,
+            false
+          ],
+          "outs": 0,
+          "runs": 0
+        }
+      },
+      "id": "strikeout_await",
+      "initial_state": {
+        "count": null,
+        "half": {
+          "bases": [
+            false,
+            false,
+            false
+          ],
+          "outs": 0,
+          "runs": 0
+        }
+      },
+      "trace": [
+        {
+          "action": {
+            "kind": "begin_batter"
+          },
+          "after": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 0,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "before": {
+            "count": null,
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "runs_added": 0
+        },
+        {
+          "action": {
+            "event": "called_strike_caught",
+            "kind": "pitch"
+          },
+          "after": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 1,
+              "status": "active",
+              "strikes": 1
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "before": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 0,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "runs_added": 0
+        },
+        {
+          "action": {
+            "event": "called_strike_caught",
+            "kind": "pitch"
+          },
+          "after": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 2,
+              "status": "active",
+              "strikes": 2
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "before": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 1,
+              "status": "active",
+              "strikes": 1
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "runs_added": 0
+        },
+        {
+          "action": {
+            "event": "called_strike_caught",
+            "kind": "pitch"
+          },
+          "after": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 3,
+              "status": "strikeout_out",
+              "strikes": 3
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "before": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 2,
+              "status": "active",
+              "strikes": 2
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "runs_added": 0
+        }
+      ]
+    },
+    {
+      "actions": [
+        {
+          "kind": "begin_batter"
+        },
+        {
+          "event": "swinging_strike_caught",
+          "kind": "pitch"
+        },
+        {
+          "event": "swinging_strike_caught",
+          "kind": "pitch"
+        },
+        {
+          "event": "swinging_strike_caught",
+          "kind": "pitch"
+        },
+        {
+          "completed_play": "batter_out_runners_hold",
+          "kind": "resolve"
+        }
+      ],
+      "final_stage": "between_batters",
+      "final_state": {
+        "count": null,
+        "half": {
+          "bases": [
+            true,
+            false,
+            true
+          ],
+          "outs": 1,
+          "runs": 2
+        }
+      },
+      "id": "strikeout_hold",
+      "initial_state": {
+        "count": null,
+        "half": {
+          "bases": [
+            true,
+            false,
+            true
+          ],
+          "outs": 0,
+          "runs": 2
+        }
+      },
+      "trace": [
+        {
+          "action": {
+            "kind": "begin_batter"
+          },
+          "after": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 0,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                true,
+                false,
+                true
+              ],
+              "outs": 0,
+              "runs": 2
+            }
+          },
+          "before": {
+            "count": null,
+            "half": {
+              "bases": [
+                true,
+                false,
+                true
+              ],
+              "outs": 0,
+              "runs": 2
+            }
+          },
+          "runs_added": 0
+        },
+        {
+          "action": {
+            "event": "swinging_strike_caught",
+            "kind": "pitch"
+          },
+          "after": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 1,
+              "status": "active",
+              "strikes": 1
+            },
+            "half": {
+              "bases": [
+                true,
+                false,
+                true
+              ],
+              "outs": 0,
+              "runs": 2
+            }
+          },
+          "before": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 0,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                true,
+                false,
+                true
+              ],
+              "outs": 0,
+              "runs": 2
+            }
+          },
+          "runs_added": 0
+        },
+        {
+          "action": {
+            "event": "swinging_strike_caught",
+            "kind": "pitch"
+          },
+          "after": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 2,
+              "status": "active",
+              "strikes": 2
+            },
+            "half": {
+              "bases": [
+                true,
+                false,
+                true
+              ],
+              "outs": 0,
+              "runs": 2
+            }
+          },
+          "before": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 1,
+              "status": "active",
+              "strikes": 1
+            },
+            "half": {
+              "bases": [
+                true,
+                false,
+                true
+              ],
+              "outs": 0,
+              "runs": 2
+            }
+          },
+          "runs_added": 0
+        },
+        {
+          "action": {
+            "event": "swinging_strike_caught",
+            "kind": "pitch"
+          },
+          "after": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 3,
+              "status": "strikeout_out",
+              "strikes": 3
+            },
+            "half": {
+              "bases": [
+                true,
+                false,
+                true
+              ],
+              "outs": 0,
+              "runs": 2
+            }
+          },
+          "before": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 2,
+              "status": "active",
+              "strikes": 2
+            },
+            "half": {
+              "bases": [
+                true,
+                false,
+                true
+              ],
+              "outs": 0,
+              "runs": 2
+            }
+          },
+          "runs_added": 0
+        },
+        {
+          "action": {
+            "completed_play": "batter_out_runners_hold",
+            "kind": "resolve"
+          },
+          "after": {
+            "count": null,
+            "half": {
+              "bases": [
+                true,
+                false,
+                true
+              ],
+              "outs": 1,
+              "runs": 2
+            }
+          },
+          "before": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 3,
+              "status": "strikeout_out",
+              "strikes": 3
+            },
+            "half": {
+              "bases": [
+                true,
+                false,
+                true
+              ],
+              "outs": 0,
+              "runs": 2
+            }
+          },
+          "runs_added": 0
+        }
+      ]
+    },
+    {
+      "actions": [
+        {
+          "kind": "begin_batter"
+        },
+        {
+          "event": "called_strike_caught",
+          "kind": "pitch"
+        },
+        {
+          "event": "called_strike_caught",
+          "kind": "pitch"
+        },
+        {
+          "event": "called_strike_caught",
+          "kind": "pitch"
+        },
+        {
+          "completed_play": "batter_out_runners_hold",
+          "kind": "resolve"
+        }
+      ],
+      "final_stage": "half_complete",
+      "final_state": {
+        "count": null,
+        "half": {
+          "bases": [
+            true,
+            true,
+            true
+          ],
+          "outs": 3,
+          "runs": 7
+        }
+      },
+      "id": "third_out_strikeout",
+      "initial_state": {
+        "count": null,
+        "half": {
+          "bases": [
+            true,
+            true,
+            true
+          ],
+          "outs": 2,
+          "runs": 7
+        }
+      },
+      "trace": [
+        {
+          "action": {
+            "kind": "begin_batter"
+          },
+          "after": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 0,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                true,
+                true,
+                true
+              ],
+              "outs": 2,
+              "runs": 7
+            }
+          },
+          "before": {
+            "count": null,
+            "half": {
+              "bases": [
+                true,
+                true,
+                true
+              ],
+              "outs": 2,
+              "runs": 7
+            }
+          },
+          "runs_added": 0
+        },
+        {
+          "action": {
+            "event": "called_strike_caught",
+            "kind": "pitch"
+          },
+          "after": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 1,
+              "status": "active",
+              "strikes": 1
+            },
+            "half": {
+              "bases": [
+                true,
+                true,
+                true
+              ],
+              "outs": 2,
+              "runs": 7
+            }
+          },
+          "before": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 0,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                true,
+                true,
+                true
+              ],
+              "outs": 2,
+              "runs": 7
+            }
+          },
+          "runs_added": 0
+        },
+        {
+          "action": {
+            "event": "called_strike_caught",
+            "kind": "pitch"
+          },
+          "after": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 2,
+              "status": "active",
+              "strikes": 2
+            },
+            "half": {
+              "bases": [
+                true,
+                true,
+                true
+              ],
+              "outs": 2,
+              "runs": 7
+            }
+          },
+          "before": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 1,
+              "status": "active",
+              "strikes": 1
+            },
+            "half": {
+              "bases": [
+                true,
+                true,
+                true
+              ],
+              "outs": 2,
+              "runs": 7
+            }
+          },
+          "runs_added": 0
+        },
+        {
+          "action": {
+            "event": "called_strike_caught",
+            "kind": "pitch"
+          },
+          "after": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 3,
+              "status": "strikeout_out",
+              "strikes": 3
+            },
+            "half": {
+              "bases": [
+                true,
+                true,
+                true
+              ],
+              "outs": 2,
+              "runs": 7
+            }
+          },
+          "before": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 2,
+              "status": "active",
+              "strikes": 2
+            },
+            "half": {
+              "bases": [
+                true,
+                true,
+                true
+              ],
+              "outs": 2,
+              "runs": 7
+            }
+          },
+          "runs_added": 0
+        },
+        {
+          "action": {
+            "completed_play": "batter_out_runners_hold",
+            "kind": "resolve"
+          },
+          "after": {
+            "count": null,
+            "half": {
+              "bases": [
+                true,
+                true,
+                true
+              ],
+              "outs": 3,
+              "runs": 7
+            }
+          },
+          "before": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 3,
+              "status": "strikeout_out",
+              "strikes": 3
+            },
+            "half": {
+              "bases": [
+                true,
+                true,
+                true
+              ],
+              "outs": 2,
+              "runs": 7
+            }
+          },
+          "runs_added": 0
+        }
+      ]
+    },
+    {
+      "actions": [
+        {
+          "kind": "begin_batter"
+        },
+        {
+          "event": "foul_fly_caught",
+          "kind": "pitch"
+        },
+        {
+          "completed_play": "batter_out_runners_hold",
+          "kind": "resolve"
+        }
+      ],
+      "final_stage": "between_batters",
+      "final_state": {
+        "count": null,
+        "half": {
+          "bases": [
+            false,
+            false,
+            true
+          ],
+          "outs": 2,
+          "runs": 0
+        }
+      },
+      "id": "caught_foul_out",
+      "initial_state": {
+        "count": null,
+        "half": {
+          "bases": [
+            false,
+            false,
+            true
+          ],
+          "outs": 1,
+          "runs": 0
+        }
+      },
+      "trace": [
+        {
+          "action": {
+            "kind": "begin_batter"
+          },
+          "after": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 0,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                true
+              ],
+              "outs": 1,
+              "runs": 0
+            }
+          },
+          "before": {
+            "count": null,
+            "half": {
+              "bases": [
+                false,
+                false,
+                true
+              ],
+              "outs": 1,
+              "runs": 0
+            }
+          },
+          "runs_added": 0
+        },
+        {
+          "action": {
+            "event": "foul_fly_caught",
+            "kind": "pitch"
+          },
+          "after": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 1,
+              "status": "caught_foul_out",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                true
+              ],
+              "outs": 1,
+              "runs": 0
+            }
+          },
+          "before": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 0,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                true
+              ],
+              "outs": 1,
+              "runs": 0
+            }
+          },
+          "runs_added": 0
+        },
+        {
+          "action": {
+            "completed_play": "batter_out_runners_hold",
+            "kind": "resolve"
+          },
+          "after": {
+            "count": null,
+            "half": {
+              "bases": [
+                false,
+                false,
+                true
+              ],
+              "outs": 2,
+              "runs": 0
+            }
+          },
+          "before": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 1,
+              "status": "caught_foul_out",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                true
+              ],
+              "outs": 1,
+              "runs": 0
+            }
+          },
+          "runs_added": 0
+        }
+      ]
+    },
+    {
+      "actions": [
+        {
+          "kind": "begin_batter"
+        },
+        {
+          "event": "fair_ball_handoff",
+          "kind": "pitch"
+        }
+      ],
+      "final_stage": "awaiting_resolution",
+      "final_state": {
+        "count": {
+          "balls": 0,
+          "pitches_seen": 1,
+          "status": "fair_play_pending",
+          "strikes": 0
+        },
+        "half": {
+          "bases": [
+            false,
+            true,
+            false
+          ],
+          "outs": 0,
+          "runs": 7
+        }
+      },
+      "id": "fair_await",
+      "initial_state": {
+        "count": null,
+        "half": {
+          "bases": [
+            false,
+            true,
+            false
+          ],
+          "outs": 0,
+          "runs": 7
+        }
+      },
+      "trace": [
+        {
+          "action": {
+            "kind": "begin_batter"
+          },
+          "after": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 0,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                false,
+                true,
+                false
+              ],
+              "outs": 0,
+              "runs": 7
+            }
+          },
+          "before": {
+            "count": null,
+            "half": {
+              "bases": [
+                false,
+                true,
+                false
+              ],
+              "outs": 0,
+              "runs": 7
+            }
+          },
+          "runs_added": 0
+        },
+        {
+          "action": {
+            "event": "fair_ball_handoff",
+            "kind": "pitch"
+          },
+          "after": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 1,
+              "status": "fair_play_pending",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                false,
+                true,
+                false
+              ],
+              "outs": 0,
+              "runs": 7
+            }
+          },
+          "before": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 0,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                false,
+                true,
+                false
+              ],
+              "outs": 0,
+              "runs": 7
+            }
+          },
+          "runs_added": 0
+        }
+      ]
+    },
+    {
+      "actions": [
+        {
+          "kind": "begin_batter"
+        },
+        {
+          "event": "fair_ball_handoff",
+          "kind": "pitch"
+        },
+        {
+          "completed_play": "batter_out_runners_hold",
+          "kind": "resolve"
+        }
+      ],
+      "final_stage": "between_batters",
+      "final_state": {
+        "count": null,
+        "half": {
+          "bases": [
+            true,
+            false,
+            true
+          ],
+          "outs": 1,
+          "runs": 0
+        }
+      },
+      "id": "fair_out",
+      "initial_state": {
+        "count": null,
+        "half": {
+          "bases": [
+            true,
+            false,
+            true
+          ],
+          "outs": 0,
+          "runs": 0
+        }
+      },
+      "trace": [
+        {
+          "action": {
+            "kind": "begin_batter"
+          },
+          "after": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 0,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                true,
+                false,
+                true
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "before": {
+            "count": null,
+            "half": {
+              "bases": [
+                true,
+                false,
+                true
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "runs_added": 0
+        },
+        {
+          "action": {
+            "event": "fair_ball_handoff",
+            "kind": "pitch"
+          },
+          "after": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 1,
+              "status": "fair_play_pending",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                true,
+                false,
+                true
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "before": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 0,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                true,
+                false,
+                true
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "runs_added": 0
+        },
+        {
+          "action": {
+            "completed_play": "batter_out_runners_hold",
+            "kind": "resolve"
+          },
+          "after": {
+            "count": null,
+            "half": {
+              "bases": [
+                true,
+                false,
+                true
+              ],
+              "outs": 1,
+              "runs": 0
+            }
+          },
+          "before": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 1,
+              "status": "fair_play_pending",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                true,
+                false,
+                true
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "runs_added": 0
+        }
+      ]
+    },
+    {
+      "actions": [
+        {
+          "kind": "begin_batter"
+        },
+        {
+          "event": "fair_ball_handoff",
+          "kind": "pitch"
+        },
+        {
+          "completed_play": "legal_over_fence_home_run",
+          "kind": "resolve"
+        }
+      ],
+      "final_stage": "between_batters",
+      "final_state": {
+        "count": null,
+        "half": {
+          "bases": [
+            false,
+            false,
+            false
+          ],
+          "outs": 1,
+          "runs": 11
+        }
+      },
+      "id": "grand_slam",
+      "initial_state": {
+        "count": null,
+        "half": {
+          "bases": [
+            true,
+            true,
+            true
+          ],
+          "outs": 1,
+          "runs": 7
+        }
+      },
+      "trace": [
+        {
+          "action": {
+            "kind": "begin_batter"
+          },
+          "after": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 0,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                true,
+                true,
+                true
+              ],
+              "outs": 1,
+              "runs": 7
+            }
+          },
+          "before": {
+            "count": null,
+            "half": {
+              "bases": [
+                true,
+                true,
+                true
+              ],
+              "outs": 1,
+              "runs": 7
+            }
+          },
+          "runs_added": 0
+        },
+        {
+          "action": {
+            "event": "fair_ball_handoff",
+            "kind": "pitch"
+          },
+          "after": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 1,
+              "status": "fair_play_pending",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                true,
+                true,
+                true
+              ],
+              "outs": 1,
+              "runs": 7
+            }
+          },
+          "before": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 0,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                true,
+                true,
+                true
+              ],
+              "outs": 1,
+              "runs": 7
+            }
+          },
+          "runs_added": 0
+        },
+        {
+          "action": {
+            "completed_play": "legal_over_fence_home_run",
+            "kind": "resolve"
+          },
+          "after": {
+            "count": null,
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 1,
+              "runs": 11
+            }
+          },
+          "before": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 1,
+              "status": "fair_play_pending",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                true,
+                true,
+                true
+              ],
+              "outs": 1,
+              "runs": 7
+            }
+          },
+          "runs_added": 4
+        }
+      ]
+    },
+    {
+      "actions": [
+        {
+          "kind": "begin_batter"
+        },
+        {
+          "event": "called_ball",
+          "kind": "pitch"
+        },
+        {
+          "event": "called_ball",
+          "kind": "pitch"
+        },
+        {
+          "event": "called_ball",
+          "kind": "pitch"
+        },
+        {
+          "event": "called_ball",
+          "kind": "pitch"
+        },
+        {
+          "completed_play": "walk_forced_only",
+          "kind": "resolve"
+        },
+        {
+          "kind": "begin_batter"
+        }
+      ],
+      "final_stage": "pitching",
+      "final_state": {
+        "count": {
+          "balls": 0,
+          "pitches_seen": 0,
+          "status": "active",
+          "strikes": 0
+        },
+        "half": {
+          "bases": [
+            true,
+            false,
+            false
+          ],
+          "outs": 0,
+          "runs": 0
+        }
+      },
+      "id": "next_batter",
+      "initial_state": {
+        "count": null,
+        "half": {
+          "bases": [
+            false,
+            false,
+            false
+          ],
+          "outs": 0,
+          "runs": 0
+        }
+      },
+      "trace": [
+        {
+          "action": {
+            "kind": "begin_batter"
+          },
+          "after": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 0,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "before": {
+            "count": null,
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "runs_added": 0
+        },
+        {
+          "action": {
+            "event": "called_ball",
+            "kind": "pitch"
+          },
+          "after": {
+            "count": {
+              "balls": 1,
+              "pitches_seen": 1,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "before": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 0,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "runs_added": 0
+        },
+        {
+          "action": {
+            "event": "called_ball",
+            "kind": "pitch"
+          },
+          "after": {
+            "count": {
+              "balls": 2,
+              "pitches_seen": 2,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "before": {
+            "count": {
+              "balls": 1,
+              "pitches_seen": 1,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "runs_added": 0
+        },
+        {
+          "action": {
+            "event": "called_ball",
+            "kind": "pitch"
+          },
+          "after": {
+            "count": {
+              "balls": 3,
+              "pitches_seen": 3,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "before": {
+            "count": {
+              "balls": 2,
+              "pitches_seen": 2,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "runs_added": 0
+        },
+        {
+          "action": {
+            "event": "called_ball",
+            "kind": "pitch"
+          },
+          "after": {
+            "count": {
+              "balls": 4,
+              "pitches_seen": 4,
+              "status": "walk_awarded",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "before": {
+            "count": {
+              "balls": 3,
+              "pitches_seen": 3,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "runs_added": 0
+        },
+        {
+          "action": {
+            "completed_play": "walk_forced_only",
+            "kind": "resolve"
+          },
+          "after": {
+            "count": null,
+            "half": {
+              "bases": [
+                true,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "before": {
+            "count": {
+              "balls": 4,
+              "pitches_seen": 4,
+              "status": "walk_awarded",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "runs_added": 0
+        },
+        {
+          "action": {
+            "kind": "begin_batter"
+          },
+          "after": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 0,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                true,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "before": {
+            "count": null,
+            "half": {
+              "bases": [
+                true,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "runs_added": 0
+        }
+      ]
+    },
+    {
+      "actions": [
+        {
+          "kind": "begin_batter"
+        },
+        {
+          "event": "called_strike_caught",
+          "kind": "pitch"
+        },
+        {
+          "event": "called_strike_caught",
+          "kind": "pitch"
+        },
+        {
+          "event": "called_strike_caught",
+          "kind": "pitch"
+        },
+        {
+          "completed_play": "batter_out_runners_hold",
+          "kind": "resolve"
+        },
+        {
+          "kind": "begin_batter"
+        },
+        {
+          "event": "swinging_strike_caught",
+          "kind": "pitch"
+        },
+        {
+          "event": "swinging_strike_caught",
+          "kind": "pitch"
+        },
+        {
+          "event": "swinging_strike_caught",
+          "kind": "pitch"
+        },
+        {
+          "completed_play": "batter_out_runners_hold",
+          "kind": "resolve"
+        },
+        {
+          "kind": "begin_batter"
+        },
+        {
+          "event": "foul_fly_caught",
+          "kind": "pitch"
+        },
+        {
+          "completed_play": "batter_out_runners_hold",
+          "kind": "resolve"
+        }
+      ],
+      "final_stage": "half_complete",
+      "final_state": {
+        "count": null,
+        "half": {
+          "bases": [
+            false,
+            false,
+            false
+          ],
+          "outs": 3,
+          "runs": 0
+        }
+      },
+      "id": "three_retired",
+      "initial_state": {
+        "count": null,
+        "half": {
+          "bases": [
+            false,
+            false,
+            false
+          ],
+          "outs": 0,
+          "runs": 0
+        }
+      },
+      "trace": [
+        {
+          "action": {
+            "kind": "begin_batter"
+          },
+          "after": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 0,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "before": {
+            "count": null,
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "runs_added": 0
+        },
+        {
+          "action": {
+            "event": "called_strike_caught",
+            "kind": "pitch"
+          },
+          "after": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 1,
+              "status": "active",
+              "strikes": 1
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "before": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 0,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "runs_added": 0
+        },
+        {
+          "action": {
+            "event": "called_strike_caught",
+            "kind": "pitch"
+          },
+          "after": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 2,
+              "status": "active",
+              "strikes": 2
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "before": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 1,
+              "status": "active",
+              "strikes": 1
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "runs_added": 0
+        },
+        {
+          "action": {
+            "event": "called_strike_caught",
+            "kind": "pitch"
+          },
+          "after": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 3,
+              "status": "strikeout_out",
+              "strikes": 3
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "before": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 2,
+              "status": "active",
+              "strikes": 2
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "runs_added": 0
+        },
+        {
+          "action": {
+            "completed_play": "batter_out_runners_hold",
+            "kind": "resolve"
+          },
+          "after": {
+            "count": null,
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 1,
+              "runs": 0
+            }
+          },
+          "before": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 3,
+              "status": "strikeout_out",
+              "strikes": 3
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "runs_added": 0
+        },
+        {
+          "action": {
+            "kind": "begin_batter"
+          },
+          "after": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 0,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 1,
+              "runs": 0
+            }
+          },
+          "before": {
+            "count": null,
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 1,
+              "runs": 0
+            }
+          },
+          "runs_added": 0
+        },
+        {
+          "action": {
+            "event": "swinging_strike_caught",
+            "kind": "pitch"
+          },
+          "after": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 1,
+              "status": "active",
+              "strikes": 1
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 1,
+              "runs": 0
+            }
+          },
+          "before": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 0,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 1,
+              "runs": 0
+            }
+          },
+          "runs_added": 0
+        },
+        {
+          "action": {
+            "event": "swinging_strike_caught",
+            "kind": "pitch"
+          },
+          "after": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 2,
+              "status": "active",
+              "strikes": 2
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 1,
+              "runs": 0
+            }
+          },
+          "before": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 1,
+              "status": "active",
+              "strikes": 1
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 1,
+              "runs": 0
+            }
+          },
+          "runs_added": 0
+        },
+        {
+          "action": {
+            "event": "swinging_strike_caught",
+            "kind": "pitch"
+          },
+          "after": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 3,
+              "status": "strikeout_out",
+              "strikes": 3
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 1,
+              "runs": 0
+            }
+          },
+          "before": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 2,
+              "status": "active",
+              "strikes": 2
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 1,
+              "runs": 0
+            }
+          },
+          "runs_added": 0
+        },
+        {
+          "action": {
+            "completed_play": "batter_out_runners_hold",
+            "kind": "resolve"
+          },
+          "after": {
+            "count": null,
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 2,
+              "runs": 0
+            }
+          },
+          "before": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 3,
+              "status": "strikeout_out",
+              "strikes": 3
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 1,
+              "runs": 0
+            }
+          },
+          "runs_added": 0
+        },
+        {
+          "action": {
+            "kind": "begin_batter"
+          },
+          "after": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 0,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 2,
+              "runs": 0
+            }
+          },
+          "before": {
+            "count": null,
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 2,
+              "runs": 0
+            }
+          },
+          "runs_added": 0
+        },
+        {
+          "action": {
+            "event": "foul_fly_caught",
+            "kind": "pitch"
+          },
+          "after": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 1,
+              "status": "caught_foul_out",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 2,
+              "runs": 0
+            }
+          },
+          "before": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 0,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 2,
+              "runs": 0
+            }
+          },
+          "runs_added": 0
+        },
+        {
+          "action": {
+            "completed_play": "batter_out_runners_hold",
+            "kind": "resolve"
+          },
+          "after": {
+            "count": null,
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 3,
+              "runs": 0
+            }
+          },
+          "before": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 1,
+              "status": "caught_foul_out",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 2,
+              "runs": 0
+            }
+          },
+          "runs_added": 0
+        }
+      ]
+    },
+    {
+      "actions": [
+        {
+          "kind": "begin_batter"
+        },
+        {
+          "event": "called_strike_caught",
+          "kind": "pitch"
+        },
+        {
+          "event": "swinging_strike_caught",
+          "kind": "pitch"
+        },
+        {
+          "event": "ordinary_foul_uncaught",
+          "kind": "pitch"
+        },
+        {
+          "event": "ordinary_foul_uncaught",
+          "kind": "pitch"
+        },
+        {
+          "event": "ordinary_foul_uncaught",
+          "kind": "pitch"
+        }
+      ],
+      "final_stage": "pitching",
+      "final_state": {
+        "count": {
+          "balls": 0,
+          "pitches_seen": 5,
+          "status": "active",
+          "strikes": 2
+        },
+        "half": {
+          "bases": [
+            false,
+            false,
+            false
+          ],
+          "outs": 0,
+          "runs": 0
+        }
+      },
+      "id": "ordinary_fouls",
+      "initial_state": {
+        "count": null,
+        "half": {
+          "bases": [
+            false,
+            false,
+            false
+          ],
+          "outs": 0,
+          "runs": 0
+        }
+      },
+      "trace": [
+        {
+          "action": {
+            "kind": "begin_batter"
+          },
+          "after": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 0,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "before": {
+            "count": null,
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "runs_added": 0
+        },
+        {
+          "action": {
+            "event": "called_strike_caught",
+            "kind": "pitch"
+          },
+          "after": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 1,
+              "status": "active",
+              "strikes": 1
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "before": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 0,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "runs_added": 0
+        },
+        {
+          "action": {
+            "event": "swinging_strike_caught",
+            "kind": "pitch"
+          },
+          "after": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 2,
+              "status": "active",
+              "strikes": 2
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "before": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 1,
+              "status": "active",
+              "strikes": 1
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "runs_added": 0
+        },
+        {
+          "action": {
+            "event": "ordinary_foul_uncaught",
+            "kind": "pitch"
+          },
+          "after": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 3,
+              "status": "active",
+              "strikes": 2
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "before": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 2,
+              "status": "active",
+              "strikes": 2
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "runs_added": 0
+        },
+        {
+          "action": {
+            "event": "ordinary_foul_uncaught",
+            "kind": "pitch"
+          },
+          "after": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 4,
+              "status": "active",
+              "strikes": 2
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "before": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 3,
+              "status": "active",
+              "strikes": 2
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "runs_added": 0
+        },
+        {
+          "action": {
+            "event": "ordinary_foul_uncaught",
+            "kind": "pitch"
+          },
+          "after": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 5,
+              "status": "active",
+              "strikes": 2
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "before": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 4,
+              "status": "active",
+              "strikes": 2
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "runs_added": 0
+        }
+      ]
+    },
+    {
+      "actions": [
+        {
+          "kind": "begin_batter"
+        },
+        {
+          "event": "bunt_foul_uncaught",
+          "kind": "pitch"
+        },
+        {
+          "event": "bunt_foul_uncaught",
+          "kind": "pitch"
+        },
+        {
+          "event": "bunt_foul_uncaught",
+          "kind": "pitch"
+        },
+        {
+          "completed_play": "batter_out_runners_hold",
+          "kind": "resolve"
+        }
+      ],
+      "final_stage": "between_batters",
+      "final_state": {
+        "count": null,
+        "half": {
+          "bases": [
+            false,
+            false,
+            false
+          ],
+          "outs": 1,
+          "runs": 0
+        }
+      },
+      "id": "bunt_strikeout",
+      "initial_state": {
+        "count": null,
+        "half": {
+          "bases": [
+            false,
+            false,
+            false
+          ],
+          "outs": 0,
+          "runs": 0
+        }
+      },
+      "trace": [
+        {
+          "action": {
+            "kind": "begin_batter"
+          },
+          "after": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 0,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "before": {
+            "count": null,
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "runs_added": 0
+        },
+        {
+          "action": {
+            "event": "bunt_foul_uncaught",
+            "kind": "pitch"
+          },
+          "after": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 1,
+              "status": "active",
+              "strikes": 1
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "before": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 0,
+              "status": "active",
+              "strikes": 0
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "runs_added": 0
+        },
+        {
+          "action": {
+            "event": "bunt_foul_uncaught",
+            "kind": "pitch"
+          },
+          "after": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 2,
+              "status": "active",
+              "strikes": 2
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "before": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 1,
+              "status": "active",
+              "strikes": 1
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "runs_added": 0
+        },
+        {
+          "action": {
+            "event": "bunt_foul_uncaught",
+            "kind": "pitch"
+          },
+          "after": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 3,
+              "status": "strikeout_out",
+              "strikes": 3
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "before": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 2,
+              "status": "active",
+              "strikes": 2
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "runs_added": 0
+        },
+        {
+          "action": {
+            "completed_play": "batter_out_runners_hold",
+            "kind": "resolve"
+          },
+          "after": {
+            "count": null,
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 1,
+              "runs": 0
+            }
+          },
+          "before": {
+            "count": {
+              "balls": 0,
+              "pitches_seen": 3,
+              "status": "strikeout_out",
+              "strikes": 3
+            },
+            "half": {
+              "bases": [
+                false,
+                false,
+                false
+              ],
+              "outs": 0,
+              "runs": 0
+            }
+          },
+          "runs_added": 0
+        }
+      ]
+    }
+  ],
+  "schema": "phase4c-reference-v0.1",
+  "scope": "partial_pitch_half_orchestration",
+  "source_kind": "synthetic_fixture"
+}
