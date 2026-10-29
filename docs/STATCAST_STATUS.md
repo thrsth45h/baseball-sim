@@ -164,3 +164,27 @@ EV≥120は2023学習1件、2024が6件、2025が3件。2024尾部の条件付�
 - 最大RSS約328.3MiB、初回fit/evaluate/sampleは約1.50/5.07/0.10秒。研究環境の測定で、Android性能ではない。合成smokeは別記録で実学習と混同しない。
 
 [研究報告・再現手順](https://github.com/thrsth45h/statcast-swing-model-v1/blob/35c9fe6fbe2b01c02b7253ed336526e6960cd4fe/reports/phase3b/README.md)、[worker検証記録](https://github.com/thrsth45h/statcast-swing-model-v1/blob/35c9fe6fbe2b01c02b7253ed336526e6960cd4fe/reports/phase3b/VALIDATION.md)、[責任者レビュー](PHASE3B_REVIEW.md)を参照。数値を返せる限定記録集合の研究生成器であり、全接触・能力1〜20・方向・物理フェア・守備・走塁・安打・得点・ゲーム採用は未達。次の実装範囲は別の設計相談とする。
+
+## Phase 3c合成軌道・地面到達・移動距離余裕（研究完了・mainへマージ済み）
+
+2026-10-29、本人が[設計PR #15](https://github.com/thrsth45h/baseball-sim/pull/15)の範囲・仮設定を承認。ゲームmain `ab7cce68673d2a55f96424107d7d5e2597e32571`へ設計をマージしてworkerへ実装を委任し、責任者の独立レビュー・報告訂正確認後に[研究PR #9](https://github.com/thrsth45h/statcast-swing-model-v1/pull/9)をmain `015b9fdcd18565270b8ce888bd703aead8c63864`へ統合した。D040は合成研究範囲のみCONFIRMED、D029はOPEN。
+
+固定12人工例から、方向・速度・高さ→無空気の軌道→最初の地面到達→守備者1人の移動距離予算と余裕を計算する。投球/スイング・実データ/旧3bには接続しない。地面イベントは解析式、各33点の軌道は表示用であり、離散点から判定しない。分類は距離差の正負と境界だけで、捕球/公式安打・アウト・フェアは判定しない。人工例の割合も捕球率やリーグ成績ではない。
+
+- 全497テスト（既存439＋新58）と最終headのPython3.11/3.12 PR CI成功。責任者も別worktreeで全497テスト、run、情報アクセス監視下のrunを確認した。
+- workerの新実装/結果を参照しない独立の100桁Decimal・三角級数・地面正根の二分法で期待値を作り、照合前に固定。12例/396表示点・距離予算・分類など、1,716数値を含む1,786項目が一致した。最大絶対差は時刻3.56e-15秒、位置/距離予算3.42e-13m、初速7.11e-15m/s未満。これは計算の照合誤差であり、実測精度ではない。
+- 追加16不正入力probeが拒否され、監視した新runで旧データ/モデル読取り試行0、RNG試行0を確認。4主要成果物は責任者の再実行と提出版がバイト一致。
+- 公開13ファイルのGit blob、新17/旧211hashをworking/Git双方で照合。旧338パス中337不変で、旧ファイル変更はroot READMEの案内2行だけ。旧コード・結果・推論契約・凍結索引を保持した。
+- 各run約0.292秒、最大RSS約30.24MiB。研究環境の測定で、Android性能ではない。
+
+レビューでhelperの読取り否定フラグの不正確さを指摘し、workerが訂正した。役割の違いは以下のとおり。
+
+| 役割 | 読取りと用途 |
+|---|---|
+| 新3c run | 固定人工入力と実装同一性だけ。旧データ/モデルを計算に使わず、RNGなし |
+| 既存の回帰テスト | 従来のfixtureや旧成果物を使う検証を維持 |
+| 公開検証helper | raw入力は開かないが、旧model.json等の成果物バイトをhash保護のために読む。旧モデルの推論を3c計算へ接続しない |
+
+修正版helper・生成JSON・README/VALIDATIONが一致し、責任者もhelperを再実行して旧211hashを確認。旧公開資料はignoredの履歴へ保持し、計算ソース/テストと4主要成果物は不変である。
+
+[研究説明・再現手順](https://github.com/thrsth45h/statcast-swing-model-v1/blob/015b9fdcd18565270b8ce888bd703aead8c63864/reports/phase3c/README.md)、[worker検証記録](https://github.com/thrsth45h/statcast-swing-model-v1/blob/015b9fdcd18565270b8ce888bd703aead8c63864/reports/phase3c/VALIDATION.md)、[責任者レビュー](PHASE3C_REVIEW.md)を参照。無空気・点状守備者・理想化した真の地面情報は合成条件であり、MLBの飛距離/守備認知/捕球妥当性、実データ/3b接続、能力・公式記録・ゲーム採用は未検証・未実施。次の実装範囲は設計相談とする。
