@@ -1,0 +1,484 @@
+{
+  "ability_calibrated": false,
+  "android_integrated": false,
+  "approved_design": {
+    "decision": "D043 limited reference only",
+    "game_main": "59ae0e2f726b88d5729d026a0e293916c33a73e6",
+    "url": "https://github.com/thrsth45h/baseball-sim/pull/22"
+  },
+  "connected_to_phase3d": false,
+  "connected_to_phase4a": false,
+  "connected_to_statcast": false,
+  "design": "phase4b-design-v0.1",
+  "fixed_scenarios": [
+    {
+      "events": [],
+      "expected_final": {
+        "bases": [
+          false,
+          false,
+          false
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "id": "empty",
+      "initial_state": {
+        "bases": [
+          false,
+          false,
+          false
+        ],
+        "outs": 0,
+        "runs": 0
+      }
+    },
+    {
+      "events": [
+        "walk_forced_only"
+      ],
+      "expected_final": {
+        "bases": [
+          true,
+          false,
+          false
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "id": "walk_empty",
+      "initial_state": {
+        "bases": [
+          false,
+          false,
+          false
+        ],
+        "outs": 0,
+        "runs": 0
+      }
+    },
+    {
+      "events": [
+        "walk_forced_only"
+      ],
+      "expected_final": {
+        "bases": [
+          true,
+          true,
+          false
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "id": "walk_only_second",
+      "initial_state": {
+        "bases": [
+          false,
+          true,
+          false
+        ],
+        "outs": 0,
+        "runs": 0
+      }
+    },
+    {
+      "events": [
+        "walk_forced_only"
+      ],
+      "expected_final": {
+        "bases": [
+          true,
+          false,
+          true
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "id": "walk_only_third",
+      "initial_state": {
+        "bases": [
+          false,
+          false,
+          true
+        ],
+        "outs": 0,
+        "runs": 0
+      }
+    },
+    {
+      "events": [
+        "walk_forced_only"
+      ],
+      "expected_final": {
+        "bases": [
+          true,
+          true,
+          true
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "id": "walk_first_third",
+      "initial_state": {
+        "bases": [
+          true,
+          false,
+          true
+        ],
+        "outs": 0,
+        "runs": 0
+      }
+    },
+    {
+      "events": [
+        "walk_forced_only"
+      ],
+      "expected_final": {
+        "bases": [
+          true,
+          true,
+          true
+        ],
+        "outs": 1,
+        "runs": 7
+      },
+      "id": "walk_second_third",
+      "initial_state": {
+        "bases": [
+          false,
+          true,
+          true
+        ],
+        "outs": 1,
+        "runs": 7
+      }
+    },
+    {
+      "events": [
+        "walk_forced_only"
+      ],
+      "expected_final": {
+        "bases": [
+          true,
+          true,
+          true
+        ],
+        "outs": 2,
+        "runs": 8
+      },
+      "id": "walk_loaded",
+      "initial_state": {
+        "bases": [
+          true,
+          true,
+          true
+        ],
+        "outs": 2,
+        "runs": 7
+      }
+    },
+    {
+      "events": [
+        "batter_out_runners_hold"
+      ],
+      "expected_final": {
+        "bases": [
+          true,
+          false,
+          true
+        ],
+        "outs": 1,
+        "runs": 2
+      },
+      "id": "out_holds_runners",
+      "initial_state": {
+        "bases": [
+          true,
+          false,
+          true
+        ],
+        "outs": 0,
+        "runs": 2
+      }
+    },
+    {
+      "events": [
+        "batter_out_runners_hold"
+      ],
+      "expected_final": {
+        "bases": [
+          true,
+          true,
+          true
+        ],
+        "outs": 3,
+        "runs": 7
+      },
+      "id": "third_out_strands",
+      "initial_state": {
+        "bases": [
+          true,
+          true,
+          true
+        ],
+        "outs": 2,
+        "runs": 7
+      }
+    },
+    {
+      "events": [
+        "legal_over_fence_home_run"
+      ],
+      "expected_final": {
+        "bases": [
+          false,
+          false,
+          false
+        ],
+        "outs": 2,
+        "runs": 8
+      },
+      "id": "solo_home_run",
+      "initial_state": {
+        "bases": [
+          false,
+          false,
+          false
+        ],
+        "outs": 2,
+        "runs": 7
+      }
+    },
+    {
+      "events": [
+        "legal_over_fence_home_run"
+      ],
+      "expected_final": {
+        "bases": [
+          false,
+          false,
+          false
+        ],
+        "outs": 0,
+        "runs": 2
+      },
+      "id": "two_run_home_run",
+      "initial_state": {
+        "bases": [
+          false,
+          true,
+          false
+        ],
+        "outs": 0,
+        "runs": 0
+      }
+    },
+    {
+      "events": [
+        "legal_over_fence_home_run"
+      ],
+      "expected_final": {
+        "bases": [
+          false,
+          false,
+          false
+        ],
+        "outs": 1,
+        "runs": 4
+      },
+      "id": "grand_slam",
+      "initial_state": {
+        "bases": [
+          true,
+          true,
+          true
+        ],
+        "outs": 1,
+        "runs": 0
+      }
+    },
+    {
+      "events": [
+        "walk_forced_only",
+        "walk_forced_only",
+        "walk_forced_only",
+        "walk_forced_only"
+      ],
+      "expected_final": {
+        "bases": [
+          true,
+          true,
+          true
+        ],
+        "outs": 0,
+        "runs": 1
+      },
+      "id": "four_walks",
+      "initial_state": {
+        "bases": [
+          false,
+          false,
+          false
+        ],
+        "outs": 0,
+        "runs": 0
+      }
+    },
+    {
+      "events": [
+        "walk_forced_only",
+        "walk_forced_only",
+        "walk_forced_only",
+        "walk_forced_only",
+        "legal_over_fence_home_run"
+      ],
+      "expected_final": {
+        "bases": [
+          false,
+          false,
+          false
+        ],
+        "outs": 0,
+        "runs": 5
+      },
+      "id": "walks_then_home_run",
+      "initial_state": {
+        "bases": [
+          false,
+          false,
+          false
+        ],
+        "outs": 0,
+        "runs": 0
+      }
+    },
+    {
+      "events": [
+        "batter_out_runners_hold",
+        "batter_out_runners_hold",
+        "batter_out_runners_hold"
+      ],
+      "expected_final": {
+        "bases": [
+          false,
+          false,
+          false
+        ],
+        "outs": 3,
+        "runs": 0
+      },
+      "id": "three_outs",
+      "initial_state": {
+        "bases": [
+          false,
+          false,
+          false
+        ],
+        "outs": 0,
+        "runs": 0
+      }
+    },
+    {
+      "events": [
+        "walk_forced_only",
+        "walk_forced_only",
+        "batter_out_runners_hold",
+        "legal_over_fence_home_run",
+        "walk_forced_only",
+        "batter_out_runners_hold",
+        "batter_out_runners_hold"
+      ],
+      "expected_final": {
+        "bases": [
+          true,
+          false,
+          false
+        ],
+        "outs": 3,
+        "runs": 3
+      },
+      "id": "mixed_half",
+      "initial_state": {
+        "bases": [
+          false,
+          false,
+          false
+        ],
+        "outs": 0,
+        "runs": 0
+      }
+    }
+  ],
+  "implementation": {
+    "bundle_sha256": "6b69ace6a5aedf9dd34be74b0f12cf9eae8293f97d410ae04044a1e7b989f738",
+    "python": "3.12.14",
+    "python_implementation": "CPython",
+    "sources_and_fixtures": {
+      "prototypes/__init__.py": "585d0f84ef1ad8a270f4fa95929ba4ea422084e321ce178d9f6db3846633f36d",
+      "prototypes/phase4b/.gitattributes": "a79691a93b46e49ce460c26ef22afcc03d6eca1e63bf2edbc20e96159510f6c9",
+      "prototypes/phase4b/__init__.py": "80ec6945d1d8eeb0fe9e644c4543119be5f177119bedcf437b8f8d1f8bd21e1e",
+      "prototypes/phase4b/__main__.py": "872c1ac341f236b34f66eca159e0b73d4053eec47cfa56643445d45d65dc07ae",
+      "prototypes/phase4b/fixtures.py": "d07f49bf727d0659e495ec00384dcd9c0a129628e4b91ecad6a22f93dd71974b",
+      "prototypes/phase4b/fixtures/scenarios.json": "57931a30c450dc1e71916a525b5032b7b8c1bedbfea7d87d70b55092065c2177",
+      "prototypes/phase4b/fixtures/transitions.json": "3f53cec865c448dee5483b6f71b1ade43b2265237856b73a36995c45e1adb65f",
+      "prototypes/phase4b/io.py": "6dcb85323293736af5133aed276d76e33907df2fadb4126651db91b6ed1defaa",
+      "prototypes/phase4b/model.py": "ddfbedb9a398eddca9fcfecbb7fc8236033b3f52dc285635833632e3aac17429",
+      "prototypes/phase4b/runner.py": "4738d0dce9fe3566e7aace80a25e04d8aae2f4206ef7be8521be5635164b2832"
+    },
+    "text_hash_rule": "UTF-8; CRLF and CR normalized to LF before SHA256",
+    "third_party_runtime_dependencies": []
+  },
+  "input_preconditions": [
+    "completed, adjudicated synthetic plays, not incomplete walk/strikeout/flyout labels",
+    "all required bases legally touched, no additional advances, errors, runner outs, interference or appeals",
+    "no walk-off condition; H is a legal over-fence fair home run with all scoring confirmed",
+    "X confirms only batter out and all other runners hold; not a general strikeout/flyout rule"
+  ],
+  "limitations": [
+    "fixed synthetic counts are not league scoring rates or ability effects",
+    "no probability/ability calibration, no EV/LA backfill, no old model imports",
+    "Python reference does not select Android language/architecture/DB; D029/D031/D032 OPEN"
+  ],
+  "official_stats_generated": false,
+  "probability_model": false,
+  "product_adoption": false,
+  "rules": {
+    "complete_league_rules_adopted": false,
+    "edition": "MLB Official Baseball Rules 2026",
+    "sections": [
+      "5.05(b)(1)",
+      "5.06(b)(1)",
+      "5.06(b)(3)(B)",
+      "5.06(b)(4)(A)",
+      "5.05(a)(5)",
+      "5.08(a)/(b)",
+      "5.09(e)"
+    ],
+    "url": "https://mktg.mlbstatic.com/mlb/official-information/2026-official-baseball-rules.pdf"
+  },
+  "scenario_count": 16,
+  "schema": "phase4b-reference-v0.1",
+  "scope": "partial_base_out_rules",
+  "source_kind": "synthetic_fixture",
+  "state_semantics": {
+    "arbitrary_external_start": true,
+    "bases_order": [
+      "first",
+      "second",
+      "third"
+    ],
+    "history_reachability_proved": false,
+    "memory_chunk_replay": true,
+    "product_save_format": false,
+    "runs": "runs already confirmed in this half inning",
+    "three_outs": "stopped snapshot retains stranded bases and runs; no automatic reset",
+    "trace": "ordered immutable entries; event/before/after/runs_added, no chunk-local numbering"
+  },
+  "transition_count": 72,
+  "unsupported": [
+    "Phase4a status adapters and statistical/trajectory result conversion",
+    "singles/doubles/triples, intentional/automatic walk/HBP, runner decisions, double plays",
+    "tag-up/steal/wild pitch/passed ball/error/runner out/interference/appeal/walk-off",
+    "same-play third-out scoring decisions, runner IDs/batting order, full game/official personal stats"
+  ]
+}

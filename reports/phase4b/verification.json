@@ -1,0 +1,44 @@
+{
+  "ability_calibrated": false,
+  "android_integrated": false,
+  "baseline": "59ae0e2f726b88d5729d026a0e293916c33a73e6",
+  "connected_to_phase3d": false,
+  "connected_to_phase4a": false,
+  "connected_to_statcast": false,
+  "current_checkout_changes_since_source_commit": {
+    "baseline_game_paths_changed": [],
+    "comparison": "fixed source to current working tree, including tracked uncommitted changes",
+    "from_commit": "7f98536c8659d6fa6bd0bbe94ab6e48e8ee4fb3b",
+    "informational_only": true,
+    "protected_baseline_game_paths_changed": []
+  },
+  "current_source_tests_fixtures_ci_match_fixed_source": true,
+  "existing_game_file_protection": {
+    "baseline_game_paths": 65,
+    "changed_baseline_game_paths_at_source_commit": [
+      "README.md"
+    ],
+    "from_commit": "59ae0e2f726b88d5729d026a0e293916c33a73e6",
+    "old_file_changes_allowed_at_source_commit": [
+      "README.md guide only"
+    ],
+    "protected_game_paths": 64,
+    "protected_game_paths_unchanged_at_source_commit": 64,
+    "through_commit": "7f98536c8659d6fa6bd0bbe94ab6e48e8ee4fb3b"
+  },
+  "existing_game_git_metadata_read_for_integrity": true,
+  "fixed_sequence_rows": 16,
+  "fixed_transition_rows": 72,
+  "official_stats_generated": false,
+  "probability_model": false,
+  "product_adoption": false,
+  "public_git_blob_check": "separate check after committing",
+  "raw_or_model_files_opened": false,
+  "research_repository_opened_by_helper": false,
+  "run_hash_entries_verified": 6,
+  "scope": "partial_base_out_rules",
+  "source_commit": "7f98536c8659d6fa6bd0bbe94ab6e48e8ee4fb3b",
+  "source_identity_binds_checkout_and_fixed_git_commit": true,
+  "source_kind": "synthetic_fixture",
+  "trace_entries_checked_across_two_runs": 60
+}

@@ -1,0 +1,14 @@
+{
+  ".gitattributes": "a79691a93b46e49ce460c26ef22afcc03d6eca1e63bf2edbc20e96159510f6c9",
+  "README.md": "1e7325e1908049d8ce20ddfc8a472e2477ff111b63872126d6b4f7650493c717",
+  "VALIDATION.md": "7d2b60ad8661576c76ee9fc3aa28cee367aece0c2bac3a7f00c2a35b84852437",
+  "phase4a-regression.json": "088fb40f9b916e778b42d299716e49deb98ef99cd8f99fe120fcc273f998a627",
+  "reproducibility.json": "ad5487ffff44ce550052e3e47b782bba693e105568a53d6dc0d2cc1c4cfac7f7",
+  "synthetic-01/REPORT.md": "fd35eef9ab66cfb93027d8b483d608f8e894f411863b90f86de10e8544e1606d",
+  "synthetic-01/SHA256SUMS.json": "2a038ebafa5756043d5df24523c351a1a24ef55b75b96c0128c888c097f5a022",
+  "synthetic-01/plan.json": "5f5852cb602038a094e4880eab5dadb3f8f15b996036243e8e95447d76af429e",
+  "synthetic-01/traces.json": "9f4c69b9ca86df1561c736d936e91e5f842a362d10d64e9550887a45bbbdfc20",
+  "test-results.json": "df0d95636ed69b150a5166a34d0eed2c944a63cc01223c89736370e568a16073",
+  "verification.json": "23f394d5e5a4386d5ec05674e7db5a87703e021bf78220ea127e551ead50677c",
+  "verify.py": "7fe88caee9eb3d63b1cf6ee0985449a23515193bbd7c0126b938a57f03b2b6e2"
+}

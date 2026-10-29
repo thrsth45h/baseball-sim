@@ -1,0 +1,1104 @@
+{
+  "ability_calibrated": false,
+  "android_integrated": false,
+  "connected_to_phase3d": false,
+  "connected_to_phase4a": false,
+  "connected_to_statcast": false,
+  "design": "phase4b-design-v0.1",
+  "official_stats_generated": false,
+  "probability_model": false,
+  "product_adoption": false,
+  "scenarios": [
+    {
+      "events": [],
+      "final_state": {
+        "bases": [
+          false,
+          false,
+          false
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "id": "empty",
+      "initial_state": {
+        "bases": [
+          false,
+          false,
+          false
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "trace": []
+    },
+    {
+      "events": [
+        "walk_forced_only"
+      ],
+      "final_state": {
+        "bases": [
+          true,
+          false,
+          false
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "id": "walk_empty",
+      "initial_state": {
+        "bases": [
+          false,
+          false,
+          false
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "trace": [
+        {
+          "after": {
+            "bases": [
+              true,
+              false,
+              false
+            ],
+            "outs": 0,
+            "runs": 0
+          },
+          "before": {
+            "bases": [
+              false,
+              false,
+              false
+            ],
+            "outs": 0,
+            "runs": 0
+          },
+          "event": "walk_forced_only",
+          "runs_added": 0
+        }
+      ]
+    },
+    {
+      "events": [
+        "walk_forced_only"
+      ],
+      "final_state": {
+        "bases": [
+          true,
+          true,
+          false
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "id": "walk_only_second",
+      "initial_state": {
+        "bases": [
+          false,
+          true,
+          false
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "trace": [
+        {
+          "after": {
+            "bases": [
+              true,
+              true,
+              false
+            ],
+            "outs": 0,
+            "runs": 0
+          },
+          "before": {
+            "bases": [
+              false,
+              true,
+              false
+            ],
+            "outs": 0,
+            "runs": 0
+          },
+          "event": "walk_forced_only",
+          "runs_added": 0
+        }
+      ]
+    },
+    {
+      "events": [
+        "walk_forced_only"
+      ],
+      "final_state": {
+        "bases": [
+          true,
+          false,
+          true
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "id": "walk_only_third",
+      "initial_state": {
+        "bases": [
+          false,
+          false,
+          true
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "trace": [
+        {
+          "after": {
+            "bases": [
+              true,
+              false,
+              true
+            ],
+            "outs": 0,
+            "runs": 0
+          },
+          "before": {
+            "bases": [
+              false,
+              false,
+              true
+            ],
+            "outs": 0,
+            "runs": 0
+          },
+          "event": "walk_forced_only",
+          "runs_added": 0
+        }
+      ]
+    },
+    {
+      "events": [
+        "walk_forced_only"
+      ],
+      "final_state": {
+        "bases": [
+          true,
+          true,
+          true
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "id": "walk_first_third",
+      "initial_state": {
+        "bases": [
+          true,
+          false,
+          true
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "trace": [
+        {
+          "after": {
+            "bases": [
+              true,
+              true,
+              true
+            ],
+            "outs": 0,
+            "runs": 0
+          },
+          "before": {
+            "bases": [
+              true,
+              false,
+              true
+            ],
+            "outs": 0,
+            "runs": 0
+          },
+          "event": "walk_forced_only",
+          "runs_added": 0
+        }
+      ]
+    },
+    {
+      "events": [
+        "walk_forced_only"
+      ],
+      "final_state": {
+        "bases": [
+          true,
+          true,
+          true
+        ],
+        "outs": 1,
+        "runs": 7
+      },
+      "id": "walk_second_third",
+      "initial_state": {
+        "bases": [
+          false,
+          true,
+          true
+        ],
+        "outs": 1,
+        "runs": 7
+      },
+      "trace": [
+        {
+          "after": {
+            "bases": [
+              true,
+              true,
+              true
+            ],
+            "outs": 1,
+            "runs": 7
+          },
+          "before": {
+            "bases": [
+              false,
+              true,
+              true
+            ],
+            "outs": 1,
+            "runs": 7
+          },
+          "event": "walk_forced_only",
+          "runs_added": 0
+        }
+      ]
+    },
+    {
+      "events": [
+        "walk_forced_only"
+      ],
+      "final_state": {
+        "bases": [
+          true,
+          true,
+          true
+        ],
+        "outs": 2,
+        "runs": 8
+      },
+      "id": "walk_loaded",
+      "initial_state": {
+        "bases": [
+          true,
+          true,
+          true
+        ],
+        "outs": 2,
+        "runs": 7
+      },
+      "trace": [
+        {
+          "after": {
+            "bases": [
+              true,
+              true,
+              true
+            ],
+            "outs": 2,
+            "runs": 8
+          },
+          "before": {
+            "bases": [
+              true,
+              true,
+              true
+            ],
+            "outs": 2,
+            "runs": 7
+          },
+          "event": "walk_forced_only",
+          "runs_added": 1
+        }
+      ]
+    },
+    {
+      "events": [
+        "batter_out_runners_hold"
+      ],
+      "final_state": {
+        "bases": [
+          true,
+          false,
+          true
+        ],
+        "outs": 1,
+        "runs": 2
+      },
+      "id": "out_holds_runners",
+      "initial_state": {
+        "bases": [
+          true,
+          false,
+          true
+        ],
+        "outs": 0,
+        "runs": 2
+      },
+      "trace": [
+        {
+          "after": {
+            "bases": [
+              true,
+              false,
+              true
+            ],
+            "outs": 1,
+            "runs": 2
+          },
+          "before": {
+            "bases": [
+              true,
+              false,
+              true
+            ],
+            "outs": 0,
+            "runs": 2
+          },
+          "event": "batter_out_runners_hold",
+          "runs_added": 0
+        }
+      ]
+    },
+    {
+      "events": [
+        "batter_out_runners_hold"
+      ],
+      "final_state": {
+        "bases": [
+          true,
+          true,
+          true
+        ],
+        "outs": 3,
+        "runs": 7
+      },
+      "id": "third_out_strands",
+      "initial_state": {
+        "bases": [
+          true,
+          true,
+          true
+        ],
+        "outs": 2,
+        "runs": 7
+      },
+      "trace": [
+        {
+          "after": {
+            "bases": [
+              true,
+              true,
+              true
+            ],
+            "outs": 3,
+            "runs": 7
+          },
+          "before": {
+            "bases": [
+              true,
+              true,
+              true
+            ],
+            "outs": 2,
+            "runs": 7
+          },
+          "event": "batter_out_runners_hold",
+          "runs_added": 0
+        }
+      ]
+    },
+    {
+      "events": [
+        "legal_over_fence_home_run"
+      ],
+      "final_state": {
+        "bases": [
+          false,
+          false,
+          false
+        ],
+        "outs": 2,
+        "runs": 8
+      },
+      "id": "solo_home_run",
+      "initial_state": {
+        "bases": [
+          false,
+          false,
+          false
+        ],
+        "outs": 2,
+        "runs": 7
+      },
+      "trace": [
+        {
+          "after": {
+            "bases": [
+              false,
+              false,
+              false
+            ],
+            "outs": 2,
+            "runs": 8
+          },
+          "before": {
+            "bases": [
+              false,
+              false,
+              false
+            ],
+            "outs": 2,
+            "runs": 7
+          },
+          "event": "legal_over_fence_home_run",
+          "runs_added": 1
+        }
+      ]
+    },
+    {
+      "events": [
+        "legal_over_fence_home_run"
+      ],
+      "final_state": {
+        "bases": [
+          false,
+          false,
+          false
+        ],
+        "outs": 0,
+        "runs": 2
+      },
+      "id": "two_run_home_run",
+      "initial_state": {
+        "bases": [
+          false,
+          true,
+          false
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "trace": [
+        {
+          "after": {
+            "bases": [
+              false,
+              false,
+              false
+            ],
+            "outs": 0,
+            "runs": 2
+          },
+          "before": {
+            "bases": [
+              false,
+              true,
+              false
+            ],
+            "outs": 0,
+            "runs": 0
+          },
+          "event": "legal_over_fence_home_run",
+          "runs_added": 2
+        }
+      ]
+    },
+    {
+      "events": [
+        "legal_over_fence_home_run"
+      ],
+      "final_state": {
+        "bases": [
+          false,
+          false,
+          false
+        ],
+        "outs": 1,
+        "runs": 4
+      },
+      "id": "grand_slam",
+      "initial_state": {
+        "bases": [
+          true,
+          true,
+          true
+        ],
+        "outs": 1,
+        "runs": 0
+      },
+      "trace": [
+        {
+          "after": {
+            "bases": [
+              false,
+              false,
+              false
+            ],
+            "outs": 1,
+            "runs": 4
+          },
+          "before": {
+            "bases": [
+              true,
+              true,
+              true
+            ],
+            "outs": 1,
+            "runs": 0
+          },
+          "event": "legal_over_fence_home_run",
+          "runs_added": 4
+        }
+      ]
+    },
+    {
+      "events": [
+        "walk_forced_only",
+        "walk_forced_only",
+        "walk_forced_only",
+        "walk_forced_only"
+      ],
+      "final_state": {
+        "bases": [
+          true,
+          true,
+          true
+        ],
+        "outs": 0,
+        "runs": 1
+      },
+      "id": "four_walks",
+      "initial_state": {
+        "bases": [
+          false,
+          false,
+          false
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "trace": [
+        {
+          "after": {
+            "bases": [
+              true,
+              false,
+              false
+            ],
+            "outs": 0,
+            "runs": 0
+          },
+          "before": {
+            "bases": [
+              false,
+              false,
+              false
+            ],
+            "outs": 0,
+            "runs": 0
+          },
+          "event": "walk_forced_only",
+          "runs_added": 0
+        },
+        {
+          "after": {
+            "bases": [
+              true,
+              true,
+              false
+            ],
+            "outs": 0,
+            "runs": 0
+          },
+          "before": {
+            "bases": [
+              true,
+              false,
+              false
+            ],
+            "outs": 0,
+            "runs": 0
+          },
+          "event": "walk_forced_only",
+          "runs_added": 0
+        },
+        {
+          "after": {
+            "bases": [
+              true,
+              true,
+              true
+            ],
+            "outs": 0,
+            "runs": 0
+          },
+          "before": {
+            "bases": [
+              true,
+              true,
+              false
+            ],
+            "outs": 0,
+            "runs": 0
+          },
+          "event": "walk_forced_only",
+          "runs_added": 0
+        },
+        {
+          "after": {
+            "bases": [
+              true,
+              true,
+              true
+            ],
+            "outs": 0,
+            "runs": 1
+          },
+          "before": {
+            "bases": [
+              true,
+              true,
+              true
+            ],
+            "outs": 0,
+            "runs": 0
+          },
+          "event": "walk_forced_only",
+          "runs_added": 1
+        }
+      ]
+    },
+    {
+      "events": [
+        "walk_forced_only",
+        "walk_forced_only",
+        "walk_forced_only",
+        "walk_forced_only",
+        "legal_over_fence_home_run"
+      ],
+      "final_state": {
+        "bases": [
+          false,
+          false,
+          false
+        ],
+        "outs": 0,
+        "runs": 5
+      },
+      "id": "walks_then_home_run",
+      "initial_state": {
+        "bases": [
+          false,
+          false,
+          false
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "trace": [
+        {
+          "after": {
+            "bases": [
+              true,
+              false,
+              false
+            ],
+            "outs": 0,
+            "runs": 0
+          },
+          "before": {
+            "bases": [
+              false,
+              false,
+              false
+            ],
+            "outs": 0,
+            "runs": 0
+          },
+          "event": "walk_forced_only",
+          "runs_added": 0
+        },
+        {
+          "after": {
+            "bases": [
+              true,
+              true,
+              false
+            ],
+            "outs": 0,
+            "runs": 0
+          },
+          "before": {
+            "bases": [
+              true,
+              false,
+              false
+            ],
+            "outs": 0,
+            "runs": 0
+          },
+          "event": "walk_forced_only",
+          "runs_added": 0
+        },
+        {
+          "after": {
+            "bases": [
+              true,
+              true,
+              true
+            ],
+            "outs": 0,
+            "runs": 0
+          },
+          "before": {
+            "bases": [
+              true,
+              true,
+              false
+            ],
+            "outs": 0,
+            "runs": 0
+          },
+          "event": "walk_forced_only",
+          "runs_added": 0
+        },
+        {
+          "after": {
+            "bases": [
+              true,
+              true,
+              true
+            ],
+            "outs": 0,
+            "runs": 1
+          },
+          "before": {
+            "bases": [
+              true,
+              true,
+              true
+            ],
+            "outs": 0,
+            "runs": 0
+          },
+          "event": "walk_forced_only",
+          "runs_added": 1
+        },
+        {
+          "after": {
+            "bases": [
+              false,
+              false,
+              false
+            ],
+            "outs": 0,
+            "runs": 5
+          },
+          "before": {
+            "bases": [
+              true,
+              true,
+              true
+            ],
+            "outs": 0,
+            "runs": 1
+          },
+          "event": "legal_over_fence_home_run",
+          "runs_added": 4
+        }
+      ]
+    },
+    {
+      "events": [
+        "batter_out_runners_hold",
+        "batter_out_runners_hold",
+        "batter_out_runners_hold"
+      ],
+      "final_state": {
+        "bases": [
+          false,
+          false,
+          false
+        ],
+        "outs": 3,
+        "runs": 0
+      },
+      "id": "three_outs",
+      "initial_state": {
+        "bases": [
+          false,
+          false,
+          false
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "trace": [
+        {
+          "after": {
+            "bases": [
+              false,
+              false,
+              false
+            ],
+            "outs": 1,
+            "runs": 0
+          },
+          "before": {
+            "bases": [
+              false,
+              false,
+              false
+            ],
+            "outs": 0,
+            "runs": 0
+          },
+          "event": "batter_out_runners_hold",
+          "runs_added": 0
+        },
+        {
+          "after": {
+            "bases": [
+              false,
+              false,
+              false
+            ],
+            "outs": 2,
+            "runs": 0
+          },
+          "before": {
+            "bases": [
+              false,
+              false,
+              false
+            ],
+            "outs": 1,
+            "runs": 0
+          },
+          "event": "batter_out_runners_hold",
+          "runs_added": 0
+        },
+        {
+          "after": {
+            "bases": [
+              false,
+              false,
+              false
+            ],
+            "outs": 3,
+            "runs": 0
+          },
+          "before": {
+            "bases": [
+              false,
+              false,
+              false
+            ],
+            "outs": 2,
+            "runs": 0
+          },
+          "event": "batter_out_runners_hold",
+          "runs_added": 0
+        }
+      ]
+    },
+    {
+      "events": [
+        "walk_forced_only",
+        "walk_forced_only",
+        "batter_out_runners_hold",
+        "legal_over_fence_home_run",
+        "walk_forced_only",
+        "batter_out_runners_hold",
+        "batter_out_runners_hold"
+      ],
+      "final_state": {
+        "bases": [
+          true,
+          false,
+          false
+        ],
+        "outs": 3,
+        "runs": 3
+      },
+      "id": "mixed_half",
+      "initial_state": {
+        "bases": [
+          false,
+          false,
+          false
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "trace": [
+        {
+          "after": {
+            "bases": [
+              true,
+              false,
+              false
+            ],
+            "outs": 0,
+            "runs": 0
+          },
+          "before": {
+            "bases": [
+              false,
+              false,
+              false
+            ],
+            "outs": 0,
+            "runs": 0
+          },
+          "event": "walk_forced_only",
+          "runs_added": 0
+        },
+        {
+          "after": {
+            "bases": [
+              true,
+              true,
+              false
+            ],
+            "outs": 0,
+            "runs": 0
+          },
+          "before": {
+            "bases": [
+              true,
+              false,
+              false
+            ],
+            "outs": 0,
+            "runs": 0
+          },
+          "event": "walk_forced_only",
+          "runs_added": 0
+        },
+        {
+          "after": {
+            "bases": [
+              true,
+              true,
+              false
+            ],
+            "outs": 1,
+            "runs": 0
+          },
+          "before": {
+            "bases": [
+              true,
+              true,
+              false
+            ],
+            "outs": 0,
+            "runs": 0
+          },
+          "event": "batter_out_runners_hold",
+          "runs_added": 0
+        },
+        {
+          "after": {
+            "bases": [
+              false,
+              false,
+              false
+            ],
+            "outs": 1,
+            "runs": 3
+          },
+          "before": {
+            "bases": [
+              true,
+              true,
+              false
+            ],
+            "outs": 1,
+            "runs": 0
+          },
+          "event": "legal_over_fence_home_run",
+          "runs_added": 3
+        },
+        {
+          "after": {
+            "bases": [
+              true,
+              false,
+              false
+            ],
+            "outs": 1,
+            "runs": 3
+          },
+          "before": {
+            "bases": [
+              false,
+              false,
+              false
+            ],
+            "outs": 1,
+            "runs": 3
+          },
+          "event": "walk_forced_only",
+          "runs_added": 0
+        },
+        {
+          "after": {
+            "bases": [
+              true,
+              false,
+              false
+            ],
+            "outs": 2,
+            "runs": 3
+          },
+          "before": {
+            "bases": [
+              true,
+              false,
+              false
+            ],
+            "outs": 1,
+            "runs": 3
+          },
+          "event": "batter_out_runners_hold",
+          "runs_added": 0
+        },
+        {
+          "after": {
+            "bases": [
+              true,
+              false,
+              false
+            ],
+            "outs": 3,
+            "runs": 3
+          },
+          "before": {
+            "bases": [
+              true,
+              false,
+              false
+            ],
+            "outs": 2,
+            "runs": 3
+          },
+          "event": "batter_out_runners_hold",
+          "runs_added": 0
+        }
+      ]
+    }
+  ],
+  "schema": "phase4b-reference-v0.1",
+  "scope": "partial_base_out_rules",
+  "source_kind": "synthetic_fixture"
+}
