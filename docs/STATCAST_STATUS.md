@@ -208,6 +208,12 @@ EV≥120は2023学習1件、2024が6件、2025が3件。2024尾部の条件付�
 
 [研究説明・再現手順](https://github.com/thrsth45h/statcast-swing-model-v1/blob/cd8217a44788cf830c5554b71b04a27a98ce620c/reports/phase3d/README.md)、[worker検証記録](https://github.com/thrsth45h/statcast-swing-model-v1/blob/cd8217a44788cf830c5554b71b04a27a98ce620c/reports/phase3d/VALIDATION.md)、[責任者レビュー](PHASE3D_REVIEW.md)を参照。空気抵抗なし・半径0・即時の最大速度・反応前禁止・高さ上限/入力範囲は未較正の人工仮定。実際の捕球/守備認知・MLB妥当性・実データ/3b接続・能力・公式記録・ゲーム採用は未検証・未実施。次の新しい実装範囲は設計相談とする。
 
-## Phase 4a（ゲーム側の限定ルール参照・承認済み）
+## Phase 4a（ゲーム側の限定ルール参照・レビュー後mainへマージ済み）
 
-2026-10-29、本人が「設計PR #19の範囲で進める（推奨）」と回答し、[設計v0.1](PHASE4A_DESIGN.md)・[ADR-0008](adr/0008-phase4a-count-reference.md)の限定ルール範囲・規則版・ゲーム側Python参照実装/CIとworker実装開始を承認した。裁定済みの合成8イベントからカウント/限定終端/打球受渡しを更新する契約を、ゲームrepoのPython参照実装・96遷移表/16列で検証する。設計マージ後にworkerへ委任する。Statcast研究や3dの到達機会をイベントへ変換せず、研究repoは変更しない。完全な打席生成・確率・能力・公式成績・Android/セーブ技術の採用ではない。D042は限定参照範囲のみCONFIRMED、D029/D031/D032はOPENを維持する。
+2026-10-29、本人が「設計PR #19の範囲で進める（推奨）」と回答し、[設計v0.1](PHASE4A_DESIGN.md)・[ADR-0008](adr/0008-phase4a-count-reference.md)の限定ルール範囲・規則版・ゲーム側Python参照実装/CIとworker実装開始を承認した。設計main `1c5b738671a452305a4be874c57f77cd8ad5db10`からworkerへ委任。責任者の独立レビューと修正確認後、[ゲーム実装PR #20](https://github.com/thrsth45h/baseball-sim/pull/20)をmain `4d3a92392d5adb4be9ddd2db4ef16ab3ca3a9977`へマージした。
+
+裁定済み合成8イベントからカウント/限定終端/打球受渡しを更新する。言語非依存96遷移表/16列を保持し、全33 test method成功（subTest326別集計、failure/error/skip0）とPython3.11/3.12 CI成功を確認。責任者の別実行では4成果物がworker版とバイト一致し、worker未参照の別式による凍結期待値との10,289項目が一致した。固定列の同一最終状態への置換防護もworkerに修正させ、5置換の拒否を確認した。[レビュー詳細](PHASE4A_REVIEW.md)と[再現手順](../reports/phase4a/README.md)を参照。
+
+実装PR時点の旧ゲーム35パス不変と、以後の完了文書更新は区別する。公開helperの履歴保護は設計baseline→固定source `922a2a9c1cb5a76e9d984fc5bd5c9fef2952b7ae`を対象とし、現在のsource/tests/fixtures/CI照合は維持する。研究repoはmain `cd8217a44788cf830c5554b71b04a27a98ce620c`のまま変更なし、研究575テストを今回の成功件数へ加算していない。
+
+Statcast研究や3dの到達機会をイベントへ変換せず、確率・走者/得点・能力・公式成績・Android/セーブには接続していない。完全な打席/試合生成や製品採用は未達。D042は限定参照のみCONFIRMED、D029/D031/D032はOPEN。次工程の実装仕様は設計相談で決める。
