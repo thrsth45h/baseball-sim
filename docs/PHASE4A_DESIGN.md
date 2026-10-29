@@ -4,7 +4,7 @@
 - 状態: **Accepted**。2026-10-29、本人が本PRを示す確認に「設計PR #19の範囲で進める（推奨）」と回答。限定ルール範囲・規則版・ゲーム側Python参照実装/CIとworker実装開始を承認した。
 - 基準: ゲームmain `110526fa500ecfeddc058241bc7da46d5648bb66`、研究main `cd8217a44788cf830c5554b71b04a27a98ce620c`。
 - 関連: D004、D022–D023、D029/D031/D032 OPEN、D042 CONFIRMED（4a限定参照のみ）、[ADR-0008](adr/0008-phase4a-count-reference.md)、[設計点検](PHASE4A_REVIEW.md)。
-- 設計PR: [ゲームPR #19](https://github.com/thrsth45h/baseball-sim/pull/19)。設計マージ後にworkerの実装を開始する。
+- 設計PR: [ゲームPR #19](https://github.com/thrsth45h/baseball-sim/pull/19)、設計main `1c5b738671a452305a4be874c57f77cd8ad5db10`。承認後にworkerが実装し、責任者の独立レビュー・修正確認を経て[実装PR #20](https://github.com/thrsth45h/baseball-sim/pull/20)をmain `4d3a92392d5adb4be9ddd2db4ef16ab3ca3a9977`へマージ済み。[実装レビュー](PHASE4A_REVIEW.md)・[再現手順と限界](../reports/phase4a/README.md)を参照。以下は承認された契約であり、完了によって対象範囲を拡張しない。
 
 ## 1. 次に作るものと、今回作らないもの
 

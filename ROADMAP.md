@@ -74,7 +74,9 @@ PR #1: https://github.com/thrsth45h/statcast-swing-model-v1/pull/1
 
 ## Phase 4 — 試合エンジン・野球ルール
 
-最初の[Phase 4a設計v0.1](docs/PHASE4A_DESIGN.md)は2026-10-29に本人が[設計PR #19](https://github.com/thrsth45h/baseball-sim/pull/19)の範囲とworker実装開始を承認（D042は限定参照範囲のみCONFIRMED）。ゲーム側で、裁定済み8合成イベントに対するカウント/限定終端/打球受渡しのルールを検証する。言語非依存96遷移表/16列とPython標準ライブラリの参照実装/専用CIを置く。完全な1打席や試合の生成器ではなく、既存研究・確率・能力・走者/得点・公式成績・UI/セーブには接続しない。Android技術選定はD032 OPEN。設計マージ後にworkerへ委任する。
+最初の[Phase 4a設計v0.1](docs/PHASE4A_DESIGN.md)は2026-10-29に本人が[設計PR #19](https://github.com/thrsth45h/baseball-sim/pull/19)の範囲とworker実装開始を承認（D042は限定参照範囲のみCONFIRMED）。worker実装・責任者レビュー/修正確認後、[実装PR #20](https://github.com/thrsth45h/baseball-sim/pull/20)をmain `4d3a92392d5adb4be9ddd2db4ef16ab3ca3a9977`へマージした。裁定済み合成8イベントのカウント/限定終端/打球受渡しを扱うPython標準ライブラリの参照実装、言語非依存96遷移表/16列、専用CIが完了。全33 test method・Python3.11/3.12 CI、独立期待値との10,289項目照合と4成果物の再実行一致を確認した。[レビュー](docs/PHASE4A_REVIEW.md)を参照。
+
+完了範囲は限定ルールの検算。完全な1打席/試合の生成、既存研究・確率・能力・走者/得点・公式成績・UI/セーブの接続は含めない。次工程の対象と受入れ条件は設計相談で決め、重要な新仕様の承認後に実装する。D029/D031/D032はOPENを維持する。
 
 - 投球選択・制球位置・球速と変化量、フレーミング、ブロッキング、疲労、球場、守備・走塁。
 - 1球単位のカウント、走者、アウト、得点、併殺、延長、交代、盗塁等。

@@ -10,6 +10,9 @@
 
 ## 現在の到達点
 
+- **Phase 4aはゲーム側の限定ルール参照実装・独立レビュー・修正・マージまで完了。** 本人の「設計PR #19の範囲で進める（推奨）」に基づき[設計PR #19](https://github.com/thrsth45h/baseball-sim/pull/19)をmain `1c5b738671a452305a4be874c57f77cd8ad5db10`へマージしてworkerへ委任。[実装PR #20](https://github.com/thrsth45h/baseball-sim/pull/20)はmain `4d3a92392d5adb4be9ddd2db4ef16ab3ca3a9977`へマージ済み。裁定済み8合成イベントのカウント/限定終端/打球受渡しだけを扱い、完全な打席/試合やAndroid技術の採用ではない。D042は限定参照のみCONFIRMED、D029/D031/D032はOPEN。
+- Phase 4aは全33 test method成功（subTest326は別集計、failure/error/skip0）と最終実装headのPython3.11/3.12 CI成功。責任者も別worktreeで実行し、4主要成果物が提出版とバイト一致。worker未参照の別式による凍結期待値との10,289項目照合で、96遷移・16列/79イベント・95分割位置・状態境界/拒否等が一致。[レビュー](PHASE4A_REVIEW.md)、[公開手順](../reports/phase4a/README.md)を参照。研究575テストを4aへ加算していない。
+- 固定16列の同一最終状態への置換を見逃すP2をworkerへ直接修正依頼し、5置換の拒否を確認した。最終実装head `9ca76f0ff0c2d13cbd00298766f7b9f80b67d1d1`、source/tests/fixtures/CI固定 `922a2a9c1cb5a76e9d984fc5bd5c9fef2952b7ae`。旧35文書保護は設計baseline→固定実装時点の確認とし、以後の完了文書更新を別記するhelper修正を加えた。worker `work/phase4a-count-worker`、レビュー `work/phase4a-review-4d3aab6`、ignoredの旧公開版/実行/検証資料は保持。研究repoはmain `cd8217a44788cf830c5554b71b04a27a98ce620c`のまま変更しない。
 - [Phase 3d設計v0.1](PHASE3D_DESIGN.md)・[ADR-0007](adr/0007-phase3d-inflight-reach.md)も合成研究実装完了。2026-10-29、本人が「設計PR #17の範囲・仮設定で進める（推奨）」と承認し、[設計PR #17](https://github.com/thrsth45h/baseball-sim/pull/17)をmain `863e78756448003363087994692ff85a2d79a428`へマージ後workerへ委任。責任者の独立レビューと修正確認後、[研究PR #10](https://github.com/thrsth45h/statcast-swing-model-v1/pull/10)をmain `cd8217a44788cf830c5554b71b04a27a98ce620c`へマージした。D041は合成研究のみCONFIRMED。真の軌道を既知とした飛行中の幾何的到達時刻集合であり、実際の捕球/認知・実データ/3b・能力・公式記録・ゲーム採用は含めない。
 - Phase 3dは全575テスト・最終headのPython3.11/3.12 PR CI成功。責任者も別worktreeで全575テスト/CLIとhelperを実行し、4主要成果物が提出版とバイト一致。worker未参照の160桁Decimal/厳密符号による独立期待値と、20例/14区間・追加数理oracle等940項目/91回の端点照合が一致。追加16不正入力拒否と新runの監視対象旧入力/RNG試行0も確認。[詳細](STATCAST_STATUS.md)、[レビュー](PHASE3D_REVIEW.md)を参照。
 - 初版のnamespace転送による旧領域への出力を実Windows junctionで再現し、workerへ直接修正依頼。4回帰・責任者の旧junction再確認で拒否を確認した。公開13ファイル106,377bytes、新17/旧228hash、旧358パス中README案内以外357不変をworking/Git双方で確認。worker領域`work/phase3d-inflight-worker`、レビュー領域`work/phase3d-review-710e999`、ignoredの旧資料/再実行を保持。最終レビューhead `238e63468c8bcb2679654f5fdde83b109c1e2a98`は研究mainと同じtree、source/tests固定は`0b13877a12ac59b5cb4ea1d70f9c376f5f9b9261`。
@@ -53,6 +56,8 @@
 | Phase 3c合成軌道・地面到達・移動余裕 | [研究PR #9](https://github.com/thrsth45h/statcast-swing-model-v1/pull/9) | `015b9fdcd18565270b8ce888bd703aead8c63864` |
 | Phase 3d合成研究の設計・仮設定・実装承認 | [ゲームPR #17](https://github.com/thrsth45h/baseball-sim/pull/17) | `863e78756448003363087994692ff85a2d79a428` |
 | Phase 3d飛行中の幾何的到達時刻集合 | [研究PR #10](https://github.com/thrsth45h/statcast-swing-model-v1/pull/10) | `cd8217a44788cf830c5554b71b04a27a98ce620c` |
+| Phase 4a限定ルール参照の設計・実装承認 | [ゲームPR #19](https://github.com/thrsth45h/baseball-sim/pull/19) | `1c5b738671a452305a4be874c57f77cd8ad5db10` |
+| Phase 4aカウント/限定終端の参照実装 | [ゲームPR #20](https://github.com/thrsth45h/baseball-sim/pull/20) | `4d3a92392d5adb4be9ddd2db4ef16ab3ca3a9977` |
 
 Phase 1d設計書・ADRのProposedは作成時の表記。研究範囲の採用・マージ記録はゲームPR #4本文にある。研究実装の独立レビュー・ユーザー許可・マージ記録は研究PR #3本文にある。これは製品採用・能力係数の承認ではない。
 
@@ -60,9 +65,7 @@ Phase 1d設計書・ADRのProposedは作成時の表記。研究範囲の採用�
 
 ## 次工程
 
-2026-10-29、本人が「設計PR #19の範囲で進める（推奨）」と回答し、[Phase 4a設計v0.1](PHASE4A_DESIGN.md)の限定ルール範囲・規則版・ゲーム側Python参照実装/CIとworker実装開始を承認した。[設計PR #19](https://github.com/thrsth45h/baseball-sim/pull/19)をマージ後、専用workerへ委任し、責任者が独立レビュー/直接修正依頼を行う。
-
-**Phase 3dは承認済み合成研究の実装・独立レビュー・修正・マージまで完了した。** 次は[Phase 4a設計](PHASE4A_DESIGN.md)・[ADR-0008](adr/0008-phase4a-count-reference.md)に従い、ゲーム側で合成8イベントからカウント/限定終端/打球受渡しを更新する参照実装と、言語非依存96表/16列・専用CIを作る。D042は限定参照範囲のみCONFIRMED/ADR Accepted。Pythonは検算用でAndroid/DBの技術採用ではない。研究完了を理由に能力換算・捕球確率・既存研究/3b/3dの接続を開始せず、D029/D031/D032はOPEN。既存worktree・ignoredの履歴/再実行資料は保護する。開始時に両repoのclean状態・最新mainを確認済み。
+**Phase 4aの承認済み実装は完了。次の新しい実装範囲は未承認。** まず次工程の対象・代替案・受入れ条件を設計して本人と相談する。4a完了を理由に確率生成、能力換算、走者/得点、捕球成功、既存研究/3b/3d接続を開始しない。D042は限定参照のみCONFIRMED/ADR Accepted、D029/D031/D032はOPENを維持する。実行手順は[公開README](../reports/phase4a/README.md)、検証は[実装レビュー](PHASE4A_REVIEW.md)。既存worktree・ignoredの履歴/再実行資料を保護し、次回開始時も両repoのbranch/HEAD/未保存変更/最新mainと未マージPRを確認する。
 
 2026-10-28の再開時、限定rawと既存適格入力の一対一照合から、hit_into_playに記録上の犠牲バント4件とファウル地域のfield_out 62件を確認した。「通常スイングだけ」「fair_in_playがフェアを保証」という従来説明を訂正し、旧二値ターゲット・機械可読結果・数値を保存した。限定標本の証拠・根拠hash・代替案は[Phase 2b設計](PHASE2B_DESIGN.md)を参照。
 

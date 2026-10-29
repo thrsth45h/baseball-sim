@@ -38,7 +38,7 @@ run以外・raw-root/model/seed/resume/外部入力のCLIはない。新出力�
 
 source identityは全新runtime source・fixture・package initializerとPython版を記録。UTF-8テキストのCRLF/CRをLFへ正規化してSHA256を計算する。実行時刻/絶対パスは主要成果物に入れない。同じPython環境の2runのバイト一致を確認し、3.11/3.12間のPython版metadataのバイト一致を主張しない。
 
-`verify.py`は新runを実行せず、2run・静的表に沿うtrace・固定source Git blob・旧ゲームファイル保護・構造化unittest結果を照合する。研究repoやraw/モデルは開かない。既存の検証JSONを上書きせず、出力先の新しいフォルダを選ぶ。
+`verify.py`は新runを実行せず、2run・静的表に沿うtrace・固定source Git blob・構造化unittest結果を照合する。旧ゲームファイル保護の対象時点は承認baseline `1c5b738`から固定source `922a2a9`までで、README案内と.gitignore追記以外の35パスがその実装時点で不変だったことを検査する。固定source以後に現在のcheckoutで変わった旧ゲームファイルは、`verification.json`の`current_checkout_changes_since_source_commit`へ参考情報として別記する。後続の完了文書更新を保護例外へ追加せず、現在も35パス全て不変とは主張しない。一方、現在のsource/tests/fixtures/CIと固定sourceの同一性は引き続き必須とする。研究repoやraw/モデルは開かず、既存の検証JSONを上書きしない。出力先には新しいフォルダを選ぶ。
 
 ```powershell
 New-Item -ItemType Directory -Path reports/phase4a/new-verification -ErrorAction Stop | Out-Null

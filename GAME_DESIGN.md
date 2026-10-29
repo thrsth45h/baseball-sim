@@ -103,7 +103,7 @@
 - Whiff%、Chase%、Hard-Hit%、Barrel%、xwOBA、OAA、FIP、WAR等は元イベントから指標定義に従い算出する。独自モデルはMLB公式指標と完全に同一と称さない。
 - 乱数と中断時状態を保存して、再現可能性を確保。長年の生投球データ保存量は容量に応じて設計する。
 
-[Phase 4a設計](docs/PHASE4A_DESIGN.md)は2026-10-29に本人が[設計PR #19](https://github.com/thrsth45h/baseball-sim/pull/19)の範囲とworker実装開始を承認（D042は限定参照範囲のみCONFIRMED）。裁定済みの合成投球イベントからカウント/限定終端/打球受渡しを更新し、ゲーム側に言語非依存の遷移表とPython検算用実装/CIを置く。確率生成・既存研究接続・完全な試合/公式成績・Android技術/製品セーブの採用は含めず、D029/D031/D032はOPENを維持する。設計マージ後にworkerへ委任する。
+[Phase 4a設計](docs/PHASE4A_DESIGN.md)は2026-10-29に本人が[設計PR #19](https://github.com/thrsth45h/baseball-sim/pull/19)の範囲とworker実装開始を承認（D042は限定参照範囲のみCONFIRMED）。worker実装・責任者の独立レビューと修正確認を経て、[実装PR #20](https://github.com/thrsth45h/baseball-sim/pull/20)をmain `4d3a92392d5adb4be9ddd2db4ef16ab3ca3a9977`へマージ済み。裁定済み合成8イベントからカウント/限定終端/打球受渡しを更新するPython検算用参照で、言語非依存96遷移表/16列を保持する。全33 test method・Python3.11/3.12 CI成功、別式の独立期待値との照合と再実行一致を確認した。[レビュー](docs/PHASE4A_REVIEW.md)を参照。確率生成・既存研究接続・完全な試合/公式成績・Android技術/製品セーブの採用は含めず、D029/D031/D032はOPENを維持する。
 
 ## 7. MLB Statcast研究方針と現状
 

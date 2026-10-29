@@ -25,3 +25,9 @@ MLB2026規則の指定部分を参照し、裁定済みの合成8イベント→
 [設計書](../PHASE4A_DESIGN.md)を正本とし、96遷移・16列・全status整合・未対応/終端後拒否・長い通常ファウル・途中処理一致・情報境界・新出力防護を検証する。本人の範囲/仮定/worker実装承認後、設計マージ→専用worker→責任者レビュー/直接修正→継続許可による統合の順。
 
 本人承認に基づきD042は限定参照範囲のみCONFIRMED。設計マージ後にworkerへ委任する。架空リーグの全規約、研究モデル接続、公式成績、能力、UI・セーブ、製品採用の承認へ拡張しない。
+
+## 実装と独立レビューの完了
+
+設計main `1c5b738671a452305a4be874c57f77cd8ad5db10`からworkerへ委任。責任者の独立レビューで固定16列の置換防護を修正し、全33 test method、Python3.11/3.12 CI、別式の独立期待値との照合と4成果物の再実行一致を確認した。[実装PR #20](https://github.com/thrsth45h/baseball-sim/pull/20)はmain `4d3a92392d5adb4be9ddd2db4ef16ab3ca3a9977`へマージ済み。source/tests/fixtures/CI固定は`922a2a9c1cb5a76e9d984fc5bd5c9fef2952b7ae`。補助検証の旧ファイル保護は、この固定実装時点と以後の文書更新を区別する。[実装レビュー](../PHASE4A_REVIEW.md)、[再現手順](../../reports/phase4a/README.md)を参照。
+
+Acceptedは限定参照範囲の決定を表す。Android技術・全規約・能力較正・研究接続・製品採用は未決定のまま。
