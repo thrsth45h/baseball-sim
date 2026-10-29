@@ -1,9 +1,9 @@
 # Phase 4b — 塁・アウト・得点の限定参照
 
 - 版: `phase4b-design-v0.1`、2026-10-29 日本時間。
-- 状態: **Proposed / 未承認**。「つぎへ」は次工程の設計を進める依頼として扱い、以下の新仕様やworker実装開始の承認とは扱わない。
+- 状態: **Accepted**。2026-10-29、本人が本PRを示す確認に「設計PR #22の範囲で進める（推奨）」と回答。以下の限定範囲・入力条件・規則版・ゲーム側Python参照/CIとworker実装開始を承認した。「つぎへ」だけを承認とは扱っていない。
 - 基準: ゲームmain `340602d94466d4af1f07ea559d458650d2e5c85e`、研究main `cd8217a44788cf830c5554b71b04a27a98ce620c`。
-- 関連: D004/D022、D029/D031/D032 OPEN、D043 OPEN、[ADR-0009](adr/0009-phase4b-base-out-reference.md)、[設計点検](PHASE4B_REVIEW.md)。
+- 関連: D004/D022、D029/D031/D032 OPEN、D043 CONFIRMED（4b限定参照のみ）、[ADR-0009](adr/0009-phase4b-base-out-reference.md)、[設計点検](PHASE4B_REVIEW.md)、[設計PR #22](https://github.com/thrsth45h/baseball-sim/pull/22)。
 
 ## 1. 作るものと進め方
 
@@ -133,6 +133,6 @@ CLI案は`python -m prototypes.phase4b run --output data/prototypes/phase4b/run-
 6. 新規CIのPython3.11/3.12と旧4aの33 test methodを確認。新test method数・subTest数・72遷移等を別記。研究repoは不変を確認するが研究575テストを新ルール検証件数に数えない。
 7. 責任者が全差分、独立期待値、別worktreeの再実行と新旧境界を点検し、問題はworkerへ直接修正依頼。追加仕様が必要なら本人に相談する。
 
-## 9. 今回承認を求める範囲
+## 9. 本人が承認した範囲
 
-上記3種・状態/入力条件・規則版・固定72表/16列、ゲーム側Python参照/専用CI、workerへの実装委任。**未承認のため現時点では実装・設計マージを開始しない。** 承認後もD029/D031/D032はOPENを維持する。4aや研究の接続、単打/走塁の意思決定、完全な半回/試合生成、公式記録、Android技術/製品採用は別判断とする。
+**2026-10-29、本人が「設計PR #22の範囲で進める（推奨）」と回答し、上記3種・状態/入力条件・規則版・固定72表/16列、ゲーム側Python参照/専用CI、workerへの実装委任を承認した。** D043を限定参照範囲のみCONFIRMED、ADRをAcceptedとし、設計マージ後にworkerへ委任する。D029/D031/D032はOPENを維持する。4aや研究の接続、単打/走塁の意思決定、完全な半回/試合生成、公式記録、Android技術/製品採用は別判断とする。
