@@ -2,7 +2,8 @@
 
 - 版: `phase3c-design-v0.1`、2026-10-29 日本時間。
 - 状態: **Accepted。2026-10-29、本人が設計PR #15を示した確認に「設計PR #15の範囲・仮設定で進める（推奨）」と回答。合成研究の範囲・明示仮設定・worker実装開始を承認。**
-- 設計PR: [ゲームPR #15](https://github.com/thrsth45h/baseball-sim/pull/15)。設計マージ後にworkerへ実装を委任する。
+- 設計PR: [ゲームPR #15](https://github.com/thrsth45h/baseball-sim/pull/15)、main `ab7cce68673d2a55f96424107d7d5e2597e32571`へマージ済み。
+- 実施: worker実装・責任者の独立レビュー/報告訂正確認後、[研究PR #9](https://github.com/thrsth45h/statcast-swing-model-v1/pull/9)をmain `015b9fdcd18565270b8ce888bd703aead8c63864`へマージ済み。[結果・検証と限界](STATCAST_STATUS.md)を参照。合成研究の完了であり、MLB妥当性・捕球・能力・製品採用の確認ではない。
 - 基準: ゲームmain `27d00bd19851444a29e3dac3dee2543f1c5e2a77`、研究main `35c9fe6fbe2b01c02b7253ed336526e6960cd4fe`。
 - 関連: D022–D023、D029（OPEN）、D039（Phase 3b研究のみCONFIRMED）、D040（合成研究範囲のみCONFIRMED）、[ADR-0006](adr/0006-phase3c-synthetic-flight.md)、[設計点検](PHASE3C_REVIEW.md)。
 

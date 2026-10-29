@@ -10,7 +10,9 @@
 
 ## 現在の到達点
 
-- 次工程は[Phase 3c設計v0.1](PHASE3C_DESIGN.md)・[ADR-0006](adr/0006-phase3c-synthetic-flight.md)・[設計PR #15](https://github.com/thrsth45h/baseball-sim/pull/15)。固定人工条件の軌道・地面到達と、守備者1人の移動距離余裕までの最小試作。**2026-10-29、本人が「設計PR #15の範囲・仮設定で進める（推奨）」と回答し承認。Accepted・D040は合成研究範囲のみCONFIRMED。** 設計マージ後にworkerへ直接実装を委任する。実データ/3b接続・捕球・能力・ゲーム採用は含めない。
+- [Phase 3c設計v0.1](PHASE3C_DESIGN.md)・[ADR-0006](adr/0006-phase3c-synthetic-flight.md)も合成研究実装完了。2026-10-29、本人が「設計PR #15の範囲・仮設定で進める（推奨）」と承認し、[設計PR #15](https://github.com/thrsth45h/baseball-sim/pull/15)をマージ後にworkerへ直接委任。責任者レビュー・報告訂正の確認後、[研究PR #9](https://github.com/thrsth45h/statcast-swing-model-v1/pull/9)をmain `015b9fdcd18565270b8ce888bd703aead8c63864`へマージした。D040は合成研究範囲のみCONFIRMED。実データ/3b接続・捕球・能力・ゲーム採用は含めない。
+- Phase 3cは全497テスト・最終headのPython3.11/3.12 PR CI成功。責任者も別worktreeで全497テストとrunを実行し、4主要成果物が提出版とバイト一致。workerの新実装/結果を参照しない100桁Decimal・三角級数・二分法の期待値と、12例/396点・1,716数値を含む1,786項目が一致した。追加16不正入力の拒否と旧データ/モデル/RNG禁止下のrunも確認。[詳細](STATCAST_STATUS.md)を参照。
+- 検証helperの旧読取り否定フラグを指摘し、raw非読取り・旧成果物のhash用バイト読取り・3c計算での旧モデル不使用へ分離した。workerが訂正し、責任者がhelperを再実行して確認。公開13ファイル、新17/旧211hash、旧338パス中README案内以外337不変を確認した。Phase 3c作業領域`work/phase3c-synthetic-worker`とレビュー領域`work/phase3c-review-6cebf8b`、ignoredの旧資料/再実行は保持。最終レビューheadは`577bdd9a624ab6aed90b2d2ae9df1eba1201a9cd`で研究mainと同じtree。
 - [Phase 3b設計v0.1](PHASE3B_DESIGN.md)・[ADR-0005](adr/0005-phase3b-numeric-generator.md)も研究実装完了。2026-10-29、本人が「設計PR #13の研究範囲・仮設定で進める（推奨）」と承認し、[設計PR #13](https://github.com/thrsth45h/baseball-sim/pull/13)をマージ後、workerへ直接委任。責任者の独立レビュー後に[研究PR #8](https://github.com/thrsth45h/statcast-swing-model-v1/pull/8)をmain `35c9fe6fbe2b01c02b7253ed336526e6960cd4fe`へマージした。D039は研究範囲のみCONFIRMEDで、能力・物理的妥当性・ゲーム採用へ承認を拡張しない。
 - Phase 3bは全439テスト・Python3.11/3.12のPR CI成功。責任者の別実行で12成果物がバイト一致し、worker未参照の事前凍結期待値と1,232項目が一致。公開46ファイルと新77/旧134のhash登録をGit blobも含めて確認。旧285パス中、README案内以外284は不変。2024尾部6件での悪化・2025尾部3件の差0も報告した。[詳細](STATCAST_STATUS.md)を参照。
 - 実データに基づく方向生成・全接触への外挿・実際の守備/捕球・能力・ゲーム統合の新しい実装は未承認。合成の軌道・距離余裕だけは前掲Phase 3cとして別に承認した。Phase 3bの作業領域`work/phase3b-numeric-worker`とレビュー領域`work/phase3b-review-97c741d`、ignoredの再実行出力は保持している。レビュー領域の最終HEADは`c2be7b0c4ee959e96d9e56c1ba62bed6b55d8242`で、Phase 3b完了時の研究mainと同じtree。
@@ -44,6 +46,8 @@
 | Phase 3a固定72区分の分布・抽選 | [研究PR #7](https://github.com/thrsth45h/statcast-swing-model-v1/pull/7) | `c155a6c0af899f2946dbcc4292c680a121fe781b` |
 | Phase 3b設計・研究仮設定・実装承認 | [ゲームPR #13](https://github.com/thrsth45h/baseball-sim/pull/13) | `ebf37343da4932f9bd483753b691c366c510a3f2` |
 | Phase 3b区分内情報比較・EV/LA数値抽選 | [研究PR #8](https://github.com/thrsth45h/statcast-swing-model-v1/pull/8) | `35c9fe6fbe2b01c02b7253ed336526e6960cd4fe` |
+| Phase 3c合成研究の設計・仮設定・実装承認 | [ゲームPR #15](https://github.com/thrsth45h/baseball-sim/pull/15) | `ab7cce68673d2a55f96424107d7d5e2597e32571` |
+| Phase 3c合成軌道・地面到達・移動余裕 | [研究PR #9](https://github.com/thrsth45h/statcast-swing-model-v1/pull/9) | `015b9fdcd18565270b8ce888bd703aead8c63864` |
 
 Phase 1d設計書・ADRのProposedは作成時の表記。研究範囲の採用・マージ記録はゲームPR #4本文にある。研究実装の独立レビュー・ユーザー許可・マージ記録は研究PR #3本文にある。これは製品採用・能力係数の承認ではない。
 
