@@ -188,3 +188,7 @@ EV≥120は2023学習1件、2024が6件、2025が3件。2024尾部の条件付�
 修正版helper・生成JSON・README/VALIDATIONが一致し、責任者もhelperを再実行して旧211hashを確認。旧公開資料はignoredの履歴へ保持し、計算ソース/テストと4主要成果物は不変である。
 
 [研究説明・再現手順](https://github.com/thrsth45h/statcast-swing-model-v1/blob/015b9fdcd18565270b8ce888bd703aead8c63864/reports/phase3c/README.md)、[worker検証記録](https://github.com/thrsth45h/statcast-swing-model-v1/blob/015b9fdcd18565270b8ce888bd703aead8c63864/reports/phase3c/VALIDATION.md)、[責任者レビュー](PHASE3C_REVIEW.md)を参照。無空気・点状守備者・理想化した真の地面情報は合成条件であり、MLBの飛距離/守備認知/捕球妥当性、実データ/3b接続、能力・公式記録・ゲーム採用は未検証・未実施。次の実装範囲は設計相談とする。
+
+## Phase 3d（次工程の設計案・未承認）
+
+[設計案](PHASE3D_DESIGN.md)・[ADR-0007](adr/0007-phase3d-inflight-reach.md)を相談する段階。固定人工軌道について、反応後・地面到達前に、指定高さと単一守備者の水平移動予算を満たす時刻集合を求める。真の軌道を既知とした幾何的存在の研究であり、捕球成功/認知やMLB精度の実測ではない。D041 OPEN、本人承認と設計マージまでworker実装は開始しない。旧結果は保存し、実データ/3b・能力・ゲーム本体へ接続しない。

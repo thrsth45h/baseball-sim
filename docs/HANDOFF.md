@@ -55,6 +55,8 @@ Phase 1d設計書・ADRのProposedは作成時の表記。研究範囲の採用�
 
 ## 次工程
 
+2026-10-29、Phase 3c完了後の「つぎへ」を受け、[Phase 3d案v0.1](PHASE3D_DESIGN.md)・[設計点検](PHASE3D_REVIEW.md)・[ADR-0007](adr/0007-phase3d-inflight-reach.md)を作成中。固定人工軌道の飛行中に、守備者1人が指定高さ/移動予算内へ到達できる時刻集合を調べる提案。D041 OPEN・ADR Proposed、本人の詳細仕様承認は未受領。設計PR作成後、合成範囲・仮設定・worker実装開始の承認を得てから設計をマージし、研究側へ委任する。実装は未着手で、既存3c以下や実データ/3b・能力・ゲーム本体を変更しない。作業ブランチ`design/phase3d-inflight-reach`は最新main `586ff3f8440db9064b657d2121e26ea1018cbd7a`から作成。開始時に両repoのclean状態・最新main・未マージPRなしを確認済み。
+
 2026-10-28の再開時、限定rawと既存適格入力の一対一照合から、hit_into_playに記録上の犠牲バント4件とファウル地域のfield_out 62件を確認した。「通常スイングだけ」「fair_in_playがフェアを保証」という従来説明を訂正し、旧二値ターゲット・機械可読結果・数値を保存した。限定標本の証拠・根拠hash・代替案は[Phase 2b設計](PHASE2B_DESIGN.md)を参照。
 
 **分類・入力監査は実装・独立レビュー・マージまで完了。[設計PR #9](https://github.com/thrsth45h/baseball-sim/pull/9)、D037 CONFIRMED／ADR-0003 Accepted。** 2026-10-28、平易な説明後の本人回答「勝手に進めて良い」により、旧結果を保存した監査と説明訂正を承認。責任者がworkerへ直接委任し、レビュー指摘を直接修正依頼して[研究PR #6](https://github.com/thrsth45h/statcast-swing-model-v1/pull/6)を統合した。新しい予測学習・能力較正・ゲーム統合は含めない。
