@@ -1,6 +1,7 @@
 """Strict readers for the fixed language-independent synthetic fixtures."""
 import json
 from pathlib import Path
+from types import MappingProxyType
 
 from . import DESIGN, SCHEMA
 from .model import CountState, EVENTS
@@ -12,6 +13,17 @@ SCENARIO_IDS = (
     "two_strike_fouls", "three_bunt_fouls", "bunt_foul_after_two", "caught_foul_first",
     "caught_foul_after_two", "fair_full_count", "long_foul_run",
 )
+# Independently transcribed from approved design section 6, never from replay.
+# Event names are explicit here so a model event-order change cannot relabel it.
+_DESIGN_ALIASES = MappingProxyType({
+    "B": "called_ball", "C": "called_strike_caught", "M": "swinging_strike_caught",
+    "T": "foul_tip_caught", "F": "ordinary_foul_uncaught", "U": "bunt_foul_uncaught",
+    "O": "foul_fly_caught", "P": "fair_ball_handoff",
+})
+_DESIGN_SEQUENCES = ("", "B", "C", "BBBB", "CBMBFBB", "CCC", "MMM", "CMT", "FF",
+                     "CMFFF", "UUU", "CMU", "O", "UUO", "BBBCMP", "CM"+"F"*32)
+APPROVED_SCENARIO_EVENTS = tuple(tuple(_DESIGN_ALIASES[code] for code in sequence)
+                                 for sequence in _DESIGN_SEQUENCES)
 
 
 def _unique(pairs):
@@ -68,4 +80,6 @@ def scenarios():
         CountState.from_mapping(row["expected_final"])
     if [row["id"] for row in rows] != list(SCENARIO_IDS):
         raise ValueError("fixture must contain exactly the approved sixteen scenarios")
+    if tuple(tuple(row["events"]) for row in rows) != APPROVED_SCENARIO_EVENTS:
+        raise ValueError("fixed scenario events differ from the approved sixteen sequences")
     return rows

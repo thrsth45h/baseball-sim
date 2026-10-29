@@ -113,6 +113,19 @@ class ModelTests(unittest.TestCase):
             with self.subTest(id=row["id"]):
                 self.assertEqual(replay(CountState(), row["events"]).final_state.as_dict(), row["expected_final"])
 
+    def test_fixed_scenario_events_reject_equal_final_replacements(self):
+        replacements = (("three_bunt_fouls", [C, C, C]), ("three_bunt_fouls", [M, M, M]),
+                        ("foul_tip_strikeout", [C, C, C]), ("fouls_to_two", [C, C]),
+                        ("mixed_walk", [B, C, M, B, F, B, B]))
+        for identifier, events in replacements:
+            with self.subTest(id=identifier, events=events):
+                rows = fixtures.scenarios()
+                row = next(item for item in rows if item["id"] == identifier)
+                self.assertEqual(replay(CountState(), events).final_state.as_dict(), row["expected_final"])
+                row["events"] = events
+                with patch.object(fixtures, "_document", return_value=rows), self.assertRaises(ValueError):
+                    fixtures.scenarios()
+
     def test_every_split_preserves_absolute_trace(self):
         splits = 0
         for row in fixtures.scenarios():
@@ -281,6 +294,24 @@ class FilesystemTests(unittest.TestCase):
         with patch.object(runner, "transition_table", return_value=table), self.assertRaises(ValueError): runner.run(output)
         self.assertFalse(output.exists())
 
+    def test_modified_fixture_json_events_rejected_before_output(self):
+        replacements = (("three_bunt_fouls", [C, C, C]), ("three_bunt_fouls", [M, M, M]),
+                        ("foul_tip_strikeout", [C, C, C]), ("fouls_to_two", [C, C]),
+                        ("mixed_walk", [B, C, M, B, F, B, B]))
+        for index, (identifier, events) in enumerate(replacements):
+            with self.subTest(id=identifier, events=events):
+                folder = self.work/f"mutant-fixtures-{index}"
+                folder.mkdir()
+                for source in fixtures.FIXTURE_ROOT.glob("*.json"):
+                    (folder/source.name).write_bytes(source.read_bytes())
+                document = fixtures.read_json(folder/"scenarios.json")
+                row = next(item for item in document["scenarios"] if item["id"] == identifier)
+                self.assertEqual(replay(CountState(), events).final_state.as_dict(), row["expected_final"])
+                row["events"] = events
+                (folder/"scenarios.json").write_bytes(io.canonical(document))
+                output = self.work/f"data/prototypes/phase4a/mutant-run-{index}"
+                with patch.object(fixtures, "FIXTURE_ROOT", folder), self.assertRaises(ValueError): runner.run(output)
+                self.assertFalse(output.exists())
     def test_implementation_change_fails_before_output(self):
         identity = io.implementation_identity()
         output = self.work/"data/prototypes/phase4a/changed"
