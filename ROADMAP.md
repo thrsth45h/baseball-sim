@@ -78,7 +78,9 @@ PR #1: https://github.com/thrsth45h/statcast-swing-model-v1/pull/1
 
 完了範囲は限定ルールの検算。完全な1打席/試合の生成、既存研究・確率・能力・走者/得点・公式成績・UI/セーブの接続は含めない。次工程の対象と受入れ条件は設計相談で決め、重要な新仕様の承認後に実装する。D029/D031/D032はOPENを維持する。
 
-次工程の[Phase 4b設計](docs/PHASE4B_DESIGN.md)・[ADR-0009](docs/adr/0009-phase4b-base-out-reference.md)は、2026-10-29に本人が[設計PR #22](https://github.com/thrsth45h/baseball-sim/pull/22)の範囲とworker実装開始を承認（D043限定CONFIRMED/ADR Accepted）。確定済み合成3プレーで塁占有・アウト・半回得点を更新し、押出し・1〜4得点・三アウト停止/残塁を72表/16列で検証する。設計マージ後にworkerへ委任する。走塁判断・単打/併殺・時系列の得点可否・4a/研究接続・完全な試合は含めない。
+[Phase 4b設計](docs/PHASE4B_DESIGN.md)・[ADR-0009](docs/adr/0009-phase4b-base-out-reference.md)は、2026-10-29に本人が[設計PR #22](https://github.com/thrsth45h/baseball-sim/pull/22)の範囲とworker実装開始を承認（D043限定CONFIRMED/ADR Accepted）。worker実装・責任者の独立レビュー後、[実装PR #23](https://github.com/thrsth45h/baseball-sim/pull/23)をmain `aff963e93408460a4d157313e151e4f9b96c9955`へマージした。確定済み合成3プレーの塁占有・アウト・半回得点を扱い、72表/16列・三アウト停止/残塁を検証。新4b32テスト・旧4a33テスト（別集計）、Python3.11/3.12 CI、独立期待値との1,578比較項目/138期待拒否、4成果物一致を確認した。[レビュー](docs/PHASE4B_REVIEW.md)を参照。
+
+次の新しい実装仕様は未承認。走塁判断・単打/併殺・時系列の得点可否・4a/研究接続・完全な試合は含めず、次工程の対象と受入れ条件を設計して本人と相談する。D029/D031/D032はOPENを維持する。
 
 - 投球選択・制球位置・球速と変化量、フレーミング、ブロッキング、疲労、球場、守備・走塁。
 - 1球単位のカウント、走者、アウト、得点、併殺、延長、交代、盗塁等。

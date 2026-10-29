@@ -218,6 +218,12 @@ EV≥120は2023学習1件、2024が6件、2025が3件。2024尾部の条件付�
 
 Statcast研究や3dの到達機会をイベントへ変換せず、確率・走者/得点・能力・公式成績・Android/セーブには接続していない。完全な打席/試合生成や製品採用は未達。D042は限定参照のみCONFIRMED、D029/D031/D032はOPEN。次工程の実装仕様は設計相談で決める。
 
-## Phase 4b（ゲーム側の塁・アウト・得点参照、承認済み）
+## Phase 4b（ゲーム側の塁・アウト・得点参照、レビュー後mainへマージ済み）
 
-2026-10-29、本人が[設計PR #22](https://github.com/thrsth45h/baseball-sim/pull/22)の範囲とworker実装開始を承認。[設計v0.1](PHASE4B_DESIGN.md)・[ADR-0009](adr/0009-phase4b-base-out-reference.md)はD043限定CONFIRMED/Accepted。確定済みの四球/走者据置きアウト/合法本塁打から、塁占有・アウト・半回得点を更新し、72静的遷移と16列で限定ルールを検証する。研究モデルや得点分布の研究成果ではない。4aやStatcast/3dとの接続、能力、公式個人成績、Android/セーブは含めない。設計マージ後にworkerへ委任する。
+2026-10-29、本人が[設計PR #22](https://github.com/thrsth45h/baseball-sim/pull/22)の範囲とworker実装開始を承認。設計main `59ae0e2f726b88d5729d026a0e293916c33a73e6`からworkerへ委任し、責任者の独立レビュー後に[実装PR #23](https://github.com/thrsth45h/baseball-sim/pull/23)をmain `aff963e93408460a4d157313e151e4f9b96c9955`へマージした。[設計v0.1](PHASE4B_DESIGN.md)・[ADR-0009](adr/0009-phase4b-base-out-reference.md)のD043限定CONFIRMED/Acceptedを維持。
+
+確定済みの四球/走者据置きアウト/合法本塁打から塁占有・アウト・半回得点を更新し、三アウト後は残塁/得点を保持して停止する。新4b32 test method（subTest515別）、旧4a33 method（subTest326別）が成功し、Python3.11/3.12 CIも成功。責任者の別実行・識別走者の独立期待値との1,578比較項目/138期待拒否が一致し、4成果物もworker版とバイト一致した。[レビュー](PHASE4B_REVIEW.md)と[公開手順](../reports/phase4b/README.md)を参照。
+
+実装PR時点で旧65パス中README案内以外64不変、公開13ファイル62,329bytes・15hashのworking/Git blob一致を確認した。以後の完了文書更新は履歴保護の例外へ追加せず、現在の変更として区別する。研究repoはmain `cd8217a44788cf830c5554b71b04a27a98ce620c`のまま不変で、研究575テストを今回の件数へ加算していない。
+
+限定ルールの検算であり、研究モデルや得点分布の研究成果ではない。4aやStatcast/3dとの接続、走塁判断、能力、公式個人成績、完全試合、Android/セーブ・製品採用は含めない。D029/D031/D032はOPEN、次工程の実装仕様は設計相談で決める。

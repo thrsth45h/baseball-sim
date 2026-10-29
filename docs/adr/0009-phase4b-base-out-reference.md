@@ -29,3 +29,9 @@ outs/一二三塁占有/runsの不変状態、W/X/Hの純粋更新、72静的遷
 正本は[設計書](../PHASE4B_DESIGN.md)。72表・16列/30イベント/46分割、人数保存、Wの全占有、得点平行移動、三アウト後拒否/残塁、巨大整数/長い四球、不正入力、出力防護/再現性、新CIと旧4a回帰を検証する。責任者の独立期待値/別実行をworker自己検証から分ける。
 
 本人が承認したのは、この限定範囲とゲーム側検算用実装/CI、worker実装開始のみ。D043を限定範囲だけCONFIRMED、ADRをAcceptedとして設計PRをマージし、workerへ委任する。旧接続・完全試合・能力・製品採用へ承認を拡張しない。
+
+## 実装と独立レビューの完了（2026-10-30記録）
+
+承認main `59ae0e2f726b88d5729d026a0e293916c33a73e6`からworkerへ委任。責任者の独立レビュー・別実行・凍結した識別走者期待値との照合で必須修正はなく、[実装PR #23](https://github.com/thrsth45h/baseball-sim/pull/23)を2026-10-29にmain `aff963e93408460a4d157313e151e4f9b96c9955`へマージした。新4b32 test method、旧4a33 test method（別集計）、Python3.11/3.12 CI成功、1,578比較項目/138期待拒否と4成果物一致を確認。source/tests/fixtures/CI固定は`7f98536c8659d6fa6bd0bbe94ab6e48e8ee4fb3b`。[レビュー](../PHASE4B_REVIEW.md)・[再現手順](../../reports/phase4b/README.md)を参照。
+
+Acceptedは限定参照の決定を表し、研究接続・完全試合・能力・Android技術・製品採用の決定へ拡張しない。
