@@ -227,3 +227,7 @@ Statcast研究や3dの到達機会をイベントへ変換せず、確率・走�
 実装PR時点で旧65パス中README案内以外64不変、公開13ファイル62,329bytes・15hashのworking/Git blob一致を確認した。以後の完了文書更新は履歴保護の例外へ追加せず、現在の変更として区別する。研究repoはmain `cd8217a44788cf830c5554b71b04a27a98ce620c`のまま不変で、研究575テストを今回の件数へ加算していない。
 
 限定ルールの検算であり、研究モデルや得点分布の研究成果ではない。4aやStatcast/3dとの接続、走塁判断、能力、公式個人成績、完全試合、Android/セーブ・製品採用は含めない。D029/D031/D032はOPEN、次工程の実装仕様は設計相談で決める。
+
+## Phase 4c（ゲーム側の限定接続、承認済み）
+
+2026-10-30、本人が[設計PR #25](https://github.com/thrsth45h/baseball-sim/pull/25)の範囲とworker実装開始を承認。[設計v0.1](PHASE4C_DESIGN.md)・[ADR-0010](adr/0010-phase4c-pitch-half-reference.md)はD044限定接続CONFIRMED/Accepted。旧4a/4bの型・stepを新接続層から呼び、裁定済み投球・完了プレー確定・次打者開始を明示する。新4cのconnected_to_phase4a/phase4b=trueとし、旧4a/4bの凍結flags/過去結果は変更しない。研究repo/Statcast/3d・確率・能力・一般走塁・完全試合・Android/製品採用は未接続。設計マージ後にworkerへ委任する。

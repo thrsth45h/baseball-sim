@@ -64,6 +64,7 @@
 | Phase 4a補助検証の時点訂正・完了記録 | [ゲームPR #21](https://github.com/thrsth45h/baseball-sim/pull/21) | `340602d94466d4af1f07ea559d458650d2e5c85e` |
 | Phase 4b限定参照の設計・実装承認 | [ゲームPR #22](https://github.com/thrsth45h/baseball-sim/pull/22) | `59ae0e2f726b88d5729d026a0e293916c33a73e6` |
 | Phase 4b塁・アウト・半回得点の参照実装 | [ゲームPR #23](https://github.com/thrsth45h/baseball-sim/pull/23) | `aff963e93408460a4d157313e151e4f9b96c9955` |
+| Phase 4b完了記録・独立レビューの引き継ぎ | [ゲームPR #24](https://github.com/thrsth45h/baseball-sim/pull/24) | `197add4704dc1f8fe64d41037ede25cf73ba6876` |
 
 Phase 1d設計書・ADRのProposedは作成時の表記。研究範囲の採用・マージ記録はゲームPR #4本文にある。研究実装の独立レビュー・ユーザー許可・マージ記録は研究PR #3本文にある。これは製品採用・能力係数の承認ではない。
 
@@ -71,7 +72,9 @@ Phase 1d設計書・ADRのProposedは作成時の表記。研究範囲の採用�
 
 ## 次工程
 
-**Phase 4bの承認済み実装は完了。次の新しい実装仕様は未承認。** 次工程の対象・代替案・受入れ条件を設計して本人と相談する。4b完了だけを理由に4a/研究接続、確率生成、能力換算、捕球成功、一般の走塁/第三アウト得点処理、完全試合を追加しない。D042/D043はそれぞれ限定参照のみCONFIRMED、D029/D031/D032はOPEN。正本は[4b設計](PHASE4B_DESIGN.md)・[ADR-0009](adr/0009-phase4b-base-out-reference.md)、検証は[実装レビュー](PHASE4B_REVIEW.md)、実行手順は[公開README](../reports/phase4b/README.md)。既存worktreeとignored資料を保護し、次回も両repoのbranch/HEAD/未保存変更/最新mainと未マージPRを確認する。
+**Phase 4bの承認済み実装は完了。次は以下のPhase 4c限定接続を承認済み。** 4b完了だけを理由に研究接続、確率生成、能力換算、捕球成功、一般の走塁/第三アウト得点処理、完全試合を追加しない。D042/D043は限定参照、D044は限定接続のみCONFIRMED、D029/D031/D032はOPEN。既存worktreeとignored資料を保護し、次回も両repoのbranch/HEAD/未保存変更/最新mainと未マージPRを確認する。
+
+2026-10-30、本人が「設計PR #25の範囲で進める（推奨）」と回答し、[Phase 4c設計](PHASE4C_DESIGN.md)・[ADR-0010](adr/0010-phase4c-pitch-half-reference.md)の限定接続・強い入力条件・固定表/列・ゲーム側Python参照/CI・旧型/step利用とworker実装開始を承認した（[設計PR #25](https://github.com/thrsth45h/baseball-sim/pull/25)、[点検記録](PHASE4C_REVIEW.md)）。D044は限定接続のみCONFIRMED/ADR Accepted。結果をstatusだけから選択せず、未確定結果と次打者開始を分け、制御/互換表と18列/82action/100分割を検証する。旧コード/結果と研究repoは保持し、設計マージ後に専用workerへ委任する。
 
 2026-10-28の再開時、限定rawと既存適格入力の一対一照合から、hit_into_playに記録上の犠牲バント4件とファウル地域のfield_out 62件を確認した。「通常スイングだけ」「fair_in_playがフェアを保証」という従来説明を訂正し、旧二値ターゲット・機械可読結果・数値を保存した。限定標本の証拠・根拠hash・代替案は[Phase 2b設計](PHASE2B_DESIGN.md)を参照。
 
