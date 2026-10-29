@@ -82,7 +82,7 @@ PR #1: https://github.com/thrsth45h/statcast-swing-model-v1/pull/1
 
 次の新しい実装仕様は未承認。走塁判断・単打/併殺・時系列の得点可否・4a/研究接続・完全な試合は含めず、次工程の対象と受入れ条件を設計して本人と相談する。D029/D031/D032はOPENを維持する。
 
-次工程の[Phase 4c設計](docs/PHASE4C_DESIGN.md)・[ADR-0010](docs/adr/0010-phase4c-pitch-half-reference.md)は、2026-10-30に本人が[設計PR #25](https://github.com/thrsth45h/baseball-sim/pull/25)の範囲とworker実装開始を承認（D044限定接続CONFIRMED/ADR Accepted）。旧4a/4bを変更せず、新接続層の明示Begin/Pitch/Resolve・4stage・互換5組で反映順を検証する。制御/互換12セルずつ、18列/82action/100分割、代表2,304投球組合せ等が対象。設計マージ後に委任し、一般走塁・研究/能力・完全試合・Android技術は追加しない。
+[Phase 4c設計](docs/PHASE4C_DESIGN.md)・[ADR-0010](docs/adr/0010-phase4c-pitch-half-reference.md)は2026-10-30に本人が[設計PR #25](https://github.com/thrsth45h/baseball-sim/pull/25)の範囲を承認（D044限定CONFIRMED/Accepted）。worker実装・責任者の独立レビュー後、[実装PR #26](https://github.com/thrsth45h/baseball-sim/pull/26)をmain `40e1d1d54e9728bbee04c3f65300e57972b9c629`へマージ済み。旧4a/4bの型・stepへ明示Begin/Pitch/Resolveで委任し、結果待ちではhalfを反映せず、明示確定後にcount=Noneへ消費する。次打者も明示Beginを要求し、三アウトで残塁/得点を保持して停止する。 新4c28 test method/成功subTest3020、旧4a33/326・旧4b32/515を別集計し、責任者も別worktreeで全て成功、failure/error/skip0。対象headのPython3.11/3.12全CI成功。実装未参照で別計算した凍結期待値との11,468比較項目/439期待拒否が一致し、18列/82action/100分割、代表2,304投球、互換288試行（120受理/168拒否）、半回完了96拒否等を照合した。監視下runの許可外入力/RNG・時計利用0、主要4成果物は責任者の2runとworker公開版でバイト一致。公開helperも164trace/6run hashを独立再検算した。 [レビュー](docs/PHASE4C_REVIEW.md)・[実行手順](reports/phase4c/README.md)を参照。強い合成入力条件内の接続参照で、halfは最後に確定反映したsnapshot。省略された現実イベントの検出や古いsnapshot/通信再送の永続重複排除を保証しない。一般走塁/単打/併殺/第三アウト得点、公式個人成績、完全試合、研究/確率/能力、Android/UI/DB/セーブ・製品採用は未実施。D029/D031/D032はOPEN。次の新しい実装仕様は未承認で、設計相談から決める。
 
 - 投球選択・制球位置・球速と変化量、フレーミング、ブロッキング、疲労、球場、守備・走塁。
 - 1球単位のカウント、走者、アウト、得点、併殺、延長、交代、盗塁等。
