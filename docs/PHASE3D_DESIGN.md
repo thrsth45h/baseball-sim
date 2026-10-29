@@ -5,6 +5,7 @@
 - 基準: ゲームmain `586ff3f8440db9064b657d2121e26ea1018cbd7a`、研究main `015b9fdcd18565270b8ce888bd703aead8c63864`。
 - 関連: D022–D023、D029 OPEN、D040 CONFIRMED（3cのみ）、D041 CONFIRMED（3d合成研究のみ）、[ADR-0007](adr/0007-phase3d-inflight-reach.md)、[設計点検](PHASE3D_REVIEW.md)。
 - 設計PR: [ゲームPR #17](https://github.com/thrsth45h/baseball-sim/pull/17)。**設計マージ後にworkerの研究実装を開始する。**
+- 実施完了: 設計をmain `863e78756448003363087994692ff85a2d79a428`へマージ後にworkerへ委任し、責任者の独立レビュー・出力保護の修正確認を経て[研究PR #10](https://github.com/thrsth45h/statcast-swing-model-v1/pull/10)をmain `cd8217a44788cf830c5554b71b04a27a98ce620c`へマージした。[検証と限界](STATCAST_STATUS.md)を参照。実際の捕球・認知・MLB妥当性・能力・ゲーム採用の確認ではない。
 
 ## 1. 今回決める範囲
 

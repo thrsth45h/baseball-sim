@@ -24,3 +24,21 @@
 反映後の8文書を再点検し、承認前に必須の追加修正は見当たらなかった。Proposed・D041 OPEN・実装未着手と、捕球/認知/実データ接続の除外が整合している。相対リンク61件と差分の整形も確認した。これは設計レビューの結論であり、生産コードの正しさを認定するものではない。
 
 上段は承認前の点検記録。2026-10-29、本人が「設計PR #17の範囲・仮設定で進める（推奨）」と回答し、合成研究範囲・仮設定とworker実装開始を承認した。D041はその範囲のみCONFIRMED、ADRはAcceptedとした。生産実装の数値レビュー・MLB妥当性・能力・製品採用は別である。
+
+## 後続の実装レビューと統合
+
+[研究PR #10](https://github.com/thrsth45h/statcast-swing-model-v1/pull/10)、最終head `238e63468c8bcb2679654f5fdde83b109c1e2a98`、source/tests固定 `0b13877a12ac59b5cb4ea1d70f9c376f5f9b9261`。責任者が全新規コード・78専用テスト・公開helper/報告を読み、別worktreeで修正後の全575テスト（失敗/エラー/skip0、44.21秒）とCLIを実行。4主要成果物がworker提出版とバイト一致した。数理kernelの読取り専用補助点検でも必須修正は見当たらなかった。
+
+workerのsource/tests/results/reportsを見ない別担当が、承認済み設計の表から独立期待値を作り、照合前に凍結した。160桁Decimalの放物線中心/半径と、整数多項式の厳密符号・頂点側・有理包囲で根を検証し、根で分割したセルと端点から集合を構成する別方式。固定20例/14区間、追加13多項式oracleと共通無理根の人工例を含む940項目、91回の端点照合が一致した。根ID・canonical表示包囲・開閉・最初時刻を確認。これは「worker実装より前に凍結した」という時間順の主張ではない。
+
+極小の非空区間は約1.1871e−13秒で、地面終端のopenを保持した。2共通無理根singletonも保持。最小正subnormal高さの実際のevaluateはindeterminate/nullとなり、未解消をfalseにしない。追加16不正入力拒否、監視対象の新runの旧入力読取り/RNG試行0を確認した。旧3cとの追加5条件で位置・地面時刻も許容範囲内だった。
+
+### P2-01: namespaceを転送すると旧領域への出力を許してしまう
+
+初版の`io.reserve_output`は許可namespace自体もresolveしており、data/phase3dが旧namespaceを指すjunction/symlinkだと、その旧領域を許可してしまった。責任者が別の検証専用root内の実Windows junctionで再現し、workerへ直接修正依頼した。実際の旧研究データは触っていない。
+
+workerはcanonical checkout rootに対する宣言位置を保って解決後の出力を検査する修正と、namespace全体/子aliasから旧領域/checkout外へ向かう4回帰を追加。責任者も修正版の全575テストで実junction4ケースを確認し、初版の再現junctionで新出力が拒否されることを再確認した。訂正前の公開13ファイル一式はignored履歴に保持。新source同一性でsynthetic-03/repeat-04へ再実行し、旧3cは変更していない。
+
+公開13ファイル106,377bytes、新17/旧228hashをworking/Git blob双方で検証。旧358パス中、root README案内以外357不変。責任者もhelperを別実行し、4主要成果物の一致と旧228hashを確認した。新runの旧モデル不使用と、helperの旧成果物hash用バイト読取りは別に記録した。
+
+最終headのPR CI run `40852403627`、Python3.11/3.12両job成功を確認し、本人の継続マージ許可に基づき研究main `cd8217a44788cf830c5554b71b04a27a98ce620c`へ統合した。これは内部の実装レビューであり、外部査読・MLBの較正・実際の捕球/認知・能力/公式記録・ゲーム採用の承認ではない。

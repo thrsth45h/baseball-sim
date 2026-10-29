@@ -10,12 +10,15 @@
 
 ## 現在の到達点
 
+- [Phase 3d設計v0.1](PHASE3D_DESIGN.md)・[ADR-0007](adr/0007-phase3d-inflight-reach.md)も合成研究実装完了。2026-10-29、本人が「設計PR #17の範囲・仮設定で進める（推奨）」と承認し、[設計PR #17](https://github.com/thrsth45h/baseball-sim/pull/17)をmain `863e78756448003363087994692ff85a2d79a428`へマージ後workerへ委任。責任者の独立レビューと修正確認後、[研究PR #10](https://github.com/thrsth45h/statcast-swing-model-v1/pull/10)をmain `cd8217a44788cf830c5554b71b04a27a98ce620c`へマージした。D041は合成研究のみCONFIRMED。真の軌道を既知とした飛行中の幾何的到達時刻集合であり、実際の捕球/認知・実データ/3b・能力・公式記録・ゲーム採用は含めない。
+- Phase 3dは全575テスト・最終headのPython3.11/3.12 PR CI成功。責任者も別worktreeで全575テスト/CLIとhelperを実行し、4主要成果物が提出版とバイト一致。worker未参照の160桁Decimal/厳密符号による独立期待値と、20例/14区間・追加数理oracle等940項目/91回の端点照合が一致。追加16不正入力拒否と新runの監視対象旧入力/RNG試行0も確認。[詳細](STATCAST_STATUS.md)、[レビュー](PHASE3D_REVIEW.md)を参照。
+- 初版のnamespace転送による旧領域への出力を実Windows junctionで再現し、workerへ直接修正依頼。4回帰・責任者の旧junction再確認で拒否を確認した。公開13ファイル106,377bytes、新17/旧228hash、旧358パス中README案内以外357不変をworking/Git双方で確認。worker領域`work/phase3d-inflight-worker`、レビュー領域`work/phase3d-review-710e999`、ignoredの旧資料/再実行を保持。最終レビューhead `238e63468c8bcb2679654f5fdde83b109c1e2a98`は研究mainと同じtree、source/tests固定は`0b13877a12ac59b5cb4ea1d70f9c376f5f9b9261`。
 - [Phase 3c設計v0.1](PHASE3C_DESIGN.md)・[ADR-0006](adr/0006-phase3c-synthetic-flight.md)も合成研究実装完了。2026-10-29、本人が「設計PR #15の範囲・仮設定で進める（推奨）」と承認し、[設計PR #15](https://github.com/thrsth45h/baseball-sim/pull/15)をマージ後にworkerへ直接委任。責任者レビュー・報告訂正の確認後、[研究PR #9](https://github.com/thrsth45h/statcast-swing-model-v1/pull/9)をmain `015b9fdcd18565270b8ce888bd703aead8c63864`へマージした。D040は合成研究範囲のみCONFIRMED。実データ/3b接続・捕球・能力・ゲーム採用は含めない。
 - Phase 3cは全497テスト・最終headのPython3.11/3.12 PR CI成功。責任者も別worktreeで全497テストとrunを実行し、4主要成果物が提出版とバイト一致。workerの新実装/結果を参照しない100桁Decimal・三角級数・二分法の期待値と、12例/396点・1,716数値を含む1,786項目が一致した。追加16不正入力の拒否と旧データ/モデル/RNG禁止下のrunも確認。[詳細](STATCAST_STATUS.md)を参照。
-- 検証helperの旧読取り否定フラグを指摘し、raw非読取り・旧成果物のhash用バイト読取り・3c計算での旧モデル不使用へ分離した。workerが訂正し、責任者がhelperを再実行して確認。公開13ファイル、新17/旧211hash、旧338パス中README案内以外337不変を確認した。Phase 3c作業領域`work/phase3c-synthetic-worker`とレビュー領域`work/phase3c-review-6cebf8b`、ignoredの旧資料/再実行は保持。最終レビューheadは`577bdd9a624ab6aed90b2d2ae9df1eba1201a9cd`で研究mainと同じtree。
+- 検証helperの旧読取り否定フラグを指摘し、raw非読取り・旧成果物のhash用バイト読取り・3c計算での旧モデル不使用へ分離した。workerが訂正し、責任者がhelperを再実行して確認。公開13ファイル、新17/旧211hash、旧338パス中README案内以外337不変を確認した。Phase 3c作業領域`work/phase3c-synthetic-worker`とレビュー領域`work/phase3c-review-6cebf8b`、ignoredの旧資料/再実行は保持。最終レビューheadは`577bdd9a624ab6aed90b2d2ae9df1eba1201a9cd`でPhase 3c完了時の研究mainと同じtree。
 - [Phase 3b設計v0.1](PHASE3B_DESIGN.md)・[ADR-0005](adr/0005-phase3b-numeric-generator.md)も研究実装完了。2026-10-29、本人が「設計PR #13の研究範囲・仮設定で進める（推奨）」と承認し、[設計PR #13](https://github.com/thrsth45h/baseball-sim/pull/13)をマージ後、workerへ直接委任。責任者の独立レビュー後に[研究PR #8](https://github.com/thrsth45h/statcast-swing-model-v1/pull/8)をmain `35c9fe6fbe2b01c02b7253ed336526e6960cd4fe`へマージした。D039は研究範囲のみCONFIRMEDで、能力・物理的妥当性・ゲーム採用へ承認を拡張しない。
 - Phase 3bは全439テスト・Python3.11/3.12のPR CI成功。責任者の別実行で12成果物がバイト一致し、worker未参照の事前凍結期待値と1,232項目が一致。公開46ファイルと新77/旧134のhash登録をGit blobも含めて確認。旧285パス中、README案内以外284は不変。2024尾部6件での悪化・2025尾部3件の差0も報告した。[詳細](STATCAST_STATUS.md)を参照。
-- 実データに基づく方向生成・全接触への外挿・実際の守備/捕球・能力・ゲーム統合の新しい実装は未承認。合成の軌道・距離余裕だけは前掲Phase 3cとして別に承認した。Phase 3bの作業領域`work/phase3b-numeric-worker`とレビュー領域`work/phase3b-review-97c741d`、ignoredの再実行出力は保持している。レビュー領域の最終HEADは`c2be7b0c4ee959e96d9e56c1ba62bed6b55d8242`で、Phase 3b完了時の研究mainと同じtree。
+- 実データに基づく方向生成・全接触への外挿・実際の守備/捕球・能力・ゲーム統合の新しい実装は未承認。合成の軌道/距離余裕と飛行中の幾何的機会は、前掲Phase 3c/3dとして別に承認した。Phase 3bの作業領域`work/phase3b-numeric-worker`とレビュー領域`work/phase3b-review-97c741d`、ignoredの再実行出力は保持している。レビュー領域の最終HEADは`c2be7b0c4ee959e96d9e56c1ba62bed6b55d8242`で、Phase 3b完了時の研究mainと同じtree。
 - Phase 1bの2023〜2025年通年研究、Phase 1cの合成知覚プロトタイプ、Phase 1dの合成識別研究・入力監査機能が研究側mainへマージ済み。
 - Phase 1dは別の実装担当によるコードを設計・レビュー担当が点検。レビュー側でも240テスト成功、完全実行の設定・数値集計・積分結果の3ファイルが提出版とバイト単位で一致。対象headのPython 3.11／3.12 CI成功を確認した。
 - 主要ΔAUC=0.13308019、95%区間[0.12948814, 0.13627906]は固定した合成課題内の結果。MLB選手の能力差・認知妥当性・製品係数の実測値ではない。
@@ -48,6 +51,8 @@
 | Phase 3b区分内情報比較・EV/LA数値抽選 | [研究PR #8](https://github.com/thrsth45h/statcast-swing-model-v1/pull/8) | `35c9fe6fbe2b01c02b7253ed336526e6960cd4fe` |
 | Phase 3c合成研究の設計・仮設定・実装承認 | [ゲームPR #15](https://github.com/thrsth45h/baseball-sim/pull/15) | `ab7cce68673d2a55f96424107d7d5e2597e32571` |
 | Phase 3c合成軌道・地面到達・移動余裕 | [研究PR #9](https://github.com/thrsth45h/statcast-swing-model-v1/pull/9) | `015b9fdcd18565270b8ce888bd703aead8c63864` |
+| Phase 3d合成研究の設計・仮設定・実装承認 | [ゲームPR #17](https://github.com/thrsth45h/baseball-sim/pull/17) | `863e78756448003363087994692ff85a2d79a428` |
+| Phase 3d飛行中の幾何的到達時刻集合 | [研究PR #10](https://github.com/thrsth45h/statcast-swing-model-v1/pull/10) | `cd8217a44788cf830c5554b71b04a27a98ce620c` |
 
 Phase 1d設計書・ADRのProposedは作成時の表記。研究範囲の採用・マージ記録はゲームPR #4本文にある。研究実装の独立レビュー・ユーザー許可・マージ記録は研究PR #3本文にある。これは製品採用・能力係数の承認ではない。
 
@@ -55,7 +60,7 @@ Phase 1d設計書・ADRのProposedは作成時の表記。研究範囲の採用�
 
 ## 次工程
 
-2026-10-29、本人が「設計PR #17の範囲・仮設定で進める（推奨）」と回答し、[Phase 3d設計v0.1](PHASE3D_DESIGN.md)の合成研究範囲・仮設定とworker実装開始を承認した（D041はその範囲のみCONFIRMED、[ADR-0007](adr/0007-phase3d-inflight-reach.md) Accepted）。[設計PR #17](https://github.com/thrsth45h/baseball-sim/pull/17)をマージ後、専用作業領域のworkerへ委任し、責任者がコード/結果を独立レビューする。固定人工軌道の飛行中に、守備者1人が指定高さ/移動予算内へ到達できる時刻集合を調べる。既存3c以下や実データ/3b・能力・ゲーム本体は変更しない。作業ブランチ`design/phase3d-inflight-reach`はゲームmain `586ff3f8440db9064b657d2121e26ea1018cbd7a`から作成。開始時に両repoのclean状態・最新mainを確認済み。
+**Phase 3dは承認済み合成研究の実装・独立レビュー・修正・マージまで完了した。** 次の実装仕様は未承認。飛行中の幾何的存在から、実際の捕球/守備認知・方向/実データ・公式記録へどう接続するかは別に設計・相談する。研究完了を理由に、能力換算やゲーム統合・3b生成器接続を開始しない。既存のworktree・ignoredの履歴/再実行資料は保護する。
 
 2026-10-28の再開時、限定rawと既存適格入力の一対一照合から、hit_into_playに記録上の犠牲バント4件とファウル地域のfield_out 62件を確認した。「通常スイングだけ」「fair_in_playがフェアを保証」という従来説明を訂正し、旧二値ターゲット・機械可読結果・数値を保存した。限定標本の証拠・根拠hash・代替案は[Phase 2b設計](PHASE2B_DESIGN.md)を参照。
 
