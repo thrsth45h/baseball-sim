@@ -1,10 +1,10 @@
 # Phase 3c — 合成打球の軌道・地面到達と単一守備者の移動余裕
 
 - 版: `phase3c-design-v0.1`、2026-10-29 日本時間。
-- 状態: **Proposed。本人の仕様承認待ち。実装・マージは未開始。**
-- 設計PR: [ゲームPR #15](https://github.com/thrsth45h/baseball-sim/pull/15)（Draft、未マージ）。
+- 状態: **Accepted。2026-10-29、本人が設計PR #15を示した確認に「設計PR #15の範囲・仮設定で進める（推奨）」と回答。合成研究の範囲・明示仮設定・worker実装開始を承認。**
+- 設計PR: [ゲームPR #15](https://github.com/thrsth45h/baseball-sim/pull/15)。設計マージ後にworkerへ実装を委任する。
 - 基準: ゲームmain `27d00bd19851444a29e3dac3dee2543f1c5e2a77`、研究main `35c9fe6fbe2b01c02b7253ed336526e6960cd4fe`。
-- 関連: D022–D023、D029（OPEN）、D039（Phase 3b研究のみCONFIRMED）、D040（OPEN）、[ADR-0006](adr/0006-phase3c-synthetic-flight.md)、[設計点検](PHASE3C_REVIEW.md)。
+- 関連: D022–D023、D029（OPEN）、D039（Phase 3b研究のみCONFIRMED）、D040（合成研究範囲のみCONFIRMED）、[ADR-0006](adr/0006-phase3c-synthetic-flight.md)、[設計点検](PHASE3C_REVIEW.md)。
 
 ## 1. 相談する最小範囲
 
@@ -139,7 +139,7 @@ otherwise: boundary
 
 ## 8. 実装・公開・承認
 
-本人承認・設計マージ後、workerへ研究側の新規`baseball_calibration.phase3c`と専用テスト、`reports/phase3c`/`data/phase3c`の新規出力を委任する。既存ファイルはroot README案内以外変更しない。既存の計測ユーティリティ等の純粋な再利用は可、旧研究モデル・データ読込みへの依存は作らない。依存版は維持する。
+本人の研究範囲・仮定の承認を受領済み。設計マージ後、workerへ研究側の新規`baseball_calibration.phase3c`と専用テスト、`reports/phase3c`/`data/phase3c`の新規出力を委任する。既存ファイルはroot README案内以外変更しない。既存の計測ユーティリティ等の純粋な再利用は可、旧研究モデル・データ読込みへの依存は作らない。依存版は維持する。
 
 CLIは固定人工例だけの`python -m baseball_calibration.phase3c run --output data/phase3c/run-01`。raw-root/frozen/seed/外部入力のオプションを作らない。出力はplan.json、scenarios.json、results.json、REPORT.md、execution.json、SHA256SUMS.json。設計版、全仮定/範囲/境界、固定例、使用ソース/依存版を結合して記録する。
 
@@ -149,4 +149,4 @@ CLIは固定人工例だけの`python -m baseball_calibration.phase3c run --outp
 
 Phase 3bはEV尾部が無上限、本案は人工の検証範囲が200mph以下であり、そのまま接続する契約ではない。clip・範囲外だけの再抽選でつながず、将来は支持範囲と選択の扱いを別に決める。MLBとの較正・全接触・実際の守備認知/捕球・公式記録・能力・ゲーム採用は別承認。
 
-D040は本人の研究範囲・仮定・worker実装承認までOPEN。重要な仕様判断の確認を得てからAccepted・研究範囲のみCONFIRMEDとし、設計マージ→worker実装→責任者レビュー/修正→問題がなければ継続許可で実装マージへ進む。
+2026-10-29、本人が「設計PR #15の範囲・仮設定で進める（推奨）」を選択したため、本設計・ADRをAccepted、D040を合成研究範囲のみCONFIRMEDとした。設計マージ→worker実装→責任者レビュー/修正→問題がなければ継続許可で実装マージへ進む。D029はOPENを維持し、承認を実データ/3b接続・捕球成功・能力・ゲーム採用へ拡張しない。
