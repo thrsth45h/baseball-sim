@@ -189,6 +189,21 @@ EV≥120は2023学習1件、2024が6件、2025が3件。2024尾部の条件付�
 
 [研究説明・再現手順](https://github.com/thrsth45h/statcast-swing-model-v1/blob/015b9fdcd18565270b8ce888bd703aead8c63864/reports/phase3c/README.md)、[worker検証記録](https://github.com/thrsth45h/statcast-swing-model-v1/blob/015b9fdcd18565270b8ce888bd703aead8c63864/reports/phase3c/VALIDATION.md)、[責任者レビュー](PHASE3C_REVIEW.md)を参照。無空気・点状守備者・理想化した真の地面情報は合成条件であり、MLBの飛距離/守備認知/捕球妥当性、実データ/3b接続、能力・公式記録・ゲーム採用は未検証・未実施。次の実装範囲は設計相談とする。
 
-## Phase 3d（合成研究の設計承認・実装へ）
+## Phase 3d（合成の飛行中到達機会・レビュー後mainへマージ済み）
 
-2026-10-29、本人が「設計PR #17の範囲・仮設定で進める（推奨）」と回答し、[設計v0.1](PHASE3D_DESIGN.md)・[ADR-0007](adr/0007-phase3d-inflight-reach.md)の合成研究範囲・仮設定とworker実装開始を承認した。D041は合成研究のみCONFIRMED。固定人工軌道について、反応後・地面到達前に、指定高さと単一守備者の水平移動予算を満たす時刻集合を求める。真の軌道を既知とした幾何的存在の研究であり、捕球成功/認知やMLB精度の実測ではない。設計マージ後にworkerへ委任し、責任者が独立レビューする。旧結果は保存し、実データ/3b・能力・ゲーム本体へ接続しない。
+2026-10-29、本人が「設計PR #17の範囲・仮設定で進める（推奨）」と回答し、[設計v0.1](PHASE3D_DESIGN.md)・[ADR-0007](adr/0007-phase3d-inflight-reach.md)の合成研究範囲・仮設定とworker実装開始を承認した。設計をゲームmain `863e78756448003363087994692ff85a2d79a428`へマージして委任し、責任者の独立レビュー・P2修正確認後、[研究PR #10](https://github.com/thrsth45h/statcast-swing-model-v1/pull/10)をmain `cd8217a44788cf830c5554b71b04a27a98ce620c`へマージした。最終レビューhead `238e63468c8bcb2679654f5fdde83b109c1e2a98`、source/tests固定 `0b13877a12ac59b5cb4ea1d70f9c376f5f9b9261`。D041は合成研究のみCONFIRMED、D029 OPEN。
+
+固定した直交初速/初期高さと守備者1人の位置/速度/反応/高さ上限から、反応後・地面到達前・指定高さ内・水平移動予算内の時刻集合Kを求める。正規化binary64を正確な有理数、g=980665/100000として解釈し、二次不等式の区間交差を行う。等号/単一時刻/2高さ区間と地面openを保持。512精密化で未解消ならindeterminate/nullを返す。公開根包囲の幅1e−12秒は身体半径・区間合体の閾値・物理精度ではない。
+
+- workerと責任者の別worktreeで全575テスト（旧497＋新78、失敗/エラー/skip0）成功。責任者実行44.21秒、既存の不正日付fixtureの警告1件。最終headのPR CI run `40852403627`はPython3.11/3.12とも成功。
+- 固定20例は全resolved。非空13/空7/合計14区間は人工検証例の内訳で、捕球率ではない。極小の非空区間は約1.1871e−13秒、地面終端openを保持。最小正subnormal高さではindeterminate/nullとなる経路も検証した。
+- worker未参照の独立担当が、160桁Decimalの中心/半径と整数多項式の厳密符号/有理包囲によるセル分割で期待値を作り、照合前に凍結。20例・追加13多項式oracleと共通無理根の人工例を含む940項目、91回の端点照合が一致。root ID・canonical表示包囲・開閉・最初時刻も確認した。凍結がworker実装より時間的に先だったという主張はしない。
+- 追加16不正入力拒否と、監視した新runの旧入力読取り/RNG試行0を確認。旧3cとの追加5条件の位置/地面時刻も許容範囲内。真の全軌道を既知とする幾何的存在で、守備者がその経路を選ぶという主張ではない。
+- 責任者の別実行は4主要成果物がworker版とバイト一致。公開13ファイル106,377bytes、新17/旧228hashをworking/Git blob双方で照合し、旧358パス中README案内以外357不変。helperも責任者が別実行して確認した。
+- workerの正式runは約0.2953秒、peak RSS約30.47MiB。研究環境の測定でAndroid性能ではない。
+
+責任者が初版のnamespace転送による旧領域への出力を検証専用の実Windows junctionで再現し、workerへ直接修正依頼した。許可namespaceの宣言位置を保持して解決後の出力を検査する修正と、namespace全体/子aliasから旧領域/checkout外へ向かう4回帰を追加。責任者も全テストと旧再現junctionで拒否を確認した。訂正前公開13ファイル一式をignored履歴へ保持し、新source同一性でsynthetic-03/repeat-04へ再実行。旧3cは変更していない。
+
+新runは旧データ/モデルを計算に使わず、既存回帰テストは従来fixtureを使う。公開helperはraw入力を開かないが、旧model.json等をhash保護のためバイト読取りする。この三つの役割を区別して記録した。
+
+[研究説明・再現手順](https://github.com/thrsth45h/statcast-swing-model-v1/blob/cd8217a44788cf830c5554b71b04a27a98ce620c/reports/phase3d/README.md)、[worker検証記録](https://github.com/thrsth45h/statcast-swing-model-v1/blob/cd8217a44788cf830c5554b71b04a27a98ce620c/reports/phase3d/VALIDATION.md)、[責任者レビュー](PHASE3D_REVIEW.md)を参照。空気抵抗なし・半径0・即時の最大速度・反応前禁止・高さ上限/入力範囲は未較正の人工仮定。実際の捕球/守備認知・MLB妥当性・実データ/3b接続・能力・公式記録・ゲーム採用は未検証・未実施。次の新しい実装範囲は設計相談とする。
