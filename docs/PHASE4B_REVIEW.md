@@ -1,4 +1,4 @@
-# Phase 4b案の設計点検
+# Phase 4bの設計点検・実装レビュー
 
 2026-10-29 日本時間。[設計案](PHASE4B_DESIGN.md)・[ADR-0009](adr/0009-phase4b-base-out-reference.md)の承認前点検記録。コード実装/worker実装テストの完了を表さない。D043 OPEN、ADR Proposedを維持する。
 
@@ -31,3 +31,32 @@
 ## 本人の承認（2026-10-29）
 
 上段は提案時の記録。本人が[設計PR #22](https://github.com/thrsth45h/baseball-sim/pull/22)を示した範囲確認に「設計PR #22の範囲で進める（推奨）」と回答し、限定3種・状態/入力条件・規則版・固定表/列・ゲーム側Python参照/CIとworker実装開始を承認した。D043を限定参照範囲のみCONFIRMED、ADRをAcceptedとし、設計マージ後にworkerへ委任する。4a/研究接続・能力・製品採用の承認に拡張しない。
+
+## 実装レビュー・統合の完了（記録更新2026-10-30）
+
+承認設計main `59ae0e2f726b88d5729d026a0e293916c33a73e6`から専用workerへ委任し、責任者が別worktreeで全model/fixture/IO/runner/CLI/tests/CI/helperと公開差分を点検した。最終head `ab6f1f2915416e5797b87947bfa815e075a7efc5`、source/tests/fixtures/CI固定 `7f98536c8659d6fa6bd0bbe94ab6e48e8ee4fb3b`に対して必須修正なしと判断。追加の読取り専用担当も反例・独自検算で必須指摘なしとした。2026-10-29、継続的なマージ許可に基づき[実装PR #23](https://github.com/thrsth45h/baseball-sim/pull/23)をmain `aff963e93408460a4d157313e151e4f9b96c9955`へ統合した。
+
+### テスト・独立期待値・再現性
+
+責任者はPython3.12.14の別環境で、新4b **32 test method成功**（成功subTest515は別集計、約0.394秒）、旧4a **33 test method成功**（成功subTest326は別集計、約0.417秒）を確認。両方failure/error/skip0で、実Windows junction4ケースを含む。研究575テストは実行・加算していない。最終実装headのCI run `40877714264`（4bと4a）と`40877714283`（4a）は、Python3.11/3.12の全job成功を責任者も確認した。
+
+独立担当はworkerのsource/fixture/tests/reports、責任者の私的設計検算、旧4a/研究を参照せず、走者へ識別子を付けた強制移動の連鎖で期待値を導出・凍結した。期待値SHA256は`d200f4c0cf6c3451598b193c333974a54871125429261bc4937fef72e7f0ae0d`。責任者がその導出とhash結合を点検し、**1,578比較項目**と別途**138期待拒否**が一致した。比較前の凍結であり、worker実装開始前の凍結とは主張しない。
+
+- 基本72遷移、得点offset144遷移、巨大得点の+1/+4。
+- 固定16列/30イベントと全46分割位置の番号なしtrace連結、任意の外部開始96局面。
+- 三アウト×8占有×3種の24拒否、未知/不正型/JSON/無効tail等の反例。
+- 空塁からW×1,000で997得点、満塁7得点からW×1,000で1,007得点。強制アウトや得点上限を追加しない。
+
+これらは比較対象の検査数であり、生産test method数・独立した標本数ではない。占有/アウト/runsの型が正しくても過去履歴の合法性までは証明せず、外部開始局面を許す契約の範囲で点検した。
+
+正常CLIと監視下の新runnerを別出力先へ実行し、worker正式synthetic-01と4主要成果物がバイト一致。監視対象の許可外入力読取り/RNG/時刻試行は0。公開helperも責任者の独自2runと新旧テスト記録で実行し、60trace/6run hashと固定sourceへの結合を確認した。新run、旧4a回帰テスト、Gitメタデータによる保護確認は異なる役割であり、Python/Gitが一切ファイルを読まないという主張ではない。
+
+### 既存資料の保持と限界
+
+実装PR時点で旧ゲーム65パス中README案内以外64パスが不変。公開13ファイル62,329bytes・15hashをworking/Git blob双方で照合し、公開相対リンク11件も確認した。後続の完了7文書更新はこの履歴保護の例外へ追加せず、現在の変更として別記する。公開verification.jsonはworkerの実装提出時点の記録で、現在も旧64文書全て不変という意味ではない。
+
+2026-10-30、責任者は実際に完了7文書を変更したcheckoutでもCLIとhelperを再実行した。新runは正式4成果物とバイト一致し、helperは60trace/6run hash/固定source照合に成功。更新7パスを参考欄へ正確に列挙し、履歴保護と現在の文書変更を分離できていることを確認した。旧テスト記録は再実行したと称さず、固定sourceで実施済みの責任者記録を用いた。この追加根拠はignoredの`data/prototypes/phase4b/reviewer-docs-helper-01/`に保持し、生産test method数へ加算しない。
+
+研究main `cd8217a44788cf830c5554b71b04a27a98ce620c`と研究checkoutは不変。worker領域`work/phase4b-base-out-worker`、レビュー領域`work/phase4b-review-7f98536`、ignoredの独自再実行/テスト/補助検証記録を保持した。[公開手順](../reports/phase4b/README.md)・[worker自己検証](../reports/phase4b/VALIDATION.md)・[正式結果](../reports/phase4b/synthetic-01/REPORT.md)を参照。
+
+完成したのは確定済み合成W/X/Hによる限定状態更新。実際の四球/三振/捕球飛球から必要な事実を推測せず、4a statusや研究結果を自動変換しない。走塁判断・個人追跡・一般の第三アウト得点可否・公式個人成績・完全試合・能力較正・Android/UI/セーブ・製品採用は未実施。D043は限定参照のみCONFIRMED、D029/D031/D032はOPEN。次の新規実装範囲は設計相談で決める。

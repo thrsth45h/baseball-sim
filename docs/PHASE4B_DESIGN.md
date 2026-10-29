@@ -4,6 +4,7 @@
 - 状態: **Accepted**。2026-10-29、本人が本PRを示す確認に「設計PR #22の範囲で進める（推奨）」と回答。以下の限定範囲・入力条件・規則版・ゲーム側Python参照/CIとworker実装開始を承認した。「つぎへ」だけを承認とは扱っていない。
 - 基準: ゲームmain `340602d94466d4af1f07ea559d458650d2e5c85e`、研究main `cd8217a44788cf830c5554b71b04a27a98ce620c`。
 - 関連: D004/D022、D029/D031/D032 OPEN、D043 CONFIRMED（4b限定参照のみ）、[ADR-0009](adr/0009-phase4b-base-out-reference.md)、[設計点検](PHASE4B_REVIEW.md)、[設計PR #22](https://github.com/thrsth45h/baseball-sim/pull/22)。
+- 実装: 承認設計main `59ae0e2f726b88d5729d026a0e293916c33a73e6`からworkerへ委任し、責任者の独立レビュー後に[実装PR #23](https://github.com/thrsth45h/baseball-sim/pull/23)をmain `aff963e93408460a4d157313e151e4f9b96c9955`へマージ済み。[実装レビュー](PHASE4B_REVIEW.md)・[再現手順と限界](../reports/phase4b/README.md)を参照。以下は承認された契約で、完了によって範囲を拡張しない。
 
 ## 1. 作るものと進め方
 
