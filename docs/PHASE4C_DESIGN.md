@@ -4,7 +4,7 @@
 - 状態: **Accepted**。2026-10-30、本人が本PRを示す確認に「設計PR #25の範囲で進める（推奨）」と回答。以下の限定接続・強い入力条件・固定表/列・ゲーム側Python参照/CI・旧型/step利用とworker実装開始を承認した。「次へ」だけを承認とは扱っていない。
 - 基準: ゲームmain `197add4704dc1f8fe64d41037ede25cf73ba6876`、研究main `cd8217a44788cf830c5554b71b04a27a98ce620c`。
 - 関連: D004/D022、D042/D043の既存限定契約、D044 CONFIRMED（4c限定接続のみ）、D029/D031/D032 OPEN、[ADR-0010](adr/0010-phase4c-pitch-half-reference.md)、[設計点検](PHASE4C_REVIEW.md)。
-- 設計PR: [ゲームPR #25](https://github.com/thrsth45h/baseball-sim/pull/25)。設計マージ後にworkerへ委任する。
+- 設計PR: [ゲームPR #25](https://github.com/thrsth45h/baseball-sim/pull/25)はmain `06256f8a4f0f8795709f56365f1ea212e2090092`へマージ済み。worker実装・責任者の独立レビュー後、[実装PR #26](https://github.com/thrsth45h/baseball-sim/pull/26)をmain `40e1d1d54e9728bbee04c3f65300e57972b9c629`へマージ済み。旧4a/4bの型・stepへ明示Begin/Pitch/Resolveで委任し、結果待ちではhalfを反映せず、明示確定後にcount=Noneへ消費する。次打者も明示Beginを要求し、三アウトで残塁/得点を保持して停止する。 [独立レビュー](PHASE4C_REVIEW.md)・[再現手順](../reports/phase4c/README.md)を参照。以下は承認した契約を保持する。
 
 ## 1. 目的・代替案・今回の範囲
 
