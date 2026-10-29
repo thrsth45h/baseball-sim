@@ -1,10 +1,10 @@
 # Phase 4a — カウントと限定された打席終端の参照実装
 
 - 版: `phase4a-design-v0.1`、2026-10-29 日本時間。
-- 状態: **Proposed / 未承認**。今回の「次へ」は案の検討指示として扱う。
+- 状態: **Accepted**。2026-10-29、本人が本PRを示す確認に「設計PR #19の範囲で進める（推奨）」と回答。限定ルール範囲・規則版・ゲーム側Python参照実装/CIとworker実装開始を承認した。
 - 基準: ゲームmain `110526fa500ecfeddc058241bc7da46d5648bb66`、研究main `cd8217a44788cf830c5554b71b04a27a98ce620c`。
-- 関連: D004、D022–D023、D029/D031/D032 OPEN、D042 OPEN、[ADR-0008](adr/0008-phase4a-count-reference.md)、[設計点検](PHASE4A_REVIEW.md)。
-- 設計PR: [ゲームPR #19](https://github.com/thrsth45h/baseball-sim/pull/19)（Draft・未マージ）。承認・設計マージまでworkerの実装を開始しない。
+- 関連: D004、D022–D023、D029/D031/D032 OPEN、D042 CONFIRMED（4a限定参照のみ）、[ADR-0008](adr/0008-phase4a-count-reference.md)、[設計点検](PHASE4A_REVIEW.md)。
+- 設計PR: [ゲームPR #19](https://github.com/thrsth45h/baseball-sim/pull/19)。設計マージ後にworkerの実装を開始する。
 
 ## 1. 次に作るものと、今回作らないもの
 
@@ -120,4 +120,4 @@ CLIはゲームrepo rootで`python -m prototypes.phase4a run --output data/proto
 6. 専用unittestと、新規`.github/workflows/phase4a-tests.yml`のPython3.11/3.12 CIを実行。実測の自動テスト件数と96遷移/16列の検査数は別記し、subTest回数をtest method数に混ぜない。研究repo不変を確認するが、未接続の研究575テストを新ルールの証明として数えない。
 7. 責任者が別worktreeで全コード/テスト・独立期待表・再実行を確認し、問題はworkerへ直接修正依頼する。仕様変更が必要なら本人へ戻す。成功後は既存の継続許可でPRをマージし、完了記録を更新する。
 
-**相談対象は、以上の限定ルール範囲・規則版・ゲーム側Python参照実装/CIとworker実装開始。未承認のためD042 OPEN/ADR Proposedを維持する。** 本人承認後に設計をマージして委任する。D029/D031/D032はOPEN、製品採用・研究接続・完全な試合ルール・公式成績/セーブ/UIの採用は別判断とする。
+**2026-10-29、本人が「設計PR #19の範囲で進める（推奨）」を選択し、以上の限定ルール範囲・規則版・ゲーム側Python参照実装/CIとworker実装開始を承認した。** D042をこの範囲のみCONFIRMED、ADRをAcceptedとし、設計をマージして委任する。D029/D031/D032はOPEN、製品採用・研究接続・完全な試合ルール・公式成績/セーブ/UIの採用は別判断とする。
