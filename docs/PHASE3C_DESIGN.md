@@ -2,6 +2,7 @@
 
 - 版: `phase3c-design-v0.1`、2026-10-29 日本時間。
 - 状態: **Proposed。本人の仕様承認待ち。実装・マージは未開始。**
+- 設計PR: [ゲームPR #15](https://github.com/thrsth45h/baseball-sim/pull/15)（Draft、未マージ）。
 - 基準: ゲームmain `27d00bd19851444a29e3dac3dee2543f1c5e2a77`、研究main `35c9fe6fbe2b01c02b7253ed336526e6960cd4fe`。
 - 関連: D022–D023、D029（OPEN）、D039（Phase 3b研究のみCONFIRMED）、D040（OPEN）、[ADR-0006](adr/0006-phase3c-synthetic-flight.md)、[設計点検](PHASE3C_REVIEW.md)。
 

@@ -1,6 +1,7 @@
 # ADR-0006: 合成の軌道と地面到達点への移動余裕を先に検証する
 
 - Status: **Proposed — 本人の仕様承認待ち**
+- 設計PR: [ゲームPR #15](https://github.com/thrsth45h/baseball-sim/pull/15)（Draft、未マージ）。
 - 対象: [Phase 3c設計v0.1](../PHASE3C_DESIGN.md)
 - DECISIONS: D040 OPEN、D029 OPENを維持。
 - 「つぎへ」は次案の検討指示であり、未提示の仮定・実装開始の承認とは扱わない。
