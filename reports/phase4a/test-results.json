@@ -1,0 +1,18 @@
+{
+  "coverage_items_not_added_to_method_count": {
+    "fixed_sequences": 16,
+    "real_windows_junction_cases": 4,
+    "split_positions": 95,
+    "transitions": 96
+  },
+  "elapsed_seconds": 0.38176230000681244,
+  "errors": 0,
+  "failures": 0,
+  "kind": "worker_unittest_run",
+  "python": "3.12.14",
+  "skipped": 0,
+  "source_commit": "4d3aab629d06bf4e079ca6da09dd6970b5c4e592",
+  "subtests_observed_separate": 316,
+  "successful": true,
+  "test_methods_run": 31
+}
