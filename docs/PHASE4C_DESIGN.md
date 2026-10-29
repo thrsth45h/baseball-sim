@@ -1,10 +1,10 @@
 # Phase 4c — 投球カウントと半回状態の明示的な接続
 
 - 版: `phase4c-design-v0.1`、2026-10-30 日本時間。
-- 状態: **Proposed / 未承認**。「次へ」は設計開始の依頼として扱い、新しい接続仕様・worker実装開始の承認とは扱わない。
+- 状態: **Accepted**。2026-10-30、本人が本PRを示す確認に「設計PR #25の範囲で進める（推奨）」と回答。以下の限定接続・強い入力条件・固定表/列・ゲーム側Python参照/CI・旧型/step利用とworker実装開始を承認した。「次へ」だけを承認とは扱っていない。
 - 基準: ゲームmain `197add4704dc1f8fe64d41037ede25cf73ba6876`、研究main `cd8217a44788cf830c5554b71b04a27a98ce620c`。
-- 関連: D004/D022、D042/D043の既存限定契約、D044 OPEN、D029/D031/D032 OPEN、[ADR-0010](adr/0010-phase4c-pitch-half-reference.md)、[設計点検](PHASE4C_REVIEW.md)。
-- 設計PR: [ゲームPR #25](https://github.com/thrsth45h/baseball-sim/pull/25)。本人の範囲承認待ち。
+- 関連: D004/D022、D042/D043の既存限定契約、D044 CONFIRMED（4c限定接続のみ）、D029/D031/D032 OPEN、[ADR-0010](adr/0010-phase4c-pitch-half-reference.md)、[設計点検](PHASE4C_REVIEW.md)。
+- 設計PR: [ゲームPR #25](https://github.com/thrsth45h/baseball-sim/pull/25)。設計マージ後にworkerへ委任する。
 
 ## 1. 目的・代替案・今回の範囲
 
@@ -141,6 +141,6 @@ CLI案は`python -m prototypes.phase4c run --output data/prototypes/phase4c/run-
 7. 新runのRNG/時計/研究入力への非依存、許可した旧型/stepと依存source読取りの範囲を監視/点検。2run4成果物、公開hash/Git blob、出力防護/実junction・symlinkを確認する。権限不足をskip成功にしない。
 8. 新旧3suiteと対象headのPython3.11/3.12 CIを確認。test method/subTest/組合せ数は別記し、旧研究575テストを新4cの成功件数へ加算しない。責任者が別worktreeと独立期待値でレビューし、問題はworkerへ直接修正依頼する。
 
-## 9. 今回承認を求める範囲
+## 9. 本人が承認した範囲
 
-上記の明示3action/4stage/互換5組、強い合成入力条件、固定表/18列、ゲーム側Python参照/専用CI、旧4a/4b型・stepへの接続とworker実装開始。**現時点では未承認のため、設計マージ・実装を開始しない。** 承認後も一般走塁/単打/併殺/第三アウト得点/公式個人成績/完全試合、研究/能力、Android/セーブ/製品採用は別判断、D029/D031/D032はOPENを維持する。
+**2026-10-30、本人が「設計PR #25の範囲で進める（推奨）」と回答し、上記の明示3action/4stage/互換5組、強い合成入力条件、固定表/18列、ゲーム側Python参照/専用CI、旧4a/4b型・stepへの接続とworker実装開始を承認した。** D044を限定接続範囲のみCONFIRMED、ADRをAcceptedとし、設計マージ後にworkerへ委任する。一般走塁/単打/併殺/第三アウト得点/公式個人成績/完全試合、研究/能力、Android/セーブ/製品採用は別判断、D029/D031/D032はOPENを維持する。

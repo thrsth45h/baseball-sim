@@ -228,6 +228,6 @@ Statcast研究や3dの到達機会をイベントへ変換せず、確率・走�
 
 限定ルールの検算であり、研究モデルや得点分布の研究成果ではない。4aやStatcast/3dとの接続、走塁判断、能力、公式個人成績、完全試合、Android/セーブ・製品採用は含めない。D029/D031/D032はOPEN、次工程の実装仕様は設計相談で決める。
 
-## Phase 4c（ゲーム側の限定接続案、未承認）
+## Phase 4c（ゲーム側の限定接続、承認済み）
 
-[設計案v0.1](PHASE4C_DESIGN.md)・[ADR-0010](adr/0010-phase4c-pitch-half-reference.md)はD044 OPEN/Proposed。旧4a/4bの型・stepを新接続層から呼び、裁定済み投球・完了プレー確定・次打者開始を明示する合成参照を提案する。新4cのconnected_to_phase4a/phase4b=trueとし、旧4a/4bの凍結flags/過去結果は変更しない。研究repo/Statcast/3d・確率・能力・一般走塁・完全試合・Android/製品採用は未接続。本人承認前に実装・設計マージを開始しない。
+2026-10-30、本人が[設計PR #25](https://github.com/thrsth45h/baseball-sim/pull/25)の範囲とworker実装開始を承認。[設計v0.1](PHASE4C_DESIGN.md)・[ADR-0010](adr/0010-phase4c-pitch-half-reference.md)はD044限定接続CONFIRMED/Accepted。旧4a/4bの型・stepを新接続層から呼び、裁定済み投球・完了プレー確定・次打者開始を明示する。新4cのconnected_to_phase4a/phase4b=trueとし、旧4a/4bの凍結flags/過去結果は変更しない。研究repo/Statcast/3d・確率・能力・一般走塁・完全試合・Android/製品採用は未接続。設計マージ後にworkerへ委任する。

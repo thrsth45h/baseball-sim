@@ -107,7 +107,7 @@
 
 [Phase 4b設計](docs/PHASE4B_DESIGN.md)は、2026-10-29に本人が[設計PR #22](https://github.com/thrsth45h/baseball-sim/pull/22)の範囲とworker実装開始を承認（D043は限定参照のみCONFIRMED）。worker実装・責任者の独立レビュー後、[実装PR #23](https://github.com/thrsth45h/baseball-sim/pull/23)をmain `aff963e93408460a4d157313e151e4f9b96c9955`へマージ済み。追加進塁なし四球、打者1人アウト/走者据置き、合法フェンス越え本塁打という確定済み合成入力に限り、塁占有・アウト・当該半回得点を更新し、三アウトで残塁と得点を保持して停止する。新4b32テストと旧4a33テスト（別集計）、Python3.11/3.12 CI・独立期待値照合・4成果物一致を確認。[レビュー](docs/PHASE4B_REVIEW.md)を参照。4a statusや研究結果からの自動変換、走塁判断、完全な試合、公式個人成績・能力・Android技術は含めない。D029/D031/D032はOPENを維持する。
 
-次は[Phase 4c案](docs/PHASE4C_DESIGN.md)・[ADR-0010](docs/adr/0010-phase4c-pitch-half-reference.md)を提案中（D044 OPEN、未承認）。旧4aのカウントと旧4bの半回状態を、打者開始/裁定済み投球/完了プレー確定の明示アクションで接続する。未確定の結果や他走者の動きをstatusから推測せず、結果反映と次打者開始を分ける。強い合成条件内の接続層で、旧コード/契約/結果は保持する。一般走塁・研究/能力・完全試合・Android/製品採用は含めず、本人承認前に実装しない。
+次の[Phase 4c設計](docs/PHASE4C_DESIGN.md)・[ADR-0010](docs/adr/0010-phase4c-pitch-half-reference.md)は、2026-10-30に本人が[設計PR #25](https://github.com/thrsth45h/baseball-sim/pull/25)の範囲とworker実装開始を承認（D044は限定接続のみCONFIRMED）。旧4aのカウントと旧4bの半回状態を、打者開始/裁定済み投球/完了プレー確定の明示アクションで接続する。結果や他走者の動きをstatusから推測せず、結果反映と次打者開始を分ける。強い合成条件内の接続層で、旧コード/契約/結果は保持。一般走塁・研究/能力・完全試合・Android/製品採用は含めず、設計マージ後にworkerへ委任する。
 
 ## 7. MLB Statcast研究方針と現状
 

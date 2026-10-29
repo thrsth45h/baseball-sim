@@ -82,7 +82,7 @@ PR #1: https://github.com/thrsth45h/statcast-swing-model-v1/pull/1
 
 次の新しい実装仕様は未承認。走塁判断・単打/併殺・時系列の得点可否・4a/研究接続・完全な試合は含めず、次工程の対象と受入れ条件を設計して本人と相談する。D029/D031/D032はOPENを維持する。
 
-次工程は[Phase 4c案](docs/PHASE4C_DESIGN.md)・[ADR-0010](docs/adr/0010-phase4c-pitch-half-reference.md)として提示中（D044 OPEN/Proposed）。旧4a/4bを変更せず、新接続層の明示Begin/Pitch/Resolve・4stage・互換5組でカウントから半回状態への反映順を検証する。制御/互換12セルずつ、18列/82action/100分割、2,304投球組合せ等を検証する案。4a/4b接続とworker実装開始は未承認で、一般走塁・研究/能力・完全試合・Android技術は追加しない。
+次工程の[Phase 4c設計](docs/PHASE4C_DESIGN.md)・[ADR-0010](docs/adr/0010-phase4c-pitch-half-reference.md)は、2026-10-30に本人が[設計PR #25](https://github.com/thrsth45h/baseball-sim/pull/25)の範囲とworker実装開始を承認（D044限定接続CONFIRMED/ADR Accepted）。旧4a/4bを変更せず、新接続層の明示Begin/Pitch/Resolve・4stage・互換5組で反映順を検証する。制御/互換12セルずつ、18列/82action/100分割、代表2,304投球組合せ等が対象。設計マージ後に委任し、一般走塁・研究/能力・完全試合・Android技術は追加しない。
 
 - 投球選択・制球位置・球速と変化量、フレーミング、ブロッキング、疲労、球場、守備・走塁。
 - 1球単位のカウント、走者、アウト、得点、併殺、延長、交代、盗塁等。
