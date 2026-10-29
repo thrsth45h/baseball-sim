@@ -10,7 +10,7 @@ from pathlib import Path
 import subprocess
 
 BASELINE = "1c5b738671a452305a4be874c57f77cd8ad5db10"
-SOURCE_COMMIT = "4d3aab629d06bf4e079ca6da09dd6970b5c4e592"
+SOURCE_COMMIT = "922a2a9c1cb5a76e9d984fc5bd5c9fef2952b7ae"
 FILES = ("plan.json", "traces.json", "REPORT.md", "SHA256SUMS.json")
 FLAGS = {"source_kind": "synthetic_fixture", "scope": "partial_count_rules", "probability_model": False,
          "connected_to_statcast": False, "connected_to_phase3d": False, "official_stats_generated": False,
@@ -52,7 +52,7 @@ def verify(first, second, tests, output):
     for name in ("reproducibility.json", "verification.json", "test-results.json", "SHA256SUMS.json"):
         if (output/name).exists(): raise FileExistsError("preserve existing verification record")
     records = read(tests)
-    if (records.get("source_commit") != SOURCE_COMMIT or records.get("test_methods_run") != 31
+    if (records.get("source_commit") != SOURCE_COMMIT or records.get("test_methods_run") != 33
             or records.get("successful") is not True
             or any(records.get(key) != 0 for key in ("failures", "errors", "skipped"))):
         raise ValueError("test method record did not pass without skips for fixed source")

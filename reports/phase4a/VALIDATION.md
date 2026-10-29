@@ -1,10 +1,10 @@
 # Phase 4a worker検証記録
 
-承認設計は[ゲームPR #19](https://github.com/thrsth45h/baseball-sim/pull/19)、main `1c5b738671a452305a4be874c57f77cd8ad5db10`、`phase4a-design-v0.1`。source/tests/fixtures/CIは`4d3aab629d06bf4e079ca6da09dd6970b5c4e592`へ固定した。本書はworkerの自己検証で、責任者の独立レビュー・外部査読・製品採用を代行しない。
+承認設計は[ゲームPR #19](https://github.com/thrsth45h/baseball-sim/pull/19)、main `1c5b738671a452305a4be874c57f77cd8ad5db10`、`phase4a-design-v0.1`。source/tests/fixtures/CIは`922a2a9c1cb5a76e9d984fc5bd5c9fef2952b7ae`へ固定した。本書はworkerの自己検証で、責任者の独立レビュー・外部査読・製品採用を代行しない。
 
 ## テストと検査単位
 
-Python3.12.14で31 test method成功、failure/error/skip0、正式の構造化記録で約0.382秒。subTest316は別集計で、method数へ加算しない。専用GitHub ActionsはPython3.11/3.12で同じunittestを実行する。PR対象headのCI結果はPR上で別に確認する。
+Python3.12.14で33 test method成功、failure/error/skip0、正式の構造化記録で約0.462秒。subTest326は別集計で、method数へ加算しない。専用GitHub ActionsはPython3.11/3.12で同じunittestを実行する。PR対象headのCI結果はPR上で別に確認する。
 
 - 静的96遷移、固定16列を実装と照合。静的表自体も生産関数を呼ばない設計列の別式で検査した。言語非依存fixtureを生産実行から生成して正解扱いしていない。
 - 16列の全95分割位置で、prefix/残りの最終状態と絶対n+1のtrace連結が一括処理に完全一致。逆順のケース実行でも一致。
@@ -15,9 +15,17 @@ Python3.12.14で31 test method成功、failure/error/skip0、正式の構造化�
 - 新出力先/上書き/旧namespace/外部/入力重複の拒否、namespace全体/子alias→旧領域/外部の実Windows junction4ケースを確認。Linuxでは実symlinkを使い、作成失敗をskipにしない。
 - 新runを読取り/RNG/現在時刻読取り(time.time)の監視下で完走。許可した新source/fixtureと新出力以外の読取りなし。旧研究/モデルやStatcast/3dをimportしない。処理前後のsource/fixture同一性比較が異なる場合や期待表不一致では出力作成前に拒否。
 
+## 責任者レビューP2: 固定16イベント列の意味的な置換防護
+
+初版の16fixtureとカウント計算自体は設計に一致していた。一方、loaderはID/型と最終状態の整合だけを確認し、three_bunt_foulsのUUUをCCCへ置換しても同じ最終状態のため成功扱いになった。責任者が将来の固定入力driftの防護不足として指摘し、workerが修正した。現時点のカウントの誤分類を訂正したものではない。
+
+設計§6から明示的に記載した16列を、step/replayやmodel側のイベント順序から生成せずloaderへpinした。UUU→CCC、UUU→MMM、チップ列→CCC、FF→CC、mixed_walkのB/C順序変更という同一最終状態の5種類を、loaderの回帰と実JSONを書換えたrunner回帰の双方で拒否する。後者は出力フォルダ作成前の拒否も確認。これら2 methodを追加し、全33 method/326 subTest別集計で再実行した。
+
+訂正前公開12ファイル一式はignoredのreview-history/p2-01/publicへ、元の公開synthetic-01は同履歴のoriginal-synthetic-01へ、元の検証JSON類はoriginal-root-recordsへ保持。旧非公開repeat-02も保持した。新source同一性でsynthetic-03/repeat-04へ再実行し、カウント式と正規16列のtraces/REPORTは不変、planとSHA索引にsource防護修正を反映した。
+
 ## 正式2runと旧ファイル保護
 
-公開synthetic-01とignoredのsynthetic-repeat-02はplan.json/traces.json/REPORT.md/SHA256SUMS.jsonの4ファイル全てがバイト一致。主要成果物には時刻/絶対パスなし。source identityはUTF-8テキストをLFへ正規化し、固定Git sourceとcheckoutをhelperで照合する。Python版を記録するため、異なるPython版同士のplanバイト一致を主張しない。
+公開synthetic-03とignoredのsynthetic-repeat-04はplan.json/traces.json/REPORT.md/SHA256SUMS.jsonの4ファイル全てがバイト一致。主要成果物には時刻/絶対パスなし。source identityはUTF-8テキストをLFへ正規化し、固定Git sourceとcheckoutをhelperで照合する。Python版を記録するため、異なるPython版同士のplanバイト一致を主張しない。
 
 ゲームbaseline37パスのうち、README案内と.gitignoreのdata/prototypes追記以外の35パスは維持。既存の設計docs/AGENTS/テンプレートを変更せず、既存worktree/ignored資料も削除しない。今回のhelperは研究repoや原データ/旧モデルを開かず、既存ゲームGitメタデータだけを保護確認に使う。研究repo不変は責任者が最終確認し、未接続の研究575テストを今回の成功件数に混ぜない。
 

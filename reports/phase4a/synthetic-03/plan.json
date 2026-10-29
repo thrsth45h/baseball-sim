@@ -273,7 +273,7 @@
     }
   ],
   "implementation": {
-    "bundle_sha256": "2fdcadda2e69f4477f67b6fea8983e83835ef17c490f1da866b119a4db68677d",
+    "bundle_sha256": "cb17a585d49a6775c522656cef91c9f1036b9d38d0f3f7f913454dd3ea035031",
     "python": "3.12.14",
     "python_implementation": "CPython",
     "sources_and_fixtures": {
@@ -281,7 +281,7 @@
       "prototypes/phase4a/.gitattributes": "a79691a93b46e49ce460c26ef22afcc03d6eca1e63bf2edbc20e96159510f6c9",
       "prototypes/phase4a/__init__.py": "087d5c49cf5d02f5031ca5b5e9dc6922e22feaa022fe875b0e6e58b7a4b935ca",
       "prototypes/phase4a/__main__.py": "c1b4ea3711514ee88e94b6ded67aaf9b3b9388ac2aaa88b00da74d5ec6ea24e7",
-      "prototypes/phase4a/fixtures.py": "ab1fc22ab160477f8835f9fcf4f31780daf9cf1703e606bd434d98d0108746ff",
+      "prototypes/phase4a/fixtures.py": "2c1b7ef5b5b37fdd96fbe98d4cfdd6243024b7f8fb79e1daf92805bb3a8d2c85",
       "prototypes/phase4a/fixtures/scenarios.json": "f469ed635749c16cecaf10bdafacc03bff5f019645591ccd9f185a4d16f3b2c2",
       "prototypes/phase4a/fixtures/transitions.json": "8fcc74506f961afe2aa680fbc6bd3ebe30cdb0e0ee7bc5ad0ac83885bb3d79de",
       "prototypes/phase4a/io.py": "dc62b28391e034869411c4c33fb1d07c6698cbb9d6d9b468063cb67a7682212b",

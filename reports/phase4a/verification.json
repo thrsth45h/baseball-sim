@@ -21,7 +21,7 @@
   "research_repository_opened_by_helper": false,
   "run_hash_entries_verified": 6,
   "scope": "partial_count_rules",
-  "source_commit": "4d3aab629d06bf4e079ca6da09dd6970b5c4e592",
+  "source_commit": "922a2a9c1cb5a76e9d984fc5bd5c9fef2952b7ae",
   "source_identity_binds_checkout_and_fixed_git_commit": true,
   "source_kind": "synthetic_fixture",
   "trace_entries_checked_across_two_runs": 158

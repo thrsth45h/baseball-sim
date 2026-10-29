@@ -1,6 +1,6 @@
 # Phase 4a — カウントと限定終端のルール参照
 
-[承認設計PR #19](https://github.com/thrsth45h/baseball-sim/pull/19)、ゲームmain `1c5b738671a452305a4be874c57f77cd8ad5db10`の[設計v0.1](https://github.com/thrsth45h/baseball-sim/blob/1c5b738671a452305a4be874c57f77cd8ad5db10/docs/PHASE4A_DESIGN.md)を実装した。本人は2026-10-29に「設計PR #19の範囲で進める（推奨）」と回答した。D042は限定参照範囲のみCONFIRMED、D029/D031/D032はOPEN。source/tests/fixtures/CI固定commitは`4d3aab629d06bf4e079ca6da09dd6970b5c4e592`。
+[承認設計PR #19](https://github.com/thrsth45h/baseball-sim/pull/19)、ゲームmain `1c5b738671a452305a4be874c57f77cd8ad5db10`の[設計v0.1](https://github.com/thrsth45h/baseball-sim/blob/1c5b738671a452305a4be874c57f77cd8ad5db10/docs/PHASE4A_DESIGN.md)を実装した。本人は2026-10-29に「設計PR #19の範囲で進める（推奨）」と回答した。D042は限定参照範囲のみCONFIRMED、D029/D031/D032はOPEN。source/tests/fixtures/CI固定commitは`922a2a9c1cb5a76e9d984fc5bd5c9fef2952b7ae`。
 
 これは**裁定済みの合成イベントをカウントへ適用する検算用Python参照実装**。完全な1打席/試合の生成器、Androidの採用言語/アーキテクチャ/DB、製品セーブではない。Statcast研究や3dの到達機会をイベントへ変換せず、確率・能力・走者/得点・公式成績・UIへ接続しない。
 
@@ -16,9 +16,11 @@
 
 [静的96遷移表](../../prototypes/phase4a/fixtures/transitions.json)と[固定16列](../../prototypes/phase4a/fixtures/scenarios.json)は言語非依存JSON。設計§4の列と§6の列から記載し、生産step/replayを呼んだ結果をそのまま正解として採用していない。worker自身の別の設計列式による照合を含み、責任者の独立期待値検査は別工程。
 
-unittestは**31 test method成功**、fail/error/skip0。成功subTestは別集計316で、31へ加算しない。96遷移・16固定列・全95分割位置・実junction4ケースも検査範囲として別記した。[検証記録](VALIDATION.md)、[構造化テスト結果](test-results.json)を参照。研究repoの575テストを今回のルール検証件数に数えていない。
+unittestは**33 test method成功**、fail/error/skip0。成功subTestは別集計326で、33へ加算しない。96遷移・16固定列・全95分割位置・実junction4ケースも検査範囲として別記した。[検証記録](VALIDATION.md)、[構造化テスト結果](test-results.json)を参照。研究repoの575テストを今回のルール検証件数に数えていない。
 
-正式[synthetic-01](synthetic-01/REPORT.md)と非公開repeat-02のplan/traces/REPORT/SHA索引の4成果物が全てバイト一致。[全trace](synthetic-01/traces.json)、[計画/ソース同一性](synthetic-01/plan.json)、[再現性](reproducibility.json)、[既存保護](verification.json)を参照。固定列の割合をK%/BB%/打率やモデル品質として解釈しない。
+責任者レビューで、初版loaderが同じ最終カウントになるイベント置換を拒否しないP2を指摘された。正規の16列自体やカウント計算は当初から設計と一致していたが、固定入力の将来のdriftを検出する防護が不足していた。設計から独立に記載した16イベント列をloaderでpinし、同一最終状態になる5置換/順序変更をloaderと実JSONの両方で拒否する回帰を追加。訂正前公開12ファイル一式と旧実行結果はignoredの`data/prototypes/phase4a/review-history/p2-01/`等に保持した。
+
+正式[synthetic-03](synthetic-03/REPORT.md)と非公開repeat-04のplan/traces/REPORT/SHA索引の4成果物が全てバイト一致。[全trace](synthetic-03/traces.json)、[計画/ソース同一性](synthetic-03/plan.json)、[再現性](reproducibility.json)、[既存保護](verification.json)を参照。固定列の割合をK%/BB%/打率やモデル品質として解釈しない。
 
 ## 再実行
 
@@ -27,7 +29,7 @@ Python3.11または3.12の標準ライブラリだけを使う。ゲームrepo r
 ```powershell
 python -m unittest discover -s prototypes/phase4a/tests -v
 python -m prototypes.phase4a run --output data/prototypes/phase4a/my-run-01
-python -m prototypes.phase4a run --output data/prototypes/phase4a/my-repeat-02
+python -m prototypes.phase4a run --output data/prototypes/phase4a/my-repeat-04
 ```
 
 Windowsの実junction回帰は、実行環境がjunctionの作成を許可する権限で実行する。制限により作成が拒否されるとテストは失敗し、skipで成功に置き換えない。Linux CIでは実directory symlinkを使う。テストは新しい専用一時領域を作り、過去のテスト資料や既存データを削除しない。
@@ -40,7 +42,7 @@ source identityは全新runtime source・fixture・package initializerとPython�
 
 ```powershell
 New-Item -ItemType Directory -Path reports/phase4a/new-verification -ErrorAction Stop | Out-Null
-python reports/phase4a/verify.py --first reports/phase4a/synthetic-01 --second data/prototypes/phase4a/synthetic-repeat-02 --tests data/prototypes/phase4a/tests-01.json --output reports/phase4a/new-verification
+python reports/phase4a/verify.py --first reports/phase4a/synthetic-03 --second data/prototypes/phase4a/synthetic-repeat-04 --tests data/prototypes/phase4a/tests-fix-02.json --output reports/phase4a/new-verification
 ```
 
 ## 未採用

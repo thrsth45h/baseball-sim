@@ -1,18 +1,20 @@
 {
   "coverage_items_not_added_to_method_count": {
+    "equal_final_mutations_rejected_from_json": 5,
+    "equal_final_mutations_rejected_in_loader": 5,
     "fixed_sequences": 16,
     "real_windows_junction_cases": 4,
     "split_positions": 95,
     "transitions": 96
   },
-  "elapsed_seconds": 0.38176230000681244,
+  "elapsed_seconds": 0.4622228999796789,
   "errors": 0,
   "failures": 0,
   "kind": "worker_unittest_run",
   "python": "3.12.14",
   "skipped": 0,
-  "source_commit": "4d3aab629d06bf4e079ca6da09dd6970b5c4e592",
-  "subtests_observed_separate": 316,
+  "source_commit": "922a2a9c1cb5a76e9d984fc5bd5c9fef2952b7ae",
+  "subtests_observed_separate": 326,
   "successful": true,
-  "test_methods_run": 31
+  "test_methods_run": 33
 }
