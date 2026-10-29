@@ -1,0 +1,1589 @@
+{
+  "design": "phase4b-design-v0.1",
+  "transitions": [
+    {
+      "before": {
+        "outs": 0,
+        "bases": [
+          false,
+          false,
+          false
+        ],
+        "runs": 0
+      },
+      "event": "walk_forced_only",
+      "after": {
+        "outs": 0,
+        "bases": [
+          true,
+          false,
+          false
+        ],
+        "runs": 0
+      },
+      "runs_added": 0
+    },
+    {
+      "before": {
+        "outs": 0,
+        "bases": [
+          false,
+          false,
+          false
+        ],
+        "runs": 0
+      },
+      "event": "batter_out_runners_hold",
+      "after": {
+        "outs": 1,
+        "bases": [
+          false,
+          false,
+          false
+        ],
+        "runs": 0
+      },
+      "runs_added": 0
+    },
+    {
+      "before": {
+        "outs": 0,
+        "bases": [
+          false,
+          false,
+          false
+        ],
+        "runs": 0
+      },
+      "event": "legal_over_fence_home_run",
+      "after": {
+        "outs": 0,
+        "bases": [
+          false,
+          false,
+          false
+        ],
+        "runs": 1
+      },
+      "runs_added": 1
+    },
+    {
+      "before": {
+        "outs": 0,
+        "bases": [
+          false,
+          false,
+          true
+        ],
+        "runs": 0
+      },
+      "event": "walk_forced_only",
+      "after": {
+        "outs": 0,
+        "bases": [
+          true,
+          false,
+          true
+        ],
+        "runs": 0
+      },
+      "runs_added": 0
+    },
+    {
+      "before": {
+        "outs": 0,
+        "bases": [
+          false,
+          false,
+          true
+        ],
+        "runs": 0
+      },
+      "event": "batter_out_runners_hold",
+      "after": {
+        "outs": 1,
+        "bases": [
+          false,
+          false,
+          true
+        ],
+        "runs": 0
+      },
+      "runs_added": 0
+    },
+    {
+      "before": {
+        "outs": 0,
+        "bases": [
+          false,
+          false,
+          true
+        ],
+        "runs": 0
+      },
+      "event": "legal_over_fence_home_run",
+      "after": {
+        "outs": 0,
+        "bases": [
+          false,
+          false,
+          false
+        ],
+        "runs": 2
+      },
+      "runs_added": 2
+    },
+    {
+      "before": {
+        "outs": 0,
+        "bases": [
+          false,
+          true,
+          false
+        ],
+        "runs": 0
+      },
+      "event": "walk_forced_only",
+      "after": {
+        "outs": 0,
+        "bases": [
+          true,
+          true,
+          false
+        ],
+        "runs": 0
+      },
+      "runs_added": 0
+    },
+    {
+      "before": {
+        "outs": 0,
+        "bases": [
+          false,
+          true,
+          false
+        ],
+        "runs": 0
+      },
+      "event": "batter_out_runners_hold",
+      "after": {
+        "outs": 1,
+        "bases": [
+          false,
+          true,
+          false
+        ],
+        "runs": 0
+      },
+      "runs_added": 0
+    },
+    {
+      "before": {
+        "outs": 0,
+        "bases": [
+          false,
+          true,
+          false
+        ],
+        "runs": 0
+      },
+      "event": "legal_over_fence_home_run",
+      "after": {
+        "outs": 0,
+        "bases": [
+          false,
+          false,
+          false
+        ],
+        "runs": 2
+      },
+      "runs_added": 2
+    },
+    {
+      "before": {
+        "outs": 0,
+        "bases": [
+          false,
+          true,
+          true
+        ],
+        "runs": 0
+      },
+      "event": "walk_forced_only",
+      "after": {
+        "outs": 0,
+        "bases": [
+          true,
+          true,
+          true
+        ],
+        "runs": 0
+      },
+      "runs_added": 0
+    },
+    {
+      "before": {
+        "outs": 0,
+        "bases": [
+          false,
+          true,
+          true
+        ],
+        "runs": 0
+      },
+      "event": "batter_out_runners_hold",
+      "after": {
+        "outs": 1,
+        "bases": [
+          false,
+          true,
+          true
+        ],
+        "runs": 0
+      },
+      "runs_added": 0
+    },
+    {
+      "before": {
+        "outs": 0,
+        "bases": [
+          false,
+          true,
+          true
+        ],
+        "runs": 0
+      },
+      "event": "legal_over_fence_home_run",
+      "after": {
+        "outs": 0,
+        "bases": [
+          false,
+          false,
+          false
+        ],
+        "runs": 3
+      },
+      "runs_added": 3
+    },
+    {
+      "before": {
+        "outs": 0,
+        "bases": [
+          true,
+          false,
+          false
+        ],
+        "runs": 0
+      },
+      "event": "walk_forced_only",
+      "after": {
+        "outs": 0,
+        "bases": [
+          true,
+          true,
+          false
+        ],
+        "runs": 0
+      },
+      "runs_added": 0
+    },
+    {
+      "before": {
+        "outs": 0,
+        "bases": [
+          true,
+          false,
+          false
+        ],
+        "runs": 0
+      },
+      "event": "batter_out_runners_hold",
+      "after": {
+        "outs": 1,
+        "bases": [
+          true,
+          false,
+          false
+        ],
+        "runs": 0
+      },
+      "runs_added": 0
+    },
+    {
+      "before": {
+        "outs": 0,
+        "bases": [
+          true,
+          false,
+          false
+        ],
+        "runs": 0
+      },
+      "event": "legal_over_fence_home_run",
+      "after": {
+        "outs": 0,
+        "bases": [
+          false,
+          false,
+          false
+        ],
+        "runs": 2
+      },
+      "runs_added": 2
+    },
+    {
+      "before": {
+        "outs": 0,
+        "bases": [
+          true,
+          false,
+          true
+        ],
+        "runs": 0
+      },
+      "event": "walk_forced_only",
+      "after": {
+        "outs": 0,
+        "bases": [
+          true,
+          true,
+          true
+        ],
+        "runs": 0
+      },
+      "runs_added": 0
+    },
+    {
+      "before": {
+        "outs": 0,
+        "bases": [
+          true,
+          false,
+          true
+        ],
+        "runs": 0
+      },
+      "event": "batter_out_runners_hold",
+      "after": {
+        "outs": 1,
+        "bases": [
+          true,
+          false,
+          true
+        ],
+        "runs": 0
+      },
+      "runs_added": 0
+    },
+    {
+      "before": {
+        "outs": 0,
+        "bases": [
+          true,
+          false,
+          true
+        ],
+        "runs": 0
+      },
+      "event": "legal_over_fence_home_run",
+      "after": {
+        "outs": 0,
+        "bases": [
+          false,
+          false,
+          false
+        ],
+        "runs": 3
+      },
+      "runs_added": 3
+    },
+    {
+      "before": {
+        "outs": 0,
+        "bases": [
+          true,
+          true,
+          false
+        ],
+        "runs": 0
+      },
+      "event": "walk_forced_only",
+      "after": {
+        "outs": 0,
+        "bases": [
+          true,
+          true,
+          true
+        ],
+        "runs": 0
+      },
+      "runs_added": 0
+    },
+    {
+      "before": {
+        "outs": 0,
+        "bases": [
+          true,
+          true,
+          false
+        ],
+        "runs": 0
+      },
+      "event": "batter_out_runners_hold",
+      "after": {
+        "outs": 1,
+        "bases": [
+          true,
+          true,
+          false
+        ],
+        "runs": 0
+      },
+      "runs_added": 0
+    },
+    {
+      "before": {
+        "outs": 0,
+        "bases": [
+          true,
+          true,
+          false
+        ],
+        "runs": 0
+      },
+      "event": "legal_over_fence_home_run",
+      "after": {
+        "outs": 0,
+        "bases": [
+          false,
+          false,
+          false
+        ],
+        "runs": 3
+      },
+      "runs_added": 3
+    },
+    {
+      "before": {
+        "outs": 0,
+        "bases": [
+          true,
+          true,
+          true
+        ],
+        "runs": 0
+      },
+      "event": "walk_forced_only",
+      "after": {
+        "outs": 0,
+        "bases": [
+          true,
+          true,
+          true
+        ],
+        "runs": 1
+      },
+      "runs_added": 1
+    },
+    {
+      "before": {
+        "outs": 0,
+        "bases": [
+          true,
+          true,
+          true
+        ],
+        "runs": 0
+      },
+      "event": "batter_out_runners_hold",
+      "after": {
+        "outs": 1,
+        "bases": [
+          true,
+          true,
+          true
+        ],
+        "runs": 0
+      },
+      "runs_added": 0
+    },
+    {
+      "before": {
+        "outs": 0,
+        "bases": [
+          true,
+          true,
+          true
+        ],
+        "runs": 0
+      },
+      "event": "legal_over_fence_home_run",
+      "after": {
+        "outs": 0,
+        "bases": [
+          false,
+          false,
+          false
+        ],
+        "runs": 4
+      },
+      "runs_added": 4
+    },
+    {
+      "before": {
+        "outs": 1,
+        "bases": [
+          false,
+          false,
+          false
+        ],
+        "runs": 0
+      },
+      "event": "walk_forced_only",
+      "after": {
+        "outs": 1,
+        "bases": [
+          true,
+          false,
+          false
+        ],
+        "runs": 0
+      },
+      "runs_added": 0
+    },
+    {
+      "before": {
+        "outs": 1,
+        "bases": [
+          false,
+          false,
+          false
+        ],
+        "runs": 0
+      },
+      "event": "batter_out_runners_hold",
+      "after": {
+        "outs": 2,
+        "bases": [
+          false,
+          false,
+          false
+        ],
+        "runs": 0
+      },
+      "runs_added": 0
+    },
+    {
+      "before": {
+        "outs": 1,
+        "bases": [
+          false,
+          false,
+          false
+        ],
+        "runs": 0
+      },
+      "event": "legal_over_fence_home_run",
+      "after": {
+        "outs": 1,
+        "bases": [
+          false,
+          false,
+          false
+        ],
+        "runs": 1
+      },
+      "runs_added": 1
+    },
+    {
+      "before": {
+        "outs": 1,
+        "bases": [
+          false,
+          false,
+          true
+        ],
+        "runs": 0
+      },
+      "event": "walk_forced_only",
+      "after": {
+        "outs": 1,
+        "bases": [
+          true,
+          false,
+          true
+        ],
+        "runs": 0
+      },
+      "runs_added": 0
+    },
+    {
+      "before": {
+        "outs": 1,
+        "bases": [
+          false,
+          false,
+          true
+        ],
+        "runs": 0
+      },
+      "event": "batter_out_runners_hold",
+      "after": {
+        "outs": 2,
+        "bases": [
+          false,
+          false,
+          true
+        ],
+        "runs": 0
+      },
+      "runs_added": 0
+    },
+    {
+      "before": {
+        "outs": 1,
+        "bases": [
+          false,
+          false,
+          true
+        ],
+        "runs": 0
+      },
+      "event": "legal_over_fence_home_run",
+      "after": {
+        "outs": 1,
+        "bases": [
+          false,
+          false,
+          false
+        ],
+        "runs": 2
+      },
+      "runs_added": 2
+    },
+    {
+      "before": {
+        "outs": 1,
+        "bases": [
+          false,
+          true,
+          false
+        ],
+        "runs": 0
+      },
+      "event": "walk_forced_only",
+      "after": {
+        "outs": 1,
+        "bases": [
+          true,
+          true,
+          false
+        ],
+        "runs": 0
+      },
+      "runs_added": 0
+    },
+    {
+      "before": {
+        "outs": 1,
+        "bases": [
+          false,
+          true,
+          false
+        ],
+        "runs": 0
+      },
+      "event": "batter_out_runners_hold",
+      "after": {
+        "outs": 2,
+        "bases": [
+          false,
+          true,
+          false
+        ],
+        "runs": 0
+      },
+      "runs_added": 0
+    },
+    {
+      "before": {
+        "outs": 1,
+        "bases": [
+          false,
+          true,
+          false
+        ],
+        "runs": 0
+      },
+      "event": "legal_over_fence_home_run",
+      "after": {
+        "outs": 1,
+        "bases": [
+          false,
+          false,
+          false
+        ],
+        "runs": 2
+      },
+      "runs_added": 2
+    },
+    {
+      "before": {
+        "outs": 1,
+        "bases": [
+          false,
+          true,
+          true
+        ],
+        "runs": 0
+      },
+      "event": "walk_forced_only",
+      "after": {
+        "outs": 1,
+        "bases": [
+          true,
+          true,
+          true
+        ],
+        "runs": 0
+      },
+      "runs_added": 0
+    },
+    {
+      "before": {
+        "outs": 1,
+        "bases": [
+          false,
+          true,
+          true
+        ],
+        "runs": 0
+      },
+      "event": "batter_out_runners_hold",
+      "after": {
+        "outs": 2,
+        "bases": [
+          false,
+          true,
+          true
+        ],
+        "runs": 0
+      },
+      "runs_added": 0
+    },
+    {
+      "before": {
+        "outs": 1,
+        "bases": [
+          false,
+          true,
+          true
+        ],
+        "runs": 0
+      },
+      "event": "legal_over_fence_home_run",
+      "after": {
+        "outs": 1,
+        "bases": [
+          false,
+          false,
+          false
+        ],
+        "runs": 3
+      },
+      "runs_added": 3
+    },
+    {
+      "before": {
+        "outs": 1,
+        "bases": [
+          true,
+          false,
+          false
+        ],
+        "runs": 0
+      },
+      "event": "walk_forced_only",
+      "after": {
+        "outs": 1,
+        "bases": [
+          true,
+          true,
+          false
+        ],
+        "runs": 0
+      },
+      "runs_added": 0
+    },
+    {
+      "before": {
+        "outs": 1,
+        "bases": [
+          true,
+          false,
+          false
+        ],
+        "runs": 0
+      },
+      "event": "batter_out_runners_hold",
+      "after": {
+        "outs": 2,
+        "bases": [
+          true,
+          false,
+          false
+        ],
+        "runs": 0
+      },
+      "runs_added": 0
+    },
+    {
+      "before": {
+        "outs": 1,
+        "bases": [
+          true,
+          false,
+          false
+        ],
+        "runs": 0
+      },
+      "event": "legal_over_fence_home_run",
+      "after": {
+        "outs": 1,
+        "bases": [
+          false,
+          false,
+          false
+        ],
+        "runs": 2
+      },
+      "runs_added": 2
+    },
+    {
+      "before": {
+        "outs": 1,
+        "bases": [
+          true,
+          false,
+          true
+        ],
+        "runs": 0
+      },
+      "event": "walk_forced_only",
+      "after": {
+        "outs": 1,
+        "bases": [
+          true,
+          true,
+          true
+        ],
+        "runs": 0
+      },
+      "runs_added": 0
+    },
+    {
+      "before": {
+        "outs": 1,
+        "bases": [
+          true,
+          false,
+          true
+        ],
+        "runs": 0
+      },
+      "event": "batter_out_runners_hold",
+      "after": {
+        "outs": 2,
+        "bases": [
+          true,
+          false,
+          true
+        ],
+        "runs": 0
+      },
+      "runs_added": 0
+    },
+    {
+      "before": {
+        "outs": 1,
+        "bases": [
+          true,
+          false,
+          true
+        ],
+        "runs": 0
+      },
+      "event": "legal_over_fence_home_run",
+      "after": {
+        "outs": 1,
+        "bases": [
+          false,
+          false,
+          false
+        ],
+        "runs": 3
+      },
+      "runs_added": 3
+    },
+    {
+      "before": {
+        "outs": 1,
+        "bases": [
+          true,
+          true,
+          false
+        ],
+        "runs": 0
+      },
+      "event": "walk_forced_only",
+      "after": {
+        "outs": 1,
+        "bases": [
+          true,
+          true,
+          true
+        ],
+        "runs": 0
+      },
+      "runs_added": 0
+    },
+    {
+      "before": {
+        "outs": 1,
+        "bases": [
+          true,
+          true,
+          false
+        ],
+        "runs": 0
+      },
+      "event": "batter_out_runners_hold",
+      "after": {
+        "outs": 2,
+        "bases": [
+          true,
+          true,
+          false
+        ],
+        "runs": 0
+      },
+      "runs_added": 0
+    },
+    {
+      "before": {
+        "outs": 1,
+        "bases": [
+          true,
+          true,
+          false
+        ],
+        "runs": 0
+      },
+      "event": "legal_over_fence_home_run",
+      "after": {
+        "outs": 1,
+        "bases": [
+          false,
+          false,
+          false
+        ],
+        "runs": 3
+      },
+      "runs_added": 3
+    },
+    {
+      "before": {
+        "outs": 1,
+        "bases": [
+          true,
+          true,
+          true
+        ],
+        "runs": 0
+      },
+      "event": "walk_forced_only",
+      "after": {
+        "outs": 1,
+        "bases": [
+          true,
+          true,
+          true
+        ],
+        "runs": 1
+      },
+      "runs_added": 1
+    },
+    {
+      "before": {
+        "outs": 1,
+        "bases": [
+          true,
+          true,
+          true
+        ],
+        "runs": 0
+      },
+      "event": "batter_out_runners_hold",
+      "after": {
+        "outs": 2,
+        "bases": [
+          true,
+          true,
+          true
+        ],
+        "runs": 0
+      },
+      "runs_added": 0
+    },
+    {
+      "before": {
+        "outs": 1,
+        "bases": [
+          true,
+          true,
+          true
+        ],
+        "runs": 0
+      },
+      "event": "legal_over_fence_home_run",
+      "after": {
+        "outs": 1,
+        "bases": [
+          false,
+          false,
+          false
+        ],
+        "runs": 4
+      },
+      "runs_added": 4
+    },
+    {
+      "before": {
+        "outs": 2,
+        "bases": [
+          false,
+          false,
+          false
+        ],
+        "runs": 0
+      },
+      "event": "walk_forced_only",
+      "after": {
+        "outs": 2,
+        "bases": [
+          true,
+          false,
+          false
+        ],
+        "runs": 0
+      },
+      "runs_added": 0
+    },
+    {
+      "before": {
+        "outs": 2,
+        "bases": [
+          false,
+          false,
+          false
+        ],
+        "runs": 0
+      },
+      "event": "batter_out_runners_hold",
+      "after": {
+        "outs": 3,
+        "bases": [
+          false,
+          false,
+          false
+        ],
+        "runs": 0
+      },
+      "runs_added": 0
+    },
+    {
+      "before": {
+        "outs": 2,
+        "bases": [
+          false,
+          false,
+          false
+        ],
+        "runs": 0
+      },
+      "event": "legal_over_fence_home_run",
+      "after": {
+        "outs": 2,
+        "bases": [
+          false,
+          false,
+          false
+        ],
+        "runs": 1
+      },
+      "runs_added": 1
+    },
+    {
+      "before": {
+        "outs": 2,
+        "bases": [
+          false,
+          false,
+          true
+        ],
+        "runs": 0
+      },
+      "event": "walk_forced_only",
+      "after": {
+        "outs": 2,
+        "bases": [
+          true,
+          false,
+          true
+        ],
+        "runs": 0
+      },
+      "runs_added": 0
+    },
+    {
+      "before": {
+        "outs": 2,
+        "bases": [
+          false,
+          false,
+          true
+        ],
+        "runs": 0
+      },
+      "event": "batter_out_runners_hold",
+      "after": {
+        "outs": 3,
+        "bases": [
+          false,
+          false,
+          true
+        ],
+        "runs": 0
+      },
+      "runs_added": 0
+    },
+    {
+      "before": {
+        "outs": 2,
+        "bases": [
+          false,
+          false,
+          true
+        ],
+        "runs": 0
+      },
+      "event": "legal_over_fence_home_run",
+      "after": {
+        "outs": 2,
+        "bases": [
+          false,
+          false,
+          false
+        ],
+        "runs": 2
+      },
+      "runs_added": 2
+    },
+    {
+      "before": {
+        "outs": 2,
+        "bases": [
+          false,
+          true,
+          false
+        ],
+        "runs": 0
+      },
+      "event": "walk_forced_only",
+      "after": {
+        "outs": 2,
+        "bases": [
+          true,
+          true,
+          false
+        ],
+        "runs": 0
+      },
+      "runs_added": 0
+    },
+    {
+      "before": {
+        "outs": 2,
+        "bases": [
+          false,
+          true,
+          false
+        ],
+        "runs": 0
+      },
+      "event": "batter_out_runners_hold",
+      "after": {
+        "outs": 3,
+        "bases": [
+          false,
+          true,
+          false
+        ],
+        "runs": 0
+      },
+      "runs_added": 0
+    },
+    {
+      "before": {
+        "outs": 2,
+        "bases": [
+          false,
+          true,
+          false
+        ],
+        "runs": 0
+      },
+      "event": "legal_over_fence_home_run",
+      "after": {
+        "outs": 2,
+        "bases": [
+          false,
+          false,
+          false
+        ],
+        "runs": 2
+      },
+      "runs_added": 2
+    },
+    {
+      "before": {
+        "outs": 2,
+        "bases": [
+          false,
+          true,
+          true
+        ],
+        "runs": 0
+      },
+      "event": "walk_forced_only",
+      "after": {
+        "outs": 2,
+        "bases": [
+          true,
+          true,
+          true
+        ],
+        "runs": 0
+      },
+      "runs_added": 0
+    },
+    {
+      "before": {
+        "outs": 2,
+        "bases": [
+          false,
+          true,
+          true
+        ],
+        "runs": 0
+      },
+      "event": "batter_out_runners_hold",
+      "after": {
+        "outs": 3,
+        "bases": [
+          false,
+          true,
+          true
+        ],
+        "runs": 0
+      },
+      "runs_added": 0
+    },
+    {
+      "before": {
+        "outs": 2,
+        "bases": [
+          false,
+          true,
+          true
+        ],
+        "runs": 0
+      },
+      "event": "legal_over_fence_home_run",
+      "after": {
+        "outs": 2,
+        "bases": [
+          false,
+          false,
+          false
+        ],
+        "runs": 3
+      },
+      "runs_added": 3
+    },
+    {
+      "before": {
+        "outs": 2,
+        "bases": [
+          true,
+          false,
+          false
+        ],
+        "runs": 0
+      },
+      "event": "walk_forced_only",
+      "after": {
+        "outs": 2,
+        "bases": [
+          true,
+          true,
+          false
+        ],
+        "runs": 0
+      },
+      "runs_added": 0
+    },
+    {
+      "before": {
+        "outs": 2,
+        "bases": [
+          true,
+          false,
+          false
+        ],
+        "runs": 0
+      },
+      "event": "batter_out_runners_hold",
+      "after": {
+        "outs": 3,
+        "bases": [
+          true,
+          false,
+          false
+        ],
+        "runs": 0
+      },
+      "runs_added": 0
+    },
+    {
+      "before": {
+        "outs": 2,
+        "bases": [
+          true,
+          false,
+          false
+        ],
+        "runs": 0
+      },
+      "event": "legal_over_fence_home_run",
+      "after": {
+        "outs": 2,
+        "bases": [
+          false,
+          false,
+          false
+        ],
+        "runs": 2
+      },
+      "runs_added": 2
+    },
+    {
+      "before": {
+        "outs": 2,
+        "bases": [
+          true,
+          false,
+          true
+        ],
+        "runs": 0
+      },
+      "event": "walk_forced_only",
+      "after": {
+        "outs": 2,
+        "bases": [
+          true,
+          true,
+          true
+        ],
+        "runs": 0
+      },
+      "runs_added": 0
+    },
+    {
+      "before": {
+        "outs": 2,
+        "bases": [
+          true,
+          false,
+          true
+        ],
+        "runs": 0
+      },
+      "event": "batter_out_runners_hold",
+      "after": {
+        "outs": 3,
+        "bases": [
+          true,
+          false,
+          true
+        ],
+        "runs": 0
+      },
+      "runs_added": 0
+    },
+    {
+      "before": {
+        "outs": 2,
+        "bases": [
+          true,
+          false,
+          true
+        ],
+        "runs": 0
+      },
+      "event": "legal_over_fence_home_run",
+      "after": {
+        "outs": 2,
+        "bases": [
+          false,
+          false,
+          false
+        ],
+        "runs": 3
+      },
+      "runs_added": 3
+    },
+    {
+      "before": {
+        "outs": 2,
+        "bases": [
+          true,
+          true,
+          false
+        ],
+        "runs": 0
+      },
+      "event": "walk_forced_only",
+      "after": {
+        "outs": 2,
+        "bases": [
+          true,
+          true,
+          true
+        ],
+        "runs": 0
+      },
+      "runs_added": 0
+    },
+    {
+      "before": {
+        "outs": 2,
+        "bases": [
+          true,
+          true,
+          false
+        ],
+        "runs": 0
+      },
+      "event": "batter_out_runners_hold",
+      "after": {
+        "outs": 3,
+        "bases": [
+          true,
+          true,
+          false
+        ],
+        "runs": 0
+      },
+      "runs_added": 0
+    },
+    {
+      "before": {
+        "outs": 2,
+        "bases": [
+          true,
+          true,
+          false
+        ],
+        "runs": 0
+      },
+      "event": "legal_over_fence_home_run",
+      "after": {
+        "outs": 2,
+        "bases": [
+          false,
+          false,
+          false
+        ],
+        "runs": 3
+      },
+      "runs_added": 3
+    },
+    {
+      "before": {
+        "outs": 2,
+        "bases": [
+          true,
+          true,
+          true
+        ],
+        "runs": 0
+      },
+      "event": "walk_forced_only",
+      "after": {
+        "outs": 2,
+        "bases": [
+          true,
+          true,
+          true
+        ],
+        "runs": 1
+      },
+      "runs_added": 1
+    },
+    {
+      "before": {
+        "outs": 2,
+        "bases": [
+          true,
+          true,
+          true
+        ],
+        "runs": 0
+      },
+      "event": "batter_out_runners_hold",
+      "after": {
+        "outs": 3,
+        "bases": [
+          true,
+          true,
+          true
+        ],
+        "runs": 0
+      },
+      "runs_added": 0
+    },
+    {
+      "before": {
+        "outs": 2,
+        "bases": [
+          true,
+          true,
+          true
+        ],
+        "runs": 0
+      },
+      "event": "legal_over_fence_home_run",
+      "after": {
+        "outs": 2,
+        "bases": [
+          false,
+          false,
+          false
+        ],
+        "runs": 4
+      },
+      "runs_added": 4
+    }
+  ]
+}
