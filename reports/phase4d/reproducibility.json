@@ -1,0 +1,12 @@
+{
+  "all_four_artifacts_byte_identical": true,
+  "compared_sha256": {
+    "REPORT.md": "4179009b22284a501f590f93e44dba188479e881d51ebad580fdf64662b40f89",
+    "SHA256SUMS.json": "cdd72a70f7a3c9045e3f3b380b7524488dfe1155e71be935ebca02c65d172b34",
+    "plan.json": "30de8a02d681708bab7dae0bb0e03fad6c4237da5af617507121748df7e867aa",
+    "traces.json": "4b169ba801f07a2c52d5198aa1d4ecdf2c371618810c65691968b79381555fba"
+  },
+  "first": "reports/phase4d/synthetic-01",
+  "no_time_or_absolute_path_in_run_artifacts": true,
+  "second": "data/prototypes/phase4d/synthetic-repeat-02"
+}
