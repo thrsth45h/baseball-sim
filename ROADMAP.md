@@ -88,7 +88,7 @@ PR #1: https://github.com/thrsth45h/statcast-swing-model-v1/pull/1
 - 1球単位のカウント、走者、アウト、得点、併殺、延長、交代、盗塁等。
 - 公式記録と分析ログ、同じ乱数条件による結果再現のテスト。
 
-次工程の[Phase 4d案](docs/PHASE4D_DESIGN.md)・[ADR-0011](docs/adr/0011-phase4d-half-sequence.md)はD045 OPEN/未承認。旧4cの三アウト停止を明示Advanceで次半回へつなぎ、表裏・回数・両チーム得点の保持を検算する。制御16セル、固定16列/100action/116分割と96代表切替を提案する。試合終了/延長/サヨナラ・勝敗・一般走塁・研究/能力・Androidは別判断。承認前にworker実装を始めない。
+次工程の[Phase 4d案](docs/PHASE4D_DESIGN.md)・[ADR-0011](docs/adr/0011-phase4d-half-sequence.md)はD045限定CONFIRMED/承認済み。旧4cの三アウト停止を明示Advanceで次半回へつなぎ、表裏・回数・両チーム得点の保持を検算する。制御16セル、固定16列/100action/116分割と96代表切替を提案する。試合終了/延長/サヨナラ・勝敗・一般走塁・研究/能力・Androidは別判断。本人の範囲承認を受け、設計マージ後にworkerへ委任する。
 
 ## Phase 5 — Androidゲームと長期ペナント
 

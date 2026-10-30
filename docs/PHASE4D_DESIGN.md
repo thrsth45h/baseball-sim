@@ -1,9 +1,9 @@
 # Phase 4d — 表裏の切替と両チーム得点の限定参照
 
 - 版: `phase4d-design-v0.1`、2026-10-30 日本時間。
-- 状態: **Proposed／未承認**。「次へ」は設計を進める指示であり、以下の新仕様の承認ではない。D045 OPEN、[ADR-0011](adr/0011-phase4d-half-sequence.md) Proposed。
+- 状態: **Accepted**。2026-10-30、本人が本PRを示す確認に「設計PR #28の範囲で進める（推奨）」と回答。限定半回列制御・得点表現・明示Advance・固定表/列・ゲーム側Python参照/CI・旧型/step利用とworker開始を承認した。「次へ」だけを承認とは扱っていない。D045限定CONFIRMED、[ADR-0011](adr/0011-phase4d-half-sequence.md) Accepted。
 - 基準: ゲームmain `91d5e1f40730e09d4970e0960a10b3c658fc65b8`、研究main `cd8217a44788cf830c5554b71b04a27a98ce620c`。
-- 関連: D004/D022、D042–D044の承認済み限定契約、D029/D031/D032 OPEN、[設計点検](PHASE4D_REVIEW.md)。設計PR: [ゲームPR #28](https://github.com/thrsth45h/baseball-sim/pull/28)（未承認Draft）。
+- 関連: D004/D022、D042–D044の承認済み限定契約、D029/D031/D032 OPEN、[設計点検](PHASE4D_REVIEW.md)。設計PR: [ゲームPR #28](https://github.com/thrsth45h/baseball-sim/pull/28)（本人の範囲承認済み、設計マージ後にworkerへ委任）。
 
 ## 1. 目的・代替案と追加価値
 
@@ -125,4 +125,4 @@ flags: source_kind=synthetic_fixture、scope=partial_half_sequence_controller、
 
 ## 9. 本人へ判断を求める範囲
 
-限定された半回列のcontroller、上記得点表現と明示Advance、旧型/step利用、固定表/列、ゲーム側Python参照/専用CIとworker開始の承認を求める。**現在は全て提案であり未実装。** 承認後にだけD045を限定CONFIRMED/ADR Acceptedとして設計をマージし、専用workerへ委任する。一般走塁・試合終了/延長/サヨナラ・勝敗・研究/能力・Android採用は承認へ含めない。
+**2026-10-30、本人が本PRを示す確認に「設計PR #28の範囲で進める（推奨）」と回答。限定半回列制御・得点表現・明示Advance・固定表/列・ゲーム側Python参照/CI・旧型/step利用とworker開始を承認した。** D045は限定CONFIRMED/ADR Accepted。設計をマージ後に専用workerへ委任する。一般走塁・試合終了/延長/サヨナラ・勝敗・研究/能力・Android採用は承認へ含めない。

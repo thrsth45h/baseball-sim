@@ -1,9 +1,9 @@
 # ADR-0011: 表裏の切替と両チーム得点の限定参照
 
-- Status: **Proposed／未承認**、2026-10-30 日本時間。
-- 関連: D004/D022、D045 OPEN（提案）、D029/D031/D032 OPEN。
-- 対象: [Phase 4d設計v0.1](../PHASE4D_DESIGN.md)。設計PR: [ゲームPR #28](https://github.com/thrsth45h/baseball-sim/pull/28)（未承認Draft）。
-- ユーザーの明示承認: **未取得**。「次へ」だけでこの新仕様を確定しない。
+- Status: **Accepted**、2026-10-30 日本時間。
+- 関連: D004/D022、D045限定CONFIRMED、D029/D031/D032 OPEN。
+- 対象: [Phase 4d設計v0.1](../PHASE4D_DESIGN.md)。設計PR: [ゲームPR #28](https://github.com/thrsth45h/baseball-sim/pull/28)（本人の範囲承認済み）。
+- ユーザーの明示承認: **2026-10-30、本人が本PRを示す確認に「設計PR #28の範囲で進める（推奨）」と回答。限定半回列制御・得点表現・明示Advance・固定表/列・ゲーム側Python参照/CI・旧型/step利用とworker開始を承認した。** 「次へ」だけを承認とは扱っていない。
 
 ## 現状と問題
 
@@ -27,4 +27,4 @@ MLB2026の通常開始/三アウト交代を参照するが、有限の合成列
 
 ## 承認後の進め方
 
-本人が提示された範囲を明示承認した後だけD045限定CONFIRMED/ADR Acceptedにし、設計PRマージ後workerへ実装を委任する。CI・設計点検・PR作成を仕様承認に置き換えない。
+本人が提示された限定範囲を明示承認したためD045限定CONFIRMED/ADR Acceptedとし、設計PRマージ後workerへ実装を委任する。CI・設計点検・PR作成を仕様承認に置き換えない。
