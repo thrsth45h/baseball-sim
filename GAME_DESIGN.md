@@ -111,6 +111,8 @@
 
 [Phase 4d設計](docs/PHASE4D_DESIGN.md)・[ADR-0011](docs/adr/0011-phase4d-half-sequence.md)は2026-10-30に本人が[設計PR #28](https://github.com/thrsth45h/baseball-sim/pull/28)の範囲を承認（D045限定CONFIRMED/Accepted）。worker実装・責任者の独立レビュー後、[実装PR #29](https://github.com/thrsth45h/baseball-sim/pull/29)をmain `27c1c9df0d6286faf77334157eec2b236f94e68d`へマージ済み。旧4c.stepを再利用し、三アウト後の明示Advanceで表裏を切り替え、次半回だけを空の状態へ初期化する。切替済み累計と現在halfからscoreを導出し、Advance前後で両チームの合計を保持する。 新4d26 test method/成功subTest320、旧4c28/3020・旧4a33/326・旧4b32/515を別集計し、責任者も別worktreeで全て成功、failure/error/skip0。対象headのPython3.11/3.12全CI成功。実装未参照の独立した得点ledgerと21,612比較項目/709期待拒否が一致。16列/100action/116分割、96Advance、両side合計4,608投球・576互換試行（240受理/336拒否）、完了後192拒否を確認。追加1,000半回/14,500actionの最終state/score・全trace hashも一致した。主要4成果物は責任者の監視下2runとworker公開版でバイト一致し、許可外入力/RNG・時計利用0。公開helperも200trace/6run hashを独立再検算した。 [レビュー](docs/PHASE4D_REVIEW.md)を参照。終了判定のない有限合成列のcontrollerであり、9回/延長/サヨナラ・勝敗・最終得点、一般走塁/公式記録・完全試合、研究モデル/能力、Android/UI/DB/セーブ・製品採用は未実施。強い合成入力条件とhalf snapshotの意味を維持し、省略された現実イベントの検出や古いsnapshot/通信再送の永続重複排除は保証しない。D029/D031/D032はOPEN。次の重要な実装仕様は未承認で、設計相談から決める。
 
+次の[Phase 4e案](docs/PHASE4E_DESIGN.md)・[ADR-0012](docs/adr/0012-phase4e-completed-safe-hits.md)は未承認（D046 OPEN）。裁定済みの全員safe安打と各走者の行先を明示し、旧4dのfair待ちへ新ResolveSafeHitを追加する案。安打価値は外部入力で、打者最終塁がその値と等しい条件だけを扱う。走者の据置きも許し、一律進塁や安打/走塁の確率・裁定は作らない。旧code/結果は保持し、仕様承認後に設計マージ/worker実装へ進む。
+
 ## 7. MLB Statcast研究方針と現状
 
 - 詳細データはMLB Statcast。FanGraphsの研究や指標の定義を参考にし、NPB詳細有料データを用いない。
