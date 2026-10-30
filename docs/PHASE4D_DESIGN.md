@@ -3,7 +3,7 @@
 - 版: `phase4d-design-v0.1`、2026-10-30 日本時間。
 - 状態: **Accepted**。2026-10-30、本人が本PRを示す確認に「設計PR #28の範囲で進める（推奨）」と回答。限定半回列制御・得点表現・明示Advance・固定表/列・ゲーム側Python参照/CI・旧型/step利用とworker開始を承認した。「次へ」だけを承認とは扱っていない。D045限定CONFIRMED、[ADR-0011](adr/0011-phase4d-half-sequence.md) Accepted。
 - 基準: ゲームmain `91d5e1f40730e09d4970e0960a10b3c658fc65b8`、研究main `cd8217a44788cf830c5554b71b04a27a98ce620c`。
-- 関連: D004/D022、D042–D044の承認済み限定契約、D029/D031/D032 OPEN、[設計点検](PHASE4D_REVIEW.md)。設計PR: [ゲームPR #28](https://github.com/thrsth45h/baseball-sim/pull/28)（本人の範囲承認済み、設計マージ後にworkerへ委任）。
+- 関連: D004/D022、D042–D044の承認済み限定契約、D029/D031/D032 OPEN、[設計点検](PHASE4D_REVIEW.md)。設計PR: [ゲームPR #28](https://github.com/thrsth45h/baseball-sim/pull/28)はmain `b9f9b5830f9247691b4d05b0f81ad8fe84c12f13`へマージ済み。worker実装・責任者の独立レビュー後、[実装PR #29](https://github.com/thrsth45h/baseball-sim/pull/29)をmain `27c1c9df0d6286faf77334157eec2b236f94e68d`へマージ済み。旧4c.stepを再利用し、三アウト後の明示Advanceで表裏を切り替え、次半回だけを空の状態へ初期化する。切替済み累計と現在halfからscoreを導出し、Advance前後で両チームの合計を保持する。 [独立レビュー](PHASE4D_REVIEW.md)・[公開手順](../reports/phase4d/README.md)を参照。以下は承認された契約を保持する。
 
 ## 1. 目的・代替案と追加価値
 

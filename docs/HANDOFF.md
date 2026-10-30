@@ -10,6 +10,9 @@
 
 ## 現在の到達点
 
+- **Phase 4dは実装・独立レビュー・マージまで完了。** worker実装・責任者の独立レビュー後、[実装PR #29](https://github.com/thrsth45h/baseball-sim/pull/29)をmain `27c1c9df0d6286faf77334157eec2b236f94e68d`へマージ済み。旧4c.stepを再利用し、三アウト後の明示Advanceで表裏を切り替え、次半回だけを空の状態へ初期化する。切替済み累計と現在halfからscoreを導出し、Advance前後で両チームの合計を保持する。 D045限定CONFIRMED。
+- 新4d26 test method/成功subTest320、旧4c28/3020・旧4a33/326・旧4b32/515を別集計し、責任者も別worktreeで全て成功、failure/error/skip0。対象headのPython3.11/3.12全CI成功。実装未参照の独立した得点ledgerと21,612比較項目/709期待拒否が一致。16列/100action/116分割、96Advance、両side合計4,608投球・576互換試行（240受理/336拒否）、完了後192拒否を確認。追加1,000半回/14,500actionの最終state/score・全trace hashも一致した。主要4成果物は責任者の監視下2runとworker公開版でバイト一致し、許可外入力/RNG・時計利用0。公開helperも200trace/6run hashを独立再検算した。 [レビュー](PHASE4D_REVIEW.md)・[公開手順](../reports/phase4d/README.md)を参照。
+- 最終実装head `898de25e62a3e81cf1ba2c0661a13e8fa4d5e0d1`、source/tests/fixtures/CI固定 `2fadced5b5da7b8387466641fd063180c5628e17`。実装時点で旧123パス中README案内以外122不変。公開15ファイル216,421bytes・17hashをworking/Git blob双方で照合。後続完了文書7件の変更は歴史的旧保護と区別する。研究main `cd8217a44788cf830c5554b71b04a27a98ce620c`/tree/作業状態は不変。研究575テストを新4dへ加算しない。 worker `work/phase4d-half-sequence-worker`、レビュー `work/phase4d-review-2fadced`とignored実行/検証資料を保持。
 - **Phase 4cは限定接続の実装・独立レビュー・マージまで完了。** worker実装・責任者の独立レビュー後、[実装PR #26](https://github.com/thrsth45h/baseball-sim/pull/26)をmain `40e1d1d54e9728bbee04c3f65300e57972b9c629`へマージ済み。旧4a/4bの型・stepへ明示Begin/Pitch/Resolveで委任し、結果待ちではhalfを反映せず、明示確定後にcount=Noneへ消費する。次打者も明示Beginを要求し、三アウトで残塁/得点を保持して停止する。 D044は承認範囲のみCONFIRMED。
 - 新4c28 test method/成功subTest3020、旧4a33/326・旧4b32/515を別集計し、責任者も別worktreeで全て成功、failure/error/skip0。対象headのPython3.11/3.12全CI成功。実装未参照で別計算した凍結期待値との11,468比較項目/439期待拒否が一致し、18列/82action/100分割、代表2,304投球、互換288試行（120受理/168拒否）、半回完了96拒否等を照合した。監視下runの許可外入力/RNG・時計利用0、主要4成果物は責任者の2runとworker公開版でバイト一致。公開helperも164trace/6run hashを独立再検算した。 [レビュー](PHASE4C_REVIEW.md)・[公開手順](../reports/phase4c/README.md)を参照。
 - 最終実装head `baba99eaf56ebe264b0d1162e019a1cd5b16f331`、source/tests/fixtures/CI固定 `a1d2cbc4ae9f949babb2f350be9ed41193f477b5`。旧93パス中README案内以外92不変という実装時点の保護と、後続完了文書7件の変更を区別する。公開14ファイル151,315bytes・16hashをworking/Gitで照合。worker `work/phase4c-pitch-half-worker`、レビュー `work/phase4c-review-a1d2cbc`とignored実行/検証資料を保持。研究main `cd8217a44788cf830c5554b71b04a27a98ce620c`/tree/作業状態は不変。研究575テストを新4cへ加算しない。
@@ -70,6 +73,9 @@
 | Phase 4b完了記録・独立レビューの引き継ぎ | [ゲームPR #24](https://github.com/thrsth45h/baseball-sim/pull/24) | `197add4704dc1f8fe64d41037ede25cf73ba6876` |
 | Phase 4c限定接続の設計・実装承認 | [ゲームPR #25](https://github.com/thrsth45h/baseball-sim/pull/25) | `06256f8a4f0f8795709f56365f1ea212e2090092` |
 | Phase 4c投球/半回snapshotの明示接続 | [ゲームPR #26](https://github.com/thrsth45h/baseball-sim/pull/26) | `40e1d1d54e9728bbee04c3f65300e57972b9c629` |
+| Phase 4c完了記録 | [ゲームPR #27](https://github.com/thrsth45h/baseball-sim/pull/27) | `91d5e1f40730e09d4970e0960a10b3c658fc65b8` |
+| Phase 4d半回列制御の設計・実装承認 | [ゲームPR #28](https://github.com/thrsth45h/baseball-sim/pull/28) | `b9f9b5830f9247691b4d05b0f81ad8fe84c12f13` |
+| Phase 4d表裏切替と両チーム得点 | [ゲームPR #29](https://github.com/thrsth45h/baseball-sim/pull/29) | `27c1c9df0d6286faf77334157eec2b236f94e68d` |
 
 Phase 1d設計書・ADRのProposedは作成時の表記。研究範囲の採用・マージ記録はゲームPR #4本文にある。研究実装の独立レビュー・ユーザー許可・マージ記録は研究PR #3本文にある。これは製品採用・能力係数の承認ではない。
 
@@ -77,9 +83,7 @@ Phase 1d設計書・ADRのProposedは作成時の表記。研究範囲の採用�
 
 ## 次工程
 
-2026-10-30の「次へ」を受け、ゲームmain `91d5e1f40730e09d4970e0960a10b3c658fc65b8`からdesign/phase4d-half-sequenceへ分岐し、[Phase 4d案](PHASE4D_DESIGN.md)・[ADR-0011](adr/0011-phase4d-half-sequence.md)を作成した。**2026-10-30、本人が本PRを示す確認に「設計PR #28の範囲で進める（推奨）」と回答。限定半回列制御・得点表現・明示Advance・固定表/列・ゲーム側Python参照/CI・旧型/step利用とworker開始を承認した。 D045限定CONFIRMED/ADR Accepted、生産実装は設計マージ後。** [設計PR #28](https://github.com/thrsth45h/baseball-sim/pull/28)は本人の範囲承認済み。 旧4cの半回完了から明示Advanceで表裏を切り替え、両チーム得点と次半回リセットを検算する提案。[設計点検](PHASE4D_REVIEW.md)を参照。本人が仕様範囲を承認したため、設計マージ/worker実装へ進む。試合終了/延長/サヨナラ・勝敗・一般走塁・研究/能力・Android採用は追加しない。
-
-**Phase 4cの承認済み実装は完了。次の重要な実装仕様は未承認。** 強い合成入力条件内の接続参照で、halfは最後に確定反映したsnapshot。省略された現実イベントの検出や古いsnapshot/通信再送の永続重複排除を保証しない。一般走塁/単打/併殺/第三アウト得点、公式個人成績、完全試合、研究/確率/能力、Android/UI/DB/セーブ・製品採用は未実施。D029/D031/D032はOPEN。次の新しい実装仕様は未承認で、設計相談から決める。 既存worktree/ignored資料を保持し、再開時は両repoのbranch/HEAD/未保存変更/最新main/未マージPRを確認する。責任者が設計し、本人の承認後にworkerへ直接委任する。
+**Phase 4dの承認済み実装は完了。次の新しい実装仕様は未承認。** 終了判定のない有限合成列のcontrollerであり、9回/延長/サヨナラ・勝敗・最終得点、一般走塁/公式記録・完全試合、研究モデル/能力、Android/UI/DB/セーブ・製品採用は未実施。強い合成入力条件とhalf snapshotの意味を維持し、省略された現実イベントの検出や古いsnapshot/通信再送の永続重複排除は保証しない。D029/D031/D032はOPEN。次の重要な実装仕様は未承認で、設計相談から決める。 既存worktree/ignored資料を保持し、再開時は両repoのbranch/HEAD/未保存変更/最新main/未マージPRを確認する。責任者が設計し、本人承認後にworkerへ直接委任する。
 
 2026-10-28の再開時、限定rawと既存適格入力の一対一照合から、hit_into_playに記録上の犠牲バント4件とファウル地域のfield_out 62件を確認した。「通常スイングだけ」「fair_in_playがフェアを保証」という従来説明を訂正し、旧二値ターゲット・機械可読結果・数値を保存した。限定標本の証拠・根拠hash・代替案は[Phase 2b設計](PHASE2B_DESIGN.md)を参照。
 
