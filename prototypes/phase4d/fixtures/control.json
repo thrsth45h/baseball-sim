@@ -1,0 +1,85 @@
+{
+  "design": "phase4d-design-v0.1",
+  "control": [
+    {
+      "stage": "between_batters",
+      "kind": "begin_batter",
+      "effect": "delegate_old"
+    },
+    {
+      "stage": "between_batters",
+      "kind": "pitch",
+      "effect": "reject"
+    },
+    {
+      "stage": "between_batters",
+      "kind": "resolve",
+      "effect": "reject"
+    },
+    {
+      "stage": "between_batters",
+      "kind": "advance_half",
+      "effect": "reject"
+    },
+    {
+      "stage": "pitching",
+      "kind": "begin_batter",
+      "effect": "reject"
+    },
+    {
+      "stage": "pitching",
+      "kind": "pitch",
+      "effect": "delegate_old"
+    },
+    {
+      "stage": "pitching",
+      "kind": "resolve",
+      "effect": "reject"
+    },
+    {
+      "stage": "pitching",
+      "kind": "advance_half",
+      "effect": "reject"
+    },
+    {
+      "stage": "awaiting_resolution",
+      "kind": "begin_batter",
+      "effect": "reject"
+    },
+    {
+      "stage": "awaiting_resolution",
+      "kind": "pitch",
+      "effect": "reject"
+    },
+    {
+      "stage": "awaiting_resolution",
+      "kind": "resolve",
+      "effect": "delegate_old_compatibility"
+    },
+    {
+      "stage": "awaiting_resolution",
+      "kind": "advance_half",
+      "effect": "reject"
+    },
+    {
+      "stage": "half_complete",
+      "kind": "begin_batter",
+      "effect": "reject"
+    },
+    {
+      "stage": "half_complete",
+      "kind": "pitch",
+      "effect": "reject"
+    },
+    {
+      "stage": "half_complete",
+      "kind": "resolve",
+      "effect": "reject"
+    },
+    {
+      "stage": "half_complete",
+      "kind": "advance_half",
+      "effect": "advance"
+    }
+  ]
+}
