@@ -1,0 +1,2653 @@
+{
+  "ability_calibrated": false,
+  "accepted_patterns": [
+    {
+      "after": {
+        "bases": [
+          true,
+          false,
+          false
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "before": {
+        "bases": [
+          false,
+          false,
+          false
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "hit_bases": 1,
+      "runner_destinations": [
+        null,
+        null,
+        null
+      ],
+      "runs_added": 0
+    },
+    {
+      "after": {
+        "bases": [
+          false,
+          true,
+          false
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "before": {
+        "bases": [
+          false,
+          false,
+          false
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "hit_bases": 2,
+      "runner_destinations": [
+        null,
+        null,
+        null
+      ],
+      "runs_added": 0
+    },
+    {
+      "after": {
+        "bases": [
+          false,
+          false,
+          true
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "before": {
+        "bases": [
+          false,
+          false,
+          false
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "hit_bases": 3,
+      "runner_destinations": [
+        null,
+        null,
+        null
+      ],
+      "runs_added": 0
+    },
+    {
+      "after": {
+        "bases": [
+          true,
+          false,
+          true
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "before": {
+        "bases": [
+          false,
+          false,
+          true
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "hit_bases": 1,
+      "runner_destinations": [
+        null,
+        null,
+        3
+      ],
+      "runs_added": 0
+    },
+    {
+      "after": {
+        "bases": [
+          true,
+          false,
+          false
+        ],
+        "outs": 0,
+        "runs": 1
+      },
+      "before": {
+        "bases": [
+          false,
+          false,
+          true
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "hit_bases": 1,
+      "runner_destinations": [
+        null,
+        null,
+        4
+      ],
+      "runs_added": 1
+    },
+    {
+      "after": {
+        "bases": [
+          false,
+          true,
+          true
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "before": {
+        "bases": [
+          false,
+          false,
+          true
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "hit_bases": 2,
+      "runner_destinations": [
+        null,
+        null,
+        3
+      ],
+      "runs_added": 0
+    },
+    {
+      "after": {
+        "bases": [
+          false,
+          true,
+          false
+        ],
+        "outs": 0,
+        "runs": 1
+      },
+      "before": {
+        "bases": [
+          false,
+          false,
+          true
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "hit_bases": 2,
+      "runner_destinations": [
+        null,
+        null,
+        4
+      ],
+      "runs_added": 1
+    },
+    {
+      "after": {
+        "bases": [
+          false,
+          false,
+          true
+        ],
+        "outs": 0,
+        "runs": 1
+      },
+      "before": {
+        "bases": [
+          false,
+          false,
+          true
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "hit_bases": 3,
+      "runner_destinations": [
+        null,
+        null,
+        4
+      ],
+      "runs_added": 1
+    },
+    {
+      "after": {
+        "bases": [
+          true,
+          true,
+          false
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "before": {
+        "bases": [
+          false,
+          true,
+          false
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "hit_bases": 1,
+      "runner_destinations": [
+        null,
+        2,
+        null
+      ],
+      "runs_added": 0
+    },
+    {
+      "after": {
+        "bases": [
+          true,
+          false,
+          true
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "before": {
+        "bases": [
+          false,
+          true,
+          false
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "hit_bases": 1,
+      "runner_destinations": [
+        null,
+        3,
+        null
+      ],
+      "runs_added": 0
+    },
+    {
+      "after": {
+        "bases": [
+          true,
+          false,
+          false
+        ],
+        "outs": 0,
+        "runs": 1
+      },
+      "before": {
+        "bases": [
+          false,
+          true,
+          false
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "hit_bases": 1,
+      "runner_destinations": [
+        null,
+        4,
+        null
+      ],
+      "runs_added": 1
+    },
+    {
+      "after": {
+        "bases": [
+          false,
+          true,
+          true
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "before": {
+        "bases": [
+          false,
+          true,
+          false
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "hit_bases": 2,
+      "runner_destinations": [
+        null,
+        3,
+        null
+      ],
+      "runs_added": 0
+    },
+    {
+      "after": {
+        "bases": [
+          false,
+          true,
+          false
+        ],
+        "outs": 0,
+        "runs": 1
+      },
+      "before": {
+        "bases": [
+          false,
+          true,
+          false
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "hit_bases": 2,
+      "runner_destinations": [
+        null,
+        4,
+        null
+      ],
+      "runs_added": 1
+    },
+    {
+      "after": {
+        "bases": [
+          false,
+          false,
+          true
+        ],
+        "outs": 0,
+        "runs": 1
+      },
+      "before": {
+        "bases": [
+          false,
+          true,
+          false
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "hit_bases": 3,
+      "runner_destinations": [
+        null,
+        4,
+        null
+      ],
+      "runs_added": 1
+    },
+    {
+      "after": {
+        "bases": [
+          true,
+          true,
+          true
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "before": {
+        "bases": [
+          false,
+          true,
+          true
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "hit_bases": 1,
+      "runner_destinations": [
+        null,
+        2,
+        3
+      ],
+      "runs_added": 0
+    },
+    {
+      "after": {
+        "bases": [
+          true,
+          true,
+          false
+        ],
+        "outs": 0,
+        "runs": 1
+      },
+      "before": {
+        "bases": [
+          false,
+          true,
+          true
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "hit_bases": 1,
+      "runner_destinations": [
+        null,
+        2,
+        4
+      ],
+      "runs_added": 1
+    },
+    {
+      "after": {
+        "bases": [
+          true,
+          false,
+          true
+        ],
+        "outs": 0,
+        "runs": 1
+      },
+      "before": {
+        "bases": [
+          false,
+          true,
+          true
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "hit_bases": 1,
+      "runner_destinations": [
+        null,
+        3,
+        4
+      ],
+      "runs_added": 1
+    },
+    {
+      "after": {
+        "bases": [
+          true,
+          false,
+          false
+        ],
+        "outs": 0,
+        "runs": 2
+      },
+      "before": {
+        "bases": [
+          false,
+          true,
+          true
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "hit_bases": 1,
+      "runner_destinations": [
+        null,
+        4,
+        4
+      ],
+      "runs_added": 2
+    },
+    {
+      "after": {
+        "bases": [
+          false,
+          true,
+          true
+        ],
+        "outs": 0,
+        "runs": 1
+      },
+      "before": {
+        "bases": [
+          false,
+          true,
+          true
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "hit_bases": 2,
+      "runner_destinations": [
+        null,
+        3,
+        4
+      ],
+      "runs_added": 1
+    },
+    {
+      "after": {
+        "bases": [
+          false,
+          true,
+          false
+        ],
+        "outs": 0,
+        "runs": 2
+      },
+      "before": {
+        "bases": [
+          false,
+          true,
+          true
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "hit_bases": 2,
+      "runner_destinations": [
+        null,
+        4,
+        4
+      ],
+      "runs_added": 2
+    },
+    {
+      "after": {
+        "bases": [
+          false,
+          false,
+          true
+        ],
+        "outs": 0,
+        "runs": 2
+      },
+      "before": {
+        "bases": [
+          false,
+          true,
+          true
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "hit_bases": 3,
+      "runner_destinations": [
+        null,
+        4,
+        4
+      ],
+      "runs_added": 2
+    },
+    {
+      "after": {
+        "bases": [
+          true,
+          true,
+          false
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "before": {
+        "bases": [
+          true,
+          false,
+          false
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "hit_bases": 1,
+      "runner_destinations": [
+        2,
+        null,
+        null
+      ],
+      "runs_added": 0
+    },
+    {
+      "after": {
+        "bases": [
+          true,
+          false,
+          true
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "before": {
+        "bases": [
+          true,
+          false,
+          false
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "hit_bases": 1,
+      "runner_destinations": [
+        3,
+        null,
+        null
+      ],
+      "runs_added": 0
+    },
+    {
+      "after": {
+        "bases": [
+          true,
+          false,
+          false
+        ],
+        "outs": 0,
+        "runs": 1
+      },
+      "before": {
+        "bases": [
+          true,
+          false,
+          false
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "hit_bases": 1,
+      "runner_destinations": [
+        4,
+        null,
+        null
+      ],
+      "runs_added": 1
+    },
+    {
+      "after": {
+        "bases": [
+          false,
+          true,
+          true
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "before": {
+        "bases": [
+          true,
+          false,
+          false
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "hit_bases": 2,
+      "runner_destinations": [
+        3,
+        null,
+        null
+      ],
+      "runs_added": 0
+    },
+    {
+      "after": {
+        "bases": [
+          false,
+          true,
+          false
+        ],
+        "outs": 0,
+        "runs": 1
+      },
+      "before": {
+        "bases": [
+          true,
+          false,
+          false
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "hit_bases": 2,
+      "runner_destinations": [
+        4,
+        null,
+        null
+      ],
+      "runs_added": 1
+    },
+    {
+      "after": {
+        "bases": [
+          false,
+          false,
+          true
+        ],
+        "outs": 0,
+        "runs": 1
+      },
+      "before": {
+        "bases": [
+          true,
+          false,
+          false
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "hit_bases": 3,
+      "runner_destinations": [
+        4,
+        null,
+        null
+      ],
+      "runs_added": 1
+    },
+    {
+      "after": {
+        "bases": [
+          true,
+          true,
+          true
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "before": {
+        "bases": [
+          true,
+          false,
+          true
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "hit_bases": 1,
+      "runner_destinations": [
+        2,
+        null,
+        3
+      ],
+      "runs_added": 0
+    },
+    {
+      "after": {
+        "bases": [
+          true,
+          true,
+          false
+        ],
+        "outs": 0,
+        "runs": 1
+      },
+      "before": {
+        "bases": [
+          true,
+          false,
+          true
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "hit_bases": 1,
+      "runner_destinations": [
+        2,
+        null,
+        4
+      ],
+      "runs_added": 1
+    },
+    {
+      "after": {
+        "bases": [
+          true,
+          false,
+          true
+        ],
+        "outs": 0,
+        "runs": 1
+      },
+      "before": {
+        "bases": [
+          true,
+          false,
+          true
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "hit_bases": 1,
+      "runner_destinations": [
+        3,
+        null,
+        4
+      ],
+      "runs_added": 1
+    },
+    {
+      "after": {
+        "bases": [
+          true,
+          false,
+          false
+        ],
+        "outs": 0,
+        "runs": 2
+      },
+      "before": {
+        "bases": [
+          true,
+          false,
+          true
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "hit_bases": 1,
+      "runner_destinations": [
+        4,
+        null,
+        4
+      ],
+      "runs_added": 2
+    },
+    {
+      "after": {
+        "bases": [
+          false,
+          true,
+          true
+        ],
+        "outs": 0,
+        "runs": 1
+      },
+      "before": {
+        "bases": [
+          true,
+          false,
+          true
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "hit_bases": 2,
+      "runner_destinations": [
+        3,
+        null,
+        4
+      ],
+      "runs_added": 1
+    },
+    {
+      "after": {
+        "bases": [
+          false,
+          true,
+          false
+        ],
+        "outs": 0,
+        "runs": 2
+      },
+      "before": {
+        "bases": [
+          true,
+          false,
+          true
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "hit_bases": 2,
+      "runner_destinations": [
+        4,
+        null,
+        4
+      ],
+      "runs_added": 2
+    },
+    {
+      "after": {
+        "bases": [
+          false,
+          false,
+          true
+        ],
+        "outs": 0,
+        "runs": 2
+      },
+      "before": {
+        "bases": [
+          true,
+          false,
+          true
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "hit_bases": 3,
+      "runner_destinations": [
+        4,
+        null,
+        4
+      ],
+      "runs_added": 2
+    },
+    {
+      "after": {
+        "bases": [
+          true,
+          true,
+          true
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "before": {
+        "bases": [
+          true,
+          true,
+          false
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "hit_bases": 1,
+      "runner_destinations": [
+        2,
+        3,
+        null
+      ],
+      "runs_added": 0
+    },
+    {
+      "after": {
+        "bases": [
+          true,
+          true,
+          false
+        ],
+        "outs": 0,
+        "runs": 1
+      },
+      "before": {
+        "bases": [
+          true,
+          true,
+          false
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "hit_bases": 1,
+      "runner_destinations": [
+        2,
+        4,
+        null
+      ],
+      "runs_added": 1
+    },
+    {
+      "after": {
+        "bases": [
+          true,
+          false,
+          true
+        ],
+        "outs": 0,
+        "runs": 1
+      },
+      "before": {
+        "bases": [
+          true,
+          true,
+          false
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "hit_bases": 1,
+      "runner_destinations": [
+        3,
+        4,
+        null
+      ],
+      "runs_added": 1
+    },
+    {
+      "after": {
+        "bases": [
+          true,
+          false,
+          false
+        ],
+        "outs": 0,
+        "runs": 2
+      },
+      "before": {
+        "bases": [
+          true,
+          true,
+          false
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "hit_bases": 1,
+      "runner_destinations": [
+        4,
+        4,
+        null
+      ],
+      "runs_added": 2
+    },
+    {
+      "after": {
+        "bases": [
+          false,
+          true,
+          true
+        ],
+        "outs": 0,
+        "runs": 1
+      },
+      "before": {
+        "bases": [
+          true,
+          true,
+          false
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "hit_bases": 2,
+      "runner_destinations": [
+        3,
+        4,
+        null
+      ],
+      "runs_added": 1
+    },
+    {
+      "after": {
+        "bases": [
+          false,
+          true,
+          false
+        ],
+        "outs": 0,
+        "runs": 2
+      },
+      "before": {
+        "bases": [
+          true,
+          true,
+          false
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "hit_bases": 2,
+      "runner_destinations": [
+        4,
+        4,
+        null
+      ],
+      "runs_added": 2
+    },
+    {
+      "after": {
+        "bases": [
+          false,
+          false,
+          true
+        ],
+        "outs": 0,
+        "runs": 2
+      },
+      "before": {
+        "bases": [
+          true,
+          true,
+          false
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "hit_bases": 3,
+      "runner_destinations": [
+        4,
+        4,
+        null
+      ],
+      "runs_added": 2
+    },
+    {
+      "after": {
+        "bases": [
+          true,
+          true,
+          true
+        ],
+        "outs": 0,
+        "runs": 1
+      },
+      "before": {
+        "bases": [
+          true,
+          true,
+          true
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "hit_bases": 1,
+      "runner_destinations": [
+        2,
+        3,
+        4
+      ],
+      "runs_added": 1
+    },
+    {
+      "after": {
+        "bases": [
+          true,
+          true,
+          false
+        ],
+        "outs": 0,
+        "runs": 2
+      },
+      "before": {
+        "bases": [
+          true,
+          true,
+          true
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "hit_bases": 1,
+      "runner_destinations": [
+        2,
+        4,
+        4
+      ],
+      "runs_added": 2
+    },
+    {
+      "after": {
+        "bases": [
+          true,
+          false,
+          true
+        ],
+        "outs": 0,
+        "runs": 2
+      },
+      "before": {
+        "bases": [
+          true,
+          true,
+          true
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "hit_bases": 1,
+      "runner_destinations": [
+        3,
+        4,
+        4
+      ],
+      "runs_added": 2
+    },
+    {
+      "after": {
+        "bases": [
+          true,
+          false,
+          false
+        ],
+        "outs": 0,
+        "runs": 3
+      },
+      "before": {
+        "bases": [
+          true,
+          true,
+          true
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "hit_bases": 1,
+      "runner_destinations": [
+        4,
+        4,
+        4
+      ],
+      "runs_added": 3
+    },
+    {
+      "after": {
+        "bases": [
+          false,
+          true,
+          true
+        ],
+        "outs": 0,
+        "runs": 2
+      },
+      "before": {
+        "bases": [
+          true,
+          true,
+          true
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "hit_bases": 2,
+      "runner_destinations": [
+        3,
+        4,
+        4
+      ],
+      "runs_added": 2
+    },
+    {
+      "after": {
+        "bases": [
+          false,
+          true,
+          false
+        ],
+        "outs": 0,
+        "runs": 3
+      },
+      "before": {
+        "bases": [
+          true,
+          true,
+          true
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "hit_bases": 2,
+      "runner_destinations": [
+        4,
+        4,
+        4
+      ],
+      "runs_added": 3
+    },
+    {
+      "after": {
+        "bases": [
+          false,
+          false,
+          true
+        ],
+        "outs": 0,
+        "runs": 3
+      },
+      "before": {
+        "bases": [
+          true,
+          true,
+          true
+        ],
+        "outs": 0,
+        "runs": 0
+      },
+      "hit_bases": 3,
+      "runner_destinations": [
+        4,
+        4,
+        4
+      ],
+      "runs_added": 3
+    }
+  ],
+  "action_count": 60,
+  "android_integrated": false,
+  "approved_design": {
+    "decision": "D046 limited completed safe-hit scope only",
+    "game_main": "e1af536153c36ab34be8199a3707ff0c1c9ba0fb",
+    "url": "https://github.com/thrsth45h/baseball-sim/pull/31"
+  },
+  "connected_to_phase3d": false,
+  "connected_to_phase4a": true,
+  "connected_to_phase4b": true,
+  "connected_to_phase4c": true,
+  "connected_to_phase4d": true,
+  "connected_to_statcast": false,
+  "control_cells": [
+    {
+      "effect": "delegate_old",
+      "kind": "begin_batter",
+      "stage": "between_batters"
+    },
+    {
+      "effect": "reject",
+      "kind": "pitch",
+      "stage": "between_batters"
+    },
+    {
+      "effect": "reject",
+      "kind": "resolve",
+      "stage": "between_batters"
+    },
+    {
+      "effect": "reject",
+      "kind": "advance_half",
+      "stage": "between_batters"
+    },
+    {
+      "effect": "reject",
+      "kind": "resolve_safe_hit",
+      "stage": "between_batters"
+    },
+    {
+      "effect": "reject",
+      "kind": "begin_batter",
+      "stage": "pitching"
+    },
+    {
+      "effect": "delegate_old",
+      "kind": "pitch",
+      "stage": "pitching"
+    },
+    {
+      "effect": "reject",
+      "kind": "resolve",
+      "stage": "pitching"
+    },
+    {
+      "effect": "reject",
+      "kind": "advance_half",
+      "stage": "pitching"
+    },
+    {
+      "effect": "reject",
+      "kind": "resolve_safe_hit",
+      "stage": "pitching"
+    },
+    {
+      "effect": "reject",
+      "kind": "begin_batter",
+      "stage": "awaiting_resolution"
+    },
+    {
+      "effect": "reject",
+      "kind": "pitch",
+      "stage": "awaiting_resolution"
+    },
+    {
+      "effect": "delegate_old_compatibility",
+      "kind": "resolve",
+      "stage": "awaiting_resolution"
+    },
+    {
+      "effect": "reject",
+      "kind": "advance_half",
+      "stage": "awaiting_resolution"
+    },
+    {
+      "effect": "fair_and_destinations",
+      "kind": "resolve_safe_hit",
+      "stage": "awaiting_resolution"
+    },
+    {
+      "effect": "reject",
+      "kind": "begin_batter",
+      "stage": "half_complete"
+    },
+    {
+      "effect": "reject",
+      "kind": "pitch",
+      "stage": "half_complete"
+    },
+    {
+      "effect": "reject",
+      "kind": "resolve",
+      "stage": "half_complete"
+    },
+    {
+      "effect": "delegate_old",
+      "kind": "advance_half",
+      "stage": "half_complete"
+    },
+    {
+      "effect": "reject",
+      "kind": "resolve_safe_hit",
+      "stage": "half_complete"
+    }
+  ],
+  "dependency_contracts": [
+    "phase4a-design-v0.1",
+    "phase4b-design-v0.1",
+    "phase4c-design-v0.1",
+    "phase4d-design-v0.1"
+  ],
+  "design": "phase4e-design-v0.1",
+  "fixed_scenarios": [
+    {
+      "actions": [
+        {
+          "kind": "begin_batter"
+        },
+        {
+          "event": "fair_ball_handoff",
+          "kind": "pitch"
+        },
+        {
+          "hit_bases": 1,
+          "kind": "resolve_safe_hit",
+          "runner_destinations": [
+            null,
+            null,
+            null
+          ]
+        }
+      ],
+      "expected_final": {
+        "closed_away_runs": 0,
+        "closed_home_runs": 0,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              true,
+              false,
+              false
+            ],
+            "outs": 0,
+            "runs": 0
+          }
+        },
+        "inning": 1,
+        "side": "top"
+      },
+      "expected_score": {
+        "away": 0,
+        "home": 0
+      },
+      "expected_stage": "between_batters",
+      "id": "single_empty",
+      "initial_state": {
+        "closed_away_runs": 0,
+        "closed_home_runs": 0,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              false,
+              false,
+              false
+            ],
+            "outs": 0,
+            "runs": 0
+          }
+        },
+        "inning": 1,
+        "side": "top"
+      }
+    },
+    {
+      "actions": [
+        {
+          "kind": "begin_batter"
+        },
+        {
+          "event": "fair_ball_handoff",
+          "kind": "pitch"
+        },
+        {
+          "hit_bases": 2,
+          "kind": "resolve_safe_hit",
+          "runner_destinations": [
+            null,
+            null,
+            null
+          ]
+        }
+      ],
+      "expected_final": {
+        "closed_away_runs": 0,
+        "closed_home_runs": 0,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              false,
+              true,
+              false
+            ],
+            "outs": 0,
+            "runs": 0
+          }
+        },
+        "inning": 1,
+        "side": "top"
+      },
+      "expected_score": {
+        "away": 0,
+        "home": 0
+      },
+      "expected_stage": "between_batters",
+      "id": "double_empty",
+      "initial_state": {
+        "closed_away_runs": 0,
+        "closed_home_runs": 0,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              false,
+              false,
+              false
+            ],
+            "outs": 0,
+            "runs": 0
+          }
+        },
+        "inning": 1,
+        "side": "top"
+      }
+    },
+    {
+      "actions": [
+        {
+          "kind": "begin_batter"
+        },
+        {
+          "event": "fair_ball_handoff",
+          "kind": "pitch"
+        },
+        {
+          "hit_bases": 3,
+          "kind": "resolve_safe_hit",
+          "runner_destinations": [
+            null,
+            null,
+            null
+          ]
+        }
+      ],
+      "expected_final": {
+        "closed_away_runs": 0,
+        "closed_home_runs": 0,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              false,
+              false,
+              true
+            ],
+            "outs": 0,
+            "runs": 0
+          }
+        },
+        "inning": 1,
+        "side": "top"
+      },
+      "expected_score": {
+        "away": 0,
+        "home": 0
+      },
+      "expected_stage": "between_batters",
+      "id": "triple_empty",
+      "initial_state": {
+        "closed_away_runs": 0,
+        "closed_home_runs": 0,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              false,
+              false,
+              false
+            ],
+            "outs": 0,
+            "runs": 0
+          }
+        },
+        "inning": 1,
+        "side": "top"
+      }
+    },
+    {
+      "actions": [
+        {
+          "kind": "begin_batter"
+        },
+        {
+          "event": "fair_ball_handoff",
+          "kind": "pitch"
+        },
+        {
+          "hit_bases": 1,
+          "kind": "resolve_safe_hit",
+          "runner_destinations": [
+            2,
+            null,
+            null
+          ]
+        }
+      ],
+      "expected_final": {
+        "closed_away_runs": 0,
+        "closed_home_runs": 0,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              true,
+              true,
+              false
+            ],
+            "outs": 0,
+            "runs": 0
+          }
+        },
+        "inning": 1,
+        "side": "top"
+      },
+      "expected_score": {
+        "away": 0,
+        "home": 0
+      },
+      "expected_stage": "between_batters",
+      "id": "single_first_second",
+      "initial_state": {
+        "closed_away_runs": 0,
+        "closed_home_runs": 0,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              true,
+              false,
+              false
+            ],
+            "outs": 0,
+            "runs": 0
+          }
+        },
+        "inning": 1,
+        "side": "top"
+      }
+    },
+    {
+      "actions": [
+        {
+          "kind": "begin_batter"
+        },
+        {
+          "event": "fair_ball_handoff",
+          "kind": "pitch"
+        },
+        {
+          "hit_bases": 1,
+          "kind": "resolve_safe_hit",
+          "runner_destinations": [
+            3,
+            null,
+            null
+          ]
+        }
+      ],
+      "expected_final": {
+        "closed_away_runs": 0,
+        "closed_home_runs": 0,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              true,
+              false,
+              true
+            ],
+            "outs": 0,
+            "runs": 0
+          }
+        },
+        "inning": 1,
+        "side": "top"
+      },
+      "expected_score": {
+        "away": 0,
+        "home": 0
+      },
+      "expected_stage": "between_batters",
+      "id": "single_first_third",
+      "initial_state": {
+        "closed_away_runs": 0,
+        "closed_home_runs": 0,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              true,
+              false,
+              false
+            ],
+            "outs": 0,
+            "runs": 0
+          }
+        },
+        "inning": 1,
+        "side": "top"
+      }
+    },
+    {
+      "actions": [
+        {
+          "kind": "begin_batter"
+        },
+        {
+          "event": "fair_ball_handoff",
+          "kind": "pitch"
+        },
+        {
+          "hit_bases": 1,
+          "kind": "resolve_safe_hit",
+          "runner_destinations": [
+            null,
+            2,
+            null
+          ]
+        }
+      ],
+      "expected_final": {
+        "closed_away_runs": 11,
+        "closed_home_runs": 13,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              true,
+              true,
+              false
+            ],
+            "outs": 1,
+            "runs": 7
+          }
+        },
+        "inning": 2,
+        "side": "top"
+      },
+      "expected_score": {
+        "away": 18,
+        "home": 13
+      },
+      "expected_stage": "between_batters",
+      "id": "single_second_holds",
+      "initial_state": {
+        "closed_away_runs": 11,
+        "closed_home_runs": 13,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              false,
+              true,
+              false
+            ],
+            "outs": 1,
+            "runs": 7
+          }
+        },
+        "inning": 2,
+        "side": "top"
+      }
+    },
+    {
+      "actions": [
+        {
+          "kind": "begin_batter"
+        },
+        {
+          "event": "fair_ball_handoff",
+          "kind": "pitch"
+        },
+        {
+          "hit_bases": 1,
+          "kind": "resolve_safe_hit",
+          "runner_destinations": [
+            null,
+            null,
+            3
+          ]
+        }
+      ],
+      "expected_final": {
+        "closed_away_runs": 0,
+        "closed_home_runs": 0,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              true,
+              false,
+              true
+            ],
+            "outs": 0,
+            "runs": 0
+          }
+        },
+        "inning": 1,
+        "side": "top"
+      },
+      "expected_score": {
+        "away": 0,
+        "home": 0
+      },
+      "expected_stage": "between_batters",
+      "id": "single_third_holds",
+      "initial_state": {
+        "closed_away_runs": 0,
+        "closed_home_runs": 0,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              false,
+              false,
+              true
+            ],
+            "outs": 0,
+            "runs": 0
+          }
+        },
+        "inning": 1,
+        "side": "top"
+      }
+    },
+    {
+      "actions": [
+        {
+          "kind": "begin_batter"
+        },
+        {
+          "event": "fair_ball_handoff",
+          "kind": "pitch"
+        },
+        {
+          "hit_bases": 1,
+          "kind": "resolve_safe_hit",
+          "runner_destinations": [
+            null,
+            null,
+            4
+          ]
+        }
+      ],
+      "expected_final": {
+        "closed_away_runs": 0,
+        "closed_home_runs": 0,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              true,
+              false,
+              false
+            ],
+            "outs": 0,
+            "runs": 1
+          }
+        },
+        "inning": 1,
+        "side": "top"
+      },
+      "expected_score": {
+        "away": 1,
+        "home": 0
+      },
+      "expected_stage": "between_batters",
+      "id": "single_third_scores",
+      "initial_state": {
+        "closed_away_runs": 0,
+        "closed_home_runs": 0,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              false,
+              false,
+              true
+            ],
+            "outs": 0,
+            "runs": 0
+          }
+        },
+        "inning": 1,
+        "side": "top"
+      }
+    },
+    {
+      "actions": [
+        {
+          "kind": "begin_batter"
+        },
+        {
+          "event": "fair_ball_handoff",
+          "kind": "pitch"
+        },
+        {
+          "hit_bases": 2,
+          "kind": "resolve_safe_hit",
+          "runner_destinations": [
+            3,
+            null,
+            null
+          ]
+        }
+      ],
+      "expected_final": {
+        "closed_away_runs": 0,
+        "closed_home_runs": 0,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              false,
+              true,
+              true
+            ],
+            "outs": 0,
+            "runs": 0
+          }
+        },
+        "inning": 1,
+        "side": "top"
+      },
+      "expected_score": {
+        "away": 0,
+        "home": 0
+      },
+      "expected_stage": "between_batters",
+      "id": "double_first_third",
+      "initial_state": {
+        "closed_away_runs": 0,
+        "closed_home_runs": 0,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              true,
+              false,
+              false
+            ],
+            "outs": 0,
+            "runs": 0
+          }
+        },
+        "inning": 1,
+        "side": "top"
+      }
+    },
+    {
+      "actions": [
+        {
+          "kind": "begin_batter"
+        },
+        {
+          "event": "fair_ball_handoff",
+          "kind": "pitch"
+        },
+        {
+          "hit_bases": 2,
+          "kind": "resolve_safe_hit",
+          "runner_destinations": [
+            4,
+            null,
+            null
+          ]
+        }
+      ],
+      "expected_final": {
+        "closed_away_runs": 0,
+        "closed_home_runs": 0,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              false,
+              true,
+              false
+            ],
+            "outs": 0,
+            "runs": 1
+          }
+        },
+        "inning": 1,
+        "side": "top"
+      },
+      "expected_score": {
+        "away": 1,
+        "home": 0
+      },
+      "expected_stage": "between_batters",
+      "id": "double_first_scores",
+      "initial_state": {
+        "closed_away_runs": 0,
+        "closed_home_runs": 0,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              true,
+              false,
+              false
+            ],
+            "outs": 0,
+            "runs": 0
+          }
+        },
+        "inning": 1,
+        "side": "top"
+      }
+    },
+    {
+      "actions": [
+        {
+          "kind": "begin_batter"
+        },
+        {
+          "event": "fair_ball_handoff",
+          "kind": "pitch"
+        },
+        {
+          "hit_bases": 2,
+          "kind": "resolve_safe_hit",
+          "runner_destinations": [
+            null,
+            null,
+            3
+          ]
+        }
+      ],
+      "expected_final": {
+        "closed_away_runs": 0,
+        "closed_home_runs": 0,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              false,
+              true,
+              true
+            ],
+            "outs": 1,
+            "runs": 0
+          }
+        },
+        "inning": 1,
+        "side": "top"
+      },
+      "expected_score": {
+        "away": 0,
+        "home": 0
+      },
+      "expected_stage": "between_batters",
+      "id": "double_third_holds",
+      "initial_state": {
+        "closed_away_runs": 0,
+        "closed_home_runs": 0,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              false,
+              false,
+              true
+            ],
+            "outs": 1,
+            "runs": 0
+          }
+        },
+        "inning": 1,
+        "side": "top"
+      }
+    },
+    {
+      "actions": [
+        {
+          "kind": "begin_batter"
+        },
+        {
+          "event": "fair_ball_handoff",
+          "kind": "pitch"
+        },
+        {
+          "hit_bases": 1,
+          "kind": "resolve_safe_hit",
+          "runner_destinations": [
+            2,
+            3,
+            4
+          ]
+        }
+      ],
+      "expected_final": {
+        "closed_away_runs": 11,
+        "closed_home_runs": 13,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              true,
+              true,
+              true
+            ],
+            "outs": 2,
+            "runs": 8
+          }
+        },
+        "inning": 1,
+        "side": "top"
+      },
+      "expected_score": {
+        "away": 19,
+        "home": 13
+      },
+      "expected_stage": "between_batters",
+      "id": "loaded_single_one",
+      "initial_state": {
+        "closed_away_runs": 11,
+        "closed_home_runs": 13,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              true,
+              true,
+              true
+            ],
+            "outs": 2,
+            "runs": 7
+          }
+        },
+        "inning": 1,
+        "side": "top"
+      }
+    },
+    {
+      "actions": [
+        {
+          "kind": "begin_batter"
+        },
+        {
+          "event": "fair_ball_handoff",
+          "kind": "pitch"
+        },
+        {
+          "hit_bases": 1,
+          "kind": "resolve_safe_hit",
+          "runner_destinations": [
+            3,
+            4,
+            4
+          ]
+        }
+      ],
+      "expected_final": {
+        "closed_away_runs": 11,
+        "closed_home_runs": 13,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              true,
+              false,
+              true
+            ],
+            "outs": 2,
+            "runs": 9
+          }
+        },
+        "inning": 1,
+        "side": "top"
+      },
+      "expected_score": {
+        "away": 20,
+        "home": 13
+      },
+      "expected_stage": "between_batters",
+      "id": "loaded_single_two",
+      "initial_state": {
+        "closed_away_runs": 11,
+        "closed_home_runs": 13,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              true,
+              true,
+              true
+            ],
+            "outs": 2,
+            "runs": 7
+          }
+        },
+        "inning": 1,
+        "side": "top"
+      }
+    },
+    {
+      "actions": [
+        {
+          "kind": "begin_batter"
+        },
+        {
+          "event": "fair_ball_handoff",
+          "kind": "pitch"
+        },
+        {
+          "hit_bases": 1,
+          "kind": "resolve_safe_hit",
+          "runner_destinations": [
+            4,
+            4,
+            4
+          ]
+        }
+      ],
+      "expected_final": {
+        "closed_away_runs": 11,
+        "closed_home_runs": 13,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              true,
+              false,
+              false
+            ],
+            "outs": 2,
+            "runs": 10
+          }
+        },
+        "inning": 1,
+        "side": "top"
+      },
+      "expected_score": {
+        "away": 21,
+        "home": 13
+      },
+      "expected_stage": "between_batters",
+      "id": "loaded_single_three",
+      "initial_state": {
+        "closed_away_runs": 11,
+        "closed_home_runs": 13,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              true,
+              true,
+              true
+            ],
+            "outs": 2,
+            "runs": 7
+          }
+        },
+        "inning": 1,
+        "side": "top"
+      }
+    },
+    {
+      "actions": [
+        {
+          "kind": "begin_batter"
+        },
+        {
+          "event": "fair_ball_handoff",
+          "kind": "pitch"
+        },
+        {
+          "hit_bases": 3,
+          "kind": "resolve_safe_hit",
+          "runner_destinations": [
+            4,
+            4,
+            4
+          ]
+        }
+      ],
+      "expected_final": {
+        "closed_away_runs": 11,
+        "closed_home_runs": 13,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              false,
+              false,
+              true
+            ],
+            "outs": 1,
+            "runs": 10
+          }
+        },
+        "inning": 2,
+        "side": "bottom"
+      },
+      "expected_score": {
+        "away": 11,
+        "home": 23
+      },
+      "expected_stage": "between_batters",
+      "id": "loaded_triple_bottom",
+      "initial_state": {
+        "closed_away_runs": 11,
+        "closed_home_runs": 13,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              true,
+              true,
+              true
+            ],
+            "outs": 1,
+            "runs": 7
+          }
+        },
+        "inning": 2,
+        "side": "bottom"
+      }
+    },
+    {
+      "actions": [
+        {
+          "kind": "begin_batter"
+        },
+        {
+          "event": "fair_ball_handoff",
+          "kind": "pitch"
+        }
+      ],
+      "expected_final": {
+        "closed_away_runs": 0,
+        "closed_home_runs": 0,
+        "current": {
+          "count": {
+            "balls": 0,
+            "pitches_seen": 1,
+            "status": "fair_play_pending",
+            "strikes": 0
+          },
+          "half": {
+            "bases": [
+              false,
+              false,
+              false
+            ],
+            "outs": 0,
+            "runs": 0
+          }
+        },
+        "inning": 1,
+        "side": "top"
+      },
+      "expected_score": {
+        "away": 0,
+        "home": 0
+      },
+      "expected_stage": "awaiting_resolution",
+      "id": "fair_pending",
+      "initial_state": {
+        "closed_away_runs": 0,
+        "closed_home_runs": 0,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              false,
+              false,
+              false
+            ],
+            "outs": 0,
+            "runs": 0
+          }
+        },
+        "inning": 1,
+        "side": "top"
+      }
+    },
+    {
+      "actions": [
+        {
+          "kind": "begin_batter"
+        },
+        {
+          "event": "fair_ball_handoff",
+          "kind": "pitch"
+        },
+        {
+          "hit_bases": 1,
+          "kind": "resolve_safe_hit",
+          "runner_destinations": [
+            null,
+            null,
+            null
+          ]
+        },
+        {
+          "kind": "begin_batter"
+        },
+        {
+          "event": "fair_ball_handoff",
+          "kind": "pitch"
+        },
+        {
+          "hit_bases": 2,
+          "kind": "resolve_safe_hit",
+          "runner_destinations": [
+            4,
+            null,
+            null
+          ]
+        }
+      ],
+      "expected_final": {
+        "closed_away_runs": 0,
+        "closed_home_runs": 0,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              false,
+              true,
+              false
+            ],
+            "outs": 0,
+            "runs": 1
+          }
+        },
+        "inning": 1,
+        "side": "top"
+      },
+      "expected_score": {
+        "away": 1,
+        "home": 0
+      },
+      "expected_stage": "between_batters",
+      "id": "chained_hits",
+      "initial_state": {
+        "closed_away_runs": 0,
+        "closed_home_runs": 0,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              false,
+              false,
+              false
+            ],
+            "outs": 0,
+            "runs": 0
+          }
+        },
+        "inning": 1,
+        "side": "top"
+      }
+    },
+    {
+      "actions": [
+        {
+          "kind": "begin_batter"
+        },
+        {
+          "event": "fair_ball_handoff",
+          "kind": "pitch"
+        },
+        {
+          "hit_bases": 1,
+          "kind": "resolve_safe_hit",
+          "runner_destinations": [
+            null,
+            null,
+            4
+          ]
+        },
+        {
+          "kind": "begin_batter"
+        },
+        {
+          "event": "foul_fly_caught",
+          "kind": "pitch"
+        },
+        {
+          "completed_play": "batter_out_runners_hold",
+          "kind": "resolve"
+        },
+        {
+          "kind": "advance_half"
+        }
+      ],
+      "expected_final": {
+        "closed_away_runs": 19,
+        "closed_home_runs": 13,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              false,
+              false,
+              false
+            ],
+            "outs": 0,
+            "runs": 0
+          }
+        },
+        "inning": 1,
+        "side": "bottom"
+      },
+      "expected_score": {
+        "away": 19,
+        "home": 13
+      },
+      "expected_stage": "between_batters",
+      "id": "hit_retire_switch",
+      "initial_state": {
+        "closed_away_runs": 11,
+        "closed_home_runs": 13,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              false,
+              false,
+              true
+            ],
+            "outs": 2,
+            "runs": 7
+          }
+        },
+        "inning": 1,
+        "side": "top"
+      }
+    }
+  ],
+  "game_end_rules_implemented": false,
+  "implementation": {
+    "bundle_sha256": "a51b279de95af07800041f213bca14aa4cae721aba467c0b1540ab9c538caed6",
+    "old_dependency_sources": [
+      "prototypes/__init__.py",
+      "prototypes/phase4a/__init__.py",
+      "prototypes/phase4a/model.py",
+      "prototypes/phase4b/__init__.py",
+      "prototypes/phase4b/model.py",
+      "prototypes/phase4c/__init__.py",
+      "prototypes/phase4c/model.py",
+      "prototypes/phase4d/__init__.py",
+      "prototypes/phase4d/model.py"
+    ],
+    "python": "3.12.14",
+    "python_implementation": "CPython",
+    "sources_and_fixtures": {
+      "prototypes/__init__.py": "585d0f84ef1ad8a270f4fa95929ba4ea422084e321ce178d9f6db3846633f36d",
+      "prototypes/phase4a/__init__.py": "087d5c49cf5d02f5031ca5b5e9dc6922e22feaa022fe875b0e6e58b7a4b935ca",
+      "prototypes/phase4a/model.py": "587d42bf642a8cd54eb755e09700e9954e840b3fe649bdcab9185f8add583e1a",
+      "prototypes/phase4b/__init__.py": "80ec6945d1d8eeb0fe9e644c4543119be5f177119bedcf437b8f8d1f8bd21e1e",
+      "prototypes/phase4b/model.py": "ddfbedb9a398eddca9fcfecbb7fc8236033b3f52dc285635833632e3aac17429",
+      "prototypes/phase4c/__init__.py": "d179ebea7b5c473f692720344e2de8b6f30c7351c5fb3512b371d3cebaa2dfb9",
+      "prototypes/phase4c/model.py": "6b67744a2ed7481990b53d3a7a7a52984cf8f98262734781ff859c139d4e023d",
+      "prototypes/phase4d/__init__.py": "403994be12c4a734e2336e8fcdb991c2152a2a89f45c91e2cbe3fe487ac66945",
+      "prototypes/phase4d/model.py": "d0c436415e76076d28f3539ae6e0f4ba64f2d0a32af3e07a2c42f6b5f41187b5",
+      "prototypes/phase4e/.gitattributes": "a79691a93b46e49ce460c26ef22afcc03d6eca1e63bf2edbc20e96159510f6c9",
+      "prototypes/phase4e/__init__.py": "ac2498904756c85edc182cbf1f4a277ddbaf52c0c42ccfb2e462a46a8de1c68e",
+      "prototypes/phase4e/__main__.py": "872c1ac341f236b34f66eca159e0b73d4053eec47cfa56643445d45d65dc07ae",
+      "prototypes/phase4e/fixtures.py": "84f572e6ed21417cdd50dfe2794e819345af8ac0286a4040c44997c5056f0b52",
+      "prototypes/phase4e/fixtures/control.json": "b78a787f3870b47d9a9e451b898d9a80c0aee590202dd68f7033ffbc6f336409",
+      "prototypes/phase4e/fixtures/patterns.json": "a29eb3d1a91029bb0ef80a9dd222f034f32897c3c16ea37d2cdf4e72737b996d",
+      "prototypes/phase4e/fixtures/scenarios.json": "036fa908668c4951420bfefb59052a307b0c91d7c755d87853efcc7b8f55864a",
+      "prototypes/phase4e/io.py": "38ec38a7116b781db5bc9161a718529b01b8bc951e894713a96f298fb092afdf",
+      "prototypes/phase4e/model.py": "48349220f63d3ad2f36a1d671f3f51298704d9b9dfe7caaa9110f60c215c9e53",
+      "prototypes/phase4e/runner.py": "3c498a0b4e3080add589b8cd4ccd832c8de7e077ecdd86548bb1b9640223af8f"
+    },
+    "text_hash_rule": "UTF-8; CRLF and CR normalized to LF before SHA256",
+    "third_party_runtime_dependencies": []
+  },
+  "input_preconditions": [
+    "hit value 1/2/3 externally adjudicated; batter finishes at that base with no throw/error extra advance",
+    "all declared runners safe with proper touches, all runs confirmed; no intermediate passing/out/error/interference/appeal/walk-off",
+    "no unrepresented steal/wild pitch/runner out/score between begin and resolve; all inherited strong synthetic conditions apply"
+  ],
+  "limitations": [
+    "48 accepted patterns and synthetic scores are not probabilities or league frequencies",
+    "no hit/runner decision model, general adjudication, outs/errors/third-out scoring, game-end/winner or official individual stats",
+    "inherited 9th/10th behavior has no automatic game ending or extra-inning runner; not real-game-rule adoption",
+    "no Statcast/3d/probability/ability/Android/UI/DB/save adoption; D029/D031/D032 OPEN"
+  ],
+  "official_stats_generated": false,
+  "probability_model": false,
+  "product_adoption": false,
+  "rules": {
+    "edition": "MLB Official Baseball Rules 2026",
+    "general_scoring_rules_adopted": false,
+    "sections": [
+      "5.06(a)/(b)",
+      "5.09(b)(9)",
+      "9.05",
+      "9.06(a)/(b)"
+    ],
+    "url": "https://mktg.mlbstatic.com/mlb/official-information/2026-official-baseball-rules.pdf"
+  },
+  "scenario_count": 18,
+  "schema": "phase4e-reference-v0.1",
+  "scope": "partial_completed_safe_hit_projection",
+  "source_access": {
+    "old_frozen_flags_changed": false,
+    "old_io_runner_fixture_results_used": false,
+    "old_source_import_and_identity_hash": "only nine named old package/model source paths",
+    "research_data_or_fitted_models_used": false
+  },
+  "source_kind": "synthetic_fixture",
+  "state_semantics": {
+    "destination_validation": "final-position contradictions only, not full history legality",
+    "hit_value": "input, never inferred from batter final base",
+    "holds_allowed": true,
+    "multiple_home_arrivals_allowed": true,
+    "none": "exact pre-play empty slot",
+    "omitted_real_world_facts_detected": false,
+    "persistent_exactly_once_guarantee": false,
+    "product_save_format": false,
+    "state": "exact old HalfSequenceState; five stored fields and derived score unchanged"
+  }
+}

@@ -1,0 +1,4302 @@
+{
+  "ability_calibrated": false,
+  "android_integrated": false,
+  "connected_to_phase3d": false,
+  "connected_to_phase4a": true,
+  "connected_to_phase4b": true,
+  "connected_to_phase4c": true,
+  "connected_to_phase4d": true,
+  "connected_to_statcast": false,
+  "design": "phase4e-design-v0.1",
+  "game_end_rules_implemented": false,
+  "official_stats_generated": false,
+  "probability_model": false,
+  "product_adoption": false,
+  "scenarios": [
+    {
+      "actions": [
+        {
+          "kind": "begin_batter"
+        },
+        {
+          "event": "fair_ball_handoff",
+          "kind": "pitch"
+        },
+        {
+          "hit_bases": 1,
+          "kind": "resolve_safe_hit",
+          "runner_destinations": [
+            null,
+            null,
+            null
+          ]
+        }
+      ],
+      "final_score": {
+        "away": 0,
+        "home": 0
+      },
+      "final_stage": "between_batters",
+      "final_state": {
+        "closed_away_runs": 0,
+        "closed_home_runs": 0,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              true,
+              false,
+              false
+            ],
+            "outs": 0,
+            "runs": 0
+          }
+        },
+        "inning": 1,
+        "side": "top"
+      },
+      "id": "single_empty",
+      "initial_state": {
+        "closed_away_runs": 0,
+        "closed_home_runs": 0,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              false,
+              false,
+              false
+            ],
+            "outs": 0,
+            "runs": 0
+          }
+        },
+        "inning": 1,
+        "side": "top"
+      },
+      "trace": [
+        {
+          "action": {
+            "kind": "begin_batter"
+          },
+          "after": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 0,
+                "status": "active",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  false,
+                  false,
+                  false
+                ],
+                "outs": 0,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "away_runs_added": 0,
+          "before": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": null,
+              "half": {
+                "bases": [
+                  false,
+                  false,
+                  false
+                ],
+                "outs": 0,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "home_runs_added": 0
+        },
+        {
+          "action": {
+            "event": "fair_ball_handoff",
+            "kind": "pitch"
+          },
+          "after": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 1,
+                "status": "fair_play_pending",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  false,
+                  false,
+                  false
+                ],
+                "outs": 0,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "away_runs_added": 0,
+          "before": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 0,
+                "status": "active",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  false,
+                  false,
+                  false
+                ],
+                "outs": 0,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "home_runs_added": 0
+        },
+        {
+          "action": {
+            "hit_bases": 1,
+            "kind": "resolve_safe_hit",
+            "runner_destinations": [
+              null,
+              null,
+              null
+            ]
+          },
+          "after": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": null,
+              "half": {
+                "bases": [
+                  true,
+                  false,
+                  false
+                ],
+                "outs": 0,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "away_runs_added": 0,
+          "before": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 1,
+                "status": "fair_play_pending",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  false,
+                  false,
+                  false
+                ],
+                "outs": 0,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "home_runs_added": 0
+        }
+      ]
+    },
+    {
+      "actions": [
+        {
+          "kind": "begin_batter"
+        },
+        {
+          "event": "fair_ball_handoff",
+          "kind": "pitch"
+        },
+        {
+          "hit_bases": 2,
+          "kind": "resolve_safe_hit",
+          "runner_destinations": [
+            null,
+            null,
+            null
+          ]
+        }
+      ],
+      "final_score": {
+        "away": 0,
+        "home": 0
+      },
+      "final_stage": "between_batters",
+      "final_state": {
+        "closed_away_runs": 0,
+        "closed_home_runs": 0,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              false,
+              true,
+              false
+            ],
+            "outs": 0,
+            "runs": 0
+          }
+        },
+        "inning": 1,
+        "side": "top"
+      },
+      "id": "double_empty",
+      "initial_state": {
+        "closed_away_runs": 0,
+        "closed_home_runs": 0,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              false,
+              false,
+              false
+            ],
+            "outs": 0,
+            "runs": 0
+          }
+        },
+        "inning": 1,
+        "side": "top"
+      },
+      "trace": [
+        {
+          "action": {
+            "kind": "begin_batter"
+          },
+          "after": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 0,
+                "status": "active",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  false,
+                  false,
+                  false
+                ],
+                "outs": 0,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "away_runs_added": 0,
+          "before": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": null,
+              "half": {
+                "bases": [
+                  false,
+                  false,
+                  false
+                ],
+                "outs": 0,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "home_runs_added": 0
+        },
+        {
+          "action": {
+            "event": "fair_ball_handoff",
+            "kind": "pitch"
+          },
+          "after": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 1,
+                "status": "fair_play_pending",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  false,
+                  false,
+                  false
+                ],
+                "outs": 0,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "away_runs_added": 0,
+          "before": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 0,
+                "status": "active",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  false,
+                  false,
+                  false
+                ],
+                "outs": 0,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "home_runs_added": 0
+        },
+        {
+          "action": {
+            "hit_bases": 2,
+            "kind": "resolve_safe_hit",
+            "runner_destinations": [
+              null,
+              null,
+              null
+            ]
+          },
+          "after": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": null,
+              "half": {
+                "bases": [
+                  false,
+                  true,
+                  false
+                ],
+                "outs": 0,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "away_runs_added": 0,
+          "before": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 1,
+                "status": "fair_play_pending",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  false,
+                  false,
+                  false
+                ],
+                "outs": 0,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "home_runs_added": 0
+        }
+      ]
+    },
+    {
+      "actions": [
+        {
+          "kind": "begin_batter"
+        },
+        {
+          "event": "fair_ball_handoff",
+          "kind": "pitch"
+        },
+        {
+          "hit_bases": 3,
+          "kind": "resolve_safe_hit",
+          "runner_destinations": [
+            null,
+            null,
+            null
+          ]
+        }
+      ],
+      "final_score": {
+        "away": 0,
+        "home": 0
+      },
+      "final_stage": "between_batters",
+      "final_state": {
+        "closed_away_runs": 0,
+        "closed_home_runs": 0,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              false,
+              false,
+              true
+            ],
+            "outs": 0,
+            "runs": 0
+          }
+        },
+        "inning": 1,
+        "side": "top"
+      },
+      "id": "triple_empty",
+      "initial_state": {
+        "closed_away_runs": 0,
+        "closed_home_runs": 0,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              false,
+              false,
+              false
+            ],
+            "outs": 0,
+            "runs": 0
+          }
+        },
+        "inning": 1,
+        "side": "top"
+      },
+      "trace": [
+        {
+          "action": {
+            "kind": "begin_batter"
+          },
+          "after": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 0,
+                "status": "active",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  false,
+                  false,
+                  false
+                ],
+                "outs": 0,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "away_runs_added": 0,
+          "before": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": null,
+              "half": {
+                "bases": [
+                  false,
+                  false,
+                  false
+                ],
+                "outs": 0,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "home_runs_added": 0
+        },
+        {
+          "action": {
+            "event": "fair_ball_handoff",
+            "kind": "pitch"
+          },
+          "after": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 1,
+                "status": "fair_play_pending",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  false,
+                  false,
+                  false
+                ],
+                "outs": 0,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "away_runs_added": 0,
+          "before": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 0,
+                "status": "active",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  false,
+                  false,
+                  false
+                ],
+                "outs": 0,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "home_runs_added": 0
+        },
+        {
+          "action": {
+            "hit_bases": 3,
+            "kind": "resolve_safe_hit",
+            "runner_destinations": [
+              null,
+              null,
+              null
+            ]
+          },
+          "after": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": null,
+              "half": {
+                "bases": [
+                  false,
+                  false,
+                  true
+                ],
+                "outs": 0,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "away_runs_added": 0,
+          "before": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 1,
+                "status": "fair_play_pending",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  false,
+                  false,
+                  false
+                ],
+                "outs": 0,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "home_runs_added": 0
+        }
+      ]
+    },
+    {
+      "actions": [
+        {
+          "kind": "begin_batter"
+        },
+        {
+          "event": "fair_ball_handoff",
+          "kind": "pitch"
+        },
+        {
+          "hit_bases": 1,
+          "kind": "resolve_safe_hit",
+          "runner_destinations": [
+            2,
+            null,
+            null
+          ]
+        }
+      ],
+      "final_score": {
+        "away": 0,
+        "home": 0
+      },
+      "final_stage": "between_batters",
+      "final_state": {
+        "closed_away_runs": 0,
+        "closed_home_runs": 0,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              true,
+              true,
+              false
+            ],
+            "outs": 0,
+            "runs": 0
+          }
+        },
+        "inning": 1,
+        "side": "top"
+      },
+      "id": "single_first_second",
+      "initial_state": {
+        "closed_away_runs": 0,
+        "closed_home_runs": 0,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              true,
+              false,
+              false
+            ],
+            "outs": 0,
+            "runs": 0
+          }
+        },
+        "inning": 1,
+        "side": "top"
+      },
+      "trace": [
+        {
+          "action": {
+            "kind": "begin_batter"
+          },
+          "after": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 0,
+                "status": "active",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  true,
+                  false,
+                  false
+                ],
+                "outs": 0,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "away_runs_added": 0,
+          "before": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": null,
+              "half": {
+                "bases": [
+                  true,
+                  false,
+                  false
+                ],
+                "outs": 0,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "home_runs_added": 0
+        },
+        {
+          "action": {
+            "event": "fair_ball_handoff",
+            "kind": "pitch"
+          },
+          "after": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 1,
+                "status": "fair_play_pending",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  true,
+                  false,
+                  false
+                ],
+                "outs": 0,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "away_runs_added": 0,
+          "before": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 0,
+                "status": "active",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  true,
+                  false,
+                  false
+                ],
+                "outs": 0,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "home_runs_added": 0
+        },
+        {
+          "action": {
+            "hit_bases": 1,
+            "kind": "resolve_safe_hit",
+            "runner_destinations": [
+              2,
+              null,
+              null
+            ]
+          },
+          "after": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": null,
+              "half": {
+                "bases": [
+                  true,
+                  true,
+                  false
+                ],
+                "outs": 0,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "away_runs_added": 0,
+          "before": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 1,
+                "status": "fair_play_pending",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  true,
+                  false,
+                  false
+                ],
+                "outs": 0,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "home_runs_added": 0
+        }
+      ]
+    },
+    {
+      "actions": [
+        {
+          "kind": "begin_batter"
+        },
+        {
+          "event": "fair_ball_handoff",
+          "kind": "pitch"
+        },
+        {
+          "hit_bases": 1,
+          "kind": "resolve_safe_hit",
+          "runner_destinations": [
+            3,
+            null,
+            null
+          ]
+        }
+      ],
+      "final_score": {
+        "away": 0,
+        "home": 0
+      },
+      "final_stage": "between_batters",
+      "final_state": {
+        "closed_away_runs": 0,
+        "closed_home_runs": 0,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              true,
+              false,
+              true
+            ],
+            "outs": 0,
+            "runs": 0
+          }
+        },
+        "inning": 1,
+        "side": "top"
+      },
+      "id": "single_first_third",
+      "initial_state": {
+        "closed_away_runs": 0,
+        "closed_home_runs": 0,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              true,
+              false,
+              false
+            ],
+            "outs": 0,
+            "runs": 0
+          }
+        },
+        "inning": 1,
+        "side": "top"
+      },
+      "trace": [
+        {
+          "action": {
+            "kind": "begin_batter"
+          },
+          "after": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 0,
+                "status": "active",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  true,
+                  false,
+                  false
+                ],
+                "outs": 0,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "away_runs_added": 0,
+          "before": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": null,
+              "half": {
+                "bases": [
+                  true,
+                  false,
+                  false
+                ],
+                "outs": 0,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "home_runs_added": 0
+        },
+        {
+          "action": {
+            "event": "fair_ball_handoff",
+            "kind": "pitch"
+          },
+          "after": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 1,
+                "status": "fair_play_pending",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  true,
+                  false,
+                  false
+                ],
+                "outs": 0,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "away_runs_added": 0,
+          "before": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 0,
+                "status": "active",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  true,
+                  false,
+                  false
+                ],
+                "outs": 0,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "home_runs_added": 0
+        },
+        {
+          "action": {
+            "hit_bases": 1,
+            "kind": "resolve_safe_hit",
+            "runner_destinations": [
+              3,
+              null,
+              null
+            ]
+          },
+          "after": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": null,
+              "half": {
+                "bases": [
+                  true,
+                  false,
+                  true
+                ],
+                "outs": 0,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "away_runs_added": 0,
+          "before": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 1,
+                "status": "fair_play_pending",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  true,
+                  false,
+                  false
+                ],
+                "outs": 0,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "home_runs_added": 0
+        }
+      ]
+    },
+    {
+      "actions": [
+        {
+          "kind": "begin_batter"
+        },
+        {
+          "event": "fair_ball_handoff",
+          "kind": "pitch"
+        },
+        {
+          "hit_bases": 1,
+          "kind": "resolve_safe_hit",
+          "runner_destinations": [
+            null,
+            2,
+            null
+          ]
+        }
+      ],
+      "final_score": {
+        "away": 18,
+        "home": 13
+      },
+      "final_stage": "between_batters",
+      "final_state": {
+        "closed_away_runs": 11,
+        "closed_home_runs": 13,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              true,
+              true,
+              false
+            ],
+            "outs": 1,
+            "runs": 7
+          }
+        },
+        "inning": 2,
+        "side": "top"
+      },
+      "id": "single_second_holds",
+      "initial_state": {
+        "closed_away_runs": 11,
+        "closed_home_runs": 13,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              false,
+              true,
+              false
+            ],
+            "outs": 1,
+            "runs": 7
+          }
+        },
+        "inning": 2,
+        "side": "top"
+      },
+      "trace": [
+        {
+          "action": {
+            "kind": "begin_batter"
+          },
+          "after": {
+            "closed_away_runs": 11,
+            "closed_home_runs": 13,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 0,
+                "status": "active",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  false,
+                  true,
+                  false
+                ],
+                "outs": 1,
+                "runs": 7
+              }
+            },
+            "inning": 2,
+            "side": "top"
+          },
+          "away_runs_added": 0,
+          "before": {
+            "closed_away_runs": 11,
+            "closed_home_runs": 13,
+            "current": {
+              "count": null,
+              "half": {
+                "bases": [
+                  false,
+                  true,
+                  false
+                ],
+                "outs": 1,
+                "runs": 7
+              }
+            },
+            "inning": 2,
+            "side": "top"
+          },
+          "home_runs_added": 0
+        },
+        {
+          "action": {
+            "event": "fair_ball_handoff",
+            "kind": "pitch"
+          },
+          "after": {
+            "closed_away_runs": 11,
+            "closed_home_runs": 13,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 1,
+                "status": "fair_play_pending",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  false,
+                  true,
+                  false
+                ],
+                "outs": 1,
+                "runs": 7
+              }
+            },
+            "inning": 2,
+            "side": "top"
+          },
+          "away_runs_added": 0,
+          "before": {
+            "closed_away_runs": 11,
+            "closed_home_runs": 13,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 0,
+                "status": "active",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  false,
+                  true,
+                  false
+                ],
+                "outs": 1,
+                "runs": 7
+              }
+            },
+            "inning": 2,
+            "side": "top"
+          },
+          "home_runs_added": 0
+        },
+        {
+          "action": {
+            "hit_bases": 1,
+            "kind": "resolve_safe_hit",
+            "runner_destinations": [
+              null,
+              2,
+              null
+            ]
+          },
+          "after": {
+            "closed_away_runs": 11,
+            "closed_home_runs": 13,
+            "current": {
+              "count": null,
+              "half": {
+                "bases": [
+                  true,
+                  true,
+                  false
+                ],
+                "outs": 1,
+                "runs": 7
+              }
+            },
+            "inning": 2,
+            "side": "top"
+          },
+          "away_runs_added": 0,
+          "before": {
+            "closed_away_runs": 11,
+            "closed_home_runs": 13,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 1,
+                "status": "fair_play_pending",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  false,
+                  true,
+                  false
+                ],
+                "outs": 1,
+                "runs": 7
+              }
+            },
+            "inning": 2,
+            "side": "top"
+          },
+          "home_runs_added": 0
+        }
+      ]
+    },
+    {
+      "actions": [
+        {
+          "kind": "begin_batter"
+        },
+        {
+          "event": "fair_ball_handoff",
+          "kind": "pitch"
+        },
+        {
+          "hit_bases": 1,
+          "kind": "resolve_safe_hit",
+          "runner_destinations": [
+            null,
+            null,
+            3
+          ]
+        }
+      ],
+      "final_score": {
+        "away": 0,
+        "home": 0
+      },
+      "final_stage": "between_batters",
+      "final_state": {
+        "closed_away_runs": 0,
+        "closed_home_runs": 0,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              true,
+              false,
+              true
+            ],
+            "outs": 0,
+            "runs": 0
+          }
+        },
+        "inning": 1,
+        "side": "top"
+      },
+      "id": "single_third_holds",
+      "initial_state": {
+        "closed_away_runs": 0,
+        "closed_home_runs": 0,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              false,
+              false,
+              true
+            ],
+            "outs": 0,
+            "runs": 0
+          }
+        },
+        "inning": 1,
+        "side": "top"
+      },
+      "trace": [
+        {
+          "action": {
+            "kind": "begin_batter"
+          },
+          "after": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 0,
+                "status": "active",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  false,
+                  false,
+                  true
+                ],
+                "outs": 0,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "away_runs_added": 0,
+          "before": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": null,
+              "half": {
+                "bases": [
+                  false,
+                  false,
+                  true
+                ],
+                "outs": 0,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "home_runs_added": 0
+        },
+        {
+          "action": {
+            "event": "fair_ball_handoff",
+            "kind": "pitch"
+          },
+          "after": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 1,
+                "status": "fair_play_pending",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  false,
+                  false,
+                  true
+                ],
+                "outs": 0,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "away_runs_added": 0,
+          "before": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 0,
+                "status": "active",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  false,
+                  false,
+                  true
+                ],
+                "outs": 0,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "home_runs_added": 0
+        },
+        {
+          "action": {
+            "hit_bases": 1,
+            "kind": "resolve_safe_hit",
+            "runner_destinations": [
+              null,
+              null,
+              3
+            ]
+          },
+          "after": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": null,
+              "half": {
+                "bases": [
+                  true,
+                  false,
+                  true
+                ],
+                "outs": 0,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "away_runs_added": 0,
+          "before": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 1,
+                "status": "fair_play_pending",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  false,
+                  false,
+                  true
+                ],
+                "outs": 0,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "home_runs_added": 0
+        }
+      ]
+    },
+    {
+      "actions": [
+        {
+          "kind": "begin_batter"
+        },
+        {
+          "event": "fair_ball_handoff",
+          "kind": "pitch"
+        },
+        {
+          "hit_bases": 1,
+          "kind": "resolve_safe_hit",
+          "runner_destinations": [
+            null,
+            null,
+            4
+          ]
+        }
+      ],
+      "final_score": {
+        "away": 1,
+        "home": 0
+      },
+      "final_stage": "between_batters",
+      "final_state": {
+        "closed_away_runs": 0,
+        "closed_home_runs": 0,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              true,
+              false,
+              false
+            ],
+            "outs": 0,
+            "runs": 1
+          }
+        },
+        "inning": 1,
+        "side": "top"
+      },
+      "id": "single_third_scores",
+      "initial_state": {
+        "closed_away_runs": 0,
+        "closed_home_runs": 0,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              false,
+              false,
+              true
+            ],
+            "outs": 0,
+            "runs": 0
+          }
+        },
+        "inning": 1,
+        "side": "top"
+      },
+      "trace": [
+        {
+          "action": {
+            "kind": "begin_batter"
+          },
+          "after": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 0,
+                "status": "active",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  false,
+                  false,
+                  true
+                ],
+                "outs": 0,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "away_runs_added": 0,
+          "before": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": null,
+              "half": {
+                "bases": [
+                  false,
+                  false,
+                  true
+                ],
+                "outs": 0,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "home_runs_added": 0
+        },
+        {
+          "action": {
+            "event": "fair_ball_handoff",
+            "kind": "pitch"
+          },
+          "after": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 1,
+                "status": "fair_play_pending",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  false,
+                  false,
+                  true
+                ],
+                "outs": 0,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "away_runs_added": 0,
+          "before": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 0,
+                "status": "active",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  false,
+                  false,
+                  true
+                ],
+                "outs": 0,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "home_runs_added": 0
+        },
+        {
+          "action": {
+            "hit_bases": 1,
+            "kind": "resolve_safe_hit",
+            "runner_destinations": [
+              null,
+              null,
+              4
+            ]
+          },
+          "after": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": null,
+              "half": {
+                "bases": [
+                  true,
+                  false,
+                  false
+                ],
+                "outs": 0,
+                "runs": 1
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "away_runs_added": 1,
+          "before": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 1,
+                "status": "fair_play_pending",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  false,
+                  false,
+                  true
+                ],
+                "outs": 0,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "home_runs_added": 0
+        }
+      ]
+    },
+    {
+      "actions": [
+        {
+          "kind": "begin_batter"
+        },
+        {
+          "event": "fair_ball_handoff",
+          "kind": "pitch"
+        },
+        {
+          "hit_bases": 2,
+          "kind": "resolve_safe_hit",
+          "runner_destinations": [
+            3,
+            null,
+            null
+          ]
+        }
+      ],
+      "final_score": {
+        "away": 0,
+        "home": 0
+      },
+      "final_stage": "between_batters",
+      "final_state": {
+        "closed_away_runs": 0,
+        "closed_home_runs": 0,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              false,
+              true,
+              true
+            ],
+            "outs": 0,
+            "runs": 0
+          }
+        },
+        "inning": 1,
+        "side": "top"
+      },
+      "id": "double_first_third",
+      "initial_state": {
+        "closed_away_runs": 0,
+        "closed_home_runs": 0,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              true,
+              false,
+              false
+            ],
+            "outs": 0,
+            "runs": 0
+          }
+        },
+        "inning": 1,
+        "side": "top"
+      },
+      "trace": [
+        {
+          "action": {
+            "kind": "begin_batter"
+          },
+          "after": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 0,
+                "status": "active",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  true,
+                  false,
+                  false
+                ],
+                "outs": 0,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "away_runs_added": 0,
+          "before": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": null,
+              "half": {
+                "bases": [
+                  true,
+                  false,
+                  false
+                ],
+                "outs": 0,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "home_runs_added": 0
+        },
+        {
+          "action": {
+            "event": "fair_ball_handoff",
+            "kind": "pitch"
+          },
+          "after": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 1,
+                "status": "fair_play_pending",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  true,
+                  false,
+                  false
+                ],
+                "outs": 0,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "away_runs_added": 0,
+          "before": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 0,
+                "status": "active",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  true,
+                  false,
+                  false
+                ],
+                "outs": 0,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "home_runs_added": 0
+        },
+        {
+          "action": {
+            "hit_bases": 2,
+            "kind": "resolve_safe_hit",
+            "runner_destinations": [
+              3,
+              null,
+              null
+            ]
+          },
+          "after": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": null,
+              "half": {
+                "bases": [
+                  false,
+                  true,
+                  true
+                ],
+                "outs": 0,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "away_runs_added": 0,
+          "before": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 1,
+                "status": "fair_play_pending",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  true,
+                  false,
+                  false
+                ],
+                "outs": 0,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "home_runs_added": 0
+        }
+      ]
+    },
+    {
+      "actions": [
+        {
+          "kind": "begin_batter"
+        },
+        {
+          "event": "fair_ball_handoff",
+          "kind": "pitch"
+        },
+        {
+          "hit_bases": 2,
+          "kind": "resolve_safe_hit",
+          "runner_destinations": [
+            4,
+            null,
+            null
+          ]
+        }
+      ],
+      "final_score": {
+        "away": 1,
+        "home": 0
+      },
+      "final_stage": "between_batters",
+      "final_state": {
+        "closed_away_runs": 0,
+        "closed_home_runs": 0,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              false,
+              true,
+              false
+            ],
+            "outs": 0,
+            "runs": 1
+          }
+        },
+        "inning": 1,
+        "side": "top"
+      },
+      "id": "double_first_scores",
+      "initial_state": {
+        "closed_away_runs": 0,
+        "closed_home_runs": 0,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              true,
+              false,
+              false
+            ],
+            "outs": 0,
+            "runs": 0
+          }
+        },
+        "inning": 1,
+        "side": "top"
+      },
+      "trace": [
+        {
+          "action": {
+            "kind": "begin_batter"
+          },
+          "after": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 0,
+                "status": "active",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  true,
+                  false,
+                  false
+                ],
+                "outs": 0,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "away_runs_added": 0,
+          "before": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": null,
+              "half": {
+                "bases": [
+                  true,
+                  false,
+                  false
+                ],
+                "outs": 0,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "home_runs_added": 0
+        },
+        {
+          "action": {
+            "event": "fair_ball_handoff",
+            "kind": "pitch"
+          },
+          "after": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 1,
+                "status": "fair_play_pending",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  true,
+                  false,
+                  false
+                ],
+                "outs": 0,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "away_runs_added": 0,
+          "before": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 0,
+                "status": "active",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  true,
+                  false,
+                  false
+                ],
+                "outs": 0,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "home_runs_added": 0
+        },
+        {
+          "action": {
+            "hit_bases": 2,
+            "kind": "resolve_safe_hit",
+            "runner_destinations": [
+              4,
+              null,
+              null
+            ]
+          },
+          "after": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": null,
+              "half": {
+                "bases": [
+                  false,
+                  true,
+                  false
+                ],
+                "outs": 0,
+                "runs": 1
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "away_runs_added": 1,
+          "before": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 1,
+                "status": "fair_play_pending",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  true,
+                  false,
+                  false
+                ],
+                "outs": 0,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "home_runs_added": 0
+        }
+      ]
+    },
+    {
+      "actions": [
+        {
+          "kind": "begin_batter"
+        },
+        {
+          "event": "fair_ball_handoff",
+          "kind": "pitch"
+        },
+        {
+          "hit_bases": 2,
+          "kind": "resolve_safe_hit",
+          "runner_destinations": [
+            null,
+            null,
+            3
+          ]
+        }
+      ],
+      "final_score": {
+        "away": 0,
+        "home": 0
+      },
+      "final_stage": "between_batters",
+      "final_state": {
+        "closed_away_runs": 0,
+        "closed_home_runs": 0,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              false,
+              true,
+              true
+            ],
+            "outs": 1,
+            "runs": 0
+          }
+        },
+        "inning": 1,
+        "side": "top"
+      },
+      "id": "double_third_holds",
+      "initial_state": {
+        "closed_away_runs": 0,
+        "closed_home_runs": 0,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              false,
+              false,
+              true
+            ],
+            "outs": 1,
+            "runs": 0
+          }
+        },
+        "inning": 1,
+        "side": "top"
+      },
+      "trace": [
+        {
+          "action": {
+            "kind": "begin_batter"
+          },
+          "after": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 0,
+                "status": "active",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  false,
+                  false,
+                  true
+                ],
+                "outs": 1,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "away_runs_added": 0,
+          "before": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": null,
+              "half": {
+                "bases": [
+                  false,
+                  false,
+                  true
+                ],
+                "outs": 1,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "home_runs_added": 0
+        },
+        {
+          "action": {
+            "event": "fair_ball_handoff",
+            "kind": "pitch"
+          },
+          "after": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 1,
+                "status": "fair_play_pending",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  false,
+                  false,
+                  true
+                ],
+                "outs": 1,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "away_runs_added": 0,
+          "before": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 0,
+                "status": "active",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  false,
+                  false,
+                  true
+                ],
+                "outs": 1,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "home_runs_added": 0
+        },
+        {
+          "action": {
+            "hit_bases": 2,
+            "kind": "resolve_safe_hit",
+            "runner_destinations": [
+              null,
+              null,
+              3
+            ]
+          },
+          "after": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": null,
+              "half": {
+                "bases": [
+                  false,
+                  true,
+                  true
+                ],
+                "outs": 1,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "away_runs_added": 0,
+          "before": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 1,
+                "status": "fair_play_pending",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  false,
+                  false,
+                  true
+                ],
+                "outs": 1,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "home_runs_added": 0
+        }
+      ]
+    },
+    {
+      "actions": [
+        {
+          "kind": "begin_batter"
+        },
+        {
+          "event": "fair_ball_handoff",
+          "kind": "pitch"
+        },
+        {
+          "hit_bases": 1,
+          "kind": "resolve_safe_hit",
+          "runner_destinations": [
+            2,
+            3,
+            4
+          ]
+        }
+      ],
+      "final_score": {
+        "away": 19,
+        "home": 13
+      },
+      "final_stage": "between_batters",
+      "final_state": {
+        "closed_away_runs": 11,
+        "closed_home_runs": 13,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              true,
+              true,
+              true
+            ],
+            "outs": 2,
+            "runs": 8
+          }
+        },
+        "inning": 1,
+        "side": "top"
+      },
+      "id": "loaded_single_one",
+      "initial_state": {
+        "closed_away_runs": 11,
+        "closed_home_runs": 13,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              true,
+              true,
+              true
+            ],
+            "outs": 2,
+            "runs": 7
+          }
+        },
+        "inning": 1,
+        "side": "top"
+      },
+      "trace": [
+        {
+          "action": {
+            "kind": "begin_batter"
+          },
+          "after": {
+            "closed_away_runs": 11,
+            "closed_home_runs": 13,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 0,
+                "status": "active",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  true,
+                  true,
+                  true
+                ],
+                "outs": 2,
+                "runs": 7
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "away_runs_added": 0,
+          "before": {
+            "closed_away_runs": 11,
+            "closed_home_runs": 13,
+            "current": {
+              "count": null,
+              "half": {
+                "bases": [
+                  true,
+                  true,
+                  true
+                ],
+                "outs": 2,
+                "runs": 7
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "home_runs_added": 0
+        },
+        {
+          "action": {
+            "event": "fair_ball_handoff",
+            "kind": "pitch"
+          },
+          "after": {
+            "closed_away_runs": 11,
+            "closed_home_runs": 13,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 1,
+                "status": "fair_play_pending",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  true,
+                  true,
+                  true
+                ],
+                "outs": 2,
+                "runs": 7
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "away_runs_added": 0,
+          "before": {
+            "closed_away_runs": 11,
+            "closed_home_runs": 13,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 0,
+                "status": "active",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  true,
+                  true,
+                  true
+                ],
+                "outs": 2,
+                "runs": 7
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "home_runs_added": 0
+        },
+        {
+          "action": {
+            "hit_bases": 1,
+            "kind": "resolve_safe_hit",
+            "runner_destinations": [
+              2,
+              3,
+              4
+            ]
+          },
+          "after": {
+            "closed_away_runs": 11,
+            "closed_home_runs": 13,
+            "current": {
+              "count": null,
+              "half": {
+                "bases": [
+                  true,
+                  true,
+                  true
+                ],
+                "outs": 2,
+                "runs": 8
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "away_runs_added": 1,
+          "before": {
+            "closed_away_runs": 11,
+            "closed_home_runs": 13,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 1,
+                "status": "fair_play_pending",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  true,
+                  true,
+                  true
+                ],
+                "outs": 2,
+                "runs": 7
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "home_runs_added": 0
+        }
+      ]
+    },
+    {
+      "actions": [
+        {
+          "kind": "begin_batter"
+        },
+        {
+          "event": "fair_ball_handoff",
+          "kind": "pitch"
+        },
+        {
+          "hit_bases": 1,
+          "kind": "resolve_safe_hit",
+          "runner_destinations": [
+            3,
+            4,
+            4
+          ]
+        }
+      ],
+      "final_score": {
+        "away": 20,
+        "home": 13
+      },
+      "final_stage": "between_batters",
+      "final_state": {
+        "closed_away_runs": 11,
+        "closed_home_runs": 13,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              true,
+              false,
+              true
+            ],
+            "outs": 2,
+            "runs": 9
+          }
+        },
+        "inning": 1,
+        "side": "top"
+      },
+      "id": "loaded_single_two",
+      "initial_state": {
+        "closed_away_runs": 11,
+        "closed_home_runs": 13,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              true,
+              true,
+              true
+            ],
+            "outs": 2,
+            "runs": 7
+          }
+        },
+        "inning": 1,
+        "side": "top"
+      },
+      "trace": [
+        {
+          "action": {
+            "kind": "begin_batter"
+          },
+          "after": {
+            "closed_away_runs": 11,
+            "closed_home_runs": 13,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 0,
+                "status": "active",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  true,
+                  true,
+                  true
+                ],
+                "outs": 2,
+                "runs": 7
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "away_runs_added": 0,
+          "before": {
+            "closed_away_runs": 11,
+            "closed_home_runs": 13,
+            "current": {
+              "count": null,
+              "half": {
+                "bases": [
+                  true,
+                  true,
+                  true
+                ],
+                "outs": 2,
+                "runs": 7
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "home_runs_added": 0
+        },
+        {
+          "action": {
+            "event": "fair_ball_handoff",
+            "kind": "pitch"
+          },
+          "after": {
+            "closed_away_runs": 11,
+            "closed_home_runs": 13,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 1,
+                "status": "fair_play_pending",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  true,
+                  true,
+                  true
+                ],
+                "outs": 2,
+                "runs": 7
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "away_runs_added": 0,
+          "before": {
+            "closed_away_runs": 11,
+            "closed_home_runs": 13,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 0,
+                "status": "active",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  true,
+                  true,
+                  true
+                ],
+                "outs": 2,
+                "runs": 7
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "home_runs_added": 0
+        },
+        {
+          "action": {
+            "hit_bases": 1,
+            "kind": "resolve_safe_hit",
+            "runner_destinations": [
+              3,
+              4,
+              4
+            ]
+          },
+          "after": {
+            "closed_away_runs": 11,
+            "closed_home_runs": 13,
+            "current": {
+              "count": null,
+              "half": {
+                "bases": [
+                  true,
+                  false,
+                  true
+                ],
+                "outs": 2,
+                "runs": 9
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "away_runs_added": 2,
+          "before": {
+            "closed_away_runs": 11,
+            "closed_home_runs": 13,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 1,
+                "status": "fair_play_pending",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  true,
+                  true,
+                  true
+                ],
+                "outs": 2,
+                "runs": 7
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "home_runs_added": 0
+        }
+      ]
+    },
+    {
+      "actions": [
+        {
+          "kind": "begin_batter"
+        },
+        {
+          "event": "fair_ball_handoff",
+          "kind": "pitch"
+        },
+        {
+          "hit_bases": 1,
+          "kind": "resolve_safe_hit",
+          "runner_destinations": [
+            4,
+            4,
+            4
+          ]
+        }
+      ],
+      "final_score": {
+        "away": 21,
+        "home": 13
+      },
+      "final_stage": "between_batters",
+      "final_state": {
+        "closed_away_runs": 11,
+        "closed_home_runs": 13,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              true,
+              false,
+              false
+            ],
+            "outs": 2,
+            "runs": 10
+          }
+        },
+        "inning": 1,
+        "side": "top"
+      },
+      "id": "loaded_single_three",
+      "initial_state": {
+        "closed_away_runs": 11,
+        "closed_home_runs": 13,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              true,
+              true,
+              true
+            ],
+            "outs": 2,
+            "runs": 7
+          }
+        },
+        "inning": 1,
+        "side": "top"
+      },
+      "trace": [
+        {
+          "action": {
+            "kind": "begin_batter"
+          },
+          "after": {
+            "closed_away_runs": 11,
+            "closed_home_runs": 13,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 0,
+                "status": "active",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  true,
+                  true,
+                  true
+                ],
+                "outs": 2,
+                "runs": 7
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "away_runs_added": 0,
+          "before": {
+            "closed_away_runs": 11,
+            "closed_home_runs": 13,
+            "current": {
+              "count": null,
+              "half": {
+                "bases": [
+                  true,
+                  true,
+                  true
+                ],
+                "outs": 2,
+                "runs": 7
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "home_runs_added": 0
+        },
+        {
+          "action": {
+            "event": "fair_ball_handoff",
+            "kind": "pitch"
+          },
+          "after": {
+            "closed_away_runs": 11,
+            "closed_home_runs": 13,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 1,
+                "status": "fair_play_pending",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  true,
+                  true,
+                  true
+                ],
+                "outs": 2,
+                "runs": 7
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "away_runs_added": 0,
+          "before": {
+            "closed_away_runs": 11,
+            "closed_home_runs": 13,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 0,
+                "status": "active",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  true,
+                  true,
+                  true
+                ],
+                "outs": 2,
+                "runs": 7
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "home_runs_added": 0
+        },
+        {
+          "action": {
+            "hit_bases": 1,
+            "kind": "resolve_safe_hit",
+            "runner_destinations": [
+              4,
+              4,
+              4
+            ]
+          },
+          "after": {
+            "closed_away_runs": 11,
+            "closed_home_runs": 13,
+            "current": {
+              "count": null,
+              "half": {
+                "bases": [
+                  true,
+                  false,
+                  false
+                ],
+                "outs": 2,
+                "runs": 10
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "away_runs_added": 3,
+          "before": {
+            "closed_away_runs": 11,
+            "closed_home_runs": 13,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 1,
+                "status": "fair_play_pending",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  true,
+                  true,
+                  true
+                ],
+                "outs": 2,
+                "runs": 7
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "home_runs_added": 0
+        }
+      ]
+    },
+    {
+      "actions": [
+        {
+          "kind": "begin_batter"
+        },
+        {
+          "event": "fair_ball_handoff",
+          "kind": "pitch"
+        },
+        {
+          "hit_bases": 3,
+          "kind": "resolve_safe_hit",
+          "runner_destinations": [
+            4,
+            4,
+            4
+          ]
+        }
+      ],
+      "final_score": {
+        "away": 11,
+        "home": 23
+      },
+      "final_stage": "between_batters",
+      "final_state": {
+        "closed_away_runs": 11,
+        "closed_home_runs": 13,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              false,
+              false,
+              true
+            ],
+            "outs": 1,
+            "runs": 10
+          }
+        },
+        "inning": 2,
+        "side": "bottom"
+      },
+      "id": "loaded_triple_bottom",
+      "initial_state": {
+        "closed_away_runs": 11,
+        "closed_home_runs": 13,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              true,
+              true,
+              true
+            ],
+            "outs": 1,
+            "runs": 7
+          }
+        },
+        "inning": 2,
+        "side": "bottom"
+      },
+      "trace": [
+        {
+          "action": {
+            "kind": "begin_batter"
+          },
+          "after": {
+            "closed_away_runs": 11,
+            "closed_home_runs": 13,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 0,
+                "status": "active",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  true,
+                  true,
+                  true
+                ],
+                "outs": 1,
+                "runs": 7
+              }
+            },
+            "inning": 2,
+            "side": "bottom"
+          },
+          "away_runs_added": 0,
+          "before": {
+            "closed_away_runs": 11,
+            "closed_home_runs": 13,
+            "current": {
+              "count": null,
+              "half": {
+                "bases": [
+                  true,
+                  true,
+                  true
+                ],
+                "outs": 1,
+                "runs": 7
+              }
+            },
+            "inning": 2,
+            "side": "bottom"
+          },
+          "home_runs_added": 0
+        },
+        {
+          "action": {
+            "event": "fair_ball_handoff",
+            "kind": "pitch"
+          },
+          "after": {
+            "closed_away_runs": 11,
+            "closed_home_runs": 13,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 1,
+                "status": "fair_play_pending",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  true,
+                  true,
+                  true
+                ],
+                "outs": 1,
+                "runs": 7
+              }
+            },
+            "inning": 2,
+            "side": "bottom"
+          },
+          "away_runs_added": 0,
+          "before": {
+            "closed_away_runs": 11,
+            "closed_home_runs": 13,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 0,
+                "status": "active",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  true,
+                  true,
+                  true
+                ],
+                "outs": 1,
+                "runs": 7
+              }
+            },
+            "inning": 2,
+            "side": "bottom"
+          },
+          "home_runs_added": 0
+        },
+        {
+          "action": {
+            "hit_bases": 3,
+            "kind": "resolve_safe_hit",
+            "runner_destinations": [
+              4,
+              4,
+              4
+            ]
+          },
+          "after": {
+            "closed_away_runs": 11,
+            "closed_home_runs": 13,
+            "current": {
+              "count": null,
+              "half": {
+                "bases": [
+                  false,
+                  false,
+                  true
+                ],
+                "outs": 1,
+                "runs": 10
+              }
+            },
+            "inning": 2,
+            "side": "bottom"
+          },
+          "away_runs_added": 0,
+          "before": {
+            "closed_away_runs": 11,
+            "closed_home_runs": 13,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 1,
+                "status": "fair_play_pending",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  true,
+                  true,
+                  true
+                ],
+                "outs": 1,
+                "runs": 7
+              }
+            },
+            "inning": 2,
+            "side": "bottom"
+          },
+          "home_runs_added": 3
+        }
+      ]
+    },
+    {
+      "actions": [
+        {
+          "kind": "begin_batter"
+        },
+        {
+          "event": "fair_ball_handoff",
+          "kind": "pitch"
+        }
+      ],
+      "final_score": {
+        "away": 0,
+        "home": 0
+      },
+      "final_stage": "awaiting_resolution",
+      "final_state": {
+        "closed_away_runs": 0,
+        "closed_home_runs": 0,
+        "current": {
+          "count": {
+            "balls": 0,
+            "pitches_seen": 1,
+            "status": "fair_play_pending",
+            "strikes": 0
+          },
+          "half": {
+            "bases": [
+              false,
+              false,
+              false
+            ],
+            "outs": 0,
+            "runs": 0
+          }
+        },
+        "inning": 1,
+        "side": "top"
+      },
+      "id": "fair_pending",
+      "initial_state": {
+        "closed_away_runs": 0,
+        "closed_home_runs": 0,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              false,
+              false,
+              false
+            ],
+            "outs": 0,
+            "runs": 0
+          }
+        },
+        "inning": 1,
+        "side": "top"
+      },
+      "trace": [
+        {
+          "action": {
+            "kind": "begin_batter"
+          },
+          "after": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 0,
+                "status": "active",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  false,
+                  false,
+                  false
+                ],
+                "outs": 0,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "away_runs_added": 0,
+          "before": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": null,
+              "half": {
+                "bases": [
+                  false,
+                  false,
+                  false
+                ],
+                "outs": 0,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "home_runs_added": 0
+        },
+        {
+          "action": {
+            "event": "fair_ball_handoff",
+            "kind": "pitch"
+          },
+          "after": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 1,
+                "status": "fair_play_pending",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  false,
+                  false,
+                  false
+                ],
+                "outs": 0,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "away_runs_added": 0,
+          "before": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 0,
+                "status": "active",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  false,
+                  false,
+                  false
+                ],
+                "outs": 0,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "home_runs_added": 0
+        }
+      ]
+    },
+    {
+      "actions": [
+        {
+          "kind": "begin_batter"
+        },
+        {
+          "event": "fair_ball_handoff",
+          "kind": "pitch"
+        },
+        {
+          "hit_bases": 1,
+          "kind": "resolve_safe_hit",
+          "runner_destinations": [
+            null,
+            null,
+            null
+          ]
+        },
+        {
+          "kind": "begin_batter"
+        },
+        {
+          "event": "fair_ball_handoff",
+          "kind": "pitch"
+        },
+        {
+          "hit_bases": 2,
+          "kind": "resolve_safe_hit",
+          "runner_destinations": [
+            4,
+            null,
+            null
+          ]
+        }
+      ],
+      "final_score": {
+        "away": 1,
+        "home": 0
+      },
+      "final_stage": "between_batters",
+      "final_state": {
+        "closed_away_runs": 0,
+        "closed_home_runs": 0,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              false,
+              true,
+              false
+            ],
+            "outs": 0,
+            "runs": 1
+          }
+        },
+        "inning": 1,
+        "side": "top"
+      },
+      "id": "chained_hits",
+      "initial_state": {
+        "closed_away_runs": 0,
+        "closed_home_runs": 0,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              false,
+              false,
+              false
+            ],
+            "outs": 0,
+            "runs": 0
+          }
+        },
+        "inning": 1,
+        "side": "top"
+      },
+      "trace": [
+        {
+          "action": {
+            "kind": "begin_batter"
+          },
+          "after": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 0,
+                "status": "active",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  false,
+                  false,
+                  false
+                ],
+                "outs": 0,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "away_runs_added": 0,
+          "before": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": null,
+              "half": {
+                "bases": [
+                  false,
+                  false,
+                  false
+                ],
+                "outs": 0,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "home_runs_added": 0
+        },
+        {
+          "action": {
+            "event": "fair_ball_handoff",
+            "kind": "pitch"
+          },
+          "after": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 1,
+                "status": "fair_play_pending",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  false,
+                  false,
+                  false
+                ],
+                "outs": 0,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "away_runs_added": 0,
+          "before": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 0,
+                "status": "active",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  false,
+                  false,
+                  false
+                ],
+                "outs": 0,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "home_runs_added": 0
+        },
+        {
+          "action": {
+            "hit_bases": 1,
+            "kind": "resolve_safe_hit",
+            "runner_destinations": [
+              null,
+              null,
+              null
+            ]
+          },
+          "after": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": null,
+              "half": {
+                "bases": [
+                  true,
+                  false,
+                  false
+                ],
+                "outs": 0,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "away_runs_added": 0,
+          "before": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 1,
+                "status": "fair_play_pending",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  false,
+                  false,
+                  false
+                ],
+                "outs": 0,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "home_runs_added": 0
+        },
+        {
+          "action": {
+            "kind": "begin_batter"
+          },
+          "after": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 0,
+                "status": "active",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  true,
+                  false,
+                  false
+                ],
+                "outs": 0,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "away_runs_added": 0,
+          "before": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": null,
+              "half": {
+                "bases": [
+                  true,
+                  false,
+                  false
+                ],
+                "outs": 0,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "home_runs_added": 0
+        },
+        {
+          "action": {
+            "event": "fair_ball_handoff",
+            "kind": "pitch"
+          },
+          "after": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 1,
+                "status": "fair_play_pending",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  true,
+                  false,
+                  false
+                ],
+                "outs": 0,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "away_runs_added": 0,
+          "before": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 0,
+                "status": "active",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  true,
+                  false,
+                  false
+                ],
+                "outs": 0,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "home_runs_added": 0
+        },
+        {
+          "action": {
+            "hit_bases": 2,
+            "kind": "resolve_safe_hit",
+            "runner_destinations": [
+              4,
+              null,
+              null
+            ]
+          },
+          "after": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": null,
+              "half": {
+                "bases": [
+                  false,
+                  true,
+                  false
+                ],
+                "outs": 0,
+                "runs": 1
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "away_runs_added": 1,
+          "before": {
+            "closed_away_runs": 0,
+            "closed_home_runs": 0,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 1,
+                "status": "fair_play_pending",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  true,
+                  false,
+                  false
+                ],
+                "outs": 0,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "home_runs_added": 0
+        }
+      ]
+    },
+    {
+      "actions": [
+        {
+          "kind": "begin_batter"
+        },
+        {
+          "event": "fair_ball_handoff",
+          "kind": "pitch"
+        },
+        {
+          "hit_bases": 1,
+          "kind": "resolve_safe_hit",
+          "runner_destinations": [
+            null,
+            null,
+            4
+          ]
+        },
+        {
+          "kind": "begin_batter"
+        },
+        {
+          "event": "foul_fly_caught",
+          "kind": "pitch"
+        },
+        {
+          "completed_play": "batter_out_runners_hold",
+          "kind": "resolve"
+        },
+        {
+          "kind": "advance_half"
+        }
+      ],
+      "final_score": {
+        "away": 19,
+        "home": 13
+      },
+      "final_stage": "between_batters",
+      "final_state": {
+        "closed_away_runs": 19,
+        "closed_home_runs": 13,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              false,
+              false,
+              false
+            ],
+            "outs": 0,
+            "runs": 0
+          }
+        },
+        "inning": 1,
+        "side": "bottom"
+      },
+      "id": "hit_retire_switch",
+      "initial_state": {
+        "closed_away_runs": 11,
+        "closed_home_runs": 13,
+        "current": {
+          "count": null,
+          "half": {
+            "bases": [
+              false,
+              false,
+              true
+            ],
+            "outs": 2,
+            "runs": 7
+          }
+        },
+        "inning": 1,
+        "side": "top"
+      },
+      "trace": [
+        {
+          "action": {
+            "kind": "begin_batter"
+          },
+          "after": {
+            "closed_away_runs": 11,
+            "closed_home_runs": 13,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 0,
+                "status": "active",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  false,
+                  false,
+                  true
+                ],
+                "outs": 2,
+                "runs": 7
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "away_runs_added": 0,
+          "before": {
+            "closed_away_runs": 11,
+            "closed_home_runs": 13,
+            "current": {
+              "count": null,
+              "half": {
+                "bases": [
+                  false,
+                  false,
+                  true
+                ],
+                "outs": 2,
+                "runs": 7
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "home_runs_added": 0
+        },
+        {
+          "action": {
+            "event": "fair_ball_handoff",
+            "kind": "pitch"
+          },
+          "after": {
+            "closed_away_runs": 11,
+            "closed_home_runs": 13,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 1,
+                "status": "fair_play_pending",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  false,
+                  false,
+                  true
+                ],
+                "outs": 2,
+                "runs": 7
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "away_runs_added": 0,
+          "before": {
+            "closed_away_runs": 11,
+            "closed_home_runs": 13,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 0,
+                "status": "active",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  false,
+                  false,
+                  true
+                ],
+                "outs": 2,
+                "runs": 7
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "home_runs_added": 0
+        },
+        {
+          "action": {
+            "hit_bases": 1,
+            "kind": "resolve_safe_hit",
+            "runner_destinations": [
+              null,
+              null,
+              4
+            ]
+          },
+          "after": {
+            "closed_away_runs": 11,
+            "closed_home_runs": 13,
+            "current": {
+              "count": null,
+              "half": {
+                "bases": [
+                  true,
+                  false,
+                  false
+                ],
+                "outs": 2,
+                "runs": 8
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "away_runs_added": 1,
+          "before": {
+            "closed_away_runs": 11,
+            "closed_home_runs": 13,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 1,
+                "status": "fair_play_pending",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  false,
+                  false,
+                  true
+                ],
+                "outs": 2,
+                "runs": 7
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "home_runs_added": 0
+        },
+        {
+          "action": {
+            "kind": "begin_batter"
+          },
+          "after": {
+            "closed_away_runs": 11,
+            "closed_home_runs": 13,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 0,
+                "status": "active",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  true,
+                  false,
+                  false
+                ],
+                "outs": 2,
+                "runs": 8
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "away_runs_added": 0,
+          "before": {
+            "closed_away_runs": 11,
+            "closed_home_runs": 13,
+            "current": {
+              "count": null,
+              "half": {
+                "bases": [
+                  true,
+                  false,
+                  false
+                ],
+                "outs": 2,
+                "runs": 8
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "home_runs_added": 0
+        },
+        {
+          "action": {
+            "event": "foul_fly_caught",
+            "kind": "pitch"
+          },
+          "after": {
+            "closed_away_runs": 11,
+            "closed_home_runs": 13,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 1,
+                "status": "caught_foul_out",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  true,
+                  false,
+                  false
+                ],
+                "outs": 2,
+                "runs": 8
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "away_runs_added": 0,
+          "before": {
+            "closed_away_runs": 11,
+            "closed_home_runs": 13,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 0,
+                "status": "active",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  true,
+                  false,
+                  false
+                ],
+                "outs": 2,
+                "runs": 8
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "home_runs_added": 0
+        },
+        {
+          "action": {
+            "completed_play": "batter_out_runners_hold",
+            "kind": "resolve"
+          },
+          "after": {
+            "closed_away_runs": 11,
+            "closed_home_runs": 13,
+            "current": {
+              "count": null,
+              "half": {
+                "bases": [
+                  true,
+                  false,
+                  false
+                ],
+                "outs": 3,
+                "runs": 8
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "away_runs_added": 0,
+          "before": {
+            "closed_away_runs": 11,
+            "closed_home_runs": 13,
+            "current": {
+              "count": {
+                "balls": 0,
+                "pitches_seen": 1,
+                "status": "caught_foul_out",
+                "strikes": 0
+              },
+              "half": {
+                "bases": [
+                  true,
+                  false,
+                  false
+                ],
+                "outs": 2,
+                "runs": 8
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "home_runs_added": 0
+        },
+        {
+          "action": {
+            "kind": "advance_half"
+          },
+          "after": {
+            "closed_away_runs": 19,
+            "closed_home_runs": 13,
+            "current": {
+              "count": null,
+              "half": {
+                "bases": [
+                  false,
+                  false,
+                  false
+                ],
+                "outs": 0,
+                "runs": 0
+              }
+            },
+            "inning": 1,
+            "side": "bottom"
+          },
+          "away_runs_added": 0,
+          "before": {
+            "closed_away_runs": 11,
+            "closed_home_runs": 13,
+            "current": {
+              "count": null,
+              "half": {
+                "bases": [
+                  true,
+                  false,
+                  false
+                ],
+                "outs": 3,
+                "runs": 8
+              }
+            },
+            "inning": 1,
+            "side": "top"
+          },
+          "home_runs_added": 0
+        }
+      ]
+    }
+  ],
+  "schema": "phase4e-reference-v0.1",
+  "scope": "partial_completed_safe_hit_projection",
+  "source_kind": "synthetic_fixture"
+}
