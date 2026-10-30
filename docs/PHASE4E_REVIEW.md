@@ -1,4 +1,6 @@
-# Phase 4e案の設計点検
+# Phase 4eの設計点検・独立実装レビュー
+
+冒頭から本人承認の直前までは承認前の履歴。現在はD046限定CONFIRMED/ADR Acceptedで、実装もレビュー後マージ済み。
 
 2026-10-30 日本時間。[設計案](PHASE4E_DESIGN.md)・[ADR-0012](adr/0012-phase4e-completed-safe-hits.md)は未承認。D046 OPEN/ADR Proposed、生産実装・新4eテスト成功なし。
 
@@ -21,3 +23,21 @@
 ## 本人の承認（2026-10-30）
 
 上段は承認前の点検履歴。2026-10-30、本人が設計PR #31を示した確認に「設計PR #31の範囲で進める（推奨）」と回答。全員safe・打者最終塁と安打価値が等しい限定条件、明示行先の検査と反映、旧型/step利用、固定表/列、ゲーム側Python参照/CIとworker開始を承認した。 D046を限定CONFIRMED/ADR Acceptedとし、設計マージ後にworkerへ委任する。CIや技術点検を本人承認の代用にせず、確率/一般裁定/アウト/失策/試合終了・研究/能力・Android採用へ承認を拡張しない。
+
+## 独立実装レビューと統合（2026-10-31 日本時間）
+
+worker実装・責任者の独立レビュー後、[実装PR #32](https://github.com/thrsth45h/baseball-sim/pull/32)をmain `167a428a0bea8419b0b42ae4c70f4a11e6dcd0ce`へマージ済み。旧4d state/4actionとparser/stepを再利用し、fair待ちに裁定済み単打/二塁打/三塁打と明示走者行先を反映する。走者据置き・複数得点を許し、占有と行先の不一致・最終位置の衝突/逆走/順序矛盾を拒否する。打者は安打価値と等しい塁へ留まり、既存走者の本塁到達数だけ攻撃側へ加点してcountを消費する。
+
+最終実装head `df9a5d5d7a137bd8ad57b1b212e12042bec40df9`、source/tests/fixtures/CI固定 `88d239ce33c8330402fe17d8a9f3ee4dab9c34e8`。実装時点で旧153パス中README案内以外152不変。公開16ファイル191,604bytes・18hashをworking/Git blob双方で照合。後続完了文書7件の変更は歴史的旧保護と区別する。研究main `cd8217a44788cf830c5554b71b04a27a98ce620c`/tree/作業状態は不変。研究575テストを新4eへ加算しない。
+
+新4e24/18112、旧4d26/320、旧4c28/3020、旧4a33/326、旧4b32/515（test method/成功subTestは別集計）を責任者も別worktreeで実行し、全failure/error/skip0。対象headのPython3.11/3.12 CIも成功。実装未参照の識別走者・得点ledgerと39,275比較項目/18,046期待拒否を照合した。48受理表、固定18列/60action/78分割、有限18,000試行の288受理/17,712拒否が一致。追加の長い混在列3,150actionの最終state/scoreと全trace hashも一致した。主要4成果物は責任者の監視下2runとworker公開版でバイト一致、許可外入力/RNG・時計利用0。公開helperも120trace/6run hashを独立再検算した。
+
+独立期待値SHA256 `290833079e940edca051d1c06afae320bf2d3aa4cbcadfca0bc74e4a817368dc`。別担当は承認design/旧設計契約と自分が凍結した私的参照だけを用い、新旧prototype/worker/管理者私的チェックを参照せず、識別走者の最終割当集合と半回ごとの得点ledgerを作成した。比較前にhashを凍結・再照合し、worker実装開始前の凍結とは主張しない。人数収支だけで移動先の正しさを証明したり、有限候補の比率を実際の安打/走塁確率と扱ったりしない。
+
+責任者はPython3.12.14の別worktreeで新旧5suiteを別コマンドで実行し、実Windows junction試験も成功した。旧action/parserの1回委任、新hitで旧step0回、厳密型/-O/JSON、固定列の等価最終への置換拒否、旧snapshotの再適用と消費後拒否の区別を点検した。読取り専用担当の追加レビューも受けた。同一GitHub利用者によるCOMMENTを人間第三者のAPPROVEとは称さず、本人の継続マージ許可に基づき統合した。
+
+全員safe・正規触塁/裁定/得点が外部で確定し、打者最終塁と安打価値が等しい強い合成条件に限る。最終位置から途中履歴の合法性を証明せず、安打価値や走塁を予測/裁定しない。安打/進塁の確率、アウト/失策/第三アウト得点、試合終了/勝敗/サヨナラ・公式個人成績、研究モデル/能力・Android/UI/DB/セーブ・製品採用は未実施。新snapshotへの連続hitは拒否するが、古いsnapshotの純粋再適用・通信再送の永続重複排除を保証しない。D029/D031/D032はOPEN。次の重要な新仕様は設計相談と本人承認から決める。
+
+## 完了文書の検算（2026-10-31 日本時間）
+
+実装PR #32の[責任者レビュー](https://github.com/thrsth45h/baseball-sim/pull/32#pullrequestreview-5714381830)後、main `167a428a0bea8419b0b42ae4c70f4a11e6dcd0ce`から完了文書7件だけを更新した。実際に7文書が未コミットの状態でもCLIを2回実行し、主要4成果物は独立レビュー時の2runとworker公開版に一致した。公開helperも120trace/6run hashを再検算し、歴史的152保護と現在の7文書差分を分離した。同じ固定source/Pythonの責任者5suite記録をコピーして使い、文書更新に伴う新規unittest実行とは称していない。実装対象headの[新4e CI](https://github.com/thrsth45h/baseball-sim/actions/runs/41078540270)は各Python3.11/3.12の5suite全step成功、旧4d/4c/4a/4bの各PR workflowも両版成功を確認した。完了文書PRのCIはその対象headで別途確認する。
