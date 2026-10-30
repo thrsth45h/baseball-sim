@@ -83,7 +83,7 @@ Phase 1d設計書・ADRのProposedは作成時の表記。研究範囲の採用�
 
 ## 次工程
 
-2026-10-30の「つぎへ」を受け、main `7343b6179aedbdc6f42c3aa22d887dac7bcdbf1a`からdesign/phase4e-completed-safe-hitsへ分岐。[Phase 4e案](PHASE4E_DESIGN.md)・[ADR-0012](adr/0012-phase4e-completed-safe-hits.md)は**未承認、D046 OPEN/ADR Proposed、生産実装なし**。全員safe・裁定済み単打/二塁打/三塁打で、打者最終塁と安打価値が等しい場合を対象に、各当初走者の行先を明示する新actionを旧4dへ接続する提案。[点検](PHASE4E_REVIEW.md)を参照。走塁判断/確率・一般裁定/アウト/失策・試合終了/勝敗・研究/能力・Android採用は含めず、本人の仕様承認後にだけworkerへ委任する。
+2026-10-30の「つぎへ」を受け、main `7343b6179aedbdc6f42c3aa22d887dac7bcdbf1a`からdesign/phase4e-completed-safe-hitsへ分岐。[Phase 4e案](PHASE4E_DESIGN.md)・[ADR-0012](adr/0012-phase4e-completed-safe-hits.md)は**未承認、D046 OPEN/ADR Proposed、生産実装なし**。[設計PR #31](https://github.com/thrsth45h/baseball-sim/pull/31)をDraftで提示中。全員safe・裁定済み単打/二塁打/三塁打で、打者最終塁と安打価値が等しい場合を対象に、各当初走者の行先を明示する新actionを旧4dへ接続する提案。[点検](PHASE4E_REVIEW.md)を参照。走塁判断/確率・一般裁定/アウト/失策・試合終了/勝敗・研究/能力・Android採用は含めず、本人の仕様承認後にだけworkerへ委任する。
 
 **Phase 4dの承認済み実装は完了。次の新しい実装仕様は未承認。** 終了判定のない有限合成列のcontrollerであり、9回/延長/サヨナラ・勝敗・最終得点、一般走塁/公式記録・完全試合、研究モデル/能力、Android/UI/DB/セーブ・製品採用は未実施。強い合成入力条件とhalf snapshotの意味を維持し、省略された現実イベントの検出や古いsnapshot/通信再送の永続重複排除は保証しない。D029/D031/D032はOPEN。次の重要な実装仕様は未承認で、設計相談から決める。 既存worktree/ignored資料を保持し、再開時は両repoのbranch/HEAD/未保存変更/最新main/未マージPRを確認する。責任者が設計し、本人承認後にworkerへ直接委任する。
 

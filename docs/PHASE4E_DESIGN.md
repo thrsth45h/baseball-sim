@@ -3,7 +3,7 @@
 - 版: `phase4e-design-v0.1`、2026-10-30 日本時間。
 - 状態: **Proposed／未承認**。「つぎへ」は設計を進める指示であり、以下の仕様採用ではない。D046 OPEN、[ADR-0012](adr/0012-phase4e-completed-safe-hits.md) Proposed。
 - 基準: ゲームmain `7343b6179aedbdc6f42c3aa22d887dac7bcdbf1a`、研究main `cd8217a44788cf830c5554b71b04a27a98ce620c`。
-- 関連: D004/D022/D023、D042–D045の既存限定契約、D029/D031/D032 OPEN、[設計点検](PHASE4E_REVIEW.md)。設計PRは作成後に記録する。
+- 関連: D004/D022/D023、D042–D045の既存限定契約、D029/D031/D032 OPEN、[設計点検](PHASE4E_REVIEW.md)。設計PR: [ゲームPR #31](https://github.com/thrsth45h/baseball-sim/pull/31)（未承認Draft）。
 
 ## 1. 目的・代替案と範囲
 

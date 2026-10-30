@@ -2,7 +2,7 @@
 
 - Status: **Proposed／未承認**、2026-10-30 日本時間。
 - 関連: D004/D022/D023、D046 OPEN、D029/D031/D032 OPEN。
-- 対象: [Phase 4e設計v0.1](../PHASE4E_DESIGN.md)。設計PRは作成後に記録。
+- 対象: [Phase 4e設計v0.1](../PHASE4E_DESIGN.md)。設計PR: [ゲームPR #31](https://github.com/thrsth45h/baseball-sim/pull/31)（未承認Draft）。
 - ユーザーの明示承認: **未取得**。「つぎへ」はこの新仕様の承認ではない。
 
 ## 現状・代替案
