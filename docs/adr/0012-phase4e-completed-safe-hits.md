@@ -1,9 +1,9 @@
 # ADR-0012: 確定済み安打と明示された走者進塁の限定参照
 
-- Status: **Proposed／未承認**、2026-10-30 日本時間。
-- 関連: D004/D022/D023、D046 OPEN、D029/D031/D032 OPEN。
-- 対象: [Phase 4e設計v0.1](../PHASE4E_DESIGN.md)。設計PR: [ゲームPR #31](https://github.com/thrsth45h/baseball-sim/pull/31)（未承認Draft）。
-- ユーザーの明示承認: **未取得**。「つぎへ」はこの新仕様の承認ではない。
+- Status: **Accepted**、2026-10-30 日本時間。
+- 関連: D004/D022/D023、D046限定CONFIRMED、D029/D031/D032 OPEN。
+- 対象: [Phase 4e設計v0.1](../PHASE4E_DESIGN.md)。設計PR: [ゲームPR #31](https://github.com/thrsth45h/baseball-sim/pull/31)（本人の範囲承認済み）。
+- ユーザーの明示承認: **2026-10-30、本人が設計PR #31を示した確認に「設計PR #31の範囲で進める（推奨）」と回答。全員safe・打者最終塁と安打価値が等しい限定条件、明示行先の検査と反映、旧型/step利用、固定表/列、ゲーム側Python参照/CIとworker開始を承認した。** 「つぎへ」だけを承認とは扱っていない。
 
 ## 現状・代替案
 
@@ -23,4 +23,4 @@ Noneと当初占有の対応、逆走・最終位置衝突・後続走者だけ�
 
 ## 承認後
 
-本人が設計の限定条件・API/固定表/列・Python参照/CIとworker開始を明示承認した後だけ正式化し、設計PRマージ後workerへ委任する。技術点検・CIを仕様承認と扱わない。
+本人が設計の限定条件・API/固定表/列・Python参照/CIとworker開始を明示承認したため正式化し、設計PRマージ後workerへ委任する。技術点検・CIを仕様承認と扱わない。

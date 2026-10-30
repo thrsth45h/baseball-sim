@@ -1,9 +1,9 @@
 # Phase 4e — 確定済み安打と明示された走者進塁の限定参照
 
 - 版: `phase4e-design-v0.1`、2026-10-30 日本時間。
-- 状態: **Proposed／未承認**。「つぎへ」は設計を進める指示であり、以下の仕様採用ではない。D046 OPEN、[ADR-0012](adr/0012-phase4e-completed-safe-hits.md) Proposed。
+- 状態: **Accepted**。2026-10-30、本人が設計PR #31を示した確認に「設計PR #31の範囲で進める（推奨）」と回答。全員safe・打者最終塁と安打価値が等しい限定条件、明示行先の検査と反映、旧型/step利用、固定表/列、ゲーム側Python参照/CIとworker開始を承認した。 「つぎへ」だけを承認とは扱っていない。D046限定CONFIRMED、[ADR-0012](adr/0012-phase4e-completed-safe-hits.md) Accepted。
 - 基準: ゲームmain `7343b6179aedbdc6f42c3aa22d887dac7bcdbf1a`、研究main `cd8217a44788cf830c5554b71b04a27a98ce620c`。
-- 関連: D004/D022/D023、D042–D045の既存限定契約、D029/D031/D032 OPEN、[設計点検](PHASE4E_REVIEW.md)。設計PR: [ゲームPR #31](https://github.com/thrsth45h/baseball-sim/pull/31)（未承認Draft）。
+- 関連: D004/D022/D023、D042–D045の既存限定契約、D029/D031/D032 OPEN、[設計点検](PHASE4E_REVIEW.md)。設計PR: [ゲームPR #31](https://github.com/thrsth45h/baseball-sim/pull/31)（本人の範囲承認済み、設計マージ後にworkerへ委任）。
 
 ## 1. 目的・代替案と範囲
 
@@ -138,4 +138,4 @@ flagsはsource_kind=synthetic_fixture、scope=partial_completed_safe_hit_project
 
 ## 9. 本人へ判断を求める範囲
 
-上記の完了・全員safe・打者最終塁=裁定済み安打価値という限定条件、明示行先の検査と反映、旧4d型/stepを使う新action、固定表/列、ゲーム側Python参照/専用CIとworker開始の承認を求める。**現在は未承認・生産実装なし。** 承認後だけD046を限定CONFIRMED/ADR Acceptedとし、設計マージ後workerへ委任する。走塁/安打の確率・裁定、アウト/失策/第三アウト得点、試合終了/勝敗、研究/能力・Android採用へ拡張しない。
+**2026-10-30、本人が設計PR #31を示した確認に「設計PR #31の範囲で進める（推奨）」と回答。全員safe・打者最終塁と安打価値が等しい限定条件、明示行先の検査と反映、旧型/step利用、固定表/列、ゲーム側Python参照/CIとworker開始を承認した。** D046限定CONFIRMED/ADR Acceptedとして設計マージ後workerへ委任する。走塁/安打の確率・裁定、アウト/失策/第三アウト得点、試合終了/勝敗、研究/能力・Android採用へ拡張しない。
