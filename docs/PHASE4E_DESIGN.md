@@ -3,7 +3,7 @@
 - 版: `phase4e-design-v0.1`、2026-10-30 日本時間。
 - 状態: **Accepted**。2026-10-30、本人が設計PR #31を示した確認に「設計PR #31の範囲で進める（推奨）」と回答。全員safe・打者最終塁と安打価値が等しい限定条件、明示行先の検査と反映、旧型/step利用、固定表/列、ゲーム側Python参照/CIとworker開始を承認した。 「つぎへ」だけを承認とは扱っていない。D046限定CONFIRMED、[ADR-0012](adr/0012-phase4e-completed-safe-hits.md) Accepted。
 - 基準: ゲームmain `7343b6179aedbdc6f42c3aa22d887dac7bcdbf1a`、研究main `cd8217a44788cf830c5554b71b04a27a98ce620c`。
-- 関連: D004/D022/D023、D042–D045の既存限定契約、D029/D031/D032 OPEN、[設計点検](PHASE4E_REVIEW.md)。設計PR: [ゲームPR #31](https://github.com/thrsth45h/baseball-sim/pull/31)（本人の範囲承認済み、設計マージ後にworkerへ委任）。
+- 関連: D004/D022/D023、D042–D045の既存限定契約、D029/D031/D032 OPEN、[設計点検](PHASE4E_REVIEW.md)。設計PR: [ゲームPR #31](https://github.com/thrsth45h/baseball-sim/pull/31)はmain `e1af536153c36ab34be8199a3707ff0c1c9ba0fb`へマージ済み。worker実装・責任者の独立レビュー後、[実装PR #32](https://github.com/thrsth45h/baseball-sim/pull/32)をmain `167a428a0bea8419b0b42ae4c70f4a11e6dcd0ce`へマージ済み。旧4d state/4actionとparser/stepを再利用し、fair待ちに裁定済み単打/二塁打/三塁打と明示走者行先を反映する。走者据置き・複数得点を許し、占有と行先の不一致・最終位置の衝突/逆走/順序矛盾を拒否する。打者は安打価値と等しい塁へ留まり、既存走者の本塁到達数だけ攻撃側へ加点してcountを消費する。 [独立レビュー](PHASE4E_REVIEW.md)・[公開手順](../reports/phase4e/README.md)を参照。以下は承認された契約を保持する。
 
 ## 1. 目的・代替案と範囲
 

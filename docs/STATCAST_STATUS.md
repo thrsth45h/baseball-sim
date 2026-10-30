@@ -250,6 +250,14 @@ worker実装・責任者の独立レビュー後、[実装PR #29](https://github
 
 終了判定のない有限合成列のcontrollerであり、9回/延長/サヨナラ・勝敗・最終得点、一般走塁/公式記録・完全試合、研究モデル/能力、Android/UI/DB/セーブ・製品採用は未実施。強い合成入力条件とhalf snapshotの意味を維持し、省略された現実イベントの検出や古いsnapshot/通信再送の永続重複排除は保証しない。D029/D031/D032はOPEN。次の重要な実装仕様は未承認で、設計相談から決める。
 
-## Phase 4e案（裁定済み安打と明示進塁、承認済み）
+## Phase 4e（裁定済み安打と明示進塁、レビュー後mainへマージ済み）
 
-[Phase 4e案](PHASE4E_DESIGN.md)・[ADR-0012](adr/0012-phase4e-completed-safe-hits.md)はD046限定CONFIRMED/Accepted。2026-10-30、本人が設計PR #31を示した確認に「設計PR #31の範囲で進める（推奨）」と回答。全員safe・打者最終塁と安打価値が等しい限定条件、明示行先の検査と反映、旧型/step利用、固定表/列、ゲーム側Python参照/CIとworker開始を承認した。新ResolveSafeHitで、打者最終塁が裁定済み安打価値と等しく全員safeの完了プレーだけを反映する。安打価値も各走者の行先も入力であり、Statcast/打球から予測・裁定しない。最終位置の矛盾は拒否するが途中の触塁/追越し等の履歴は証明しない。旧研究/4a–4d結果を保持する。生産実装は設計マージ後にworkerへ委任し、走塁判断/確率・一般裁定・試合終了/公式成績・能力・Android採用は別設計。
+worker実装・責任者の独立レビュー後、[実装PR #32](https://github.com/thrsth45h/baseball-sim/pull/32)をmain `167a428a0bea8419b0b42ae4c70f4a11e6dcd0ce`へマージ済み。旧4d state/4actionとparser/stepを再利用し、fair待ちに裁定済み単打/二塁打/三塁打と明示走者行先を反映する。走者据置き・複数得点を許し、占有と行先の不一致・最終位置の衝突/逆走/順序矛盾を拒否する。打者は安打価値と等しい塁へ留まり、既存走者の本塁到達数だけ攻撃側へ加点してcountを消費する。 D046限定CONFIRMED。
+
+新4e24/18112、旧4d26/320、旧4c28/3020、旧4a33/326、旧4b32/515（test method/成功subTestは別集計）を責任者も別worktreeで実行し、全failure/error/skip0。対象headのPython3.11/3.12 CIも成功。実装未参照の識別走者・得点ledgerと39,275比較項目/18,046期待拒否を照合した。48受理表、固定18列/60action/78分割、有限18,000試行の288受理/17,712拒否が一致。追加の長い混在列3,150actionの最終state/scoreと全trace hashも一致した。主要4成果物は責任者の監視下2runとworker公開版でバイト一致、許可外入力/RNG・時計利用0。公開helperも120trace/6run hashを独立再検算した。 [レビュー](PHASE4E_REVIEW.md)・[再現手順](../reports/phase4e/README.md)を参照。
+
+最終実装head `df9a5d5d7a137bd8ad57b1b212e12042bec40df9`、source/tests/fixtures/CI固定 `88d239ce33c8330402fe17d8a9f3ee4dab9c34e8`。実装時点で旧153パス中README案内以外152不変。公開16ファイル191,604bytes・18hashをworking/Git blob双方で照合。後続完了文書7件の変更は歴史的旧保護と区別する。研究main `cd8217a44788cf830c5554b71b04a27a98ce620c`/tree/作業状態は不変。研究575テストを新4eへ加算しない。
+
+新runは許可旧9sourceのimport/hashだけを利用する。helperの固定Git旧静的表による検算は別処理で、新runの入力と混同しない。
+
+全員safe・正規触塁/裁定/得点が外部で確定し、打者最終塁と安打価値が等しい強い合成条件に限る。最終位置から途中履歴の合法性を証明せず、安打価値や走塁を予測/裁定しない。安打/進塁の確率、アウト/失策/第三アウト得点、試合終了/勝敗/サヨナラ・公式個人成績、研究モデル/能力・Android/UI/DB/セーブ・製品採用は未実施。新snapshotへの連続hitは拒否するが、古いsnapshotの純粋再適用・通信再送の永続重複排除を保証しない。D029/D031/D032はOPEN。次の重要な新仕様は設計相談と本人承認から決める。
