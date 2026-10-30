@@ -77,7 +77,7 @@ Phase 1d設計書・ADRのProposedは作成時の表記。研究範囲の採用�
 
 ## 次工程
 
-2026-10-30の「次へ」を受け、ゲームmain `91d5e1f40730e09d4970e0960a10b3c658fc65b8`からdesign/phase4d-half-sequenceへ分岐し、[Phase 4d案](PHASE4D_DESIGN.md)・[ADR-0011](adr/0011-phase4d-half-sequence.md)を作成した。**未承認、D045 OPEN/ADR Proposed、生産実装なし。** 旧4cの半回完了から明示Advanceで表裏を切り替え、両チーム得点と次半回リセットを検算する提案。[設計点検](PHASE4D_REVIEW.md)を参照。本人が仕様範囲を承認してから設計マージ/worker実装へ進む。試合終了/延長/サヨナラ・勝敗・一般走塁・研究/能力・Android採用は追加しない。
+2026-10-30の「次へ」を受け、ゲームmain `91d5e1f40730e09d4970e0960a10b3c658fc65b8`からdesign/phase4d-half-sequenceへ分岐し、[Phase 4d案](PHASE4D_DESIGN.md)・[ADR-0011](adr/0011-phase4d-half-sequence.md)を作成した。**未承認、D045 OPEN/ADR Proposed、生産実装なし。** [設計PR #28](https://github.com/thrsth45h/baseball-sim/pull/28)はDraftで提示中。 旧4cの半回完了から明示Advanceで表裏を切り替え、両チーム得点と次半回リセットを検算する提案。[設計点検](PHASE4D_REVIEW.md)を参照。本人が仕様範囲を承認してから設計マージ/worker実装へ進む。試合終了/延長/サヨナラ・勝敗・一般走塁・研究/能力・Android採用は追加しない。
 
 **Phase 4cの承認済み実装は完了。次の重要な実装仕様は未承認。** 強い合成入力条件内の接続参照で、halfは最後に確定反映したsnapshot。省略された現実イベントの検出や古いsnapshot/通信再送の永続重複排除を保証しない。一般走塁/単打/併殺/第三アウト得点、公式個人成績、完全試合、研究/確率/能力、Android/UI/DB/セーブ・製品採用は未実施。D029/D031/D032はOPEN。次の新しい実装仕様は未承認で、設計相談から決める。 既存worktree/ignored資料を保持し、再開時は両repoのbranch/HEAD/未保存変更/最新main/未マージPRを確認する。責任者が設計し、本人の承認後にworkerへ直接委任する。
 
