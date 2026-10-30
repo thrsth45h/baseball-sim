@@ -238,6 +238,14 @@ Statcast研究や3dの到達機会をイベントへ変換せず、確率・走�
 
 強い合成入力条件内の接続参照で、halfは最後に確定反映したsnapshot。省略された現実イベントの検出や古いsnapshot/通信再送の永続重複排除を保証しない。一般走塁/単打/併殺/第三アウト得点、公式個人成績、完全試合、研究/確率/能力、Android/UI/DB/セーブ・製品採用は未実施。D029/D031/D032はOPEN。次の新しい実装仕様は未承認で、設計相談から決める。
 
-## Phase 4d案（ゲーム側の半回列制御、承認済み）
+## Phase 4d（ゲーム側の半回列制御、レビュー後mainへマージ済み）
 
-2026-10-30、[Phase 4d案](PHASE4D_DESIGN.md)・[ADR-0011](adr/0011-phase4d-half-sequence.md)を作成。D045限定CONFIRMED/Accepted。2026-10-30、本人が本PRを示す確認に「設計PR #28の範囲で進める（推奨）」と回答。限定半回列制御・得点表現・明示Advance・固定表/列・ゲーム側Python参照/CI・旧型/step利用とworker開始を承認した。 設計マージ後にworkerへ委任する。旧4cへ委任する合成列で、三アウト後の明示Advance、表裏/回数・両チーム得点保持を検算する。切替済み累計と現在halfからscoreを導出し、切替で表示得点を再加算しない。研究repo/旧成果物は変更しない。試合終了/延長/サヨナラ・勝敗・一般走塁・研究モデル/能力・Android/製品採用は含めず、承認後にだけworkerへ委任する。
+worker実装・責任者の独立レビュー後、[実装PR #29](https://github.com/thrsth45h/baseball-sim/pull/29)をmain `27c1c9df0d6286faf77334157eec2b236f94e68d`へマージ済み。旧4c.stepを再利用し、三アウト後の明示Advanceで表裏を切り替え、次半回だけを空の状態へ初期化する。切替済み累計と現在halfからscoreを導出し、Advance前後で両チームの合計を保持する。 D045は限定範囲のみCONFIRMED。
+
+新4d26 test method/成功subTest320、旧4c28/3020・旧4a33/326・旧4b32/515を別集計し、責任者も別worktreeで全て成功、failure/error/skip0。対象headのPython3.11/3.12全CI成功。実装未参照の独立した得点ledgerと21,612比較項目/709期待拒否が一致。16列/100action/116分割、96Advance、両side合計4,608投球・576互換試行（240受理/336拒否）、完了後192拒否を確認。追加1,000半回/14,500actionの最終state/score・全trace hashも一致した。主要4成果物は責任者の監視下2runとworker公開版でバイト一致し、許可外入力/RNG・時計利用0。公開helperも200trace/6run hashを独立再検算した。 [レビュー](PHASE4D_REVIEW.md)・[公開手順](../reports/phase4d/README.md)を参照。
+
+最終実装head `898de25e62a3e81cf1ba2c0661a13e8fa4d5e0d1`、source/tests/fixtures/CI固定 `2fadced5b5da7b8387466641fd063180c5628e17`。実装時点で旧123パス中README案内以外122不変。公開15ファイル216,421bytes・17hashをworking/Git blob双方で照合。後続完了文書7件の変更は歴史的旧保護と区別する。研究main `cd8217a44788cf830c5554b71b04a27a98ce620c`/tree/作業状態は不変。研究575テストを新4dへ加算しない。
+
+新runは許可旧7sourceのimport/hashを利用する。helperだけは固定Gitの旧4a/b静的遷移・旧4c互換表も検算用に読み、研究/学習モデルを使わないことと区別する。
+
+終了判定のない有限合成列のcontrollerであり、9回/延長/サヨナラ・勝敗・最終得点、一般走塁/公式記録・完全試合、研究モデル/能力、Android/UI/DB/セーブ・製品採用は未実施。強い合成入力条件とhalf snapshotの意味を維持し、省略された現実イベントの検出や古いsnapshot/通信再送の永続重複排除は保証しない。D029/D031/D032はOPEN。次の重要な実装仕様は未承認で、設計相談から決める。
