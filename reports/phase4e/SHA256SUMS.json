@@ -1,0 +1,17 @@
+{
+  ".gitattributes": "a79691a93b46e49ce460c26ef22afcc03d6eca1e63bf2edbc20e96159510f6c9",
+  "README.md": "50b451e0452f4221343ef6e178808b0e6ebc31b05926c98ca3d1c2defda1da1a",
+  "VALIDATION.md": "d3693fa5f08f0296645f26bb3b1616c3c609a91c065b9f02152f2fb5e2a7d776",
+  "phase4a-regression.json": "323f8ddb3c671b589899fa2fd648b6603e0e722d18993bb6234512cbede599a1",
+  "phase4b-regression.json": "50fcbf1a6599601ca030451ddb6f3b230d7aceb8a2b0b2bbb10c8d125c4e6ff1",
+  "phase4c-regression.json": "b509eb44c58cb1a6729235c9297577c5d3997971580dbea59a6f05ba9f2b66d3",
+  "phase4d-regression.json": "15419571b240b83f33a8a5924406fb9a0793bf9ffb5180cc53ae0ae64520e638",
+  "reproducibility.json": "1d8e6662630ab0312a390ffccbb3b67ed67bbe172513dca1672b434ab41e1339",
+  "synthetic-01/REPORT.md": "e7b65a98ce1cbcd6e0238fdc42025b27ae1fb1435fa8351b9db1488901850da7",
+  "synthetic-01/SHA256SUMS.json": "d156bd8264aa0cca7ca31a10edbb168a6eddde1b9f3616e34b62949c5f8eef53",
+  "synthetic-01/plan.json": "6ed62597c6e1933219a4c0dd2a6db478085101975aba360c23a2a987fd7fc49b",
+  "synthetic-01/traces.json": "7d44073fe16df8ec485ee364d3f69c0964a555cc5949139404313e15053b51cc",
+  "test-results.json": "34ccfc62d7e42be033042b9ace184be8405462c8f958a0b5dcdc33a7c8e38c7b",
+  "verification.json": "7b0a07152cdad1098ac00ef163cadfc402064f62e28955170f5ef1726ed4935e",
+  "verify.py": "333cd5bf622ee97c8c20002d56e3a9f0c451e9852b2cd9571264c8bef0616e8b"
+}
