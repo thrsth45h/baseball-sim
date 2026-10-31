@@ -1,0 +1,47 @@
+{
+  "advance_count": 2600,
+  "case_count": 49,
+  "compared_files": [
+    {
+      "bytes": 573,
+      "path": "SHA256_MANIFEST.json",
+      "regenerated_byte_equal": true,
+      "sha256": "f0c04386cafc928c3710c10c0b195860565ca7e52b9bb8de9c61ae8ab3f9981d"
+    },
+    {
+      "bytes": 10767,
+      "path": "case_summary.json",
+      "regenerated_byte_equal": true,
+      "sha256": "fbbd81bb0a2ca4693c9247cb2545602f13ffb09d414f9237d880f1eb9b69acae"
+    },
+    {
+      "bytes": 2469,
+      "path": "provenance.json",
+      "regenerated_byte_equal": true,
+      "sha256": "6ca24b8f3c63ec4fdf18d14a09c5c5a8f2b22db2c92ffddb767d99e737ca59ec"
+    },
+    {
+      "bytes": 20173,
+      "path": "sm64_vectors.json",
+      "regenerated_byte_equal": true,
+      "sha256": "c932f0a744a01ff8f2e2c5e93544491b0eb07ec1da84c18049a56b346938c2dd"
+    },
+    {
+      "bytes": 7215978,
+      "path": "transition_cases.json",
+      "regenerated_byte_equal": true,
+      "sha256": "10a3e8fa701c53b34c7de0a4fc1e2d4b8dd22a97acbcad760cc469ec0b7c63f8"
+    },
+    {
+      "bytes": 129808,
+      "path": "transition_cases.json.gz",
+      "regenerated_byte_equal": true,
+      "sha256": "09ceb0d6253dd22344e681a30c1b61888ca5e8054a2c80f84533b151b35d071b"
+    }
+  ],
+  "expectations_changed_after_first_freeze": false,
+  "generator_matches_frozen_provenance": true,
+  "gzip_decompress_equal": true,
+  "manifest_entries_all_valid": true,
+  "schema": "android-reference-regeneration-check-v1"
+}
