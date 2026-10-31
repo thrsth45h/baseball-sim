@@ -153,3 +153,7 @@ Phase 2bの通常ファウル・ファウルチップ・インプレー分岐は
 - 未知打者、入力欠損・分類、商用利用・派生物の権利確認、後続のコンタクト・打球・試合モデル。
 
 詳細は[研究状況](STATCAST_STATUS.md)、[Phase 1d設計](PHASE1D_DESIGN.md)、[ロードマップ](../ROADMAP.md)を参照。
+
+## Android正式承認・今回の作業（2026-11-01）
+
+本人はPR #39のKotlin/Compose構成とAndroid技術検証版を正式承認。[設計](ANDROID_FIRST_MATCH_DESIGN.md)・[ADR-0014](adr/0014-android-first-match.md)・D049を正本とし、設計レビュー/マージ後にworkerへ委任する。現時点ではAndroid実装/ビルドは未実施。長期の決定事項は[長期方針](LONG_TERM_POLICY.md)・D050–D055に記録し、保存方式等D056はOPEN。以前のD032 OPEN/未承認は履歴で、現在は言語/初版構成だけ採用済み。今回のAPK完成後に次のペナント基本機能の設計案を示すが、詳細実装は未承認。PC画面/入力/既存環境を操作しない。

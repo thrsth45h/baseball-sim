@@ -1,6 +1,6 @@
 # Android最初の1試合アプリ案
 
-2026-10-31。基準main `602b2d448ec25eae92756cb3e66cd9959c99d541`。**Proposed / 未承認・未実装**。D032はOPEN。ユーザーの「つぎへ」を受けて責任者が次の候補を整理したもので、Android技術採用の承認とは扱わない。
+2026-11-01承認。基準main `602b2d448ec25eae92756cb3e66cd9959c99d541`。**Accepted / Android技術検証版の実装承認済み**。本人が[設計PR #39](https://github.com/thrsth45h/baseball-sim/pull/39)のKotlin＋Jetpack Compose構成と限定Phase4f移植を正式承認した。D032は言語/初版構成だけCONFIRMED、DB/製品セーブ/記録の具体方式はD056 OPEN。提案時の比較理由と技術契約を保持し、sm64-v1を製品へ永久固定しない。
 
 ## 完成条件
 
@@ -16,10 +16,10 @@ Androidへインストールできるdebug APKをCIで作り、PCサーバ・通
 
 推奨は責任者の判断。公式ガイドは推奨であり、このゲームの完成や性能を保証する証拠ではない。[Androidの構成推奨](https://developer.android.com/topic/architecture/recommendations)・[ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel)・[Flutter構造](https://docs.flutter.dev/resources/architectural-overview)を参照した。
 
-## 実装範囲案
+## 実装範囲（承認済み）
 
 - `android/`配下へGradle wrapper付き独立project。`core`はAndroid非依存の純Kotlin、`app`は単一Activity＋Compose Material 3＋ViewModel。最初は1画面で、Navigation/DI framework/DBを追加しない。依存・Gradle/AGP/Kotlin/Compose/SDKの互換を公式文書で確認して固定し、動的な`+`版を使わない。
-- 初版の最低対応はAPI26（Android8.0）を提案。compile/targetは実装時の安定SDKと互換ツールで固定し、値と根拠を記録する。ユーザー端末での対応・性能は未確認。
+- 初版の最低対応はAPI26（Android8.0）。compile/targetは実装時の安定SDKと互換ツールで固定し、値と根拠を記録する。ユーザー端末での対応・性能は未確認。
 - 既存4a–4fの限定ルールを意味で移植する。カウント、四球/三振/ファウル、限定全員safe安打と一定進塁、打順持越し、9回裏省略、サヨナラ、9回同点引分、上限10,000球で未完了という範囲を変えない。未較正の同じtoy重みを使用する。
 - UIは現在のPC試作を参考に、1球/1打席/最後まで、新しいseedの試合、回表裏・打者・B/S/O・塁占有・得点表・直近ログを表示する。公式個人成績や未実装能力を表示しない。停止時にはカウント/塁を隠し、サヨナラ専用終端の確定得点を使う。
 - 3操作は同一の逐球入口を使う。表示の再描画で進行・抽選しない。処理中の操作は受理しない（連打をキューに積まない）。計算はUI thread外で逐次実行し、immutable UiStateを公開する。試合ごとの世代IDで古い計算結果が新しい試合へ反映されるのを防ぐ。
@@ -31,13 +31,13 @@ Androidへインストールできるdebug APKをCIで作り、PCサーバ・通
 Pythonの`random.Random`とKotlin標準乱数の同seed一致は保証されない。[Kotlin標準Random(seed)](https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.random/-random.html)は実装量が最小だが、公式に将来のruntime版で系列が変わり得るとされている。今回は小さい算術を版付きで固定して変更を検出しやすくする案を選ぶ。その分、独立test vectorと棄却境界の検証責任が増す。移植検証を乱数差に隠さないため、次の2系統で確認する。
 
 1. **遷移互換**：既存Pythonから合成の明示投球/プレー列と期待状態を移植前に生成・凍結する。Kotlinへ同じ入力列を与え、受理球数、カウント/塁/アウト、得点表、打順、完了打席件数、終了理由/終端増分を逐球で照合する。Python旧全JSONのflagsや実装identityをKotlinへ偽装しない。fixtureは新領域へ置き、旧結果を更新しない。
-2. **Android内の再現**：小さい整数アルゴリズムを`sm64-v1`として固定する案。seedを64bit unsigned stateとし、呼出しごとに`0x9E3779B97F4A7C15`を加算、xor右shift30・乗算`0xBF58476D1CE4E5B9`、xor右shift27・乗算`0x94D049BB133111EB`、xor右shift31の順。各算術はmod 2^64、右shiftはlogical。永続state sには加算後の値だけを保持し、z←sを作ってzだけをmixする。mix出力をsへ戻さない。出力の上位32bitを非負整数u（0..2^32−1）とし、u<4,294,967,200ならu mod100、以上なら次の出力で再試行。初期seedを先にmixしない。試合専用stateを1個持ち、投球drawを1つ、fair時のみ追加drawを1つ要求する（棄却によるraw出力回数は別集計）。時計・global RNGを使わない。
+2. **Android内の再現**：小さい整数アルゴリズムを`sm64-v1`として今回の技術検証版で固定する。seedを64bit unsigned stateとし、呼出しごとに`0x9E3779B97F4A7C15`を加算、xor右shift30・乗算`0xBF58476D1CE4E5B9`、xor右shift27・乗算`0x94D049BB133111EB`、xor右shift31の順。各算術はmod 2^64、右shiftはlogical。永続state sには加算後の値だけを保持し、z←sを作ってzだけをmixする。mix出力をsへ戻さない。出力の上位32bitを非負整数u（0..2^32−1）とし、u<4,294,967,200ならu mod100、以上なら次の出力で再試行。初期seedを先にmixしない。試合専用stateを1個持ち、投球drawを1つ、fair時のみ追加drawを1つ要求する（棄却によるraw出力回数は別集計）。時計・global RNGを使わない。
 
 この算術形の参照は[OpenJDK SplittableRandomのseed加算/mix64](https://github.com/openjdk/jdk/blob/master/src/java.base/share/classes/java/util/SplittableRandom.java)。新コードは明記した算術から独立に実装し、JDKのsourceをコピーせず、split/nextIntの互換を称さない。製品の最終乱数方式を確定するものではなく、初版の版付き試作契約。独立計算のraw/draw test vector、seed0/42/最大値、棄却境界を確認する。**Androidのseed42がPython例の4対2になるという受入れ条件は置かない。** Android同版・同seedでは全3操作/混在と再起動後の新試合が同じ結果/ログになることを要求する。
 
 ## 検証と作業順序
 
-1. 本人承認後にADRをAcceptedとし、D032のうちKotlin/Composeとこの最小構成の採用だけを明記。DB/製品セーブ/長年ログ・能力/研究採用はOPENを維持する。設計PR統合後、worker専用worktreeへ実装を委任する。
+1. 2026-11-01の本人承認をADR/台帳へ反映した。DB/製品セーブ/長年ログの具体方式はD056 OPEN、能力/研究の採用は対象外。設計PRレビュー/統合後、worker専用worktreeへ実装を委任する。
 2. Python旧source/結果を保持し、独立fixtureを先に凍結。普通の完走、裏省略、同点、サヨナラ四球/安打/HR、打順持越し、上限/不足/不正の状態不変を含む。固定入力で遷移互換、別にsm64-v1の既知値/棄却、seed再現、試合間非干渉を検証する。
 3. JVM unit test・Android lint・debug APK assembleをCI実行。Compose操作テストは試験用エミュレータをCI/隔離環境で動かし、1球/1打席/最後まで・終了/不正seed・Activity再生成・処理中の連打拒否・狭幅表示を確認する。CIのemulator開始すらできない場合は理由を報告し、APKビルドだけを画面テスト成功と扱わない。
 4. 責任者が別実行・コードレビュー・隔離スクリーンショットで検証し、問題をworkerへ戻す。debug APKをCI artifactへ保存し、PRへリンク・保持期限・取得方法を記録。実機へのインストール/操作はユーザーの任意確認であり、こちらで操作しない。
@@ -45,3 +45,7 @@ Pythonの`random.Random`とKotlin標準乱数の同seed一致は保証されな�
 **ユーザーPCの既存画面・入力を操作しない。** IDE/SDKをユーザー環境へインストールせず、可視エミュレータも起動しない。現環境はJDK21の実体を確認できたが、標準SDK path/ANDROID_HOME/adb/GradleではAndroid構築環境を確認できていない。CIで必要な環境を用意し、ローカルPCの構築済みとは称さない。
 
 12球団ペナント、経営、交代、一般走塁、能力1〜20、MLB係数、研究モデル接続、DB/セーブ、Play公開はこの最初のAPKへ含めない。
+
+## 正式承認と長期方針の境界（2026-11-01）
+
+本人の「設計PR #39の Kotlin＋Jetpack Compose構成を承認します」に基づく。今回の実装範囲、検証、通常判断/修正の確認省略、レビュー後の統合を承認。CIエミュレータは可能なら実施し、実施できなければ明示する。長期の決定事項は[長期方針](LONG_TERM_POLICY.md)へ分離し、今回のAndroid実装を拡大しない。完了後に次のペナント基本機能の設計案を提示するが、詳細は未承認。
