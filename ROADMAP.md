@@ -92,6 +92,14 @@ PR #1: https://github.com/thrsth45h/statcast-swing-model-v1/pull/1
 
 [Phase 4e設計](docs/PHASE4E_DESIGN.md)・[ADR-0012](docs/adr/0012-phase4e-completed-safe-hits.md)は本人の[設計PR #31](https://github.com/thrsth45h/baseball-sim/pull/31)範囲承認済み（D046限定CONFIRMED/Accepted）。worker実装・責任者の独立レビュー後、[実装PR #32](https://github.com/thrsth45h/baseball-sim/pull/32)をmain `167a428a0bea8419b0b42ae4c70f4a11e6dcd0ce`へマージ済み。旧4d state/4actionとparser/stepを再利用し、fair待ちに裁定済み単打/二塁打/三塁打と明示走者行先を反映する。走者据置き・複数得点を許し、占有と行先の不一致・最終位置の衝突/逆走/順序矛盾を拒否する。打者は安打価値と等しい塁へ留まり、既存走者の本塁到達数だけ攻撃側へ加点してcountを消費する。 新4e24/18112、旧4d26/320、旧4c28/3020、旧4a33/326、旧4b32/515（test method/成功subTestは別集計）を責任者も別worktreeで実行し、全failure/error/skip0。対象headのPython3.11/3.12 CIも成功。実装未参照の識別走者・得点ledgerと39,275比較項目/18,046期待拒否を照合した。48受理表、固定18列/60action/78分割、有限18,000試行の288受理/17,712拒否が一致。追加の長い混在列3,150actionの最終state/scoreと全trace hashも一致した。主要4成果物は責任者の監視下2runとworker公開版でバイト一致、許可外入力/RNG・時計利用0。公開helperも120trace/6run hashを独立再検算した。 [レビュー](docs/PHASE4E_REVIEW.md)を参照。全員safe・正規触塁/裁定/得点が外部で確定し、打者最終塁と安打価値が等しい強い合成条件に限る。最終位置から途中履歴の合法性を証明せず、安打価値や走塁を予測/裁定しない。安打/進塁の確率、アウト/失策/第三アウト得点、試合終了/勝敗/サヨナラ・公式個人成績、研究モデル/能力・Android/UI/DB/セーブ・製品採用は未実施。新snapshotへの連続hitは拒否するが、古いsnapshotの純粋再適用・通信再送の永続重複排除を保証しない。D029/D031/D032はOPEN。次の重要な新仕様は設計相談と本人承認から決める。
 
+## 次の到達目標 — 1試合を最後まで動かす統合試作（Phase 4f案）
+
+本人は2026-10-31、研究の細分追加より、仮の2チーム・1球単位・試合終了・簡単な結果表示をPythonで先に通す方向に「じゃあ、それで次に進んで」と回答。[設計案](docs/PHASE4F_DESIGN.md)・[ADR-0013](docs/adr/0013-phase4f-single-game-prototype.md)はD047 OPEN/Proposed。具体的な仮確率/一定進塁・9回打切り/裏省略/サヨナラ・表示/未完了停止は未承認。
+
+次の完成条件は、seed指定の1コマンドで9人ずつの合成2チームが1試合を完走し、得点と終了理由を読めること。既存の限定ルールと交換可能な一球入力stubを接続し、打順/終了/ログからの再集計/同seed再現をまとめて検証する。一つの実装工程として扱い、小機能ごとに新しい研究Phaseへ分けることは目的にしない。重要な具体仕様を本人が承認後、設計マージ・worker実装・責任者の独立レビューへ進む。
+
+D022の上流生成・MLB妥当性・能力較正は試作で完成とは扱わない。Android画面/12球団/経営はこの試作の後続として別に設計する。研究/旧4a–4eの結果は保持し、D029/D030/D031/D032もOPEN。
+
 ## Phase 5 — Androidゲームと長期ペナント
 
 - UI、試合自動進行、セーブ、CPU監督、一・二軍、スカウト、育成、ドラフト、FA、トレード、球団財政。
