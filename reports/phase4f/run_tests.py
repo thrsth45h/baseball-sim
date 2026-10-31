@@ -21,8 +21,8 @@ class Result(unittest.TextTestResult):
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument("--phase",choices=PHASES,required=True);parser.add_argument("--output",required=True);args=parser.parse_args()
-    root=Path.cwd().resolve();output=Path(args.output).resolve()
-    if not output.is_relative_to(root/"data/prototypes/phase4f") or output.exists():raise ValueError("choose a new ignored Phase4f test record")
+    root=Path.cwd().resolve();output=Path(args.output).resolve();namespace=root/"data/prototypes/phase4f"
+    if output==namespace or not output.is_relative_to(namespace) or output.exists():raise ValueError("choose a new ignored Phase4f test record below its namespace")
     if subprocess.check_output(["git","diff","--name-only",SOURCE_COMMIT,"--","prototypes",".github/workflows"]).strip():raise ValueError("source/tests/CI differ from fixed core")
     sys.path.insert(0,str(root))
     suite=unittest.defaultTestLoader.discover("prototypes/"+args.phase+"/tests");start=time.perf_counter()

@@ -28,6 +28,8 @@ seed42のCLIは仮Away4/Home2、259球、完了打席Away44/Home38で終了。�
 
 最終coreではresult用ABORT_REASONSにはpitch_limitを残し、source用SOURCE_ABORT_REASONSからは除外。RecordedAbort/InputErrorがcontroller専用値を拒否する。source内でそれぞれを作ろうとする2経路はsource_errorへ正規化され、0受理球/初期count/PA0を保ち同じ部分state/理由でreplayできる。mutable InputError.codeを後からpitch_limitへ変える経路もengine境界でsource_errorへ正規化した。正規controller上限・上限球での正常終了は既存検査で維持。23 methodのうち追加1 method/3 subTestがこの回帰で、すべての正式run/6suiteは最終coreで新規に実行し直した。
 
+公開レポートの最終レビューでは、補助run_tests.pyがnamespace自身を出力ファイルとして許すP2も修正した。namespaceがまだない隔離cwdから`--phase phase4a --output data/prototypes/phase4f`を実行し、非0で拒否しnamespaceを作成しないことを確認した。runtime/core・主要5成果物・テストソースには変更がなく、前版の公開SHA索引をignored履歴へ保存して補助スクリプト/本説明/hashだけを更新した。
+
 ## 根拠の結合と保護の時点
 
 公開helperは旧ルール関数をimportせず、旧静的fixture/研究モデルも読まない。固定coreと現在のsource identity、toy profile Git blob、2runの8 hash項目、連続したログの投影/delta、別集計のline/打順/打者件数、別Randomのdraw/閾値を検査する。完全な野球遷移の独立oracleとは称さない。helper出力の検算内容と時点は[verification.json](verification.json)に記録し、主要5成果物には時刻/絶対パスを入れない。
