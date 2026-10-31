@@ -39,6 +39,14 @@
 
 ## 現在の状態
 
+**PCブラウザで1試合を操作するローカル画面**を起動できます。表示された`http://127.0.0.1:...`を自分で開き、「1球」「1打席」「最後まで」で進めます。seedを変えて新しい試合も開始できます。
+
+```powershell
+python -m prototypes.match_view
+```
+
+終了はターミナルでCtrl+C。[操作手順と範囲](docs/local-match-view/README.md)・[検証状況](docs/local-match-view/VALIDATION.md)を参照してください。PCでのローカル試作で、Androidの技術・製品画面は未選定です。
+
 **1試合の統合試作（Phase 4f）**は、仮の2チーム各9人が1球ずつ自動進行し、終了・スコア・終了理由を表示します。
 
 ```powershell
