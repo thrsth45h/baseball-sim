@@ -3,7 +3,7 @@
 - 版: `phase4f-design-v0.1`、2026-10-31 日本時間。
 - 状態: **Accepted**。2026-10-31、本人は方向に「じゃあ、それで次に進んで」、提示済み設計PR #34の具体案を再確認した質問には「いちいちきくな」と回答した。提示済み仕様による進行・責任者判断・都度確認の省略を指示したものとして記録し、この限定試作を実装へ進める。全細目を本人が個別精査したという記録にはしない。 D047限定CONFIRMED、[ADR-0013](adr/0013-phase4f-single-game-prototype.md) Accepted。
 - 基準: ゲームmain `00b31a313bdc141ed7184965fd921adec219ed24`、研究main `cd8217a44788cf830c5554b71b04a27a98ce620c`。
-- 参照: D004/D022/D023、D042–D046、D029/D030/D031/D032 OPEN、[設計点検](PHASE4F_REVIEW.md)、[運用](WORKFLOW.md)。[設計PR #34](https://github.com/thrsth45h/baseball-sim/pull/34)は本人の進行/確認省略指示に基づく正式化済み。設計マージ後にworkerへ委任する。
+- 参照: D004/D022/D023、D042–D046、D029/D030/D031/D032 OPEN、[運用](WORKFLOW.md)。D047限定CONFIRMED/ADR-0013 Accepted。設計PR #34はmain `409bbf6d40ee04a52b6e91546892a532d7c3d2d2`へマージ済み。worker実装・責任者の独立レビュー後、[実装PR #35](https://github.com/thrsth45h/baseball-sim/pull/35)をmain `73a5ca3fc3de942b5e3a9c7b455cdc250889a835`へマージ済み。仮の2チーム各9打順を一球ずつ進め、9回同点引分・ホーム先行の裏省略・サヨナラを扱うPython CLIが完成した。結果表示は得点表・終了理由・簡単なイベント件数で、未較正のtoy確率/一定進塁を使う限定統合試作。 [独立レビュー](PHASE4F_REVIEW.md)・[実行手順](../reports/phase4f/README.md)を参照。以下の契約は採用時の内容を保持する。
 
 ## 1. 今回の完成条件と優先順位
 
