@@ -21,6 +21,7 @@ import kotlinx.coroutines.withTimeout
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNotSame
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertSame
 import org.junit.Assert.assertThrows
@@ -205,21 +206,24 @@ class MatchViewModelThreadingTest {
     fun creationReadsAndProgressionRunOutsideTheUiDispatcher() = runBlocking {
         val ui = Executors.newSingleThreadExecutor { Thread(it, "test-ui") }.asCoroutineDispatcher()
         val worker = Executors.newSingleThreadExecutor { Thread(it, "test-computation") }.asCoroutineDispatcher()
-        val calls = Collections.synchronizedList(mutableListOf<String>())
+        val calls = Collections.synchronizedList(mutableListOf<Thread>())
         val store = ViewModelStore()
         Dispatchers.setMain(ui)
         try {
+            val uiThread = withContext(ui) { Thread.currentThread() }
+            val computationThread = withContext(worker) { Thread.currentThread() }
+            assertNotSame(uiThread, computationThread)
             val vm = withContext(ui) {
                 MatchViewModel(GamePortFactory { seed ->
-                    calls.add(Thread.currentThread().name)
+                    calls.add(Thread.currentThread())
                     object : GamePort {
                         private val delegate = FakePort(seed)
                         override fun snapshot(): GamePresentation {
-                            calls.add(Thread.currentThread().name)
+                            calls.add(Thread.currentThread())
                             return delegate.snapshot()
                         }
                         override fun advanceOnePitch(): GamePresentation {
-                            calls.add(Thread.currentThread().name)
+                            calls.add(Thread.currentThread())
                             return delegate.advanceOnePitch()
                         }
                     }
@@ -229,7 +233,10 @@ class MatchViewModelThreadingTest {
             withContext(ui) { vm.advance(AdvanceMode.GAME) }
             withTimeout(5_000) { vm.state.first { !it.isBusy } }
             assertEquals(11, calls.size)
-            assertTrue(calls.all { it == "test-computation" })
+            calls.forEach { actualThread ->
+                assertSame(computationThread, actualThread)
+                assertNotSame(uiThread, actualThread)
+            }
         } finally {
             withContext(ui) { store.clear() }
             Dispatchers.resetMain()

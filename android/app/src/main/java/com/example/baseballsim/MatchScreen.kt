@@ -284,8 +284,8 @@ private fun CurrentCard(current: CurrentPresentation) {
 @Composable
 private fun LineScore(game: GamePresentation) {
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        Surface(color = MaterialTheme.colorScheme.surface, shape = RoundedCornerShape(12.dp)) {
-            Column(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()).padding(12.dp).width(328.dp).testTag(MatchTags.LINE_SCORE)) {
+        Surface(Modifier.fillMaxWidth().testTag(MatchTags.LINE_SCORE), color = MaterialTheme.colorScheme.surface, shape = RoundedCornerShape(12.dp)) {
+            Column(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()).padding(12.dp).width(328.dp)) {
                 ScoreRow("回", (1..9).map(Int::toString), "R", heading = true)
                 HorizontalDivider(Modifier.padding(vertical = 6.dp))
                 ScoreRow("ビジター", game.lineAway.map { it ?: "—" }, game.scoreAway)
