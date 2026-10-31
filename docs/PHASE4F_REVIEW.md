@@ -1,4 +1,4 @@
-# Phase 4fの設計点検
+# Phase 4fの設計点検・独立実装レビュー
 
 冒頭から最新の進行指示記録までには提案時の履歴を含む。現在は提示済み具体案を本人の進行/確認省略指示に基づきD047限定CONFIRMED/Acceptedへ正式化している。
 
@@ -31,3 +31,25 @@ ToyPitchSourceは1球の判定済みeventを供給するstubで、D022上流の�
 ## 本人の進行・確認省略指示（2026-10-31）
 
 上段は具体仕様の提示前から点検までの履歴。2026-10-31、本人は方向に「じゃあ、それで次に進んで」、提示済み設計PR #34の具体案を再確認した質問には「いちいちきくな」と回答した。提示済み仕様による進行・責任者判断・都度確認の省略を指示したものとして記録し、この限定試作を実装へ進める。全細目を本人が個別精査したという記録にはしない。 D047限定CONFIRMED/ADR Acceptedへ正式化し、継続的マージ許可に基づき設計統合後workerへ進める。技術点検/CIを本人指示の代用にはせず、指示の文言と責任者の範囲解釈を区別した。全体の方針や既存研究/能力/Android採用へ無制限には拡大しない。
+
+## 独立実装レビューと統合（2026-10-31 日本時間）
+
+worker実装・責任者の独立レビュー後、[実装PR #35](https://github.com/thrsth45h/baseball-sim/pull/35)をmain `73a5ca3fc3de942b5e3a9c7b455cdc250889a835`へマージ済み。仮の2チーム各9打順を一球ずつ進め、9回同点引分・ホーム先行の裏省略・サヨナラを扱うPython CLIが完成した。結果表示は得点表・終了理由・簡単なイベント件数で、未較正のtoy確率/一定進塁を使う限定統合試作。
+
+責任者のseed42実行はaway 4 / home 2、終了理由`away_lead_after_bottom9`、受理投球数259。 新4f23/13、旧4e24/18112、旧4d26/320、旧4c28/3020、旧4a33/326、旧4b32/515（method/成功subTestは別集計）を責任者も別worktreeで実行し、全failure/error/skip0。対象headのPython3.11/3.12 CIも成功。seed0/1/2/42/2026のCLI実行が正常完了。実装未参照の凍結参照と276,674項目を独立照合し、逐球の入力・得点・打順・終了・再集計が一致した。同seed42の主要5成果物は責任者2runとworker公開版でバイト一致。記録入力replay、試合間非干渉、打順持越し、サヨナラ専用終端、上限/不足/不正の未完了を確認した。
+
+最終実装head `29e8ab3cb31e583627b7180a56367aff08809ce5`、source/tests/profile/fixtures/CI固定 `a5fda901bc0a8cca9ae0eefc1d076fd8171c73a6`。実装時点で旧185パス中README案内以外184不変。公開20ファイル726,500bytes・23hashをworking/Git blob双方で照合。後続完了文書7件を歴史的旧保護と区別する。研究main `cd8217a44788cf830c5554b71b04a27a98ce620c`/tree/作業状態は不変。研究575テストを今回へ加算しない。
+
+独立期待値SHA256 `d8e708ef5af0a599d64b1d83ee950922c7c2cfcae65a5bd590d0198b82fde2e7`。別担当は採用設計/旧設計契約と自分の凍結私的参照を使い、新旧prototype/worker/親privatechecks未参照で逐球・識別走者・打席別/半回別ledgerを作成した。比較前にhashを固定・再照合し、生産実装開始前の凍結と同一視しない。独立比較やscripted境界の件数を生産methodへ加算しない。
+
+比較adapterは参照凍結後に実装APIを読んで接続し、親が点検・実行した。新半回の得点表を開く時点だけ、参照は最初のBegin、実装は直前のAdvanceと異なる。厳しい条件を満たす未投球の新半回1セルだけの一時的None/0を差分として記録し、他セルと最終得点表は厳密一致で確認した。5seedと14試験ケース、59期待拒否を含む比較であり、仮確率の現実妥当性の検証ではない。
+
+初版core `05fe7bf`では入力sourceが予約済みpitch_limitを停止理由として返すと再生がsource_exhaustedへ変わるP2を親が再現した。workerがsourceからその理由を使用できなくし、変造された例外の理由もsource_errorへ正規化した。固定core `a5fda90`で3経路の同じ理由・部分状態・再生を再確認し、旧証拠は別ignored領域へ保存した。最終公開helper点検では、run_tests.pyが出力namespace自身を通常ファイルにできるP2も修正し、未作成の隔離namespaceで拒否を再確認した。
+
+公開helperは独立ルールoracleではなく、記録ledger・打順・得点表・仮乱数の再集計を担当する。親の2runで各523event/259受理球/57fair draw/82完了打席、8run hash、専用Randomの316drawを確認した。主要5成果物には時計・絶対パスを含まず、監視実行の許可外入力・global RNG・時計利用は0。完了文書7件の編集中も同coreで2runと公開helperを実行し、各523event/259球/57fair draw/82完了打席・8run hashが一致した。既存6suiteの固定coreでの成功証拠は再利用と明示し、文書だけの変更を新規テスト件数に加算しない。
+
+責任者は固定coreの別worktreeでCLI・6suite・公開helperを実行し、コードと公開説明をレビューした。終端解決を旧Resolve系へ渡してからclipする処理がないこと、Begin/Pitchは受理されること、fair不正球を受理せずabort理由をreplay保持することを確認。旧snapshotを終端後の塁配置と称さず、最終得点を二重加算しない。追加readonlyレビューも実施。対象headのCI成功と最新の進行/確認省略・継続マージ許可に基づき統合し、同一アカウントCOMMENTを人間第三者APPROVEとは称さない。
+
+投球真値/知覚/接触/打球物理の上流はstub内で未実装、EV/LA/Savant値を後付けしない。安打/進塁の仮設定をMLB成績・能力1〜20の較正と解釈せず、公式AB/RBI/2B3B等も裁定しない。一般走塁・失策/併殺・投手交代・延長・Android/12球団ペナント/経営・製品セーブは今回含めない。D029/D030/D031/D032はOPEN、正式製品採用ではない。同じ範囲の確認を繰り返さず、最新WORKFLOWに基づき責任者が進める。
+
+最終head `29e8ab3`の[新4f CI](https://github.com/thrsth45h/baseball-sim/actions/runs/41194155900)と旧a/b/c/d/eの6workflow・計12jobs、全test stepを責任者も確認した。[対象headの独立レビュー記録](https://github.com/thrsth45h/baseball-sim/pull/35#pullrequestreview-5722412604)後に統合した。完了記録は7文書だけを別PRで更新し、固定core・公開レポート・DECISIONS/AGENTS/WORKFLOWは変更しない。
