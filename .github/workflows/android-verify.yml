@@ -25,13 +25,23 @@ jobs:
       - name: Fixed SDK packages in CI only
         run: '"$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-36" "build-tools;35.0.0"'
       - name: Pure Kotlin tests
-        run: bash gradlew :core:test --no-daemon --stacktrace
+        run: bash gradlew :core:test :core:exportAuditBundle --no-daemon --stacktrace
+      - name: Core audit source
+        run: git rev-parse HEAD > core/build/audit-bundle/SOURCE_HEAD.txt
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: android-core-audit-${{ env.SOURCE_SHA }}
+          path: android/core/build/audit-bundle/
+          if-no-files-found: error
+          retention-days: 14
       - name: ViewModel tests
         run: bash gradlew :app:testDebugUnitTest --no-daemon --stacktrace
       - name: Android lint
         run: bash gradlew :app:lintDebug --no-daemon --stacktrace
       - name: Debug APK
         run: bash gradlew :app:assembleDebug --no-daemon --stacktrace
+      - name: Verify merged manifest has no network permission
+        run: python3 tools/offline_manifest.py
       - name: APK digest
         run: cd app/build/outputs/apk/debug && sha256sum app-debug.apk > app-debug.apk.sha256
       - name: Bind APK to the actual source and CI runtime
@@ -43,6 +53,7 @@ jobs:
             android/app/build/outputs/apk/debug/app-debug.apk
             android/app/build/outputs/apk/debug/app-debug.apk.sha256
             android/app/build/outputs/apk/debug/source-info.json
+            android/app/build/outputs/apk/debug/offline-manifest-check.json
           if-no-files-found: error
           retention-days: 14
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
