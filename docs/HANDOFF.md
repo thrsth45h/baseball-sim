@@ -10,7 +10,7 @@
 
 ## 現在の到達点
 
-- **PCブラウザ用のローカル操作画面を追加。** `python -m prototypes.match_view`でloopbackのURLを表示し、既存Phase 4fを1球/1打席/最後まで進める薄い操作層。seed変更・カウント/塁/打者・得点表/直近ログを表示し、終端では旧投影のcount/塁を非表示にする。[手順](local-match-view/README.md)・[検証](local-match-view/VALIDATION.md)を参照。実HTTP/単体検査は成功、実ブラウザ表示・狭幅・キーボード操作は未検証。ユーザーのPCを操作しない指示に従い、ブラウザの自動起動・ネイティブUI操作は行わない。D048はPROVISIONAL、D029–D032はOPENで、Android技術選定/公式成績/能力/製品採用を含めない。
+- **PCブラウザ用のローカル操作画面を追加。** `python -m prototypes.match_view`でloopbackのURLを表示し、既存Phase 4fを1球/1打席/最後まで進める薄い操作層。seed変更・カウント/塁/打者・得点表/直近ログを表示し、終端では旧投影のcount/塁を非表示にする。[手順](local-match-view/README.md)・[検証](local-match-view/VALIDATION.md)を参照。実HTTP/単体検査は成功。責任者は別プロファイル/画面なしのChromeヘッドレスで1280/390/320幅・仮想Enter・seed42完走を確認した。ユーザーのPCを操作しない指示に従い、ブラウザの自動起動・可視ウィンドウ/物理入力/ユーザープロファイル操作は行わない。ネイティブPC操作・スマホ実機は未検証。D048はPROVISIONAL、D029–D032はOPENで、Android技術選定/公式成績/能力/製品採用を含めない。
 
 - **Phase 4fは1試合の統合試作が実装・独立レビュー・マージまで完了。** worker実装・責任者の独立レビュー後、[実装PR #35](https://github.com/thrsth45h/baseball-sim/pull/35)をmain `73a5ca3fc3de942b5e3a9c7b455cdc250889a835`へマージ済み。仮の2チーム各9打順を一球ずつ進め、9回同点引分・ホーム先行の裏省略・サヨナラを扱うPython CLIが完成した。結果表示は得点表・終了理由・簡単なイベント件数で、未較正のtoy確率/一定進塁を使う限定統合試作。 D047限定CONFIRMED。
 - 責任者のseed42実行はaway 4 / home 2、終了理由`away_lead_after_bottom9`、受理投球数259。 新4f23/13、旧4e24/18112、旧4d26/320、旧4c28/3020、旧4a33/326、旧4b32/515（method/成功subTestは別集計）を責任者も別worktreeで実行し、全failure/error/skip0。対象headのPython3.11/3.12 CIも成功。seed0/1/2/42/2026のCLI実行が正常完了。実装未参照の凍結参照と276,674項目を独立照合し、逐球の入力・得点・打順・終了・再集計が一致した。同seed42の主要5成果物は責任者2runとworker公開版でバイト一致。記録入力replay、試合間非干渉、打順持越し、サヨナラ専用終端、上限/不足/不正の未完了を確認した。 [実行手順](../reports/phase4f/README.md)・[レビュー](PHASE4F_REVIEW.md)を参照。

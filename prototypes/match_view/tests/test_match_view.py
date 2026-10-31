@@ -118,7 +118,9 @@ class HttpTests(unittest.TestCase):
     def test_host_origin_token_and_content_type_rejection_does_not_change_game(self):
         before=self.server.controller.game.events_document();rng=self.server.controller.game.source.rng.getstate()
         for headers,status in (({"Host":"example.com"},403),({"Host":"localhost:"+str(self.server.server_port)},403),({"Origin":"https://example.com"},403),({"Origin":"null"},403),({"Origin":""},403),({TOKEN_HEADER:"wrong"},403),({TOKEN_HEADER:"é"},403),({"Content-Type":"text/plain"},415)):
-            self.assertEqual(self.request("POST","/api/command",{"command":"pitch"},headers=headers)[0],status)
+            # Header rejection happens before reading JSON. No body avoids a
+            # Windows reset race between immediate refusal and client send.
+            self.assertEqual(self.request("POST","/api/command",headers=headers)[0],status)
         self.assertEqual(self.request(headers={"Origin":"https://example.com"})[0],403)
         self.assertEqual(self.server.controller.game.events_document(),before);self.assertEqual(self.server.controller.game.source.rng.getstate(),rng)
 
@@ -136,11 +138,11 @@ class HttpTests(unittest.TestCase):
 
     def test_duplicate_headers_and_missing_security_headers_rejected(self):
         before=self.server.controller.game.events_document()
-        original=[("Host",self.server.allowed_host),("Origin",self.server.origin),(TOKEN_HEADER,self.server.token),("Content-Type","application/json"),("Content-Length","19")]
+        original=[("Host",self.server.allowed_host),("Origin",self.server.origin),(TOKEN_HEADER,self.server.token),("Content-Type","application/json"),("Content-Length","0")]
         for modified in ([h for h in original if h[0]!="Origin"],[h for h in original if h[0]!=TOKEN_HEADER],original+[original[0]],original+[original[1]],original+[original[2]],original+[original[-1]]):
             connection=HTTPConnection("127.0.0.1",self.server.server_port,timeout=5);connection.putrequest("POST","/api/command",skip_host=True)
             for name,value in modified:connection.putheader(name,value)
-            connection.endheaders(b'{"command":"pitch"}');response=connection.getresponse();self.assertIn(response.status,(400,403));response.read();connection.close()
+            connection.endheaders();response=connection.getresponse();self.assertIn(response.status,(400,403));response.read();connection.close()
         self.assertEqual(self.server.controller.game.events_document(),before)
 
     def test_requests_are_processed_sequentially_and_tokens_change_per_start(self):
