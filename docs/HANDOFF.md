@@ -89,7 +89,7 @@ Phase 1d設計書・ADRのProposedは作成時の表記。研究範囲の採用�
 
 ## 次工程
 
-2026-10-31、本人は「1試合を最後まで動かす統合試作」を優先する方向に「じゃあ、それで次に進んで」と回答。最新main `00b31a313bdc141ed7184965fd921adec219ed24`からdesign/phase4f-single-game-prototypeへ分岐し、[Phase 4f案](PHASE4F_DESIGN.md)・[ADR-0013](adr/0013-phase4f-single-game-prototype.md)を作成した。**方向は承認済み、具体的な仮確率/一定進塁・9回打切り/裏省略/サヨナラ・出力/未完了停止の仕様は未承認、D047 OPEN/Proposed。** 新4fコード/テスト/結果は作成しない。
+2026-10-31、本人は「1試合を最後まで動かす統合試作」を優先する方向に「じゃあ、それで次に進んで」と回答。最新main `00b31a313bdc141ed7184965fd921adec219ed24`からdesign/phase4f-single-game-prototypeへ分岐し、[Phase 4f案](PHASE4F_DESIGN.md)・[ADR-0013](adr/0013-phase4f-single-game-prototype.md)を[設計PR #34](https://github.com/thrsth45h/baseball-sim/pull/34)へ作成した。**方向は承認済み、具体的な仮確率/一定進塁・9回打切り/裏省略/サヨナラ・出力/未完了停止の仕様は未承認、D047 OPEN/Proposed。** 新4fコード/テスト/結果は作成しない。
 
 案の完成条件は、Pythonの1コマンドで合成2チーム各9打順が1球ずつ進み、終了・得点・終了理由が読めること。旧4eの非サヨナラ前提を維持し、サヨナラは新4f専用終端へ先に分岐。上流の投球/知覚/打球生成はstub内で未実装、EV/LA/Savant値や能力係数を後付けしない。具体設計を本人が承認後、設計マージ→専用worker→責任者レビューへ進む。既存worker/review/ignored資料を保持し、D029/D030/D031/D032はOPEN、正式規約/研究モデル/Android採用は含めない。
 
