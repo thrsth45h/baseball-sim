@@ -1,6 +1,6 @@
 # Androidで動く1試合の技術検証版
 
-Kotlin＋Jetpack Composeで、仮の2チーム各9人が1球ずつ進行するオフラインアプリ。PCサーバ・Python・通信を使わない。[設計PR #39](https://github.com/thrsth45h/baseball-sim/pull/39)の承認範囲で、現在は[実装Draft PR #40](https://github.com/thrsth45h/baseball-sim/pull/40)のCI/独立レビュー中。APKビルド・エミュレーターの結果は確定後にここへ記録する。
+Kotlin＋Jetpack Composeで、仮の2チーム各9人が1球ずつ進行するオフラインアプリ。PCサーバ・Python・通信を使わない。[設計PR #39](https://github.com/thrsth45h/baseball-sim/pull/39)の承認範囲を[実装PR #40](https://github.com/thrsth45h/baseball-sim/pull/40)で実装し、下記source headのCIビルド・テスト・lint・画面なしエミュレーター検査が成功した。[検証範囲と未検証事項](VALIDATION.md)を参照。
 
 画面は「1球」「1打席」「最後まで」、seedを指定した新規試合、現在打者/B/S/O/塁、得点表と直近ログを表示する。停止後は旧snapshotの塁/カウントを隠し、確定scoreと終了理由を使う。9回同点引分は試作用の独自条件で、一般の全野球ルールや公式個人成績の裁定は行わない。
 
@@ -8,12 +8,16 @@ seedはASCII十進文字列0〜18446744073709551615。描画/画面回転で投�
 
 ## APKの取得
 
-1. 実装PRの対象headに対応するGitHub Actionsの`android-first-match`を開く。
-2. `android-debug-対象headのSHA` artifactをダウンロードしZIPを展開する。
+**[検証済みAPKのZIPを取得](https://github.com/thrsth45h/baseball-sim/actions/runs/41223833834/artifacts/13051121143)**（GitHubログインが必要な場合あり）。取得期限は**2026-11-15 02:24:04 JST**、14日保持。ZIPを展開し`app-debug.apk`を使う。
+
+1. [検証run](https://github.com/thrsth45h/baseball-sim/actions/runs/41223833834)の`android-first-match`を開く。
+2. `android-debug-2b0708294887f23fced10cd71a726dbd5fde030a` artifactをダウンロードしZIPを展開する。
 3. 同梱の`source-info.json`でsource head/tree・実JDK/SDK・APK SHA256を確認する。`app-debug.apk.sha256`にも同じAPKのhashを保存する。
 4. インストールはユーザーの任意確認。こちらから接続済み端末へインストール/操作はしない。最低対応はAPI26（Android8.0）。実機の対応/表示/性能は未検証。
 
 artifactの保持期間は14日。失効したものを永続ダウンロードリンクと扱わず、再ビルドが必要なら別runと実APKhashを記録する。debug署名だけの技術検証APKで、Play公開/製品配布/署名鍵管理は含めない。
+
+検証APKは10,395,218bytes、SHA256は`c3ffe9a70d75a572437dd91e2b3720ddee2cf8c47e1a506f04d0f084e632c90c`。source headは`2b0708294887f23fced10cd71a726dbd5fde030a`。後続の文書更新commitと実ビルドsourceを混同しない。
 
 ## 検証の分け方
 
