@@ -1,0 +1,21 @@
+{
+  ".gitattributes": "a79691a93b46e49ce460c26ef22afcc03d6eca1e63bf2edbc20e96159510f6c9",
+  "README.md": "af82d171304a01ae904244ca26f44378ab7bb431e6b4b8dccea5c195d0bead95",
+  "VALIDATION.md": "bc3b34c8820e73a115a64c90270c294451b13eebd39e2bd08c900e4c43def943",
+  "game-42-01/REPORT.md": "1bf1a7cf48b9d78aec2fdd3214ed0d914490c018aa096350f3f2c7c2232cbb3f",
+  "game-42-01/SHA256SUMS.json": "c542def90126c0c32404c098169f419f85d3dd33aa5ff139bb2aae93a8e7d359",
+  "game-42-01/events.json": "cf7dc132b2431dba40cc0b384f0a6db1f78cf300c7846ef08677f0a3c5cd0982",
+  "game-42-01/plan.json": "6ce2af9fa0c9f70c3f17c0d3b4f114292166e1ac6264747532e2a1a8adbb7c6d",
+  "game-42-01/result.json": "8cc51f769aca7f6416f6e0453847dbd9028c7001c101ef78f570a36586e8a0d0",
+  "phase4a-regression.json": "917b7dbd825e8faa281bb11bca7f15c226a28bd981926c06e9e0d2148ab87fff",
+  "phase4b-regression.json": "282b0536a45abd655735501a513f4db95616f4b9dbb9f3c496209550e77824e1",
+  "phase4c-regression.json": "5bd27d80f387325ffd3a925816d4c3c3dd7684a8f9636148668c9ee7b34648b3",
+  "phase4d-regression.json": "27cc2aaa52fbd81b3944ec7bad07441af78e6e83d3d97c595e398046bf9477bc",
+  "phase4e-regression.json": "4f7d1638500f3bee8471cff72b1f7f946917678e9c3ee2c6dae7ef8df9c98c86",
+  "reproducibility.json": "dbaaa3579b1c6ad50d4a79ef7c8d32483a5f63c4c0527f996807929eae53e465",
+  "run-summary.json": "1cb03825f3bc66eca551c4caddcab4149d628680882e3524878b4db3b6a90aac",
+  "run_tests.py": "24b741135109e92cd5df349faa22085eb2c57d28efba409be544634ba1d06d36",
+  "test-results.json": "3aa16c779a3191a102573663432166c36a9c324a54b1ca2e619515377f4d23d2",
+  "verification.json": "f734f8e0f4d0a336e223fe2d2589a1b5a98c5b905f6bd4f5b189cad7a475446b",
+  "verify.py": "5af526d12e9fe59b7c7a9603ff40e3464d9b1b3b92668ff44fb976174650866a"
+}

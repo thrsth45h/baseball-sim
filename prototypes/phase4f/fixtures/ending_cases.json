@@ -1,0 +1,327 @@
+{
+  "cases": [
+    {
+      "away": 0,
+      "bases": [
+        false,
+        false,
+        false
+      ],
+      "count": {
+        "balls": 0,
+        "pitches_seen": 2,
+        "status": "active",
+        "strikes": 2
+      },
+      "expected_reason": "home_lead_after_top9",
+      "expected_score": {
+        "away": 0,
+        "home": 1
+      },
+      "home": 1,
+      "id": "skip_bottom9",
+      "input": {
+        "event": "called_strike_caught",
+        "fair": null,
+        "fair_draw": null,
+        "pitch_draw": null
+      },
+      "line_score": [
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        null
+      ],
+      "outs": 2,
+      "side": "top",
+      "terminal_slots": null
+    },
+    {
+      "away": 1,
+      "bases": [
+        false,
+        false,
+        false
+      ],
+      "count": {
+        "balls": 0,
+        "pitches_seen": 2,
+        "status": "active",
+        "strikes": 2
+      },
+      "expected_reason": "away_lead_after_bottom9",
+      "expected_score": {
+        "away": 1,
+        "home": 0
+      },
+      "home": 0,
+      "id": "away_win",
+      "input": {
+        "event": "called_strike_caught",
+        "fair": null,
+        "fair_draw": null,
+        "pitch_draw": null
+      },
+      "line_score": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "outs": 2,
+      "side": "bottom",
+      "terminal_slots": null
+    },
+    {
+      "away": 0,
+      "bases": [
+        false,
+        false,
+        false
+      ],
+      "count": {
+        "balls": 0,
+        "pitches_seen": 2,
+        "status": "active",
+        "strikes": 2
+      },
+      "expected_reason": "tie_after_nine",
+      "expected_score": {
+        "away": 0,
+        "home": 0
+      },
+      "home": 0,
+      "id": "draw",
+      "input": {
+        "event": "called_strike_caught",
+        "fair": null,
+        "fair_draw": null,
+        "pitch_draw": null
+      },
+      "line_score": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "outs": 2,
+      "side": "bottom",
+      "terminal_slots": null
+    },
+    {
+      "away": 0,
+      "bases": [
+        true,
+        true,
+        true
+      ],
+      "count": {
+        "balls": 3,
+        "pitches_seen": 3,
+        "status": "active",
+        "strikes": 0
+      },
+      "expected_reason": "walkoff_walk",
+      "expected_score": {
+        "away": 0,
+        "home": 1
+      },
+      "home": 0,
+      "id": "walkoff_walk",
+      "input": {
+        "event": "called_ball",
+        "fair": null,
+        "fair_draw": null,
+        "pitch_draw": null
+      },
+      "line_score": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "outs": 0,
+      "side": "bottom",
+      "terminal_slots": [
+        3
+      ]
+    },
+    {
+      "away": 0,
+      "bases": [
+        true,
+        true,
+        true
+      ],
+      "count": {
+        "balls": 0,
+        "pitches_seen": 0,
+        "status": "active",
+        "strikes": 0
+      },
+      "expected_reason": "walkoff_safe_hit",
+      "expected_score": {
+        "away": 0,
+        "home": 1
+      },
+      "home": 0,
+      "id": "walkoff_hit_cut",
+      "input": {
+        "event": "fair_ball_handoff",
+        "fair": {
+          "candidate_bases": 3,
+          "kind": "safe_hit",
+          "runner_destinations": [
+            4,
+            4,
+            4
+          ]
+        },
+        "fair_draw": null,
+        "pitch_draw": null
+      },
+      "line_score": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "outs": 0,
+      "side": "bottom",
+      "terminal_slots": [
+        3
+      ]
+    },
+    {
+      "away": 2,
+      "bases": [
+        true,
+        true,
+        true
+      ],
+      "count": {
+        "balls": 0,
+        "pitches_seen": 0,
+        "status": "active",
+        "strikes": 0
+      },
+      "expected_reason": "walkoff_home_run",
+      "expected_score": {
+        "away": 2,
+        "home": 4
+      },
+      "home": 0,
+      "id": "walkoff_hr_all",
+      "input": {
+        "event": "fair_ball_handoff",
+        "fair": {
+          "candidate_bases": null,
+          "kind": "home_run",
+          "runner_destinations": null
+        },
+        "fair_draw": null,
+        "pitch_draw": null
+      },
+      "line_score": [
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "outs": 0,
+      "side": "bottom",
+      "terminal_slots": [
+        3,
+        2,
+        1,
+        0
+      ]
+    }
+  ],
+  "design": "phase4f-design-v0.1",
+  "history_note": "Explicit synthetic boundary histories; no controller fabrication of past inning scores; not claimed as generated full-game prefixes."
+}

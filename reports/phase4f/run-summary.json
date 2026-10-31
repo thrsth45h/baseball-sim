@@ -1,0 +1,164 @@
+{
+  "measurement_scope": "one local run per row; elapsed is observed, not a benchmark guarantee; toy outputs are not MLB calibration",
+  "python": "3.12.14",
+  "runs": [
+    {
+      "artifact_bytes": 677945,
+      "artifact_files": 5,
+      "completed_pa": {
+        "away": 44,
+        "home": 38
+      },
+      "output": "reports/phase4f/game-42-01",
+      "pitches_accepted": 259,
+      "reason": "away_lead_after_bottom9",
+      "rng": {
+        "algorithm": "Python random.Random; Python version recorded; no cross-language/future-version guarantee",
+        "fair_calls": 57,
+        "global_rng_used": false,
+        "owner": "one random.Random(seed) per game",
+        "pitch_calls": 259,
+        "randrange_100_calls": 316
+      },
+      "score": {
+        "away": 4,
+        "home": 2
+      },
+      "seed": 42,
+      "status": "completed",
+      "wall_seconds_cli_including_process_start": 0.19034159999864642
+    },
+    {
+      "artifact_bytes": 677945,
+      "artifact_files": 5,
+      "completed_pa": {
+        "away": 44,
+        "home": 38
+      },
+      "output": "data/prototypes/phase4f/game-42-repeat-02",
+      "pitches_accepted": 259,
+      "reason": "away_lead_after_bottom9",
+      "rng": {
+        "algorithm": "Python random.Random; Python version recorded; no cross-language/future-version guarantee",
+        "fair_calls": 57,
+        "global_rng_used": false,
+        "owner": "one random.Random(seed) per game",
+        "pitch_calls": 259,
+        "randrange_100_calls": 316
+      },
+      "score": {
+        "away": 4,
+        "home": 2
+      },
+      "seed": 42,
+      "status": "completed",
+      "wall_seconds_cli_including_process_start": 0.19070150000334252
+    },
+    {
+      "artifact_bytes": 556735,
+      "artifact_files": 5,
+      "completed_pa": {
+        "away": 30,
+        "home": 36
+      },
+      "output": "data/prototypes/phase4f/game-0-02",
+      "pitches_accepted": 211,
+      "reason": "home_lead_after_top9",
+      "rng": {
+        "algorithm": "Python random.Random; Python version recorded; no cross-language/future-version guarantee",
+        "fair_calls": 42,
+        "global_rng_used": false,
+        "owner": "one random.Random(seed) per game",
+        "pitch_calls": 211,
+        "randrange_100_calls": 253
+      },
+      "score": {
+        "away": 0,
+        "home": 3
+      },
+      "seed": 0,
+      "status": "completed",
+      "wall_seconds_cli_including_process_start": 0.19244329999492038
+    },
+    {
+      "artifact_bytes": 712509,
+      "artifact_files": 5,
+      "completed_pa": {
+        "away": 39,
+        "home": 44
+      },
+      "output": "data/prototypes/phase4f/game-1-02",
+      "pitches_accepted": 280,
+      "reason": "away_lead_after_bottom9",
+      "rng": {
+        "algorithm": "Python random.Random; Python version recorded; no cross-language/future-version guarantee",
+        "fair_calls": 54,
+        "global_rng_used": false,
+        "owner": "one random.Random(seed) per game",
+        "pitch_calls": 280,
+        "randrange_100_calls": 334
+      },
+      "score": {
+        "away": 4,
+        "home": 3
+      },
+      "seed": 1,
+      "status": "completed",
+      "wall_seconds_cli_including_process_start": 0.21112089999951422
+    },
+    {
+      "artifact_bytes": 670074,
+      "artifact_files": 5,
+      "completed_pa": {
+        "away": 43,
+        "home": 38
+      },
+      "output": "data/prototypes/phase4f/game-2-02",
+      "pitches_accepted": 256,
+      "reason": "away_lead_after_bottom9",
+      "rng": {
+        "algorithm": "Python random.Random; Python version recorded; no cross-language/future-version guarantee",
+        "fair_calls": 55,
+        "global_rng_used": false,
+        "owner": "one random.Random(seed) per game",
+        "pitch_calls": 256,
+        "randrange_100_calls": 311
+      },
+      "score": {
+        "away": 4,
+        "home": 3
+      },
+      "seed": 2,
+      "status": "completed",
+      "wall_seconds_cli_including_process_start": 0.2117238999926485
+    },
+    {
+      "artifact_bytes": 717219,
+      "artifact_files": 5,
+      "completed_pa": {
+        "away": 44,
+        "home": 38
+      },
+      "output": "data/prototypes/phase4f/game-2026-02",
+      "pitches_accepted": 285,
+      "reason": "away_lead_after_bottom9",
+      "rng": {
+        "algorithm": "Python random.Random; Python version recorded; no cross-language/future-version guarantee",
+        "fair_calls": 54,
+        "global_rng_used": false,
+        "owner": "one random.Random(seed) per game",
+        "pitch_calls": 285,
+        "randrange_100_calls": 339
+      },
+      "score": {
+        "away": 7,
+        "home": 2
+      },
+      "seed": 2026,
+      "status": "completed",
+      "wall_seconds_cli_including_process_start": 0.19426069999462925
+    }
+  ],
+  "source_commit": "a5fda901bc0a8cca9ae0eefc1d076fd8171c73a6",
+  "verification_date_jst": "2026-10-31"
+}

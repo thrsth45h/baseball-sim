@@ -1,0 +1,82 @@
+{
+  "ability_calibrated": false,
+  "android_integrated": false,
+  "baseline": "409bbf6d40ee04a52b6e91546892a532d7c3d2d2",
+  "batted_ball_physics": false,
+  "connected_to_phase4a": true,
+  "connected_to_phase4b": true,
+  "connected_to_phase4c": true,
+  "connected_to_phase4d": true,
+  "connected_to_phase4e": true,
+  "current_checkout_changes_since_source_commit": {
+    "baseline_game_paths_changed": [],
+    "comparison": "fixed core to current checkout including tracked uncommitted changes",
+    "from_commit": "a5fda901bc0a8cca9ae0eefc1d076fd8171c73a6",
+    "informational_only": true,
+    "protected_baseline_game_paths_changed": []
+  },
+  "current_source_tests_dependencies_ci_match_fixed_source": true,
+  "existing_game_file_protection": {
+    "baseline_game_paths": 185,
+    "changed_baseline_game_paths_at_source_commit": [
+      "README.md"
+    ],
+    "from_commit": "409bbf6d40ee04a52b6e91546892a532d7c3d2d2",
+    "old_file_changes_allowed_at_source_commit": [
+      "README.md guide only"
+    ],
+    "protected_game_paths": 184,
+    "protected_game_paths_unchanged_at_source_commit": 184,
+    "through_commit": "a5fda901bc0a8cca9ae0eefc1d076fd8171c73a6"
+  },
+  "game_end_rules_implemented": true,
+  "ledger_and_rng_checks_per_run": [
+    {
+      "accepted_pitches": 259,
+      "completed_pa": 82,
+      "events": 523,
+      "fair_draws": 57
+    },
+    {
+      "accepted_pitches": 259,
+      "completed_pa": 82,
+      "events": 523,
+      "fair_draws": 57
+    }
+  ],
+  "ledger_is_full_independent_baseball_rule_oracle": false,
+  "mlb_calibrated": false,
+  "new_profile_git_blob_read": "a5fda901bc0a8cca9ae0eefc1d076fd8171c73a6:prototypes/phase4f/profiles/toy-v1.json",
+  "official_stats_generated": false,
+  "old_dependency_source_paths": [
+    "prototypes/__init__.py",
+    "prototypes/phase4a/__init__.py",
+    "prototypes/phase4a/model.py",
+    "prototypes/phase4b/__init__.py",
+    "prototypes/phase4b/model.py",
+    "prototypes/phase4c/__init__.py",
+    "prototypes/phase4c/model.py",
+    "prototypes/phase4d/__init__.py",
+    "prototypes/phase4d/model.py",
+    "prototypes/phase4e/__init__.py",
+    "prototypes/phase4e/model.py"
+  ],
+  "old_rule_functions_imported_by_helper": false,
+  "old_source_read_purpose": "normalized identity hash and fixed Git source binding only",
+  "old_static_fixtures_read_by_helper": false,
+  "perception_model": false,
+  "probability_model": true,
+  "probability_model_kind": "unvalidated_toy_pitch_event_weights",
+  "product_adoption": false,
+  "public_git_blob_check": "separate check after committing",
+  "research_model_connected": false,
+  "research_repository_opened_by_helper": false,
+  "run_hash_entries_verified": 8,
+  "savant_metrics_generated": false,
+  "scope": "single_game_integration_prototype",
+  "source_commit": "a5fda901bc0a8cca9ae0eefc1d076fd8171c73a6",
+  "source_identity_binds_checkout_and_fixed_git_commit": true,
+  "source_kind": "synthetic_toy_policy",
+  "upstream_pitch_generation": false,
+  "verification_date_jst": "2026-10-31"
+}

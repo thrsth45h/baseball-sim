@@ -1,0 +1,404 @@
+{
+  "ability_calibrated": false,
+  "android_integrated": false,
+  "batted_ball_physics": false,
+  "batter_events": [
+    {
+      "batter_id": "away_1",
+      "completed_plate_appearances": 5,
+      "home_run_events": 0,
+      "safe_hit_events": 0,
+      "slot": 1,
+      "strikeout_events": 1,
+      "team": "away",
+      "walk_events": 1
+    },
+    {
+      "batter_id": "away_2",
+      "completed_plate_appearances": 5,
+      "home_run_events": 0,
+      "safe_hit_events": 2,
+      "slot": 2,
+      "strikeout_events": 0,
+      "team": "away",
+      "walk_events": 1
+    },
+    {
+      "batter_id": "away_3",
+      "completed_plate_appearances": 5,
+      "home_run_events": 0,
+      "safe_hit_events": 2,
+      "slot": 3,
+      "strikeout_events": 0,
+      "team": "away",
+      "walk_events": 1
+    },
+    {
+      "batter_id": "away_4",
+      "completed_plate_appearances": 5,
+      "home_run_events": 0,
+      "safe_hit_events": 1,
+      "slot": 4,
+      "strikeout_events": 1,
+      "team": "away",
+      "walk_events": 0
+    },
+    {
+      "batter_id": "away_5",
+      "completed_plate_appearances": 5,
+      "home_run_events": 0,
+      "safe_hit_events": 1,
+      "slot": 5,
+      "strikeout_events": 1,
+      "team": "away",
+      "walk_events": 1
+    },
+    {
+      "batter_id": "away_6",
+      "completed_plate_appearances": 5,
+      "home_run_events": 0,
+      "safe_hit_events": 1,
+      "slot": 6,
+      "strikeout_events": 2,
+      "team": "away",
+      "walk_events": 0
+    },
+    {
+      "batter_id": "away_7",
+      "completed_plate_appearances": 5,
+      "home_run_events": 0,
+      "safe_hit_events": 4,
+      "slot": 7,
+      "strikeout_events": 0,
+      "team": "away",
+      "walk_events": 0
+    },
+    {
+      "batter_id": "away_8",
+      "completed_plate_appearances": 5,
+      "home_run_events": 0,
+      "safe_hit_events": 0,
+      "slot": 8,
+      "strikeout_events": 2,
+      "team": "away",
+      "walk_events": 0
+    },
+    {
+      "batter_id": "away_9",
+      "completed_plate_appearances": 4,
+      "home_run_events": 0,
+      "safe_hit_events": 1,
+      "slot": 9,
+      "strikeout_events": 2,
+      "team": "away",
+      "walk_events": 1
+    },
+    {
+      "batter_id": "home_1",
+      "completed_plate_appearances": 5,
+      "home_run_events": 0,
+      "safe_hit_events": 2,
+      "slot": 1,
+      "strikeout_events": 2,
+      "team": "home",
+      "walk_events": 0
+    },
+    {
+      "batter_id": "home_2",
+      "completed_plate_appearances": 5,
+      "home_run_events": 0,
+      "safe_hit_events": 1,
+      "slot": 2,
+      "strikeout_events": 2,
+      "team": "home",
+      "walk_events": 0
+    },
+    {
+      "batter_id": "home_3",
+      "completed_plate_appearances": 4,
+      "home_run_events": 0,
+      "safe_hit_events": 0,
+      "slot": 3,
+      "strikeout_events": 0,
+      "team": "home",
+      "walk_events": 1
+    },
+    {
+      "batter_id": "home_4",
+      "completed_plate_appearances": 4,
+      "home_run_events": 0,
+      "safe_hit_events": 1,
+      "slot": 4,
+      "strikeout_events": 0,
+      "team": "home",
+      "walk_events": 0
+    },
+    {
+      "batter_id": "home_5",
+      "completed_plate_appearances": 4,
+      "home_run_events": 0,
+      "safe_hit_events": 3,
+      "slot": 5,
+      "strikeout_events": 1,
+      "team": "home",
+      "walk_events": 0
+    },
+    {
+      "batter_id": "home_6",
+      "completed_plate_appearances": 4,
+      "home_run_events": 0,
+      "safe_hit_events": 0,
+      "slot": 6,
+      "strikeout_events": 2,
+      "team": "home",
+      "walk_events": 0
+    },
+    {
+      "batter_id": "home_7",
+      "completed_plate_appearances": 4,
+      "home_run_events": 1,
+      "safe_hit_events": 1,
+      "slot": 7,
+      "strikeout_events": 0,
+      "team": "home",
+      "walk_events": 0
+    },
+    {
+      "batter_id": "home_8",
+      "completed_plate_appearances": 4,
+      "home_run_events": 0,
+      "safe_hit_events": 0,
+      "slot": 8,
+      "strikeout_events": 0,
+      "team": "home",
+      "walk_events": 1
+    },
+    {
+      "batter_id": "home_9",
+      "completed_plate_appearances": 4,
+      "home_run_events": 0,
+      "safe_hit_events": 0,
+      "slot": 9,
+      "strikeout_events": 1,
+      "team": "home",
+      "walk_events": 1
+    }
+  ],
+  "connected_to_phase4a": true,
+  "connected_to_phase4b": true,
+  "connected_to_phase4c": true,
+  "connected_to_phase4d": true,
+  "connected_to_phase4e": true,
+  "design": "phase4f-design-v0.1",
+  "event_count_semantics": "completed PA and safe-arrival/BB/SO/HR events only; no official AB/RBI/2B/3B or batting average",
+  "final_score": {
+    "away": 4,
+    "home": 2
+  },
+  "game_end_rules_implemented": true,
+  "history_origin": "initial_zero",
+  "last_projected_sequence": {
+    "closed_away_runs": 4,
+    "closed_home_runs": 2,
+    "current": {
+      "count": null,
+      "half": {
+        "bases": [
+          true,
+          false,
+          false
+        ],
+        "outs": 3,
+        "runs": 0
+      }
+    },
+    "inning": 9,
+    "side": "bottom"
+  },
+  "last_projected_sequence_semantics": "last complete old-rule projection",
+  "line_score": {
+    "away": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      2,
+      0,
+      2,
+      0
+    ],
+    "home": [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "innings": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "walkoff_half": null
+  },
+  "mlb_calibrated": false,
+  "next_batting_indices": {
+    "away": 8,
+    "home": 2
+  },
+  "official_stats_generated": false,
+  "outcome": "away_win",
+  "partial_score": null,
+  "perception_model": false,
+  "pitches_accepted": 259,
+  "probability_model": true,
+  "probability_model_kind": "unvalidated_toy_pitch_event_weights",
+  "product_adoption": false,
+  "reason": "away_lead_after_bottom9",
+  "research_model_connected": false,
+  "savant_metrics_generated": false,
+  "schema": "phase4f-game-v0.1",
+  "scope": "single_game_integration_prototype",
+  "score": {
+    "away": 4,
+    "home": 2
+  },
+  "source_kind": "synthetic_toy_policy",
+  "status": "completed",
+  "team_events": {
+    "away": {
+      "completed_plate_appearances": 44,
+      "home_run_events": 0,
+      "safe_hit_events": 12,
+      "strikeout_events": 9,
+      "walk_events": 5
+    },
+    "home": {
+      "completed_plate_appearances": 38,
+      "home_run_events": 1,
+      "safe_hit_events": 8,
+      "strikeout_events": 8,
+      "walk_events": 3
+    }
+  },
+  "teams": [
+    {
+      "id": "away",
+      "lineup": [
+        {
+          "display_name": "Away 1",
+          "id": "away_1",
+          "slot": 1
+        },
+        {
+          "display_name": "Away 2",
+          "id": "away_2",
+          "slot": 2
+        },
+        {
+          "display_name": "Away 3",
+          "id": "away_3",
+          "slot": 3
+        },
+        {
+          "display_name": "Away 4",
+          "id": "away_4",
+          "slot": 4
+        },
+        {
+          "display_name": "Away 5",
+          "id": "away_5",
+          "slot": 5
+        },
+        {
+          "display_name": "Away 6",
+          "id": "away_6",
+          "slot": 6
+        },
+        {
+          "display_name": "Away 7",
+          "id": "away_7",
+          "slot": 7
+        },
+        {
+          "display_name": "Away 8",
+          "id": "away_8",
+          "slot": 8
+        },
+        {
+          "display_name": "Away 9",
+          "id": "away_9",
+          "slot": 9
+        }
+      ],
+      "name": "仮Away"
+    },
+    {
+      "id": "home",
+      "lineup": [
+        {
+          "display_name": "Home 1",
+          "id": "home_1",
+          "slot": 1
+        },
+        {
+          "display_name": "Home 2",
+          "id": "home_2",
+          "slot": 2
+        },
+        {
+          "display_name": "Home 3",
+          "id": "home_3",
+          "slot": 3
+        },
+        {
+          "display_name": "Home 4",
+          "id": "home_4",
+          "slot": 4
+        },
+        {
+          "display_name": "Home 5",
+          "id": "home_5",
+          "slot": 5
+        },
+        {
+          "display_name": "Home 6",
+          "id": "home_6",
+          "slot": 6
+        },
+        {
+          "display_name": "Home 7",
+          "id": "home_7",
+          "slot": 7
+        },
+        {
+          "display_name": "Home 8",
+          "id": "home_8",
+          "slot": 8
+        },
+        {
+          "display_name": "Home 9",
+          "id": "home_9",
+          "slot": 9
+        }
+      ],
+      "name": "仮Home"
+    }
+  ],
+  "terminal_score_delta": {
+    "away": 0,
+    "home": 0
+  },
+  "upstream_pitch_generation": false
+}

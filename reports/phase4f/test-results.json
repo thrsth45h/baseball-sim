@@ -1,0 +1,16 @@
+{
+  "duration_seconds": 1.0059938999911537,
+  "errors": 0,
+  "failures": 0,
+  "linux_real_directory_symlink_cases": 0,
+  "phase": "phase4f",
+  "python": "3.12.14",
+  "skipped": 0,
+  "source_commit": "a5fda901bc0a8cca9ae0eefc1d076fd8171c73a6",
+  "subtests_observed_separate": 13,
+  "successful": true,
+  "test_case_directories_preserved": true,
+  "test_methods_run": 23,
+  "verification_date_jst": "2026-10-31",
+  "windows_real_junction_cases": 4
+}
