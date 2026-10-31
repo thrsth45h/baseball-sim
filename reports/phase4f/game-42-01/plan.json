@@ -1,0 +1,154 @@
+{
+  "ability_calibrated": false,
+  "advance_policy": "each original runner i goes to min(i+candidate_bases,4); this provider assumption does not narrow old 4e rules",
+  "advance_policy_version": "toy-fixed-advance-v1",
+  "android_integrated": false,
+  "approved_design": {
+    "decision": "D047 limited integration prototype",
+    "game_main": "409bbf6d40ee04a52b6e91546892a532d7c3d2d2",
+    "url": "https://github.com/thrsth45h/baseball-sim/pull/34"
+  },
+  "batted_ball_physics": false,
+  "connected_to_phase4a": true,
+  "connected_to_phase4b": true,
+  "connected_to_phase4c": true,
+  "connected_to_phase4d": true,
+  "connected_to_phase4e": true,
+  "design": "phase4f-design-v0.1",
+  "ending_policy": {
+    "bottom9_home_lead": "dedicated walk-off before old resolution; nonHR only needed runs, HR all runs",
+    "innings": 9,
+    "tied_after_nine": "prototype draw; no extra innings",
+    "top9_home_lead": "skip bottom9 without source/RNG calls"
+  },
+  "game_end_rules_implemented": true,
+  "implementation": {
+    "bundle_sha256": "b3e8fe1eb6d203b13d3aae8cf130364b64c670fafaa3a80716d0f2510eddbb5a",
+    "old_dependency_sources": [
+      "prototypes/__init__.py",
+      "prototypes/phase4a/__init__.py",
+      "prototypes/phase4a/model.py",
+      "prototypes/phase4b/__init__.py",
+      "prototypes/phase4b/model.py",
+      "prototypes/phase4c/__init__.py",
+      "prototypes/phase4c/model.py",
+      "prototypes/phase4d/__init__.py",
+      "prototypes/phase4d/model.py",
+      "prototypes/phase4e/__init__.py",
+      "prototypes/phase4e/model.py"
+    ],
+    "python": "3.12.14",
+    "python_implementation": "CPython",
+    "sources_and_fixtures": {
+      "prototypes/__init__.py": "585d0f84ef1ad8a270f4fa95929ba4ea422084e321ce178d9f6db3846633f36d",
+      "prototypes/phase4a/__init__.py": "087d5c49cf5d02f5031ca5b5e9dc6922e22feaa022fe875b0e6e58b7a4b935ca",
+      "prototypes/phase4a/model.py": "587d42bf642a8cd54eb755e09700e9954e840b3fe649bdcab9185f8add583e1a",
+      "prototypes/phase4b/__init__.py": "80ec6945d1d8eeb0fe9e644c4543119be5f177119bedcf437b8f8d1f8bd21e1e",
+      "prototypes/phase4b/model.py": "ddfbedb9a398eddca9fcfecbb7fc8236033b3f52dc285635833632e3aac17429",
+      "prototypes/phase4c/__init__.py": "d179ebea7b5c473f692720344e2de8b6f30c7351c5fb3512b371d3cebaa2dfb9",
+      "prototypes/phase4c/model.py": "6b67744a2ed7481990b53d3a7a7a52984cf8f98262734781ff859c139d4e023d",
+      "prototypes/phase4d/__init__.py": "403994be12c4a734e2336e8fcdb991c2152a2a89f45c91e2cbe3fe487ac66945",
+      "prototypes/phase4d/model.py": "d0c436415e76076d28f3539ae6e0f4ba64f2d0a32af3e07a2c42f6b5f41187b5",
+      "prototypes/phase4e/__init__.py": "ac2498904756c85edc182cbf1f4a277ddbaf52c0c42ccfb2e462a46a8de1c68e",
+      "prototypes/phase4e/model.py": "48349220f63d3ad2f36a1d671f3f51298704d9b9dfe7caaa9110f60c215c9e53",
+      "prototypes/phase4f/.gitattributes": "a79691a93b46e49ce460c26ef22afcc03d6eca1e63bf2edbc20e96159510f6c9",
+      "prototypes/phase4f/__init__.py": "a61ef76ad5e7bc6df43b7eaa099b8018c7f661a9b6d5ec2720b35aa4513185ab",
+      "prototypes/phase4f/__main__.py": "68cbaa6cbe522f795b9ad61b7bf9f50e071189f7edffb6bddf12c9d7f973f148",
+      "prototypes/phase4f/engine.py": "c28a0f4dbc4157511f1e5dceea6094ae4ba6f5c64ec0b48be3182f9445cf0167",
+      "prototypes/phase4f/fixtures/ending_cases.json": "50facff718090b199590912e8484495bfbce692317c2c3dd47eb8dd6274c49bb",
+      "prototypes/phase4f/fixtures/scripted_cases.json": "6a2f20f050ef3241d752949ad65824b2899d2564e17adc2a397278b161160f3d",
+      "prototypes/phase4f/io.py": "2084ea238a149c7d23b5e91f076e62de4be47a42a23b11fa82c93eb2fb3cef55",
+      "prototypes/phase4f/profiles/toy-v1.json": "c463489ba891f6ca3c209a3fd01cbf5926e69ad85bf73234fefef7558522250f",
+      "prototypes/phase4f/protocol.py": "5827364e4f61c3f9fe2174b70130ad360b09ef3f141af92d7dcbe7b98cb67adc",
+      "prototypes/phase4f/runner.py": "b4b0788ff6a54e1a895176674e8e1af5cabbd84184f39f3210f31413f8fca84b",
+      "prototypes/phase4f/source.py": "b5dd5f0eba377fc22ca8804f7408222fc94f89225a07da2866a6530e97e96f22",
+      "prototypes/phase4f/state.py": "b689ee77ddbdf381e72be38a31bfe86c65ca17ffb23ca5ebf55619d9a852d660"
+    },
+    "text_hash_rule": "UTF-8; CRLF and CR normalized to LF before SHA256",
+    "third_party_runtime_dependencies": []
+  },
+  "limitations": [
+    "unvalidated shared toy event weights; no ability or real-data calibration",
+    "upstream pitch/perception/contact/physics stub; no EV/LA/Savant backfill",
+    "all safe/touch-complete synthetic play assumptions; no general running/error/DP/interference/appeal handling",
+    "game snapshot/replay is in-memory verification, not product save/resume",
+    "D029/D030/D031/D032 remain OPEN"
+  ],
+  "max_pitches": 10000,
+  "mlb_calibrated": false,
+  "official_stats_generated": false,
+  "perception_model": false,
+  "probability_model": true,
+  "probability_model_kind": "unvalidated_toy_pitch_event_weights",
+  "product_adoption": false,
+  "profile": {
+    "fair_weights": [
+      [
+        "out_hold",
+        65
+      ],
+      [
+        "safe_1",
+        22
+      ],
+      [
+        "safe_2",
+        7
+      ],
+      [
+        "safe_3",
+        1
+      ],
+      [
+        "home_run",
+        5
+      ]
+    ],
+    "mlb_calibrated": false,
+    "pitch_weights": [
+      [
+        "called_ball",
+        35
+      ],
+      [
+        "called_strike_caught",
+        15
+      ],
+      [
+        "swinging_strike_caught",
+        15
+      ],
+      [
+        "ordinary_foul_uncaught",
+        15
+      ],
+      [
+        "fair_ball_handoff",
+        20
+      ]
+    ],
+    "version": "toy-v1"
+  },
+  "research_model_connected": false,
+  "rng": {
+    "algorithm": "Python random.Random; Python version recorded; no cross-language/future-version guarantee",
+    "fair_calls": 57,
+    "global_rng_used": false,
+    "owner": "one random.Random(seed) per game",
+    "pitch_calls": 259,
+    "randrange_100_calls": 316
+  },
+  "savant_metrics_generated": false,
+  "schema": "phase4f-game-v0.1",
+  "scope": "single_game_integration_prototype",
+  "seed": 42,
+  "source_access": {
+    "old_frozen_flags_changed": false,
+    "old_io_runner_fixture_results_used": false,
+    "old_source_import_and_identity_hash": "only eleven named old package/model source paths",
+    "research_raw_or_fitted_models_used": false
+  },
+  "source_kind": "synthetic_toy_policy",
+  "source_version": "toy-pitch-source-v1",
+  "upstream_pitch_generation": false
+}
