@@ -1,0 +1,48 @@
+{
+  "fair_weights": [
+    [
+      "out_hold",
+      65
+    ],
+    [
+      "safe_1",
+      22
+    ],
+    [
+      "safe_2",
+      7
+    ],
+    [
+      "safe_3",
+      1
+    ],
+    [
+      "home_run",
+      5
+    ]
+  ],
+  "mlb_calibrated": false,
+  "pitch_weights": [
+    [
+      "called_ball",
+      35
+    ],
+    [
+      "called_strike_caught",
+      15
+    ],
+    [
+      "swinging_strike_caught",
+      15
+    ],
+    [
+      "ordinary_foul_uncaught",
+      15
+    ],
+    [
+      "fair_ball_handoff",
+      20
+    ]
+  ],
+  "version": "toy-v1"
+}

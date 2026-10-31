@@ -39,6 +39,14 @@
 
 ## 現在の状態
 
+**1試合の統合試作（Phase 4f）**は、仮の2チーム各9人が1球ずつ自動進行し、終了・スコア・終了理由を表示します。
+
+```powershell
+python -m prototypes.phase4f run --seed 42 --output data/prototypes/phase4f/game-01
+```
+
+[seed42の公開試合REPORT](reports/phase4f/game-42-01/REPORT.md)と[実行手順・仮設定と限界](reports/phase4f/README.md)を参照してください。未較正toy設定の試作で、Android・球団経営・正式能力係数の採用ではありません。出力先は毎回新しい名前を選びます。
+
 Phase 4aの限定ルール参照実装は[実行手順・検証と限界](reports/phase4a/README.md)を参照してください。裁定済み合成イベントでカウント等を検算するPython試作であり、Android技術や完全な試合エンジンの採用ではありません。
 
 Phase 4bの塁・アウト・得点の限定参照は[実行手順・検証と限界](reports/phase4b/README.md)を参照してください。完了・裁定済み合成3プレーの検算であり、4a接続・走塁判断・完全な試合生成は含みません。
