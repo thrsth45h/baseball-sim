@@ -31,7 +31,7 @@ Androidへインストールできるdebug APKをCIで作り、PCサーバ・通
 Pythonの`random.Random`とKotlin標準乱数の同seed一致は保証されない。[Kotlin標準Random(seed)](https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.random/-random.html)は実装量が最小だが、公式に将来のruntime版で系列が変わり得るとされている。今回は小さい算術を版付きで固定して変更を検出しやすくする案を選ぶ。その分、独立test vectorと棄却境界の検証責任が増す。移植検証を乱数差に隠さないため、次の2系統で確認する。
 
 1. **遷移互換**：既存Pythonから合成の明示投球/プレー列と期待状態を移植前に生成・凍結する。Kotlinへ同じ入力列を与え、受理球数、カウント/塁/アウト、得点表、打順、完了打席件数、終了理由/終端増分を逐球で照合する。Python旧全JSONのflagsや実装identityをKotlinへ偽装しない。fixtureは新領域へ置き、旧結果を更新しない。
-2. **Android内の再現**：小さい整数アルゴリズムを`sm64-v1`として固定する案。seedを64bit unsigned stateとし、呼出しごとに`0x9E3779B97F4A7C15`を加算、xor右shift30・乗算`0xBF58476D1CE4E5B9`、xor右shift27・乗算`0x94D049BB133111EB`、xor右shift31の順。各算術はmod 2^64、右shiftはlogical。出力の上位32bitをuとし、u<4,294,967,200ならu mod100、以上なら次の出力で再試行。初期seedを先にmixしない。試合専用stateを1個持ち、投球drawを1つ、fair時のみ追加drawを1つ要求する（棄却によるraw出力回数は別集計）。時計・global RNGを使わない。
+2. **Android内の再現**：小さい整数アルゴリズムを`sm64-v1`として固定する案。seedを64bit unsigned stateとし、呼出しごとに`0x9E3779B97F4A7C15`を加算、xor右shift30・乗算`0xBF58476D1CE4E5B9`、xor右shift27・乗算`0x94D049BB133111EB`、xor右shift31の順。各算術はmod 2^64、右shiftはlogical。永続state sには加算後の値だけを保持し、z←sを作ってzだけをmixする。mix出力をsへ戻さない。出力の上位32bitを非負整数u（0..2^32−1）とし、u<4,294,967,200ならu mod100、以上なら次の出力で再試行。初期seedを先にmixしない。試合専用stateを1個持ち、投球drawを1つ、fair時のみ追加drawを1つ要求する（棄却によるraw出力回数は別集計）。時計・global RNGを使わない。
 
 この算術形の参照は[OpenJDK SplittableRandomのseed加算/mix64](https://github.com/openjdk/jdk/blob/master/src/java.base/share/classes/java/util/SplittableRandom.java)。新コードは明記した算術から独立に実装し、JDKのsourceをコピーせず、split/nextIntの互換を称さない。製品の最終乱数方式を確定するものではなく、初版の版付き試作契約。独立計算のraw/draw test vector、seed0/42/最大値、棄却境界を確認する。**Androidのseed42がPython例の4対2になるという受入れ条件は置かない。** Android同版・同seedでは全3操作/混在と再起動後の新試合が同じ結果/ログになることを要求する。
 
