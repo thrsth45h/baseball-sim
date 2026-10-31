@@ -2,7 +2,7 @@
 from copy import deepcopy
 from dataclasses import dataclass, replace
 from . import CAPABILITIES, DESIGN, SCHEMA
-from .protocol import FAIR, InputError, PitchInput, RecordedAbort, preflight, rules, validate_max_pitches, validate_seed
+from .protocol import FAIR, SOURCE_ABORT_REASONS, InputError, PitchInput, RecordedAbort, preflight, rules, validate_max_pitches, validate_seed
 from .source import ScriptedSource, ToyPitchSource
 from .state import GameResult, GameSnapshot, TEAMS, batter_id
 
@@ -143,7 +143,9 @@ class GameSession:
             if type(offered) is RecordedAbort:self._abort(offered.reason);return self.snapshot
             value=preflight(offered,self.snapshot.sequence.current.half)
         except StopIteration:self._abort("source_exhausted");return self.snapshot
-        except InputError as error:self._abort(error.code);return self.snapshot
+        except InputError as error:
+            reason=error.code if type(error.code) is str and error.code in SOURCE_ABORT_REASONS else "source_error"
+            self._abort(reason);return self.snapshot
         except Exception:self._abort("source_error");return self.snapshot
         self._apply(rules.Pitch(value.event),value)
         if self.snapshot.sequence.stage=="awaiting_resolution":

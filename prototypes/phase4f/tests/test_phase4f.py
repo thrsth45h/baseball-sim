@@ -19,7 +19,7 @@ from unittest.mock import patch
 from prototypes.phase4f import CAPABILITIES, DEPENDENCY_SOURCES
 from prototypes.phase4f import io, runner, source
 from prototypes.phase4f.engine import GameSession, replay_events
-from prototypes.phase4f.protocol import CountState, FAIR, FairPlay, HalfInningState, HalfSequenceState, InputError, PitchHalfState, PitchInput, preflight, rules, parse_json
+from prototypes.phase4f.protocol import CountState, FAIR, FairPlay, HalfInningState, HalfSequenceState, InputError, PitchHalfState, PitchInput, RecordedAbort, preflight, rules, parse_json
 from prototypes.phase4f.source import ScriptedSource, ToyAdvancePolicy, ToyPitchSource, choose
 from prototypes.phase4f.state import COUNT_FIELDS, EventCounts, GameResult, GameSnapshot
 
@@ -64,6 +64,23 @@ def tally(document):
 
 
 class GameTests(unittest.TestCase):
+    def test_source_cannot_claim_controller_pitch_limit_and_abort_replays(self):
+        class ReturnsLimit:
+            def next_pitch(self,context):return RecordedAbort("pitch_limit")
+        class RaisesLimit:
+            def next_pitch(self,context):raise InputError("pitch_limit")
+        class MutatesError:
+            def next_pitch(self,context):
+                error=InputError("source_error");error.code="pitch_limit";raise error
+        for constructor in (RecordedAbort,InputError):
+            with self.assertRaises(ValueError):constructor("pitch_limit")
+        for provider in (ReturnsLimit(),RaisesLimit(),MutatesError()):
+            with self.subTest(provider=type(provider).__name__):
+                game=GameSession(max_pitches=10,source=provider);result=game.run_to_end()
+                self.assertEqual(result.as_dict()["reason"],"source_error");self.assertEqual(game.snapshot.pitches_accepted,0)
+                self.assertEqual(game.snapshot.sequence.current.count,CountState());self.assertEqual(sum(c.completed_plate_appearances for c in game.snapshot.batter_counts),0)
+                self.assertEqual(replay_events(game.events_document()).as_dict(),result.as_dict())
+
     def test_scripted_endings_terminal_old_resolution_zero_and_exact_limit_priority(self):
         for row in ending_cases():
             with self.subTest(case=row["id"]):

@@ -10,6 +10,8 @@ PitchHalfState=rules.PitchHalfState
 PITCH_EVENTS=rules.sequence_rules.pitch_half_rules.count_rules.EVENTS
 FAIR="fair_ball_handoff"
 ABORT_REASONS=("pitch_limit","source_exhausted","source_error","invalid_pitch_input","invalid_fair_result")
+# Only the controller may declare that its own accepted-pitch budget was used.
+SOURCE_ABORT_REASONS=ABORT_REASONS[1:]
 
 
 def exact_int(value,minimum=0,maximum=None):
@@ -39,7 +41,7 @@ def parse_json(text):
 
 class InputError(ValueError):
     def __init__(self,code):
-        if code not in ABORT_REASONS:raise ValueError("unknown input failure code")
+        if type(code) is not str or code not in SOURCE_ABORT_REASONS:raise ValueError("unknown source failure code")
         self.code=code
         super().__init__(code)
 
@@ -49,7 +51,7 @@ class RecordedAbort:
     reason: str
 
     def __post_init__(self):
-        if type(self.reason) is not str or self.reason not in ABORT_REASONS:raise ValueError("unknown recorded abort reason")
+        if type(self.reason) is not str or self.reason not in SOURCE_ABORT_REASONS:raise ValueError("unknown recorded source abort reason")
 
 
 @dataclass(frozen=True,slots=True)
