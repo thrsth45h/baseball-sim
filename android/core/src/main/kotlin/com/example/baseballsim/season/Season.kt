@@ -16,7 +16,11 @@ class SeasonState private constructor(val masterSeed: String, val selectedClubId
         seedFromText(masterSeed); PennantSchedule.club(selectedClubId)
         require(dayIndex in 1..141 && results.size <= 720)
         if (validateLedger) results.forEachIndexed { i, result -> require(result.game == games[i] && result.maxPitches == 10_000L) { "Ledger is not the canonical GameId sequence" } }
-        require(results.isEmpty() || dayIndex >= results.last().game.fixture.dayIndex)
+        val minimumDay = if (results.isEmpty()) 1 else {
+            val lastDay = results.last().game.fixture.dayIndex
+            if (results.size == 720 || games[results.size].fixture.dayIndex > lastDay) lastDay + 1 else lastDay
+        }
+        require(dayIndex >= minimumDay) { "A completed calendar day cannot be reopened" }
         if (results.size == 720) require(dayIndex == 141 && active == null)
         else {
             require(dayIndex <= games[results.size].fixture.dayIndex)
@@ -33,6 +37,7 @@ class SeasonState private constructor(val masterSeed: String, val selectedClubId
         check(status == SeasonStatus.IN_PROGRESS && active != null)
         require(match.game == active.game && match.maxPitches == active.maxPitches && match.initial == active.initial)
         require(match.advanceCalls >= active.advanceCalls)
+        if (match.advanceCalls == active.advanceCalls) require(match == active) { "The same advance boundary must have the same state" }
         return changed(nextActive = match)
     }
     fun accept(result: GameSummary): SeasonState {
@@ -64,6 +69,7 @@ class SeasonState private constructor(val masterSeed: String, val selectedClubId
 /** Calculation-only owner. The later store must commit before adopting/publishing a candidate. */
 class SeasonSession(initial: SeasonState = SeasonState.initial()) {
     var state: SeasonState = initial; private set
+    var lastCompletedCheckpoint: GameCheckpoint? = null; private set
     private var match: SeasonMatch? = null
     init { if (state.active != null && state.status != SeasonStatus.BLOCKED) match = state.active!!.recover(state.masterSeed) }
     fun selectClub(clubId: String) { state = state.selectClub(clubId) }
@@ -77,12 +83,7 @@ class SeasonSession(initial: SeasonState = SeasonState.initial()) {
         val owned = checkNotNull(match)
         if (owned.snapshot.status == Status.COMPLETED) return consumeCandidate()
         owned.advanceOnePitch()
-        val checkpoint = owned.checkpoint()
-        state = state.checkpoint(checkpoint)
-        if (checkpoint.snapshot.status == Status.COMPLETED) {
-            state = state.accept(GameSummary.fromCore(owned.game, owned.snapshot, owned.engine.maxPitches)); match = null
-        }
-        return state
+        return consumeCandidate()
     }
     fun advancePlateAppearance(): SeasonState {
         beginNext(); if (!match!!.snapshot.done) match!!.advancePlateAppearance(); return consumeCandidate()
@@ -93,11 +94,14 @@ class SeasonSession(initial: SeasonState = SeasonState.initial()) {
     private fun consumeCandidate(): SeasonState {
         val owned = checkNotNull(match); val checkpoint = owned.checkpoint()
         state = state.checkpoint(checkpoint)
-        if (checkpoint.snapshot.status == Status.COMPLETED) { state = state.accept(GameSummary.fromCore(owned.game, owned.snapshot)); match = null }
+        if (checkpoint.snapshot.status == Status.COMPLETED) {
+            state = state.accept(GameSummary.fromCore(owned.game, owned.snapshot)); lastCompletedCheckpoint = checkpoint; match = null
+        }
         return state
     }
     fun advanceDay(stopRequested: () -> Boolean = { false }): SeasonState {
         check(state.status == SeasonStatus.IN_PROGRESS)
+        if (stopRequested() && state.active == null) return state
         val day = state.dayIndex
         if (state.active == null && PennantSchedule.calendar[day - 1].isRestDay) state = state.advanceRestDay()
         else do { finishCurrent() } while (state.status == SeasonStatus.IN_PROGRESS && state.dayIndex == day && !stopRequested())
@@ -110,7 +114,13 @@ class SeasonSession(initial: SeasonState = SeasonState.initial()) {
     fun openNextSelected(): SeasonState {
         check(state.status == SeasonStatus.IN_PROGRESS)
         while (true) {
-            if (state.active != null) return state
+            val current = state.active
+            if (current != null) {
+                if (state.selectedClubId in listOf(current.game.fixture.awayClubId, current.game.fixture.homeClubId)) return state
+                finishCurrent()
+                if (state.status != SeasonStatus.IN_PROGRESS) return state
+                continue
+            }
             val next = state.games[state.results.size]
             if (state.selectedClubId in listOf(next.fixture.awayClubId, next.fixture.homeClubId)) { beginNext(); return state }
             finishCurrent()

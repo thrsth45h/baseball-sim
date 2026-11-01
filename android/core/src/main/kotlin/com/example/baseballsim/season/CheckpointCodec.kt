@@ -116,10 +116,10 @@ object CheckpointCodec {
         fun source() = SourceCursor(text(), long(), nullableLong(), nullableText(), nullableLong(), nullableLong(), nullableLong(), if (bool()) int() else null)
         fun gameCheckpoint() = GameCheckpoint(scheduled(), long(), long(), snapshot(), source(), snapshot())
         fun summary(): GameSummary {
-            val game = scheduled(); val limit = long(); val status = Status.valueOf(text()); val outcome = text(); val reason = text(); val score = score()
+            val game = scheduled(); val limit = long(); val status = Status.valueOf(text()); val outcome = text(); val reason = text(); val scoreValue = score()
             val lines = List(size(18, 18)) { nullableLong() }; val delta = score(); val pitches = long()
             val people = List(size(18, 18)) { PlayerGameCounts(text(), text(), int(), text(), counts()) }
-            return GameSummary(game, limit, status, outcome, reason, score, lines, delta, pitches, people)
+            return GameSummary(game, limit, status, outcome, reason, scoreValue, lines, delta, pitches, people)
         }
         fun standing(): Standing {
             val t = ClubTotals(text(), long(), long(), long(), long(), long(), long())

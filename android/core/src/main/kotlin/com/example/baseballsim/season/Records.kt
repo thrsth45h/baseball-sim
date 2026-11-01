@@ -17,6 +17,7 @@ class GameSummary(val game: ScheduledGame, val maxPitches: Long, val status: Sta
         require(status == Status.COMPLETED && reason in endingReasons)
         require(maxPitches > 0 && pitchesAccepted in 0..maxPitches)
         require(outcome == if (score.away > score.home) "away_win" else if (score.home > score.away) "home_win" else "draw")
+        require(outcome == when (reason) { "away_lead_after_bottom9" -> "away_win"; "tie_after_nine" -> "draw"; else -> "home_win" })
         require(lineScore.size == 18 && lineScore.all { it == null || it >= 0 })
         require(lineScore.filterIndexed { i, _ -> i % 2 == 0 }.all { it != null })
         require(lineScore.filterIndexed { i, _ -> i % 2 == 1 }.take(8).all { it != null })
@@ -43,6 +44,7 @@ class GameSummary(val game: ScheduledGame, val maxPitches: Long, val status: Sta
 }
 
 data class WinRatio private constructor(val numerator: Long, val denominator: Long) : Comparable<WinRatio> {
+    init { require(denominator > 0 && numerator in 0..denominator && BigInteger.valueOf(numerator).gcd(BigInteger.valueOf(denominator)) == BigInteger.ONE) }
     override fun compareTo(other: WinRatio): Int = BigInteger.valueOf(numerator).multiply(BigInteger.valueOf(other.denominator))
         .compareTo(BigInteger.valueOf(other.numerator).multiply(BigInteger.valueOf(denominator)))
     companion object {
