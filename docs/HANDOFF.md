@@ -1,6 +1,6 @@
 # Codex間の引き継ぎ
 
-2026-10-31 日本時間。GitHubで確認できた研究・承認・マージ状態を記す。仕様の確定性は[決定台帳](../DECISIONS.md)、運用は[WORKFLOW.md](WORKFLOW.md)を優先する。
+2026-11-01 日本時間。GitHubで確認できた研究・承認・マージ状態を記す。仕様の確定性は[決定台帳](../DECISIONS.md)、運用は[WORKFLOW.md](WORKFLOW.md)を優先する。
 
 ## 参照先
 
@@ -9,6 +9,8 @@
 - 統計研究：[statcast-swing-model-v1](https://github.com/thrsth45h/statcast-swing-model-v1)（Phase 1b [PR #1](https://github.com/thrsth45h/statcast-swing-model-v1/pull/1) はマージ済み、squash SHA `f3b65653d90b004ea8bfaf233b94231876233980`）
 
 ## 現在の到達点
+
+- **Androidのオフライン1試合技術検証版を追加。** [設計PR #39](https://github.com/thrsth45h/baseball-sim/pull/39)の2026-11-01正式承認・main `0c75f6f2f44f3e2058eeb52c61807b3db101e750`に基づく[実装PR #40](https://github.com/thrsth45h/baseball-sim/pull/40)。Kotlin純core＋Compose/ViewModelで1球/1打席/最後まで・新seedを端末内処理し、PCサーバ/Python/INTERNET権限なし。検証source head `2b0708294887f23fced10cd71a726dbd5fde030a`、[APK取得手順](android-first-match/README.md)・[検証記録](android-first-match/VALIDATION.md)。CIのcore7/app12/device6 methodは別集計で全failure/error/skip0、lint0error、API35の画面なしエミュレーターとPNG3枚を確認。独立fixture49ケース/2,600 advance、live sm64-v1の4seed全state/RNG、初版coreの親JDK別再実行7件も成功した。検証APK SHA256 `c3ffe9a70d75a572437dd91e2b3720ddee2cf8c47e1a506f04d0f084e632c90c`、artifact期限2026-11-15 02:24:04 JST。minAPI26は宣言/lint確認、API26実行・実機操作は未検証。sm64-v1は今回用、D032/D049の初版構成だけ採用しDB/製品セーブ等はD056 OPEN。ユーザーPCの画面/入力/既存環境を操作せず、SDK/IDE/Gradle/JDKも導入していない。次はペナント基本機能の**設計案だけ**を整理し、未承認の大規模実装へ進まない。
 
 - **PCブラウザ用のローカル操作画面を追加。** `python -m prototypes.match_view`でloopbackのURLを表示し、既存Phase 4fを1球/1打席/最後まで進める薄い操作層。seed変更・カウント/塁/打者・得点表/直近ログを表示し、終端では旧投影のcount/塁を非表示にする。[手順](local-match-view/README.md)・[検証](local-match-view/VALIDATION.md)を参照。実HTTP/単体検査は成功。責任者は別プロファイル/画面なしのChromeヘッドレスで1280/390/320幅・仮想Enter・seed42完走を確認した。ユーザーのPCを操作しない指示に従い、ブラウザの自動起動・可視ウィンドウ/物理入力/ユーザープロファイル操作は行わない。ネイティブPC操作・スマホ実機は未検証。D048はPROVISIONAL、D029–D032はOPENで、Android技術選定/公式成績/能力/製品採用を含めない。
 

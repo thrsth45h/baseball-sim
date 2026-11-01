@@ -39,13 +39,15 @@
 
 ## 現在の状態
 
+**Androidでオフラインの1試合を操作できる技術検証APK**を作成しました。最低API26（Android8.0）。PCサーバやPythonは不要です。[検証済みAPKの取得・操作手順](docs/android-first-match/README.md)と[ビルド/テスト・未検証事項](docs/android-first-match/VALIDATION.md)を参照してください。12球団ペナントや球団経営を備えた製品版は未実装です。
+
 **PCブラウザで1試合を操作するローカル画面**を起動できます。表示された`http://127.0.0.1:...`を自分で開き、「1球」「1打席」「最後まで」で進めます。seedを変えて新しい試合も開始できます。
 
 ```powershell
 python -m prototypes.match_view
 ```
 
-終了はターミナルでCtrl+C。[操作手順と範囲](docs/local-match-view/README.md)・[検証状況](docs/local-match-view/VALIDATION.md)を参照してください。PCでのローカル試作で、Androidの技術・製品画面は未選定です。
+終了はターミナルでCtrl+C。[操作手順と範囲](docs/local-match-view/README.md)・[検証状況](docs/local-match-view/VALIDATION.md)を参照してください。このPC試作と、上記のAndroid技術検証版は別の表示・操作層です。
 
 **1試合の統合試作（Phase 4f）**は、仮の2チーム各9人が1球ずつ自動進行し、終了・スコア・終了理由を表示します。
 
@@ -65,4 +67,4 @@ Phase 4dの表裏切替と得点保持は[実行手順・検証と限界](report
 
 Phase 4eの裁定済み全員safe安打と明示行先は[実行手順・検証と限界](reports/phase4e/README.md)を参照してください。安打価値・各走者の行先は入力で、走塁判断や公式安打の裁定は行いません。
 
-このリポジトリは**設計引き継ぎとゲーム開発のための初期状態**です。Androidアプリ本体や正式な1〜20の係数較正は未完成です。仕様の確定性は必ず決定台帳を優先してください。
+このリポジトリは**設計引き継ぎとゲーム開発のための初期状態**です。Androidの1試合技術検証版を追加しましたが、ペナント/経営を備えた製品本体や正式な1〜20の係数較正は未完成です。仕様の確定性は必ず決定台帳を優先してください。

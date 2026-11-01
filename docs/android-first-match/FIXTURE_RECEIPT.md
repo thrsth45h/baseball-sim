@@ -1,0 +1,9 @@
+# 移植前の独立参照受領
+
+2026-11-01、責任者が独立担当の参照49ケース/2,600 advanceとsm64-v1 vectorを凍結・別再生成/監査後に受領した。受領時のworker HEADは`577c8b5d78ab9a4113c0d309c2349dd95a09a28c`で、`android/core`にはbuild.gradleだけがありKotlinモデルは0ファイルだった。fixtureを先にcommitしてからモデルを書く。
+
+`android/core/src/test/resources/reference`へ正式gzip・vector・summary・provenance/hash、README/generator/seal/再生成記録を原文のままコピーした。7,215,978bytesの元JSONは追跡せず、129,808bytesのgzipをJVMのGZIPInputStreamで読む。gzip SHA256は`09ceb0d6253dd22344e681a30c1b61888ca5e8054a2c80f84533b151b35d071b`。manifestにある元JSONは、gzip展開後のメモリ上のbytes/hashで照合する。
+
+これはKotlin未参照の旧Python情報契約の参照で、別野球ルールoracleではない。不正入力はsanitized abort markerなので、native自身の型/入力拒否は別テストで検査する。旧flags/実装identityをAndroidへ偽装せず、テストadapterでsnapshot/resultの同じ意味の欄だけを比較する。native RNGのsm64-v1と旧Python Randomの同seed結果を同一視しない。
+
+再生成は付属README/generatorに従い、reference下の新しい`generated-*`子（Git除外）を使う。旧source/期待値は上書きしない。コピー後も期待fixtureの内容は固定し、失敗が出たら新モデル側の原因を調べる。参照作成後に新コードへ合わせて期待値を生成し直さない。

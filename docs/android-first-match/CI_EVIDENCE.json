@@ -1,0 +1,276 @@
+{
+  "apk_bytes": 10395218,
+  "apk_sha256": "c3ffe9a70d75a572437dd91e2b3720ddee2cf8c47e1a506f04d0f084e632c90c",
+  "artifacts": [
+    {
+      "expires_jst": "2026-11-15 02:24:04 JST",
+      "expires_utc": "2026-11-14T17:24:04Z",
+      "id": 13051121143,
+      "kind": "debug-apk",
+      "url": "https://github.com/thrsth45h/baseball-sim/actions/runs/41223833834/artifacts/13051121143",
+      "zip_bytes": 9942489,
+      "zip_sha256": "4ed47b5d7979dcddad1a14e7ebf8e26ebf7d15b4a2728de3098f8b493364a68e"
+    },
+    {
+      "expires_utc": "2026-11-14T17:25:22Z",
+      "id": 13051910131,
+      "kind": "device-tests-and-png",
+      "url": "https://github.com/thrsth45h/baseball-sim/actions/runs/41223833834/artifacts/13051910131",
+      "zip_bytes": 359874,
+      "zip_sha256": "f566618b25c6601f7401a896c2cc8f3cde7ebd83c852445a9a15e9adc69d9ee5"
+    },
+    {
+      "expires_utc": "2026-11-14T17:24:06Z",
+      "id": 13050911813,
+      "kind": "unit-tests-and-lint",
+      "url": "https://github.com/thrsth45h/baseball-sim/actions/runs/41223833834/artifacts/13050911813",
+      "zip_bytes": 46910,
+      "zip_sha256": "581c8d27cc6307e3aadaaae8dcd41740f7e36281508aa3a31fcf5952ce15ffdb"
+    },
+    {
+      "expires_utc": "2026-11-14T17:20:12Z",
+      "id": 13051345951,
+      "kind": "core-audit",
+      "url": "https://github.com/thrsth45h/baseball-sim/actions/runs/41223833834/artifacts/13051345951",
+      "zip_bytes": 2523104,
+      "zip_download_checked_by_worker": false,
+      "zip_sha256": "f434f1d407385e171b2022e2f284029a52650b52c5d3909c13368aaa4717c133"
+    }
+  ],
+  "build_source_head": "2b0708294887f23fced10cd71a726dbd5fde030a",
+  "build_source_tree": "e323a47782d9c92c5b2d3c34cb54a963f24ae66f",
+  "device_job": 124603744594,
+  "historical_protection": {
+    "baseline": "0c75f6f2f44f3e2058eeb52c61807b3db101e750",
+    "baseline_tracked_paths": 237,
+    "changed_existing_paths_at_build_source": [],
+    "later_report_changes_allowed": [
+      "README.md guide",
+      "docs/HANDOFF.md completion record"
+    ],
+    "through_source_head": "2b0708294887f23fced10cd71a726dbd5fde030a"
+  },
+  "independent_reference": {
+    "advance_states": 2600,
+    "cases": 49,
+    "frozen_before_first_kotlin_model": true,
+    "frozen_gzip_sha256": "09ceb0d6253dd22344e681a30c1b61888ca5e8054a2c80f84533b151b35d071b",
+    "live_native_games": 4
+  },
+  "limits": [
+    "API26 declared and lint checked, emulator execution API35 only",
+    "no physical device installation or user PC UI interaction",
+    "prototype RNG and toy weights, no MLB or ability calibration",
+    "no permanent product save or distribution adoption"
+  ],
+  "lint": {
+    "errors": 0,
+    "issues": [
+      {
+        "id": "GradleDependency",
+        "message": "A newer version of androidx.compose:compose-bom than 2025.10.01 is available: 2026.09.00",
+        "severity": "Warning"
+      },
+      {
+        "id": "GradleDependency",
+        "message": "A newer version of androidx.activity:activity-compose than 1.11.0 is available: 1.13.0",
+        "severity": "Warning"
+      },
+      {
+        "id": "GradleDependency",
+        "message": "A newer version of androidx.lifecycle:lifecycle-viewmodel-compose than 2.9.4 is available: 2.11.0",
+        "severity": "Warning"
+      },
+      {
+        "id": "GradleDependency",
+        "message": "A newer version of androidx.lifecycle:lifecycle-runtime-compose than 2.9.4 is available: 2.11.0",
+        "severity": "Warning"
+      },
+      {
+        "id": "GradleDependency",
+        "message": "A newer version of androidx.compose:compose-bom than 2025.10.01 is available: 2026.09.00",
+        "severity": "Warning"
+      },
+      {
+        "id": "NewerVersionAvailable",
+        "message": "A newer version of org.jetbrains.kotlinx:kotlinx-coroutines-android than 1.10.2 is available: 1.11.0",
+        "severity": "Warning"
+      },
+      {
+        "id": "NewerVersionAvailable",
+        "message": "A newer version of org.jetbrains.kotlinx:kotlinx-coroutines-test than 1.10.2 is available: 1.11.0",
+        "severity": "Warning"
+      },
+      {
+        "id": "DataExtractionRules",
+        "message": "The attribute `android:allowBackup` is deprecated from Android 12 and higher and may be removed in future versions. Consider adding the attribute `android:dataExtractionRules` specifying an `@xml` resource which configures cloud backups and device transfers on Android 12 and higher.",
+        "severity": "Warning"
+      },
+      {
+        "id": "MissingApplicationIcon",
+        "message": "Should explicitly set `android:icon`, there is no default",
+        "severity": "Warning"
+      }
+    ],
+    "warnings": 9
+  },
+  "merged_manifest_check": {
+    "checked": [
+      {
+        "internet_permission_absent": true,
+        "manifest": "app/build/intermediates/merged_manifest/debug/processDebugMainManifest/AndroidManifest.xml",
+        "permissions": [
+          "com.example.baseballsim.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+        ]
+      },
+      {
+        "internet_permission_absent": true,
+        "manifest": "app/build/intermediates/merged_manifests/debug/processDebugManifest/AndroidManifest.xml",
+        "permissions": [
+          "com.example.baseballsim.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+        ]
+      },
+      {
+        "internet_permission_absent": true,
+        "manifest": "app/build/intermediates/packaged_manifests/debug/processDebugManifestForPackage/AndroidManifest.xml",
+        "permissions": [
+          "com.example.baseballsim.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+        ]
+      }
+    ]
+  },
+  "parent_independent_artifact_audit": {
+    "all_jobs": 16,
+    "all_workflows": 8,
+    "apk_hash_source_info_and_merged_manifests": true,
+    "errors": 0,
+    "failures": 0,
+    "methods": {
+      "app": 12,
+      "core": 7,
+      "device": 6
+    },
+    "screenshots_byte_identical_to_reviewed_150": true,
+    "skips": 0,
+    "source_head": "2b0708294887f23fced10cd71a726dbd5fde030a",
+    "unit_and_device_zip_hashes_xml": true
+  },
+  "parent_independent_jvm_report": {
+    "core_runtime_and_tests_unchanged_through_build_source": true,
+    "duration_seconds": 1.017,
+    "jdk": "21.0.2",
+    "methods": 7,
+    "sdk_or_gradle_installed": false,
+    "source_head": "150eb43f14eb962746a5165ff10d406b8fc1bcb1",
+    "successful": true
+  },
+  "run_id": 41223833834,
+  "run_url": "https://github.com/thrsth45h/baseball-sim/actions/runs/41223833834",
+  "schema": "android-first-match-ci-evidence-v1",
+  "screenshots": [
+    {
+      "byte_identical_to_visually_reviewed_150_png": true,
+      "bytes": 99093,
+      "name": "initial.png",
+      "pixels": [
+        1080,
+        1920
+      ],
+      "sha256": "244c61808c561017022565da314f6ca32bb9e445bceeae7faa4656d533067ca4"
+    },
+    {
+      "byte_identical_to_visually_reviewed_150_png": true,
+      "bytes": 92979,
+      "name": "narrow320.png",
+      "pixels": [
+        840,
+        1920
+      ],
+      "sha256": "a95d8037ffe4c22c4b726dab677b5b2df4a37d200e131b5b4b4a528ddafa5a7e"
+    },
+    {
+      "byte_identical_to_visually_reviewed_150_png": true,
+      "bytes": 125249,
+      "name": "seed42-completed.png",
+      "pixels": [
+        1080,
+        1920
+      ],
+      "sha256": "0c2977e6097a48e00ad49fa1f647da99f96bf394c12018cf01433d37d9beaef1"
+    }
+  ],
+  "source_info_from_apk_artifact": {
+    "apk_sha256": "c3ffe9a70d75a572437dd91e2b3720ddee2cf8c47e1a506f04d0f084e632c90c",
+    "jdk_actual": "openjdk version \"17.0.21\" 2026-10-20\nOpenJDK Runtime Environment Temurin-17.0.21+9 (build 17.0.21+9)\nOpenJDK 64-Bit Server VM Temurin-17.0.21+9 (build 17.0.21+9, mixed mode, sharing)",
+    "pins": {
+      "agp": "8.11.1",
+      "build_tools": "35.0.0",
+      "compile_sdk": 36,
+      "compose_bom": "2025.10.01",
+      "compose_compiler": "2.2.21",
+      "gradle": "8.13",
+      "jdk": "temurin-17.0.21+9",
+      "kotlin_compiler": "2.2.21",
+      "min_sdk": 26,
+      "rng": "sm64-v1 (this prototype only)",
+      "target_sdk": 36
+    },
+    "requested_source_head": "2b0708294887f23fced10cd71a726dbd5fde030a",
+    "sdk_packages_actual": {
+      "build-tools/35.0.0": "Pkg.UserSrc=false\nPkg.Revision=35.0.0\n#Pkg.Revision=35.0.0 rc4\n",
+      "platforms/android-36": "Pkg.Desc=Android SDK Platform 16\nPkg.UserSrc=false\nPlatform.Version=16\nPlatform.CodeName=\nPkg.Revision=2\nAndroidVersion.ApiLevel=36\nAndroidVersion.ExtensionLevel=17\nAndroidVersion.IsBaseSdk=true\nLayoutlib.Api=15\nLayoutlib.Revision=1\nPlatform.MinToolsRev=22\n"
+    },
+    "source_head": "2b0708294887f23fced10cd71a726dbd5fde030a",
+    "source_tree": "e323a47782d9c92c5b2d3c34cb54a963f24ae66f"
+  },
+  "suites": [
+    {
+      "duration_seconds": 2.904,
+      "errors": 0,
+      "failures": 0,
+      "kind": "jvm",
+      "methods": 7,
+      "name": "com.example.baseballsim.core.CoreTest",
+      "skipped": 0
+    },
+    {
+      "duration_seconds": 0.256,
+      "errors": 0,
+      "failures": 0,
+      "kind": "jvm",
+      "methods": 7,
+      "name": "com.example.baseballsim.MatchViewModelTest",
+      "skipped": 0
+    },
+    {
+      "duration_seconds": 0.02,
+      "errors": 0,
+      "failures": 0,
+      "kind": "jvm",
+      "methods": 2,
+      "name": "com.example.baseballsim.MatchViewModelThreadingTest",
+      "skipped": 0
+    },
+    {
+      "duration_seconds": 0.07,
+      "errors": 0,
+      "failures": 0,
+      "kind": "jvm",
+      "methods": 3,
+      "name": "com.example.baseballsim.NativeGamePortTest",
+      "skipped": 0
+    },
+    {
+      "duration_seconds": 24.016,
+      "errors": 0,
+      "failures": 0,
+      "kind": "device",
+      "methods": 6,
+      "name": "com.example.baseballsim.MatchActivityTest",
+      "skipped": 0
+    }
+  ],
+  "verification_date_jst": "2026-11-01",
+  "verify_and_device_conclusion": "success",
+  "verify_job": 124603744412
+}

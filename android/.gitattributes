@@ -1,0 +1,4 @@
+* text eol=lf
+gradle/wrapper/gradle-wrapper.jar binary
+*.gz binary
+gradlew.bat text eol=crlf

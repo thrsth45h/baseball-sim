@@ -1,0 +1,43 @@
+{
+  "files": {
+    "README.md": {
+      "bytes": 7644,
+      "sha256": "6c4e8772f8178b07ecb2447cec1059ba53d9fb03dad44e2de097c25ecf106a3e"
+    },
+    "REGENERATION_CHECK.json": {
+      "bytes": 1457,
+      "sha256": "67ec0d0db2f7cb9e9c583723ed5e5057dffb2f1648d0335e3f656c9f95282384"
+    },
+    "frozen/SHA256_MANIFEST.json": {
+      "bytes": 573,
+      "sha256": "f0c04386cafc928c3710c10c0b195860565ca7e52b9bb8de9c61ae8ab3f9981d"
+    },
+    "frozen/case_summary.json": {
+      "bytes": 10767,
+      "sha256": "fbbd81bb0a2ca4693c9247cb2545602f13ffb09d414f9237d880f1eb9b69acae"
+    },
+    "frozen/provenance.json": {
+      "bytes": 2469,
+      "sha256": "6ca24b8f3c63ec4fdf18d14a09c5c5a8f2b22db2c92ffddb767d99e737ca59ec"
+    },
+    "frozen/sm64_vectors.json": {
+      "bytes": 20173,
+      "sha256": "c932f0a744a01ff8f2e2c5e93544491b0eb07ec1da84c18049a56b346938c2dd"
+    },
+    "frozen/transition_cases.json": {
+      "bytes": 7215978,
+      "sha256": "10a3e8fa701c53b34c7de0a4fc1e2d4b8dd22a97acbcad760cc469ec0b7c63f8"
+    },
+    "frozen/transition_cases.json.gz": {
+      "bytes": 129808,
+      "sha256": "09ceb0d6253dd22344e681a30c1b61888ca5e8054a2c80f84533b151b35d071b"
+    },
+    "generate_reference.py": {
+      "bytes": 21997,
+      "sha256": "7ef5b22708060d0cd9d6fd7ed7c62ff0abcbb9537cca77ba9eed4af402418270"
+    }
+  },
+  "future_kotlin_implementation_read_for_expectations": false,
+  "old_source_core": "a5fda901bc0a8cca9ae0eefc1d076fd8171c73a6",
+  "schema": "android-independent-reference-freeze-v1"
+}
