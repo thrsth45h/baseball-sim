@@ -54,7 +54,9 @@
 
 `Status.COMPLETED`の最終snapshotだけをシーズン結果へ受理する。`GameResult`が作れるだけでは十分でない（既存型はABORTEDもdoneとして含む）。中止・入力不正・投球上限を引分や敗戦へ変換しない。未完了なら日程を止め、GameIdと理由を保持し、勝手なseed変更・再抽選・上限引上げをしない。
 
-各GameIdは未開始/進行中/完了の状態を持つ。完了GameIdの同じ結果の再受理は無加算、異なる結果の再受理はエラー。対戦相手、主催側、seed、版、status、outcome、最終scoreと集計の整合を検査する。scoreにはサヨナラ専用terminalScoreDeltaを含む既存`GameSnapshot.score`を使い、別に足し直さない。
+各GameIdは未開始/進行中/完了/未完了エラー停止の状態を持つ。完了GameIdの同じ結果の再受理は、集計・日程位置・active状態を含め無変化、異なる結果の再受理はエラー。「同じ結果」はscoreだけでなく、対戦相手/主催/seed/各版/status/outcome/reason、全lineScoreのnull、受理球数、各打順の5countsと選手ID対応、保存する全要約値の値一致で判定する。同scoreでも四球の帰属等が違えば衝突である。scoreにはサヨナラ専用terminalScoreDeltaを含む既存`GameSnapshot.score`を使い、別に足し直さない。
+
+ABORTEDはactive試合に結び付く「未完了エラー停止」として理由・snapshotを永続化する。日程の未消化を残し、完走扱いにしない。再起動後も同じエラーを表示し、再進行・再抽選・手動save/loadは認めない。脱出は、未完了の診断要約と既存の手動slotを保持したうえで、確認付きの「新しい検証シーズンを開始」に限る。これは試合中ロードを許す抜け道や、未完了試合に別seedを割当てる処理とは区別する。
 
 リーグ表は試合数・勝・敗・分・得点・失点・勝率・順位まで。勝率比較は丸め前の整数比で行う。表示丸めで順位を変えず、整数加算/比較のoverflowも黙認しない。勝敗・記録の正本はGameId別の完了結果で、表示用集計はそこから再生成可能にする。
 
@@ -88,7 +90,7 @@ RoomはSQLiteの抽象化、SQLのコンパイル時検査やmigration支援を�
 
 ### 6.3 再起動・手動save/load
 
-active recordがあれば保存した版/seed/固定定義で新しいGameSessionを作り、保存済みadvance呼出し数だけ内部で再実行する。全snapshot/RNG/source消費数を値で照合し、一致した場合だけ操作可能にする。参照同一性やtoStringの比較で済ませない。再生途中の状態は表示/再集計せず、復旧の再生を新しい試合結果の登録と扱わない。サヨナラ/0球受理のabort/完了直後も対象にする。
+進行中のactive recordがあれば保存した版/seed/固定定義で新しいGameSessionを作り、保存済みadvance呼出し数だけ内部で再実行する。全snapshot/RNG/source消費数を値で照合し、一致した場合だけ操作可能にする。参照同一性やtoStringの比較で済ませない。再生途中の状態は表示/再集計せず、復旧の再生を新しい試合結果の登録と扱わない。サヨナラ/完了直後も検査する。既に保存された未完了エラー停止は、§5のとおり保存理由/snapshotを表示して止め、再生して続きを許可しない。0球受理abortも呼出し境界を含む診断状態を保持する。
 
 将来、采配・可変選手・外部入力が入るとseedだけの再生では足りない。今回の復旧は固定ToyPitchSource・固定入力定義に限定し、将来へ一般化したと称さない。実行環境由来の非決定的source_errorもseedだけで再現できる保証はなく、不一致ならデータを保持して停止する。版が不明/不一致なら勝手に最新版で再生しない。既存データを保持して読込みを止め、復旧案を別途示す。[migration](https://developer.android.com/training/data-storage/room/migrating-db-versions)でも破壊的fallbackは使わない。
 
