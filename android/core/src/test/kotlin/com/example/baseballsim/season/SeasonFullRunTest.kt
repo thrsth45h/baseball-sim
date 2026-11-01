@@ -52,7 +52,13 @@ class SeasonFullRunTest {
             }
             assertEquals(skip.state.results,selected.state.results);assertEquals(skip.state.standings,selected.state.standings)
             assertEquals(skip.state.playerCounts,selected.state.playerCounts)
-            val modes=mutableListOf("skip","mixed","selected")
+            val finishSeason=SeasonSession(SeasonState.initial(master));finishSeason.finishSeason { false }
+            assertEquals(SeasonStatus.COMPLETE,finishSeason.state.status)
+            assertEquals(141,finishSeason.state.dayIndex)
+            assertEquals(skip.state.results,finishSeason.state.results)
+            assertEquals(skip.state.standings,finishSeason.state.standings)
+            assertEquals(skip.state.playerCounts,finishSeason.state.playerCounts)
+            val modes=mutableListOf("skip","mixed","selected","finishSeason")
             if(master=="42")for(mode in listOf("pitch","pa")) {
                 val whole=run(master,mode);assertEquals(skip.state.results,whole.state.results);assertEquals(skip.checkpoints,whole.checkpoints);modes+=mode
             }
