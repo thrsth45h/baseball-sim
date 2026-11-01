@@ -102,6 +102,8 @@ worker実装・責任者の独立レビュー後、[実装PR #35](https://github
 
 ## Phase 5 — Androidゲームと長期ペナント
 
+Androidの単独1試合APKは[PR #40](https://github.com/thrsth45h/baseball-sim/pull/40)としてmain `470467a27d6390b6415e5b16b44c0c1a0aa1704f`へ統合済み。次は[Phase 5a最小ペナント](docs/PENNANT_BASIC_DESIGN.md)・[ADR-0015](docs/adr/0015-pennant-basic.md)。120試合/球団の仮日程・既存coreの観戦/スキップ・順位/限定イベント集計・Room保存/復旧をAPKまで通す試作で、**2026-11-01に本人が具体範囲とworker実装へ「はい」と回答して承認**。D057/D058は本試作のみCONFIRMED。設計PR #41のレビュー/CI/マージ後に3実装PRへ委任し、最後のAPKまで進める。製品規約・長期保存はOPENを維持する。
+
 - UI、試合自動進行、セーブ、CPU監督、一・二軍、スカウト、育成、ドラフト、FA、トレード、球団財政。
 - MLB水準のリーグ分布、能力の因果効果、長期的な選手層、容量と性能を大量シミュレーションで検証。
 

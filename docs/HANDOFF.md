@@ -10,6 +10,9 @@
 
 ## 現在の到達点
 
+- **Android実装PR #40をマージ済み。** main `470467a27d6390b6415e5b16b44c0c1a0aa1704f`。レビューhead `baa45e2836063c8d0641a756a762fab1274ee414`と統合treeは一致し、APK source `2b0708294887f23fced10cd71a726dbd5fde030a`からAndroid/tests/CIは不変。最終headの全8workflow/16jobs成功と独立レビューを確認して統合した。既存worktree/ignored証拠を保持し、研究repoは変更していない。
+- **Phase 5aの試作範囲・worker実装〜APK完成を本人承認済み。** [設計PR #41](https://github.com/thrsth45h/baseball-sim/pull/41)・[正本](PENNANT_BASIC_DESIGN.md)の12球団/固定各9人/120試合・既存coreの観戦/スキップ・順位/限定記録・Room保存/復旧・単年度試作を示す確認に、2026-11-01本人が「はい」と回答。D057/D058は本試作のみCONFIRMED、ADR-0015 Accepted。設計レビュー/CI/マージ後、workerへ日程/集計→保存/復旧→Android接続を直接委任し、責任者の独立レビュー/修正確認/CI/問題のないPRマージでAPKまで進める。通常判断を繰り返し確認しない。製品日程/長期保存/年度移行/能力や経営は今回含めない。
+
 - **Androidのオフライン1試合技術検証版を追加。** [設計PR #39](https://github.com/thrsth45h/baseball-sim/pull/39)の2026-11-01正式承認・main `0c75f6f2f44f3e2058eeb52c61807b3db101e750`に基づく[実装PR #40](https://github.com/thrsth45h/baseball-sim/pull/40)。Kotlin純core＋Compose/ViewModelで1球/1打席/最後まで・新seedを端末内処理し、PCサーバ/Python/INTERNET権限なし。検証source head `2b0708294887f23fced10cd71a726dbd5fde030a`、[APK取得手順](android-first-match/README.md)・[検証記録](android-first-match/VALIDATION.md)。CIのcore7/app12/device6 methodは別集計で全failure/error/skip0、lint0error、API35の画面なしエミュレーターとPNG3枚を確認。独立fixture49ケース/2,600 advance、live sm64-v1の4seed全state/RNG、初版coreの親JDK別再実行7件も成功した。検証APK SHA256 `c3ffe9a70d75a572437dd91e2b3720ddee2cf8c47e1a506f04d0f084e632c90c`、artifact期限2026-11-15 02:24:04 JST。minAPI26は宣言/lint確認、API26実行・実機操作は未検証。sm64-v1は今回用、D032/D049の初版構成だけ採用しDB/製品セーブ等はD056 OPEN。ユーザーPCの画面/入力/既存環境を操作せず、SDK/IDE/Gradle/JDKも導入していない。次はペナント基本機能の**設計案だけ**を整理し、未承認の大規模実装へ進まない。
 
 - **PCブラウザ用のローカル操作画面を追加。** `python -m prototypes.match_view`でloopbackのURLを表示し、既存Phase 4fを1球/1打席/最後まで進める薄い操作層。seed変更・カウント/塁/打者・得点表/直近ログを表示し、終端では旧投影のcount/塁を非表示にする。[手順](local-match-view/README.md)・[検証](local-match-view/VALIDATION.md)を参照。実HTTP/単体検査は成功。責任者は別プロファイル/画面なしのChromeヘッドレスで1280/390/320幅・仮想Enter・seed42完走を確認した。ユーザーのPCを操作しない指示に従い、ブラウザの自動起動・可視ウィンドウ/物理入力/ユーザープロファイル操作は行わない。ネイティブPC操作・スマホ実機は未検証。D048はPROVISIONAL、D029–D032はOPENで、Android技術選定/公式成績/能力/製品採用を含めない。
@@ -156,6 +159,6 @@ Phase 2bの通常ファウル・ファウルチップ・インプレー分岐は
 
 詳細は[研究状況](STATCAST_STATUS.md)、[Phase 1d設計](PHASE1D_DESIGN.md)、[ロードマップ](../ROADMAP.md)を参照。
 
-## Android正式承認・今回の作業（2026-11-01）
+## Android正式承認時点の記録（2026-11-01、実装完了前）
 
-本人はPR #39のKotlin/Compose構成とAndroid技術検証版を正式承認。[設計](ANDROID_FIRST_MATCH_DESIGN.md)・[ADR-0014](adr/0014-android-first-match.md)・D049を正本とし、設計レビュー/マージ後にworkerへ委任する。現時点ではAndroid実装/ビルドは未実施。長期の決定事項は[長期方針](LONG_TERM_POLICY.md)・D050–D055に記録し、保存方式等D056はOPEN。以前のD032 OPEN/未承認は履歴で、現在は言語/初版構成だけ採用済み。今回のAPK完成後に次のペナント基本機能の設計案を示すが、詳細実装は未承認。PC画面/入力/既存環境を操作しない。
+本人はPR #39のKotlin/Compose構成とAndroid技術検証版を正式承認。[設計](ANDROID_FIRST_MATCH_DESIGN.md)・[ADR-0014](adr/0014-android-first-match.md)・D049を正本とし、設計レビュー/マージ後にworkerへ委任する段階だった。承認時点ではAndroid実装/ビルドは未実施だったが、その後PR #40を完了・統合済み（本書冒頭）。長期の決定事項は[長期方針](LONG_TERM_POLICY.md)・D050–D055に記録し、保存方式等D056はOPEN。以前のD032 OPEN/未承認は履歴で、現在は言語/初版構成だけ採用済み。APK完成後のペナント基本機能は設計段階で、詳細実装は未承認。PC画面/入力/既存環境を操作しない。
