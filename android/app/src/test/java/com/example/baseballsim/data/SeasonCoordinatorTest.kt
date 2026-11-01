@@ -12,6 +12,7 @@ class SeasonCoordinatorTest {
         var writes = 0
         var failBeforeWrite = 0
         var failAfterWrite = 0
+        var cancelAfterWrite = 0
         var paused: CompletableDeferred<Unit>? = null
         val commits = mutableListOf<SeasonState>()
         override suspend fun read() = saved
@@ -28,6 +29,7 @@ class SeasonCoordinatorTest {
             if (old.state.active == null && candidate.results.size > old.state.results.size) error("Missing start marker")
             val result = StoredSeason(old.token.copy(revision = old.token.revision + 1), candidate, operationId)
             saved = result; commits += candidate
+            if (writes == cancelAfterWrite) throw CancellationException("Injected cancellation after commit")
             if (writes == failAfterWrite) error("Injected lost response")
             return result
         }
@@ -81,5 +83,15 @@ class SeasonCoordinatorTest {
         assertThrows(SeasonBusy::class.java) { runBlocking { coordinator.advance(SeasonAdvance.PITCH) } }
         pause.complete(Unit); running.await()
         assertEquals(1L, store.saved!!.state.active!!.snapshot.pitchesAccepted)
+    }
+    @Test fun cancellationAfterCommitDoesNotRollBackOrKeepAMutableCandidate() = runBlocking {
+        val store = FakeStore(); val coordinator = coordinator(store)
+        coordinator.create(); store.cancelAfterWrite = 2
+        assertThrows(CancellationException::class.java) { runBlocking { coordinator.advance(SeasonAdvance.PITCH) } }
+        val durable = coordinator.read()!!
+        assertEquals(1L, durable.state.active!!.snapshot.pitchesAccepted)
+        store.cancelAfterWrite = 0
+        val next = coordinator.advance(SeasonAdvance.PITCH)
+        assertEquals(2L, next.state.active!!.snapshot.pitchesAccepted)
     }
 }
