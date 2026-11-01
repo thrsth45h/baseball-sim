@@ -131,5 +131,33 @@ class SeasonBoundaryTest {
         val state=SeasonState.initial().beginNext().accept(summary)
         assertEquals(1L,state.standings.single{it.totals.clubId==game.fixture.homeClubId}.totals.runsFor)
         assertEquals(1L,state.playerCounts.single{it.playerId==game.fixture.homeClubId+"-P01"}.counts.walkEvents)
+        val hrInitial=GameSnapshot(sequence.copy(half=HalfState(bases=listOf(true,false,false))),lineScore=List(18){0L},historyOrigin="provided_snapshot")
+        val hr=GameSession(game.seed,source=ScriptedSource(listOf(SourceInput.Pitch(PitchInput("fair_ball_handoff",FairPlay("home_run"))))),initial=hrInitial)
+        hr.runToEnd();val twoRunHr=GameSummary.fromCore(game,hr.snapshot)
+        assertEquals(Score(0,2),twoRunHr.score)
+        fun invalid(reason: String,away: Long,home: Long,delta: Long,finalHalf: Long=home): GameSummary {
+            val lines=MutableList<Long?>(18){0L};lines[0]=away;lines[1]=home-finalHalf;lines[17]=finalHalf
+            return GameSummary(game,10_000,Status.COMPLETED,"home_win",reason,Score(away,home),lines,Score(0,delta),summary.pitchesAccepted,summary.batters)
+        }
+        val bad=listOf<()->GameSummary>(
+            {invalid("walkoff_walk",0,2,2)}, {invalid("walkoff_safe_hit",0,2,2)},
+            {invalid("walkoff_safe_hit",3,4,4)}, {invalid("walkoff_home_run",0,5,5)},
+            {invalid("walkoff_home_run",0,3,2)}, {invalid("walkoff_home_run",1,2,2,1)})
+        val unchanged=SeasonState.initial().beginNext();val before=CheckpointCodec.encodeSeason(unchanged)
+        bad.forEach { make ->
+            assertThrows(IllegalArgumentException::class.java){CheckpointCodec.encodeSummary(make())}
+            assertThrows(IllegalArgumentException::class.java){unchanged.accept(make())}
+        }
+        assertArrayEquals(before,CheckpointCodec.encodeSeason(unchanged))
+        // Forge only the reason in an otherwise valid encoded two-run HR; numeric fields stay intact.
+        val encoded=CheckpointCodec.encodeSummary(twoRunHr)
+        val old="walkoff_home_run".toByteArray(Charsets.UTF_8)
+        val offset=encoded.indices.single { i -> i+old.size<=encoded.size && encoded.copyOfRange(i,i+old.size).contentEquals(old) }
+        for(reason in listOf("walkoff_walk","walkoff_safe_hit")) {
+            val replacement=reason.toByteArray(Charsets.UTF_8)
+            val length=java.nio.ByteBuffer.allocate(4).putInt(replacement.size).array()
+            val forged=encoded.copyOfRange(0,offset-4)+length+replacement+encoded.copyOfRange(offset+old.size,encoded.size)
+            assertThrows(IllegalArgumentException::class.java){CheckpointCodec.decodeSummary(forged)}
+        }
     }
 }

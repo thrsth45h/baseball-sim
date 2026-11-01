@@ -26,6 +26,17 @@ class GameSummary(val game: ScheduledGame, val maxPitches: Long, val status: Sta
         require(lineScore.filterIndexed { i, _ -> i % 2 == 1 }.fold(0L) { a, b -> add(a, b ?: 0) } == score.home)
         require(terminalDelta.away == 0L && terminalDelta.home <= score.home)
         require(if (reason.startsWith("walkoff_")) terminalDelta.home > 0 && outcome == "home_win" else terminalDelta == Score())
+        if (reason.startsWith("walkoff_")) {
+            val delta = terminalDelta.home
+            val margin = score.home - score.away
+            require(delta <= checkNotNull(lineScore[17])) { "Terminal runs exceed the final half-inning runs" }
+            require(when (reason) {
+                "walkoff_walk" -> delta == 1L && margin == 1L
+                "walkoff_safe_hit" -> delta in 1L..3L && margin == 1L
+                "walkoff_home_run" -> delta in 1L..4L && margin <= delta
+                else -> false
+            }) { "Inconsistent local walkoff summary" }
+        }
         require(batters.size == 18)
         batters.forEachIndexed { index, row ->
             val side = if (index < 9) "away" else "home"
