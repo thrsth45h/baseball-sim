@@ -80,7 +80,7 @@ class RoomSeasonStore(
                     if (!replacementConfirmed || expected == null) throw StoreConflict("Replacing a season requires explicit confirmation")
                     requireToken(old, expected)
                     if (previous?.token != expected) throw StoreConflict("Saved state changed before replacement")
-                    if (previous.state.status == SeasonStatus.BLOCKED) dao.insertDiagnostic(DiagnosticEntity(old.worldId, old.generationId, old.payloadHash, old.payload))
+                    if (requireNotNull(previous).state.status == SeasonStatus.BLOCKED) dao.insertDiagnostic(DiagnosticEntity(old.worldId, old.generationId, old.payloadHash, old.payload))
                 }
                 dao.insertGeneration(GenerationEntity(generation, world))
                 val head = WorkingEntity(worldId = world, generationId = generation, revision = 0, operationId = operationId, payloadHash = bodyHash, payload = bytes)
@@ -109,12 +109,14 @@ class RoomSeasonStore(
         require(candidate.masterSeed == before.state.masterSeed && candidate.games == before.state.games)
         require(candidate.results.size >= before.state.results.size && candidate.results.take(before.state.results.size) == before.state.results)
         require(candidate.results.size <= before.state.results.size + 1) { "Commit at most one completed game at a time" }
-        if (before.state.active == null) {
+        val priorActive = before.state.active
+        val nextActive = candidate.active
+        if (priorActive == null) {
             require(candidate.results.size == before.state.results.size) { "Persist the start marker before any pitch" }
-            candidate.active?.let { require(it.advanceCalls == 0L && it.snapshot == it.initial) { "A new start marker must be unadvanced" } }
-        } else if (candidate.active != null) {
-            require(candidate.active.game == before.state.active.game && candidate.active.advanceCalls >= before.state.active.advanceCalls)
-            if (candidate.active.advanceCalls == before.state.active.advanceCalls) require(candidate.active == before.state.active)
+            nextActive?.let { require(it.advanceCalls == 0L && it.snapshot == it.initial) { "A new start marker must be unadvanced" } }
+        } else if (nextActive != null) {
+            require(nextActive.game == priorActive.game && nextActive.advanceCalls >= priorActive.advanceCalls)
+            if (nextActive.advanceCalls == priorActive.advanceCalls) require(nextActive == priorActive)
         } else {
             require(candidate.results.size == before.state.results.size + 1) { "An active match cannot silently disappear" }
         }
