@@ -111,8 +111,13 @@ class RoomSeasonStore(
             throw StoreConflict("Saved generation or revision changed")
         }
         require(candidate.masterSeed == before.state.masterSeed && candidate.games == before.state.games)
+        require(candidate.dayIndex >= before.state.dayIndex) { "Ordinary updates cannot rewind the calendar" }
         require(candidate.results.size >= before.state.results.size && candidate.results.take(before.state.results.size) == before.state.results)
         require(candidate.results.size <= before.state.results.size + 1) { "Commit at most one completed game at a time" }
+        if (candidate.results.size == before.state.results.size + 1) {
+            val accepted = before.state.accept(candidate.results.last())
+            require(candidate.active == null && candidate.dayIndex == accepted.dayIndex) { "Result and day transition must be one canonical update" }
+        }
         val priorActive = before.state.active
         val nextActive = candidate.active
         if (priorActive == null) {
