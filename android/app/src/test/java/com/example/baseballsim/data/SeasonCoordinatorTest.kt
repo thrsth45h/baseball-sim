@@ -73,7 +73,7 @@ class SeasonCoordinatorTest {
         assertNull(stopped.state.active)
         assertEquals(one.state.active!!.game, stopped.state.results.single().game)
     }
-    @Test fun calculationsRunOutsideCallerThreadAndConcurrentCommandsAreRejected() = runBlocking {
+    @Test fun concurrentCommandsAreRejectedRatherThanQueued() = runBlocking {
         val store = FakeStore(); val coordinator = coordinator(store)
         coordinator.create()
         val pause = CompletableDeferred<Unit>(); store.paused = pause

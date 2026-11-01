@@ -13,7 +13,7 @@ import java.util.UUID
 class RoomSeasonStoreTest {
     private val context get() = ApplicationProvider.getApplicationContext<android.content.Context>()
     private fun name() = "store-test-${UUID.randomUUID()}.db"
-    @Test fun roomCloseOpenPreservesARealPitchAndAllReplayCounters() = runBlocking {
+    @Test fun roomCloseOpenPreservesARealPitchAndAllReplayCounters(): Unit = runBlocking {
         val name = name()
         var db = PennantDatabase.open(context, name)
         try {
@@ -31,7 +31,7 @@ class RoomSeasonStoreTest {
             assertThrows(IllegalArgumentException::class.java) { runBlocking { store.loadSlot(restored.token, "illegal-load") } }
         } finally { db.close(); context.deleteDatabase(name) }
     }
-    @Test fun completedResultIsAtomicAndLostReplyCanBeRetriedWithoutDoubleCounting() = runBlocking {
+    @Test fun completedResultIsAtomicAndLostReplyCanBeRetriedWithoutDoubleCounting(): Unit = runBlocking {
         val name = name(); val db = PennantDatabase.open(context, name)
         try {
             val store = RoomSeasonStore(db)
@@ -50,7 +50,7 @@ class RoomSeasonStoreTest {
             assertThrows(StoreConflict::class.java) { runBlocking { store.commit(begun.token, "stale", candidate) } }
         } finally { db.close(); context.deleteDatabase(name) }
     }
-    @Test fun manualSlotUsesNewGenerationAndRejectsOldCallbacks() = runBlocking {
+    @Test fun manualSlotUsesNewGenerationAndRejectsOldCallbacks(): Unit = runBlocking {
         val name = name(); val db = PennantDatabase.open(context, name)
         try {
             val store = RoomSeasonStore(db)

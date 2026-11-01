@@ -16,14 +16,18 @@ class RoomSeasonStore(
     private val faults: StoreFaults = StoreFaults {},
 ) : SeasonStore {
     private val dao get() = database.pennantDao()
-    private data class Raw(val head: WorkingEntity, val results: List<ResultEntity>)
+    private data class Raw(val head: WorkingEntity, val results: List<ResultEntity>, val receipt: ReceiptEntity?)
     private fun token(head: WorkingEntity) = StoreToken(head.worldId, head.generationId, head.revision)
     private suspend fun raw(): Raw? = withContext(io) { database.withTransaction {
-        dao.head()?.let { Raw(it, dao.results(it.worldId, it.generationId)) }
+        dao.head()?.let { Raw(it, dao.results(it.worldId, it.generationId), dao.receipt(it.operationId)) }
     } }
     override suspend fun read(): StoredSeason? {
         val raw = raw() ?: return null
         return withContext(computation) {
+            val receipt = raw.receipt
+            if (receipt == null || receipt.worldId != raw.head.worldId || receipt.generationId != raw.head.generationId || receipt.revision != raw.head.revision || !validIdentifier(raw.head.operationId))
+                throw StoreCorruption("Saved head and operation receipt disagree")
+            val savedToken = try { token(raw.head) } catch (error: Exception) { throw StoreCorruption("Saved identity or revision is invalid", error) }
             val state = checkedState(raw.head.payload, raw.head.payloadHash)
             if (raw.results.size != state.results.size) throw StoreCorruption("Result ledger count differs from the saved frame")
             raw.results.zip(state.results).forEach { (row, result) ->
@@ -33,7 +37,7 @@ class RoomSeasonStore(
                     throw StoreCorruption("Result ledger and saved frame disagree")
                 }
             }
-            StoredSeason(token(raw.head), state, raw.head.operationId)
+            StoredSeason(savedToken, state, raw.head.operationId)
         }
     }
     private fun operation(value: String) { require(validIdentifier(value)) }
