@@ -1,0 +1,13 @@
+{
+  "schema": "pennant-reference-source-context-v1",
+  "reference_generation_started_utc": "2026-11-01 07:38:02 UTC",
+  "technical_design_commit": "2186928851a0db1921e6dd11651fa24b3627137f",
+  "approval_record_commit": "8b2f23f73fee1c5285e5794f375b778a9ad17a32",
+  "approval_scope": "Parent relayed explicit user approval of PR41 and confirmed the schedule/ID detail contract before generation.",
+  "core_rules_reference_main": "470467a27d6390b6415e5b16b44c0c1a0aa1704f",
+  "existing_android_core_build_source": "2b0708294887f23fced10cd71a726dbd5fde030a",
+  "schedule_version": "season-schedule-v1",
+  "seed_derivation_version": "season-seeds-v1",
+  "rng_version": "sm64-v1",
+  "freeze_independence": "No new season implementation, worker implementation, or parent private expected values read. Existing core is hashed but not executed."
+}

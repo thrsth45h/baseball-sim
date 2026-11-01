@@ -1,0 +1,9 @@
+# 実装前の独立参照受領
+
+2026-11-01日本時間。承認設計PR #41をmain `8ef1415abccf6e214bd32082f5d07496e9035ad6`へ統合後、独立担当の参照を受領した。この受領コミットの時点で新season実装・テストコードは0ファイル。
+
+親が凍結したFREEZE_MANIFESTのSHA256は`ba54cc0173928f5fbaa752473f09a1db9b31a9c36e29af075636979a518745a8`、記録された凍結時刻は2026-11-01 16:42:13 JST。暗号学的な時刻証明とは称さない。封印16ファイルとmanifest自身をraw bytesのままtest resourcesのpennant-referenceへコピーし、全bytes/SHA256を照合した。限定.gitattributesで改行変換を止める。
+
+日程720行・calendar140日・master0/42/2026の割当2160行・12結果の手計算台帳/2順位表・疎な54入力から108選手への帰属の正本はfrozen/。小台帳は実GameSessionの生成結果ではなく、帰属例は途中試合を飛ばせる進行規則でもない。Room保存/Android/実core720試合の成功はまだ示さない。
+
+CONTRACT/README/generator/SOURCE_CONTEXT/manifestを確認した。期待値を実装へ合わせて変更しない。不整合があれば親へ戻す。旧core4source・旧7テスト・旧fixture・旧CI/Python/研究は変更しない。
