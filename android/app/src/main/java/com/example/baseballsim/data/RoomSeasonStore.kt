@@ -19,7 +19,11 @@ class RoomSeasonStore(
     private data class Raw(val head: WorkingEntity, val results: List<ResultEntity>, val receipt: ReceiptEntity?)
     private fun token(head: WorkingEntity) = StoreToken(head.worldId, head.generationId, head.revision)
     private suspend fun raw(): Raw? = withContext(io) { database.withTransaction {
-        dao.head()?.let { Raw(it, dao.results(it.worldId, it.generationId), dao.receipt(it.operationId)) }
+        val head = dao.head()
+        if (head == null) {
+            if (dao.hasSavedData()) throw StoreCorruption("Saved records exist without a current head; data has been retained")
+            null
+        } else Raw(head, dao.results(head.worldId, head.generationId), dao.receipt(head.operationId))
     } }
     override suspend fun read(): StoredSeason? {
         val raw = raw() ?: return null

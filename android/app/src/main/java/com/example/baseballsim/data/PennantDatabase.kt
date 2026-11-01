@@ -36,6 +36,8 @@ data class GenerationEntity(@PrimaryKey val generationId: String, val worldId: S
 @Dao
 interface PennantDao {
     @Query("SELECT * FROM working_state WHERE id = 1") suspend fun head(): WorkingEntity?
+    @Query("SELECT EXISTS(SELECT 1 FROM generation_registry) OR EXISTS(SELECT 1 FROM manual_slot) OR EXISTS(SELECT 1 FROM completed_results) OR EXISTS(SELECT 1 FROM operation_receipts) OR EXISTS(SELECT 1 FROM blocked_diagnostics)")
+    suspend fun hasSavedData(): Boolean
     @Insert(onConflict = OnConflictStrategy.ABORT) suspend fun insertHead(value: WorkingEntity)
     @Query("UPDATE working_state SET worldId=:newWorld, generationId=:newGeneration, revision=:newRevision, operationId=:operation, payloadHash=:hash, payload=:body WHERE id=1 AND worldId=:expectedWorld AND generationId=:expectedGeneration AND revision=:expectedRevision")
     suspend fun compareAndSetHead(expectedWorld: String, expectedGeneration: String, expectedRevision: Long,
