@@ -161,4 +161,57 @@ class RoomSeasonFailureTest {
             File(output).mkdirs(); File(output, "pennant-store-evidence.json").writeText(report.toString(2))
         } finally { db.close(); context.deleteDatabase(name) }
     }
+    @Test fun manualSaveAndLoadFailuresRollBackSlotHeadAndResultRowsTogether(): Unit = runBlocking {
+        val name = name(); val db = PennantDatabase.open(context, name)
+        try {
+            val store = RoomSeasonStore(db)
+            val initial = store.create("42", "L1-T01", op())
+            val failSave = RoomSeasonStore(db, faults = StoreFaults { if (it == StoreFaultPoint.AFTER_HEAD) error("Failed slot save") })
+            assertThrows(IllegalStateException::class.java) { runBlocking { failSave.saveSlot(initial.token, op()) } }
+            assertEquals(initial, store.read()); assertFalse(store.hasSlot())
+            var latest = store.commit(initial.token, op(), initial.state.beginNext())
+            latest = store.commit(latest.token, op(), SeasonSession(latest.state).finishCurrent())
+            val saved = store.saveSlot(latest.token, op())
+            latest = store.commit(saved.token, op(), saved.state.beginNext())
+            latest = store.commit(latest.token, op(), SeasonSession(latest.state).finishCurrent())
+            val failLoad = RoomSeasonStore(db, faults = StoreFaults { if (it == StoreFaultPoint.AFTER_RESULTS) error("Failed slot load") })
+            assertThrows(IllegalStateException::class.java) { runBlocking { failLoad.loadSlot(latest.token, op()) } }
+            assertEquals(latest, store.read())
+            assertEquals(2, db.pennantDao().results(latest.token.worldId, latest.token.generationId).size)
+            val loaded = store.loadSlot(latest.token, op())
+            assertEquals(saved.state, loaded.state)
+            assertEquals(1, db.pennantDao().results(loaded.token.worldId, loaded.token.generationId).size)
+        } finally { db.close(); context.deleteDatabase(name) }
+    }
+    @Test fun completedWalkoffCheckpointIsFinalizedOnceAfterCloseOpenWithoutAnotherPitch(): Unit = runBlocking {
+        val name = name(); var db = PennantDatabase.open(context, name)
+        try {
+            var store = RoomSeasonStore(db)
+            var latest = store.create("42", "L1-T01", op())
+            var found = false
+            while (latest.state.status == SeasonStatus.IN_PROGRESS) {
+                val marker = store.commit(latest.token, op(), latest.state.beginNext())
+                val calculation = marker.state.active!!.recover("42")
+                calculation.finish()
+                val completed = calculation.checkpoint()
+                val expected = SeasonSession(marker.state).finishCurrent()
+                if (completed.snapshot.reason!!.startsWith("walkoff_")) {
+                    val pending = store.commit(marker.token, op(), marker.state.checkpoint(completed))
+                    assertEquals(marker.state.results.size, pending.state.results.size)
+                    db.close(); db = PennantDatabase.open(context, name); store = RoomSeasonStore(db)
+                    val coordinator = SeasonCoordinator(store)
+                    val finalized = coordinator.read()!!
+                    assertEquals(expected, finalized.state)
+                    assertNull(finalized.state.active)
+                    assertEquals(completed.snapshot.pitchesAccepted, finalized.state.results.last().pitchesAccepted)
+                    assertEquals(finalized, coordinator.read())
+                    assertEquals(finalized.state.results.size, db.pennantDao().results(finalized.token.worldId, finalized.token.generationId).size)
+                    found = true
+                    break
+                }
+                latest = store.commit(marker.token, op(), expected)
+            }
+            assertTrue("The fixed season contains an actual toy walk-off", found)
+        } finally { db.close(); context.deleteDatabase(name) }
+    }
 }
