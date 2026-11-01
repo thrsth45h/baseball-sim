@@ -1,0 +1,68 @@
+name: pennant-core-tests
+on: [push, pull_request]
+permissions:
+  contents: read
+env:
+  SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+jobs:
+  repeat-core:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: android
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5
+        with:
+          distribution: temurin
+          java-version: '17.0.21+9'
+      - name: Verify official Wrapper bytes
+        run: echo '81a82aaea5abcc8ff68b3dfcb58b3c3c429378efd98e7433460610fecd7ae45f  gradle/wrapper/gradle-wrapper.jar' | sha256sum --check
+      - uses: gradle/actions/setup-gradle@0723195856401067f7a2779048b490ace7a47d7c # v5
+      - name: Fixed SDK packages in CI only
+        run: '"$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-36" "build-tools;35.0.0"'
+      - name: First measured core test and audit export
+        run: |
+          mkdir -p core/build
+          /usr/bin/time -v -o core/build/pennant-first-time.txt bash gradlew :core:test :core:exportAuditBundle --no-daemon --stacktrace
+          cp core/build/pennant-audit/pennant-core-audit.json core/build/pennant-first-run.json
+      - name: Rerun in the same build directory
+        run: /usr/bin/time -v -o core/build/pennant-repeat-time.txt bash gradlew :core:test :core:exportAuditBundle --rerun-tasks --no-daemon --stacktrace
+      - name: Compare all game and aggregate values
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          first=json.loads(Path('core/build/pennant-first-run.json').read_text())
+          repeat=json.loads(Path('core/build/pennant-audit/pennant-core-audit.json').read_text())
+          excluded=['skip_seconds','mixed_seconds','max_sampled_jvm_heap_bytes']
+          for data in (first,repeat):
+              assert len(data['masters'])==3
+              for master in data['masters']:
+                  assert len(master['games'])==720
+                  for field in excluded: master.pop(field)
+          assert first==repeat, 'Incremental rerun changed a game or aggregate value'
+          report={'schema':'pennant-core-rerun-v1','source_head':os.environ['SOURCE_SHA'],
+                  'same_build_directory':True,'all_2160_game_and_aggregate_values_equal':True,
+                  'comparison_excluded_metrics_only':excluded}
+          with Path('core/build/pennant-rerun-check.json').open('x') as output:
+              json.dump(report,output,indent=2);output.write('\n')
+          PY
+          git rev-parse HEAD > core/build/audit-bundle/SOURCE_HEAD.txt
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: always()
+        with:
+          name: pennant-core-repeat-${{ env.SOURCE_SHA }}
+          path: |
+            android/core/build/audit-bundle/
+            android/core/build/test-results/
+            android/core/build/reports/tests/
+            android/core/build/pennant-first-run.json
+            android/core/build/pennant-first-time.txt
+            android/core/build/pennant-repeat-time.txt
+            android/core/build/pennant-rerun-check.json
+          if-no-files-found: error
+          retention-days: 14
