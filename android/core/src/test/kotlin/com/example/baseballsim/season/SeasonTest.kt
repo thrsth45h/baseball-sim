@@ -71,6 +71,12 @@ class SeasonTest {
         state=state.beginNext();val before=CheckpointCodec.encodeSeason(state)
         assertSame(state,state.accept(games.first()));assertArrayEquals(before,CheckpointCodec.encodeSeason(state))
         val changed=Ref.summary(fixture["receipt_cases"].asJsonArray[1].asJsonObject["input"].asJsonObject,state.games)
+        val encoded=CheckpointCodec.encodeSummary(games.first())
+        assertEquals(games.first(),CheckpointCodec.decodeSummary(encoded))
+        assertNotEquals(Ref.hash(encoded),Ref.hash(CheckpointCodec.encodeSummary(changed)))
+        assertThrows(IllegalArgumentException::class.java){CheckpointCodec.decodeSummary(encoded+byteArrayOf(0))}
+        val unknown=encoded.clone();unknown[4]='x'.code.toByte()
+        assertThrows(IllegalArgumentException::class.java){CheckpointCodec.decodeSummary(unknown)}
         assertThrows(IllegalArgumentException::class.java){state.accept(changed)}
         assertArrayEquals(before,CheckpointCodec.encodeSeason(state));assertEquals(13,state.nextOrdinal);assertNotNull(state.active)
     }

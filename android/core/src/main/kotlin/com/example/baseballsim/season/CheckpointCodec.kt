@@ -13,6 +13,8 @@ object CheckpointCodec {
     private const val MAX_BYTES = 32 * 1024 * 1024
     fun encodeGame(value: GameCheckpoint): ByteArray = write { text("pennant-game-checkpoint-v1"); gameCheckpoint(value) }
     fun decodeGame(bytes: ByteArray): GameCheckpoint = read(bytes) { require(text() == "pennant-game-checkpoint-v1"); gameCheckpoint() }
+    fun encodeSummary(value: GameSummary): ByteArray = write { text("pennant-game-summary-v1"); summary(value) }
+    fun decodeSummary(bytes: ByteArray): GameSummary = read(bytes) { require(text() == "pennant-game-summary-v1"); summary() }
     fun encodeSeason(value: SeasonState): ByteArray = write {
         text("pennant-season-checkpoint-v1"); text(value.masterSeed); text(value.selectedClubId); int(value.dayIndex)
         int(value.games.size); value.games.forEach { scheduled(it) }

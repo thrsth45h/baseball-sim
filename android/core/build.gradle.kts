@@ -11,7 +11,7 @@ tasks.test {
     outputs.dir(pennantAudit)
 }
 tasks.register<Sync>("exportAuditBundle") {
-    dependsOn(tasks.testClasses)
+    dependsOn(tasks.test)
     into(layout.buildDirectory.dir("audit-bundle"))
     from(sourceSets["main"].output) { into("classes") }
     from(sourceSets["test"].output) { into("classes") }
