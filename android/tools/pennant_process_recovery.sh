@@ -7,6 +7,9 @@ report="app/build/pennant-process-proof"
 mkdir -p "$report"
 trap 'adb logcat -d > "$report/logcat.txt" || true' EXIT
 adb wait-for-device
+adb shell getprop ro.build.version.sdk | tr -d '\r' > "$report/device-api.txt"
+adb shell df -k /data > "$report/device-data-filesystem.txt"
+test "$(cat "$report/device-api.txt")" = 35
 adb install -r -t app/build/outputs/apk/debug/app-debug.apk
 adb install -r -t app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
 
@@ -73,6 +76,8 @@ assert proof['one_additional_pitch_only'] is True
 assert proof['saved_checkpoint_sha256']==expected['checkpoint_sha256']
 assert proof['next_checkpoint_sha256']!=expected['checkpoint_sha256']
 record={'schema':'pennant-process-recovery-v1','same_install_and_database':True,
+        'device_api':int((p/'device-api.txt').read_text().strip()),
+        'requested_ci_data_partition':'2048M',
         'prepare_instrumentation_intentionally_terminated':True,
         'force_stop_observed_process_absent':True,'new_process_id':after,'old_process_id':before,
         'recovery_process_observed_alive_after_junit':bool(surviving),

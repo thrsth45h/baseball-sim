@@ -22,6 +22,8 @@ PNGは新規/進行中/順位/記録/シーズン完了/狭幅/未完了診断/p
 
 head5512be67の全9workflowは成功。これは最終受入れ一式ではない。head261aa22のdeviceはテストへ到達する前、SDK emulator ZIP取得のエラーで停止した。アプリのテスト失敗や動作成功とは扱わない。新しいheadで結果を確認し、取得だけの一時障害なら最終対象の限定再実行で確認する。
 
+headc212の専用hostは、エミュレータ起動時のuserdata領域要求約7.2GiBに対してCI runnerの空きが不足し、テスト前に停止した。専用CIのAVDだけを`disk-size: 2048M`へ明示し、API35と実際の`/data`容量をhost証拠へ記録する。[使用中actionの正式input](https://raw.githubusercontent.com/ReactiveCircus/android-emulator-runner/a421e43855164a8197daf9d8d40fe71c6996bb0d/action.yml)に従う設定で、ユーザーPCやアプリの保存上限を変更するものではない。
+
 ## 未検証・範囲外
 
 最終APK・host復旧・720実transaction・追加8表示/操作methodの成功はまだ未確定。物理端末、API26での実行、電源断/媒体故障、長期年度移行/保存互換、能力/CPU采配/経営/研究モデル採用は対象外または未検証。API35の1台のエミュレータの時間やメモリを端末一般性能へ外挿しない。

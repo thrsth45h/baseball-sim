@@ -44,6 +44,7 @@ jobs:
           arch: x86_64
           target: google_apis
           profile: pixel_2
+          disk-size: 2048M
           working-directory: android
           disable-animations: true
           emulator-options: -no-window -no-audio -no-boot-anim -no-snapshot -gpu swiftshader_indirect -camera-back none
