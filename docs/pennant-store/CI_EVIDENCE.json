@@ -1,0 +1,260 @@
+{
+  "schema": "pennant-store-validation-v1",
+  "validation_status": "review_fixes_verified",
+  "validated_source_head": "6e9ee0be613808939a3a46dacba953c9597930cc",
+  "validated_source_tree": "71114d0059c3f2411069dc9600d9b615b47d320b",
+  "design_merge": "8ef1415abccf6e214bd32082f5d07496e9035ad6",
+  "core_main_merge": "e0a61b54e1fb852612c3d946230fa9ecb0adf914",
+  "historical_pre_review_source": {
+    "head": "f8cdb474853a879c897045571a111b57630a1561",
+    "android_run": 41317384377,
+    "CI": "9 workflows/17 jobs successful, but the later acknowledgement-race and operation-ID reuse findings were not covered",
+    "superseded_by": "6e9ee0be613808939a3a46dacba953c9597930cc"
+  },
+  "review_fixes": [
+    "Bind successful write, duplicate and no-op acknowledgements to the exact committed world/generation/revision/operation",
+    "Never convert StoreConflict into success",
+    "Resolve ambiguous failures only when expected token transition and candidate state also match"
+  ],
+  "ci_workflows": [
+    {
+      "id": 41462149077,
+      "name": "phase4b-reference-tests",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "id": 125333660011,
+          "name": "unittest (3.12)",
+          "conclusion": "success",
+          "all_steps_success": true
+        },
+        {
+          "id": 125333660496,
+          "name": "unittest (3.11)",
+          "conclusion": "success",
+          "all_steps_success": true
+        }
+      ]
+    },
+    {
+      "id": 41462148713,
+      "name": "phase4a-reference-tests",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "id": 125333658470,
+          "name": "unittest (3.11)",
+          "conclusion": "success",
+          "all_steps_success": true
+        },
+        {
+          "id": 125333659032,
+          "name": "unittest (3.12)",
+          "conclusion": "success",
+          "all_steps_success": true
+        }
+      ]
+    },
+    {
+      "id": 41462148551,
+      "name": "pennant-core-tests",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "id": 125333658838,
+          "name": "repeat-core",
+          "conclusion": "success",
+          "all_steps_success": true
+        }
+      ]
+    },
+    {
+      "id": 41462148692,
+      "name": "local-match-view-tests",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "id": 125333658594,
+          "name": "unittest (3.12)",
+          "conclusion": "success",
+          "all_steps_success": true
+        },
+        {
+          "id": 125333659315,
+          "name": "unittest (3.11)",
+          "conclusion": "success",
+          "all_steps_success": true
+        }
+      ]
+    },
+    {
+      "id": 41462148595,
+      "name": "phase4f-single-game-tests",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "id": 125333658225,
+          "name": "unittest (3.11)",
+          "conclusion": "success",
+          "all_steps_success": true
+        },
+        {
+          "id": 125333658884,
+          "name": "unittest (3.12)",
+          "conclusion": "success",
+          "all_steps_success": true
+        }
+      ]
+    },
+    {
+      "id": 41462148406,
+      "name": "phase4c-reference-tests",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "id": 125333657261,
+          "name": "unittest (3.11)",
+          "conclusion": "success",
+          "all_steps_success": true
+        },
+        {
+          "id": 125333658040,
+          "name": "unittest (3.12)",
+          "conclusion": "success",
+          "all_steps_success": true
+        }
+      ]
+    },
+    {
+      "id": 41462148490,
+      "name": "phase4d-reference-tests",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "id": 125333657900,
+          "name": "unittest (3.11)",
+          "conclusion": "success",
+          "all_steps_success": true
+        },
+        {
+          "id": 125333658309,
+          "name": "unittest (3.12)",
+          "conclusion": "success",
+          "all_steps_success": true
+        }
+      ]
+    },
+    {
+      "id": 41462148658,
+      "name": "phase4e-reference-tests",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "id": 125333658087,
+          "name": "unittest (3.12)",
+          "conclusion": "success",
+          "all_steps_success": true
+        },
+        {
+          "id": 125333658534,
+          "name": "unittest (3.11)",
+          "conclusion": "success",
+          "all_steps_success": true
+        }
+      ]
+    },
+    {
+      "id": 41462148728,
+      "name": "android-first-match",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "id": 125333658950,
+          "name": "verify",
+          "conclusion": "success",
+          "all_steps_success": true
+        },
+        {
+          "id": 125333659210,
+          "name": "device",
+          "conclusion": "success",
+          "all_steps_success": true
+        }
+      ]
+    }
+  ],
+  "ci_workflow_count": 9,
+  "ci_job_count": 17,
+  "android_run": 41462148728,
+  "unit": {
+    "old_app_methods": 12,
+    "new_coordinator_methods": 6,
+    "new_schema_backup_methods": 2,
+    "total_app_methods": 20,
+    "core_regression_methods": 22,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "artifact_id": 13150936025,
+    "zip_sha256": "4837c1cc339f6c91b057ff21b1a3525718ba199a92291106968cd30fa0915742"
+  },
+  "device": {
+    "api": 35,
+    "arch": "x86_64",
+    "old_ui_methods": 6,
+    "new_room_methods": 15,
+    "total_methods": 21,
+    "duration_seconds": 52.16,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "artifact_id": 13149204263,
+    "zip_sha256": "c74e4eb88b56fedd17f43e67cce07ded8aa66ea35fe0302283d0d633c7c1ad37",
+    "xml": "outputs/androidTest-results/connected/debug/TEST-emulator-5554 - 15-_app-.xml",
+    "class_method_counts": {
+      "com.example.baseballsim.MatchActivityTest": 3,
+      "com.example.baseballsim.MatchScreenTest": 3,
+      "com.example.baseballsim.data.RoomSeasonAcknowledgementTest": 3,
+      "com.example.baseballsim.data.RoomSeasonFailureTest": 9,
+      "com.example.baseballsim.data.RoomSeasonStoreTest": 3
+    }
+  },
+  "lint": {
+    "errors": 0,
+    "warnings": 8,
+    "warning_counts": {
+      "GradleDependency": 5,
+      "NewerVersionAvailable": 2,
+      "MissingApplicationIcon": 1
+    }
+  },
+  "pins": {
+    "room": "2.8.5",
+    "ksp": "2.2.21-2.0.5",
+    "kotlin": "2.2.21",
+    "agp": "8.11.1",
+    "gradle": "8.13",
+    "min_sdk": 26
+  },
+  "tracked_schema": {
+    "version": 1,
+    "tables": 6,
+    "bytes": 7859,
+    "sha256": "3af7cc7ed8cc59fd2d65666aa5464afb80598b5979428c3f88ae3e4d5f7004a8"
+  },
+  "room_measurement": {
+    "completed_games": 720,
+    "frame_bytes": 1585652,
+    "database_bytes": 4689920,
+    "journal_mode": "wal",
+    "synchronous": 1,
+    "fixture_write_ms": 256.022758,
+    "close_open_read_ms": 371.162032,
+    "scope": "Canonical final-state fixture insertion and close/open reading, not 720 transactional skip operations or a process kill"
+  },
+  "process_force_stop_tested_in_this_PR": false,
+  "physical_device_tested": false,
+  "api26_runtime_tested": false,
+  "local_SDK_Gradle_JDK_install": false,
+  "user_visible_UI_or_input_operations": false
+}
