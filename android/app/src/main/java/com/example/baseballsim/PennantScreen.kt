@@ -168,7 +168,12 @@ object PennantTags {
                 Text("${sequence.inning}回${if (sequence.side == Side.TOP) "表" else "裏"} · 打順 $slot")
                 Text("B ${sequence.count?.balls ?: 0}   S ${sequence.count?.strikes ?: 0}   O ${sequence.half.outs}", Modifier.testTag(PennantTags.COUNT), fontFamily = FontFamily.Monospace)
                 Text(sequence.half.bases.mapIndexed { index, on -> "${index + 1}塁 ${if (on) "有" else "無"}" }.joinToString(" · "))
-            } else Text(if (snapshot.status == Status.COMPLETED) "試合終了" else "未完了・停止")
+            } else if (snapshot.status == Status.COMPLETED) Text("試合終了")
+            else {
+                Text("未完了・停止", color = MaterialTheme.colorScheme.error)
+                Text("試合ID：${fixture.gameId}", style = MaterialTheme.typography.bodySmall)
+                Text("理由：${pennantFailureReason(snapshot.reason)}", style = MaterialTheme.typography.bodySmall)
+            }
             Text("${snapshot.pitchesAccepted}球 · ${snapshot.completedPa}打席終了", style = MaterialTheme.typography.bodySmall)
             Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 Text("回\n表\n裏")
@@ -243,3 +248,11 @@ object PennantTags {
     }
 }
 private fun weekday(value: String) = mapOf("Mon" to "月曜", "Tue" to "火曜", "Wed" to "水曜", "Thu" to "木曜", "Fri" to "金曜", "Sat" to "土曜", "Sun" to "日曜").getValue(value)
+private fun pennantFailureReason(reason: String?) = when (reason) {
+    "pitch_limit" -> "投球数の上限に到達しました（pitch_limit）"
+    "source_exhausted" -> "投球入力が不足しています（source_exhausted）"
+    "source_error" -> "投球処理でエラーが発生しました（source_error）"
+    "invalid_pitch_input" -> "投球入力が不正です（invalid_pitch_input）"
+    "invalid_fair_result" -> "打球結果が不正です（invalid_fair_result）"
+    else -> "保存された理由を確認してください（${reason ?: "理由なし"}）"
+}

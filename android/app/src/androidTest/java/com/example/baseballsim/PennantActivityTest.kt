@@ -1,6 +1,7 @@
 package com.example.baseballsim
 
 import android.graphics.Bitmap
+import android.os.SystemClock
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
@@ -8,7 +9,12 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.example.baseballsim.season.SeasonStatus
+import com.example.baseballsim.season.CheckpointCodec
+import com.example.baseballsim.data.PennantDatabase
 import java.io.File
+import java.security.MessageDigest
+import org.json.JSONObject
+import org.json.JSONArray
 import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
@@ -17,13 +23,17 @@ import org.junit.runner.RunWith
 @OptIn(ExperimentalTestApi::class)
 internal fun ComposeContentTestRule.pennantScreenshot(name: String) {
     waitForIdle()
+    val directory = pennantTestOutputDirectory()
+    File(directory, name).outputStream().use { stream ->
+        check(onNodeWithTag(PennantTags.SCREEN).captureToImage().asAndroidBitmap().compress(Bitmap.CompressFormat.PNG, 100, stream))
+    }
+}
+internal fun pennantTestOutputDirectory(): File {
     val registry = InstrumentationRegistry.getInstrumentation()
     val configured = InstrumentationRegistry.getArguments().getString("additionalTestOutputDir")
     val directory = if (configured.isNullOrBlank()) File(requireNotNull(registry.targetContext.getExternalFilesDir(null)), "pennant-screenshots") else File(configured)
     check(directory.isDirectory || directory.mkdirs())
-    File(directory, name).outputStream().use { stream ->
-        check(onNodeWithTag(PennantTags.SCREEN).captureToImage().asAndroidBitmap().compress(Bitmap.CompressFormat.PNG, 100, stream))
-    }
+    return directory
 }
 
 @RunWith(AndroidJUnit4::class)
@@ -103,11 +113,34 @@ class PennantActivityTest {
     }
     @Test fun full720GameSkipPersistsAndPublishesTheFinalSeason() {
         val vm = fresh()
+        val started = SystemClock.elapsedRealtime()
         click(PennantTags.SEASON); ready(1_200_000)
         val state = vm.state.value.season!!
         assertEquals(SeasonStatus.COMPLETE, state.status); assertEquals(720, state.results.size); assertEquals(141, state.dayIndex)
         assertNull(state.active); assertTrue(state.standings.all { it.totals.played == 120L })
         assertEquals(108, state.playerCounts.size)
+        val frame = CheckpointCodec.encodeSeason(state)
+        val directory = pennantTestOutputDirectory()
+        File(directory, "pennant-real-season-42.bin").writeBytes(frame)
+        val context = InstrumentationRegistry.getInstrumentation().targetContext
+        val database = context.getDatabasePath(PennantDatabase.FILE_NAME)
+        val evidence = JSONObject().put("schema", "pennant-real-transactions-v1").put("master_seed", state.masterSeed)
+            .put("completed_games", state.results.size).put("day_index", state.dayIndex)
+            .put("elapsed_ms", SystemClock.elapsedRealtime() - started).put("frame_bytes", frame.size)
+            .put("frame_sha256", MessageDigest.getInstance("SHA-256").digest(frame).joinToString("") { "%02x".format(it) })
+            .put("database_bytes", database.length()).put("wal_bytes", File(database.path + "-wal").length())
+            .put("standings", JSONArray().apply { state.standings.forEach { row ->
+                val t = row.totals
+                put(JSONObject().put("club_id", t.clubId).put("rank", row.rank ?: JSONObject.NULL).put("played", t.played)
+                    .put("wins", t.wins).put("losses", t.losses).put("draws", t.draws)
+                    .put("runs_for", t.runsFor).put("runs_against", t.runsAgainst))
+            } }).put("players", JSONArray().apply { state.playerCounts.forEach { row ->
+                val c = row.counts
+                put(JSONObject().put("player_id", row.playerId).put("club_id", row.clubId).put("slot", row.slot)
+                    .put("completed_plate_appearances", c.completedPlateAppearances).put("safe_hit_events", c.safeHitEvents)
+                    .put("walk_events", c.walkEvents).put("strikeout_events", c.strikeoutEvents).put("home_run_events", c.homeRunEvents))
+            } }).put("full_frame_file", "pennant-real-season-42.bin").put("physical_device", false)
+        File(directory, "pennant-real-season-42.json").writeText(evidence.toString(2))
         compose.onNodeWithTag(PennantTags.PROGRESS).performScrollTo().assertTextEquals("720 / 720試合完了 · seed 42")
         compose.pennantScreenshot("pennant-season-completed.png")
         compose.runOnUiThread { vm.reload() }; ready()
