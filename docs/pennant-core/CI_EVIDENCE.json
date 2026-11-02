@@ -1,0 +1,177 @@
+{
+  "approved_baseline": "8ef1415abccf6e214bd32082f5d07496e9035ad6",
+  "artifact": {
+    "expires_jst": "2026-11-15 23:30:47 JST",
+    "expires_utc": "2026-11-15T14:30:47Z",
+    "id": 13087107566,
+    "job_id": 124876809690,
+    "run_id": 41316249615,
+    "url": "https://github.com/thrsth45h/baseball-sim/actions/runs/41316249615/artifacts/13087107566",
+    "zip_bytes": 5300833,
+    "zip_sha256": "da703d2a5cb4ad2ad3a33d05cdca62cc87169d9d4c243189019422d79faaebf1"
+  },
+  "audit_json_bytes": 22732153,
+  "audit_json_sha256": "0e12fe82d8a15c513ed07d66dee86694dd5eced1c4a37ff8132fb9243a5cbaf3",
+  "baseline_tracked_paths": 288,
+  "ci_source_head": "61383b8c6a9d4bc93cfc31ff38fe993c17b4c0ab",
+  "correction_history": {
+    "local_walkoff_consistency_and_finishSeason_coverage_corrected_in": "61383b8c6a9d4bc93cfc31ff38fe993c17b4c0ab",
+    "old_draft_and_downloaded_artifacts_retained_in_ignored_history": true,
+    "old_runtime": "138bd065bdd57080073efb6c75ef1d2fd327a165"
+  },
+  "date_jst": "2026-11-01",
+  "existing_changes": [
+    "android/core/build.gradle.kts"
+  ],
+  "gnu_time_raw": {
+    "pennant-first-time.txt": "\tCommand being timed: \"bash gradlew :core:test :core:exportAuditBundle --no-daemon --stacktrace\"\n\tUser time (seconds): 2.16\n\tSystem time (seconds): 0.22\n\tPercent of CPU this job got: 2%\n\tElapsed (wall clock) time (h:mm:ss or m:ss): 1:27.35\n\tAverage shared text size (kbytes): 0\n\tAverage unshared data size (kbytes): 0\n\tAverage stack size (kbytes): 0\n\tAverage total size (kbytes): 0\n\tMaximum resident set size (kbytes): 114304\n\tAverage resident set size (kbytes): 0\n\tMajor (requiring I/O) page faults: 7\n\tMinor (reclaiming a frame) page faults: 26594\n\tVoluntary context switches: 5626\n\tInvoluntary context switches: 1544\n\tSwaps: 0\n\tFile system inputs: 3192\n\tFile system outputs: 560\n\tSocket messages sent: 0\n\tSocket messages received: 0\n\tSignals delivered: 0\n\tPage size (bytes): 4096\n\tExit status: 0\n",
+    "pennant-junit-time.txt": "\tCommand being timed: \"java -Xmx512m -cp core/build/audit-bundle/classes:core/build/audit-bundle/lib/* org.junit.runner.JUnitCore com.example.baseballsim.core.CoreTest com.example.baseballsim.season.SeasonTest com.example.baseballsim.season.SeasonBoundaryTest com.example.baseballsim.season.SeasonFullRunTest\"\n\tUser time (seconds): 50.74\n\tSystem time (seconds): 0.65\n\tPercent of CPU this job got: 162%\n\tElapsed (wall clock) time (h:mm:ss or m:ss): 0:31.63\n\tAverage shared text size (kbytes): 0\n\tAverage unshared data size (kbytes): 0\n\tAverage stack size (kbytes): 0\n\tAverage total size (kbytes): 0\n\tMaximum resident set size (kbytes): 442552\n\tAverage resident set size (kbytes): 0\n\tMajor (requiring I/O) page faults: 0\n\tMinor (reclaiming a frame) page faults: 155580\n\tVoluntary context switches: 11001\n\tInvoluntary context switches: 11418\n\tSwaps: 0\n\tFile system inputs: 16\n\tFile system outputs: 96\n\tSocket messages sent: 0\n\tSocket messages received: 0\n\tSignals delivered: 0\n\tPage size (bytes): 4096\n\tExit status: 0\n",
+    "pennant-repeat-time.txt": "\tCommand being timed: \"bash gradlew :core:test :core:exportAuditBundle --rerun-tasks --no-daemon --stacktrace\"\n\tUser time (seconds): 2.05\n\tSystem time (seconds): 0.21\n\tPercent of CPU this job got: 3%\n\tElapsed (wall clock) time (h:mm:ss or m:ss): 1:14.39\n\tAverage shared text size (kbytes): 0\n\tAverage unshared data size (kbytes): 0\n\tAverage stack size (kbytes): 0\n\tAverage total size (kbytes): 0\n\tMaximum resident set size (kbytes): 117960\n\tAverage resident set size (kbytes): 0\n\tMajor (requiring I/O) page faults: 0\n\tMinor (reclaiming a frame) page faults: 26811\n\tVoluntary context switches: 4763\n\tInvoluntary context switches: 1534\n\tSwaps: 0\n\tFile system inputs: 0\n\tFile system outputs: 144\n\tSocket messages sent: 0\n\tSocket messages received: 0\n\tSignals delivered: 0\n\tPage size (bytes): 4096\n\tExit status: 0\n"
+  },
+  "independent_reference_cases": {
+    "assigned_seeds": 2160,
+    "attribution_outputs": 108,
+    "calendar_days": 140,
+    "manual_ledger_results": 12,
+    "manual_standings_checkpoints": 2,
+    "roster_players": 108,
+    "schedule_rows": 720,
+    "sparse_attribution_inputs": 54
+  },
+  "independent_reference_freeze_sha256": "ba54cc0173928f5fbaa752473f09a1db9b31a9c36e29af075636979a518745a8",
+  "limits": [
+    "Pure Kotlin first PR only; Room and Android pennant not implemented",
+    "sampled heap is not peak RSS; Gradle launcher resource data is separate",
+    "codec bytes are not SQLite database capacity",
+    "no physical device or adb force-stop recovery tested in this PR",
+    "toy probabilities, seed derivation and 120-game format are prototype settings"
+  ],
+  "masters": [
+    {
+      "game_count": 720,
+      "master_seed": "0",
+      "max_sampled_jvm_heap_bytes": 313102872,
+      "mixed_seconds": 2.245614428,
+      "modes_checked": [
+        "skip",
+        "mixed",
+        "selected",
+        "finishSeason"
+      ],
+      "pitches_accepted": 186230,
+      "season_codec_bytes": 1585586,
+      "skip_seconds": 5.250102031,
+      "walkoff_examples": 37
+    },
+    {
+      "game_count": 720,
+      "master_seed": "42",
+      "max_sampled_jvm_heap_bytes": 316816792,
+      "mixed_seconds": 2.055439519,
+      "modes_checked": [
+        "skip",
+        "mixed",
+        "selected",
+        "finishSeason",
+        "pitch",
+        "pa"
+      ],
+      "pitches_accepted": 186304,
+      "season_codec_bytes": 1585652,
+      "skip_seconds": 2.09551851,
+      "walkoff_examples": 24
+    },
+    {
+      "game_count": 720,
+      "master_seed": "2026",
+      "max_sampled_jvm_heap_bytes": 346213560,
+      "mixed_seconds": 1.24278382,
+      "modes_checked": [
+        "skip",
+        "mixed",
+        "selected",
+        "finishSeason"
+      ],
+      "pitches_accepted": 186477,
+      "season_codec_bytes": 1585607,
+      "skip_seconds": 1.413361192,
+      "walkoff_examples": 29
+    }
+  ],
+  "new_season_test_methods": 15,
+  "old_core_test_methods": 7,
+  "parent_independent_audit_reported": {
+    "all_game_values": 2160,
+    "basis_frozen_before_reading_season_implementation": true,
+    "jdk": "21.0.2",
+    "methods": 22,
+    "player_rows": 324,
+    "private_expectation_files_read_by_worker": false,
+    "runtime_source_head": "61383b8c6a9d4bc93cfc31ff38fe993c17b4c0ab",
+    "sdk_gradle_installed": false,
+    "seconds": 19.911,
+    "standings_match": true,
+    "successful": true,
+    "team_rows": 36
+  },
+  "preserved_existing_paths": 287,
+  "receipt_commit": "bf9a9b9f5a93f775f02584935fb0952bc8427377",
+  "runtime_test_fixture_source_head": "61383b8c6a9d4bc93cfc31ff38fe993c17b4c0ab",
+  "same_build_rerun": {
+    "all_2160_game_and_aggregate_values_equal": true,
+    "comparison_excluded_metrics_only": [
+      "skip_seconds",
+      "mixed_seconds",
+      "max_sampled_jvm_heap_bytes"
+    ],
+    "same_build_directory": true,
+    "schema": "pennant-core-rerun-v1",
+    "source_head": "61383b8c6a9d4bc93cfc31ff38fe993c17b4c0ab"
+  },
+  "schema": "pennant-core-verification-v1",
+  "standalone_jvm": {
+    "command_heap_limit": "-Xmx512m",
+    "elapsed_seconds": 31.63,
+    "jdk": "17.0.21+9",
+    "junit_methods": 22,
+    "junit_output": "JUnit version 4.13.2\n.....................PENNANT_AUDIT games=2160 masters=3 native same-result mode comparisons passed bytes=22732155\n.\nTime: 31.04\n\nOK (22 tests)\n\n",
+    "junit_seconds": 31.04,
+    "maximum_rss_kib": 442552,
+    "scope": "Direct test JVM including JIT/GC and all old core/new season tests; not Android or Gradle launcher memory",
+    "successful": true
+  },
+  "suites": [
+    {
+      "errors": 0,
+      "failures": 0,
+      "methods": 7,
+      "name": "com.example.baseballsim.core.CoreTest",
+      "seconds": 2.771,
+      "skips": 0
+    },
+    {
+      "errors": 0,
+      "failures": 0,
+      "methods": 9,
+      "name": "com.example.baseballsim.season.SeasonBoundaryTest",
+      "seconds": 0.501,
+      "skips": 0
+    },
+    {
+      "errors": 0,
+      "failures": 0,
+      "methods": 2,
+      "name": "com.example.baseballsim.season.SeasonFullRunTest",
+      "seconds": 29.888,
+      "skips": 0
+    },
+    {
+      "errors": 0,
+      "failures": 0,
+      "methods": 4,
+      "name": "com.example.baseballsim.season.SeasonTest",
+      "seconds": 0.078,
+      "skips": 0
+    }
+  ]
+}
