@@ -35,26 +35,39 @@ class SeasonCoordinator(
         } else current
     }
     private suspend fun current() = readLocked() ?: throw StoreConflict("No season has been created")
-    private suspend fun resolveWrite(id: String, write: suspend () -> StoredSeason): StoredSeason {
-        try { return write() }
+    private suspend fun resolveWrite(id: String, expected: (StoredSeason) -> Boolean, write: suspend () -> StoredSeason): StoredSeason {
+        try {
+            val result = write()
+            if (result.operationId != id || !expected(result)) throw StoreConflict("Write acknowledgement does not match this operation")
+            return result
+        }
+        catch (conflict: StoreConflict) { throw conflict }
         catch (error: Exception) {
             // Cancellation can happen after SQLite committed. Re-read without mutating anything.
             val durable = try { withContext(NonCancellable) { store.read() } }
                 catch (readError: Exception) { error.addSuppressed(readError); null }
             if (error is CancellationException) throw error
-            if (durable?.operationId == id) return durable
+            if (durable?.operationId == id && expected(durable)) return durable
             throw error
         }
     }
     private suspend fun commit(before: StoredSeason, candidate: SeasonState): StoredSeason {
-        if (candidate == before.state) return before
+        if (candidate == before.state) {
+            val current = store.read() ?: throw StoreCorruption("Saved season disappeared")
+            if (current != before) throw StoreConflict("No-op belongs to a superseded saved context")
+            return current
+        }
         val id = operationId()
-        return resolveWrite(id) { store.commit(before.token, id, candidate) }
+        val target = before.token.copy(revision = Math.addExact(before.token.revision, 1))
+        return resolveWrite(id, { it.token == target && it.state == candidate }) { store.commit(before.token, id, candidate) }
     }
     suspend fun create(masterSeed: String = "42", selectedClubId: String = "L1-T01", replacementConfirmed: Boolean = false): StoredSeason = exclusive {
         val old = store.read()
+        val initial = withContext(computation) { SeasonState.initial(masterSeed, selectedClubId) }
         val id = operationId()
-        resolveWrite(id) { store.create(masterSeed, selectedClubId, id, old?.token, replacementConfirmed) }
+        resolveWrite(id, { it.state == initial && it.token.revision == 0L && (old == null || it.token.generationId != old.token.generationId) }) {
+            store.create(masterSeed, selectedClubId, id, old?.token, replacementConfirmed)
+        }
     }
     suspend fun selectClub(clubId: String): StoredSeason = exclusive {
         val before = current()
@@ -128,10 +141,14 @@ class SeasonCoordinator(
     }
     suspend fun saveSlot(): StoredSeason = exclusive {
         val before = current(); val id = operationId()
-        resolveWrite(id) { store.saveSlot(before.token, id) }
+        val target = before.token.copy(revision = Math.addExact(before.token.revision, 1))
+        resolveWrite(id, { it.token == target && it.state == before.state }) { store.saveSlot(before.token, id) }
     }
     suspend fun loadSlot(): StoredSeason = exclusive {
         val before = current(); val id = operationId()
-        resolveWrite(id) { store.loadSlot(before.token, id) }
+        val revision = Math.addExact(before.token.revision, 1)
+        resolveWrite(id, { it.token.revision == revision && it.token.generationId != before.token.generationId && outsideMatch(it.state) }) {
+            store.loadSlot(before.token, id)
+        }
     }
 }
