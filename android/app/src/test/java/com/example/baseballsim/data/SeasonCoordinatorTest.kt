@@ -94,4 +94,12 @@ class SeasonCoordinatorTest {
         val next = coordinator.advance(SeasonAdvance.PITCH)
         assertEquals(2L, next.state.active!!.snapshot.pitchesAccepted)
     }
+    @Test fun anOldHeadWithTheSameOperationIdCannotResolveAnUncommittedFailure() = runBlocking {
+        val store = FakeStore()
+        val coordinator = SeasonCoordinator(store, operationId = { "same" })
+        val initial = coordinator.create()
+        store.failBeforeWrite = 1
+        assertThrows(IllegalStateException::class.java) { runBlocking { coordinator.selectClub("L2-T03") } }
+        assertEquals(initial, store.saved)
+    }
 }

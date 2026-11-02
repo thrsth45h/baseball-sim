@@ -48,13 +48,13 @@ class RoomSeasonStore(
     private fun fingerprint(action: String, expected: StoreToken?, bodyHash: String = ""): String =
         hash(listOf(action, expected?.worldId.orEmpty(), expected?.generationId.orEmpty(), expected?.revision?.toString().orEmpty(), bodyHash)
             .joinToString("\u0000").toByteArray(Charsets.UTF_8))
-    private suspend fun duplicate(op: String, fingerprint: String): Boolean {
-        val prior = dao.receipt(op) ?: return false
+    private suspend fun duplicate(op: String, fingerprint: String): ReceiptEntity? {
+        val prior = dao.receipt(op) ?: return null
         if (prior.fingerprint != fingerprint) throw StoreConflict("Operation ID was reused for another update")
         val head = dao.head() ?: throw StoreCorruption("Receipt exists without current state")
-        if (head.worldId != prior.worldId || head.generationId != prior.generationId || head.revision < prior.revision)
-            throw StoreConflict("Operation belongs to a superseded generation")
-        return true
+        if (token(head) != StoreToken(prior.worldId, prior.generationId, prior.revision) || head.operationId != prior.operationId)
+            throw StoreConflict("Operation was superseded by another saved update")
+        return prior
     }
     private fun requireToken(head: WorkingEntity?, expected: StoreToken) {
         if (head == null || token(head) != expected) throw StoreConflict("Saved generation or revision changed")
@@ -63,12 +63,20 @@ class RoomSeasonStore(
         val bytes = CheckpointCodec.encodeSummary(result)
         ResultEntity(world, generation, result.game.fixture.seasonId, result.game.fixture.gameId, result.game.fixture.ordinal, hash(bytes), bytes)
     }
-    private suspend fun finishWrite(op: String, signature: String, head: WorkingEntity) {
-        dao.insertReceipt(ReceiptEntity(op, signature, head.worldId, head.generationId, head.revision))
+    private suspend fun finishWrite(op: String, signature: String, head: WorkingEntity): ReceiptEntity {
+        val receipt = ReceiptEntity(op, signature, head.worldId, head.generationId, head.revision)
+        dao.insertReceipt(receipt)
+        return receipt
     }
-    private suspend fun afterCommit(): StoredSeason {
+    private suspend fun boundRead(expected: StoreToken, operation: String): StoredSeason {
+        val current = read() ?: throw StoreCorruption("Committed save disappeared")
+        if (current.token != expected || current.operationId != operation)
+            throw StoreConflict("Another update superseded this operation before acknowledgement")
+        return current
+    }
+    private suspend fun afterCommit(receipt: ReceiptEntity): StoredSeason {
         faults.hit(StoreFaultPoint.AFTER_COMMIT)
-        return requireNotNull(read())
+        return boundRead(StoreToken(receipt.worldId, receipt.generationId, receipt.revision), receipt.operationId)
     }
     override suspend fun create(masterSeed: String, selectedClubId: String, operationId: String, expected: StoreToken?, replacementConfirmed: Boolean): StoredSeason {
         operation(operationId)
@@ -79,8 +87,8 @@ class RoomSeasonStore(
         StoreToken(world, generation, 0)
         val previous = read()
         faults.hit(StoreFaultPoint.BEFORE_TRANSACTION)
-        withContext(io) { database.withTransaction {
-            if (!duplicate(operationId, signature)) {
+        val committed = withContext(io) { database.withTransaction {
+            duplicate(operationId, signature) ?: run {
                 val old = dao.head()
                 if (old == null) {
                     if (expected != null) throw StoreConflict("Expected save no longer exists")
@@ -100,7 +108,7 @@ class RoomSeasonStore(
                 finishWrite(operationId, signature, head)
             }
         } }
-        return afterCommit()
+        return afterCommit(committed)
     }
     override suspend fun commit(expected: StoreToken, operationId: String, candidate: SeasonState): StoredSeason {
         operation(operationId)
@@ -110,8 +118,8 @@ class RoomSeasonStore(
         val before = read() ?: throw StoreConflict("No active save")
         if (before.token != expected) {
             // A duplicate completed operation may be retried after its successful response was lost.
-            val isDuplicate = withContext(io) { database.withTransaction { duplicate(operationId, signature) } }
-            if (isDuplicate) return requireNotNull(read())
+            val prior = withContext(io) { database.withTransaction { duplicate(operationId, signature) } }
+            if (prior != null) return afterCommit(prior)
             throw StoreConflict("Saved generation or revision changed")
         }
         require(candidate.masterSeed == before.state.masterSeed && candidate.games == before.state.games)
@@ -135,12 +143,19 @@ class RoomSeasonStore(
             require(candidate.results.size == before.state.results.size + 1) { "An active match cannot silently disappear" }
         }
         if (before.state.status == SeasonStatus.BLOCKED) require(candidate.active == before.state.active && candidate.results == before.state.results)
-        if (CheckpointCodec.encodeSeason(before.state).contentEquals(bytes)) return before
+        if (CheckpointCodec.encodeSeason(before.state).contentEquals(bytes)) {
+            val prior = withContext(io) { database.withTransaction {
+                duplicate(operationId, signature).also { if (it == null) requireToken(dao.head(), expected) }
+            } }
+            if (prior != null) return afterCommit(prior)
+            faults.hit(StoreFaultPoint.AFTER_COMMIT)
+            return boundRead(before.token, before.operationId)
+        }
         val rows = withContext(computation) { resultRows(candidate, expected.worldId, expected.generationId).drop(before.state.results.size) }
         val revision = Math.addExact(expected.revision, 1)
         faults.hit(StoreFaultPoint.BEFORE_TRANSACTION)
-        withContext(io) { database.withTransaction {
-            if (!duplicate(operationId, signature)) {
+        val committed = withContext(io) { database.withTransaction {
+            duplicate(operationId, signature) ?: run {
                 val old = dao.head(); requireToken(old, expected)
                 rows.forEach { dao.insertResult(it) }
                 faults.hit(StoreFaultPoint.AFTER_RESULTS)
@@ -151,15 +166,15 @@ class RoomSeasonStore(
                     revision = revision, operationId = operationId, payloadHash = bodyHash, payload = bytes))
             }
         } }
-        return afterCommit()
+        return afterCommit(committed)
     }
     override suspend fun saveSlot(expected: StoreToken, operationId: String): StoredSeason {
         operation(operationId); val signature = fingerprint("save-slot", expected)
         val before = read() ?: throw StoreConflict("No active save")
         require(outsideMatch(before.state)) { "Manual save is disabled during a match" }
         faults.hit(StoreFaultPoint.BEFORE_TRANSACTION)
-        withContext(io) { database.withTransaction {
-            if (!duplicate(operationId, signature)) {
+        val committed = withContext(io) { database.withTransaction {
+            duplicate(operationId, signature) ?: run {
                 val old = dao.head(); requireToken(old, expected); old!!
                 dao.putSlot(SlotEntity(worldId = old.worldId, payloadHash = old.payloadHash, payload = old.payload))
                 val revision = Math.addExact(expected.revision, 1)
@@ -169,7 +184,7 @@ class RoomSeasonStore(
                 finishWrite(operationId, signature, old.copy(revision = revision, operationId = operationId))
             }
         } }
-        return afterCommit()
+        return afterCommit(committed)
     }
     override suspend fun loadSlot(expected: StoreToken, operationId: String): StoredSeason {
         operation(operationId); val signature = fingerprint("load-slot", expected)
@@ -182,8 +197,8 @@ class RoomSeasonStore(
         StoreToken(slot.worldId, generation, revision)
         val rows = withContext(computation) { resultRows(restored, slot.worldId, generation) }
         faults.hit(StoreFaultPoint.BEFORE_TRANSACTION)
-        withContext(io) { database.withTransaction {
-            if (!duplicate(operationId, signature)) {
+        val committed = withContext(io) { database.withTransaction {
+            duplicate(operationId, signature) ?: run {
                 val old = dao.head(); requireToken(old, expected)
                 val currentSlot = dao.slot() ?: throw StoreConflict("Manual slot disappeared")
                 if (currentSlot.worldId != slot.worldId || currentSlot.payloadHash != slot.payloadHash || !currentSlot.payload.contentEquals(slot.payload))
@@ -199,7 +214,7 @@ class RoomSeasonStore(
                     operationId = operationId, payloadHash = slot.payloadHash, payload = slot.payload))
             }
         } }
-        return afterCommit()
+        return afterCommit(committed)
     }
     override suspend fun hasSlot(): Boolean = withContext(io) { dao.slot() != null }
 }
