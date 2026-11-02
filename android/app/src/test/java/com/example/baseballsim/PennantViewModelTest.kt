@@ -131,4 +131,18 @@ class PennantViewModelTest {
         assertTrue(vm.state.value.canSave); assertTrue(vm.state.value.canLoad)
         vm.execute(PennantCommand.SAVE); advanceUntilIdle(); assertEquals("手動セーブしました", vm.state.value.notice)
     }
+    @Test fun adoptingSavedSeedClearsItsOldValidationErrorButOrdinaryProgressDoesNot() = runTest(main.dispatcher) {
+        val fake = FakeActions(initial()).apply { slot = initial() }
+        val vm = PennantViewModel(fake, main.dispatcher); advanceUntilIdle()
+        vm.changeSeed("invalid"); vm.execute(PennantCommand.CREATE, true); advanceUntilIdle()
+        assertNotNull(vm.state.value.seedError)
+        vm.execute(PennantCommand.DAY); advanceUntilIdle()
+        assertEquals("invalid", vm.state.value.seedInput); assertNotNull(vm.state.value.seedError)
+        vm.execute(PennantCommand.LOAD); advanceUntilIdle()
+        assertEquals("42", vm.state.value.seedInput); assertNull(vm.state.value.seedError)
+        vm.changeSeed("invalid"); vm.execute(PennantCommand.CREATE, true); advanceUntilIdle()
+        assertNotNull(vm.state.value.seedError)
+        vm.reload(); advanceUntilIdle()
+        assertEquals("42", vm.state.value.seedInput); assertNull(vm.state.value.seedError)
+    }
 }

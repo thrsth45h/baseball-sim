@@ -145,6 +145,7 @@ class PennantViewModel(private val actions: PennantActions,
         mutable.value = old.copy(display = value, hasSlot = slot ?: old.hasSlot,
             seedInput = if (inputs && value != null) value.stored.state.masterSeed else old.seedInput,
             selectedClubInput = value?.stored?.state?.selectedClubId ?: old.selectedClubInput,
+            seedError = if (inputs && value != null) null else old.seedError,
             loaded = true, busy = !finished, bulk = if (finished) false else old.bulk,
             stopRequested = if (finished) false else old.stopRequested, error = null, notice = notice)
     }
