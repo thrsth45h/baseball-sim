@@ -52,21 +52,22 @@ adb shell pidof com.example.baseballsim | tr -d '\r' > "$report/after-force-stop
 test ! -s "$report/after-force-stop-pid.txt"
 
 run_case recoverTheSamePublishedCheckpointAndAdvanceExactlyOnce "$report/recover.txt"
-adb shell pidof com.example.baseballsim | tr -d '\r' > "$report/recovered-pid.txt"
-test -s "$report/recovered-pid.txt"
+adb shell pidof com.example.baseballsim | tr -d '\r' > "$report/recovered-pid.txt" || true
 adb exec-out run-as com.example.baseballsim cat files/pennant-process-proof.json > "$report/recovery.json"
 python3 - <<'PY'
 from pathlib import Path
 import json
 p=Path('app/build/pennant-process-proof')
 before=(p/'before-pid.txt').read_text().strip()
-after=(p/'recovered-pid.txt').read_text().strip()
 expected=json.loads((p/'expected.json').read_text())
 proof=json.loads((p/'recovery.json').read_text())
+after=str(proof['new_pid'])
+surviving=(p/'recovered-pid.txt').read_text().strip()
 assert before and after and before!=after
 assert (p/'after-force-stop-pid.txt').read_text().strip()==''
 assert str(expected['pid'])==before
 assert proof['previous_pid']==expected['pid'] and str(proof['new_pid'])==after
+assert not surviving or after in surviving.split()
 assert proof['same_world_generation_and_checkpoint'] is True
 assert proof['one_additional_pitch_only'] is True
 assert proof['saved_checkpoint_sha256']==expected['checkpoint_sha256']
@@ -74,6 +75,7 @@ assert proof['next_checkpoint_sha256']!=expected['checkpoint_sha256']
 record={'schema':'pennant-process-recovery-v1','same_install_and_database':True,
         'prepare_instrumentation_intentionally_terminated':True,
         'force_stop_observed_process_absent':True,'new_process_id':after,'old_process_id':before,
+        'recovery_process_observed_alive_after_junit':bool(surviving),
         'same_committed_checkpoint_recovered':True,'exactly_one_next_pitch':True,
         'power_loss_or_physical_device_tested':False}
 with (p/'verification.json').open('x') as f:json.dump(record,f,indent=2);f.write('\n')

@@ -93,9 +93,13 @@ class PennantActivityTest {
         compose.onNodeWithTag(PennantTags.SEED).performScrollTo().performTextReplacement("18446744073709551616")
         click(PennantTags.CREATE); compose.onNodeWithTag(PennantTags.CONFIRM_CREATE).performClick()
         assertSame(before, vm.state.value.display); assertNotNull(vm.state.value.seedError)
-        compose.runOnUiThread { vm.execute(PennantCommand.SEASON); vm.requestStop() }
+        click(PennantTags.SEASON)
+        compose.waitUntil(15_000) { vm.state.value.busy && vm.state.value.bulk }
+        click(PennantTags.STOP)
+        val acceptedAtStop = vm.state.value.season!!.results.size
         ready()
-        assertEquals(0, vm.state.value.season!!.results.size); assertNull(vm.state.value.season!!.active)
+        assertTrue(vm.state.value.season!!.results.size <= acceptedAtStop + 1)
+        assertTrue(vm.state.value.season!!.results.size < 720); assertNull(vm.state.value.season!!.active)
     }
     @Test fun calendarStandingsAndAllClubsRecordsAreReachable() {
         val vm = fresh()

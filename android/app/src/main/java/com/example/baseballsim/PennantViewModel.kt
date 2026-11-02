@@ -190,7 +190,8 @@ class PennantViewModel(private val actions: PennantActions,
                 try {
                     val (display, slot) = withContext(computation) { actions.read()?.let(::pennantDisplay) to actions.hasSlot() }
                     publish(token, display, slot, finished = true)
-                } catch (_: Exception) { /* The previous published value remains visible. */ }
+                } catch (cancelled: CancellationException) { throw cancelled }
+                catch (_: Exception) { /* The previous published value remains visible. */ }
                 failed(token)
             }
         }

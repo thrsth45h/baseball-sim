@@ -32,7 +32,11 @@ class PennantScreenTest {
         val panel = compose.onNodeWithTag(PennantTags.STANDINGS).fetchSemanticsNode().boundsInRoot
         val viewport = compose.onNodeWithTag(PennantTags.SCREEN).fetchSemanticsNode().boundsInRoot
         assertTrue(panel.left >= viewport.left && panel.right <= viewport.right + 1)
+        compose.onNodeWithText("勝率").performScrollTo().assertIsDisplayed()
         compose.pennantScreenshot("pennant-narrow320.png")
+        compose.onNodeWithText("記録", useUnmergedTree = true).performScrollTo().performClick()
+        compose.onNodeWithText("本塁打").performScrollTo().assertIsDisplayed()
+        compose.pennantScreenshot("pennant-narrow320-records.png")
     }
     @Test fun blockedDiagnosticShowsTheSavedGameAndReasonWithoutManualLoadOrProgress() {
         val initial = SeasonState.initial().beginNext()
