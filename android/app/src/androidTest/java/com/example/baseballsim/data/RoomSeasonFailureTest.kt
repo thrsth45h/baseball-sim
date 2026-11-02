@@ -214,4 +214,16 @@ class RoomSeasonFailureTest {
             assertTrue("The fixed season contains an actual toy walk-off", found)
         } finally { db.close(); context.deleteDatabase(name) }
     }
+    @Test fun missingCurrentHeadIsNotMistakenForAnEmptyNewDatabase(): Unit = runBlocking {
+        val name = name(); val db = PennantDatabase.open(context, name)
+        try {
+            val store = RoomSeasonStore(db)
+            store.create("42", "L1-T01", op())
+            db.openHelper.writableDatabase.execSQL("DELETE FROM working_state")
+            assertThrows(StoreCorruption::class.java) { runBlocking { store.read() } }
+            assertThrows(StoreCorruption::class.java) { runBlocking { store.create("0", "L1-T01", op()) } }
+            assertNull(db.pennantDao().head())
+            assertTrue(db.pennantDao().hasSavedData())
+        } finally { db.close(); context.deleteDatabase(name) }
+    }
 }
