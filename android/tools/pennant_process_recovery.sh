@@ -21,12 +21,32 @@ run_case() {
     if grep -E 'FAILURES!!!|INSTRUMENTATION_FAILED|Process crashed' "$logfile"; then return 1; fi
 }
 
-run_case prepareDurableCheckpointBeforeHostKill "$report/prepare.txt"
+# Remove only this test's own stale probe files. App/database state is untouched.
+adb shell run-as com.example.baseballsim rm -f files/pennant-process-expected.json files/pennant-process-proof.json
+adb shell am instrument -w -r \
+  -e class 'com.example.baseballsim.PennantProcessRecoveryTest#prepareDurableCheckpointBeforeHostKill' \
+  -e additionalTestOutputDir /sdcard/Android/media/com.example.baseballsim/additional_test_output \
+  com.example.baseballsim.test/androidx.test.runner.AndroidJUnitRunner > "$report/prepare.txt" 2>&1 &
+prepare_adb_pid=$!
+ready=false
+for attempt in $(seq 1 180); do
+    if adb exec-out run-as com.example.baseballsim cat files/pennant-process-expected.json > "$report/expected-candidate.json" 2>/dev/null; then
+        if python3 -c 'import json,sys; assert json.load(open(sys.argv[1]))["prepare_probe_waiting_for_host"] is True' "$report/expected-candidate.json"; then
+            mv "$report/expected-candidate.json" "$report/expected.json"
+            ready=true
+            break
+        fi
+    fi
+    sleep 1
+done
+test "$ready" = true
+kill -0 "$prepare_adb_pid"
 adb shell pidof com.example.baseballsim | tr -d '\r' > "$report/before-pid.txt"
 test -s "$report/before-pid.txt"
-adb exec-out run-as com.example.baseballsim cat files/pennant-process-expected.json > "$report/expected.json"
+python3 -c 'import json,sys; from pathlib import Path; p=Path(sys.argv[1]); assert str(json.loads((p/"expected.json").read_text())["pid"])==(p/"before-pid.txt").read_text().strip()' "$report"
 
 adb shell am force-stop com.example.baseballsim
+wait "$prepare_adb_pid" || true
 sleep 1
 adb shell pidof com.example.baseballsim | tr -d '\r' > "$report/after-force-stop-pid.txt" || true
 test ! -s "$report/after-force-stop-pid.txt"
@@ -52,6 +72,7 @@ assert proof['one_additional_pitch_only'] is True
 assert proof['saved_checkpoint_sha256']==expected['checkpoint_sha256']
 assert proof['next_checkpoint_sha256']!=expected['checkpoint_sha256']
 record={'schema':'pennant-process-recovery-v1','same_install_and_database':True,
+        'prepare_instrumentation_intentionally_terminated':True,
         'force_stop_observed_process_absent':True,'new_process_id':after,'old_process_id':before,
         'same_committed_checkpoint_recovered':True,'exactly_one_next_pitch':True,
         'power_loss_or_physical_device_tested':False}

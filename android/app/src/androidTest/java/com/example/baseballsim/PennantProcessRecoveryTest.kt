@@ -1,6 +1,7 @@
 package com.example.baseballsim
 
 import android.os.Process
+import android.os.SystemClock
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
@@ -37,8 +38,15 @@ class PennantProcessRecoveryTest {
             .put("generation", stored.token.generationId).put("revision", stored.token.revision)
             .put("game_id", active.game.fixture.gameId).put("checkpoint_sha256", active.stateHash)
             .put("pitches", active.snapshot.pitchesAccepted).put("advance_calls", active.advanceCalls)
-        evidence().writeText(proof.toString(2))
         compose.pennantScreenshot("pennant-before-process-kill.png")
+        // This is intentionally a live setup probe, not a completed JUnit assertion case.
+        // The host kills this exact process after observing the ready record and pidof.
+        proof.put("prepare_probe_waiting_for_host", true)
+        val temporary = File(context.filesDir, "pennant-process-expected.tmp")
+        temporary.writeText(proof.toString(2)); check(temporary.renameTo(evidence()))
+        val deadline = SystemClock.elapsedRealtime() + 180_000
+        while (SystemClock.elapsedRealtime() < deadline) SystemClock.sleep(200)
+        fail("The CI host did not terminate the live preparation process")
     }
     @Test fun recoverTheSamePublishedCheckpointAndAdvanceExactlyOnce() {
         val expected = JSONObject(evidence().readText())
