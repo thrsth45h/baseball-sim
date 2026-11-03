@@ -24,6 +24,11 @@ run_case() {
     if grep -E 'FAILURES!!!|INSTRUMENTATION_FAILED|Process crashed' "$logfile"; then return 1; fi
 }
 
+# Separate short diagnostic. Prefix setup is explicitly a canonical fixture,
+# never reported as the full Activity/Room 720-transaction acceptance result.
+run_case profileRealStoreCostsAtCanonicalPrefixBoundaries "$report/store-profile.txt"
+adb pull /sdcard/Android/media/com.example.baseballsim/additional_test_output "$report/profile-output"
+
 # Remove only this test's own stale probe files. App/database state is untouched.
 adb shell run-as com.example.baseballsim rm -f files/pennant-process-expected.json files/pennant-process-proof.json
 adb shell am instrument -w -r \

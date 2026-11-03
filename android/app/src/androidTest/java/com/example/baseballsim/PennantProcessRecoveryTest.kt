@@ -8,8 +8,17 @@ import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.example.baseballsim.data.StoreToken
+import com.example.baseballsim.data.*
 import com.example.baseballsim.season.GameCheckpoint
+import com.example.baseballsim.season.CheckpointCodec
+import com.example.baseballsim.season.SeasonSession
+import com.example.baseballsim.season.SeasonState
+import androidx.room.withTransaction
+import kotlinx.coroutines.runBlocking
+import java.security.MessageDigest
+import java.util.UUID
 import java.io.File
+import org.json.JSONArray
 import org.json.JSONObject
 import org.junit.Assert.*
 import org.junit.Rule
@@ -26,6 +35,64 @@ class PennantProcessRecoveryTest {
         return compose.activity.pennantViewModel.also { assertNull(it.state.value.error) }
     }
     private fun evidence() = File(context.filesDir, "pennant-process-expected.json")
+    /** Diagnostic only: canonical in-memory prefix fixtures are not a 720-transaction acceptance run. */
+    @Test fun profileRealStoreCostsAtCanonicalPrefixBoundaries() = runBlocking {
+        val output = File(pennantTestOutputDirectory(), "pennant-store-cost-profile.json")
+        val samples = JSONArray()
+        fun persist() { output.writeText(JSONObject().put("schema", "pennant-store-cost-profile-v1")
+            .put("fixture_prefixes_are_not_transactional_progress", true).put("samples", samples).toString(2)) }
+        suspend fun <T> timed(prefix: Int, phase: String, block: suspend () -> T): T {
+            val started = SystemClock.elapsedRealtimeNanos()
+            val value = block()
+            val runtime = Runtime.getRuntime()
+            val row = JSONObject().put("prefix", prefix).put("phase", phase)
+                .put("elapsed_ms", (SystemClock.elapsedRealtimeNanos() - started) / 1_000_000.0)
+                .put("used_heap_bytes", runtime.totalMemory() - runtime.freeMemory())
+            samples.put(row); persist(); android.util.Log.i("PennantStoreProfile", row.toString())
+            return value
+        }
+        fun digest(bytes: ByteArray) = MessageDigest.getInstance("SHA-256").digest(bytes).joinToString("") { "%02x".format(it) }
+        val memory = SeasonSession()
+        for (prefix in listOf(0, 100, 300)) {
+            val fixture = timed(prefix, "in_memory_fixture_setup") {
+                while (memory.state.results.size < prefix) memory.finishCurrent()
+                memory.state
+            }
+            val name = "pennant-profile-${UUID.randomUUID()}.db"
+            var database = PennantDatabase.open(context, name)
+            try {
+                val world = UUID.randomUUID().toString(); val generation = UUID.randomUUID().toString()
+                timed(prefix, "fixture_database_setup") {
+                    val bytes = CheckpointCodec.encodeSeason(fixture)
+                    database.withTransaction {
+                        val dao = database.pennantDao()
+                        dao.insertGeneration(GenerationEntity(generation, world))
+                        dao.insertHead(WorkingEntity(worldId = world, generationId = generation, revision = 0,
+                            operationId = "profile-setup", payloadHash = digest(bytes), payload = bytes))
+                        dao.insertReceipt(ReceiptEntity("profile-setup", "profile-fixture", world, generation, 0))
+                        fixture.results.forEach { result ->
+                            val body = CheckpointCodec.encodeSummary(result); val f = result.game.fixture
+                            dao.insertResult(ResultEntity(world, generation, f.seasonId, f.gameId, f.ordinal, digest(body), body))
+                        }
+                    }
+                }
+                database.close(); database = PennantDatabase.open(context, name)
+                val store = RoomSeasonStore(database)
+                var current = timed(prefix, "cold_read") { requireNotNull(store.read()) }
+                repeat(3) { current = timed(prefix, "warm_read_$it") { requireNotNull(store.read()) } }
+                repeat(2) { index ->
+                    val marker = timed(prefix, "marker_calculation_$index") { current.state.beginNext() }
+                    current = timed(prefix, "marker_commit_$index") { store.commit(current.token, UUID.randomUUID().toString(), marker) }
+                    val result = timed(prefix, "game_calculation_$index") { SeasonSession(current.state).finishCurrent() }
+                    current = timed(prefix, "result_commit_$index") { store.commit(current.token, UUID.randomUUID().toString(), result) }
+                    assertEquals(prefix + index + 1, current.state.results.size)
+                }
+            } finally {
+                database.close(); context.deleteDatabase(name)
+            }
+        }
+        persist()
+    }
     @Test fun prepareDurableCheckpointBeforeHostKill() {
         compose.onNodeWithTag("mode_pennant").performClick(); val vm = ready()
         compose.runOnUiThread { vm.changeSeed("42"); vm.execute(PennantCommand.CREATE, replacementConfirmed = true) }; ready()

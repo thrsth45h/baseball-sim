@@ -2,6 +2,7 @@ package com.example.baseballsim
 
 import android.graphics.Bitmap
 import android.os.SystemClock
+import android.util.Log
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
@@ -118,13 +119,38 @@ class PennantActivityTest {
     @Test fun full720GameSkipPersistsAndPublishesTheFinalSeason() {
         val vm = fresh()
         val started = SystemClock.elapsedRealtime()
-        click(PennantTags.SEASON); ready(1_200_000)
+        val directory = pennantTestOutputDirectory()
+        val progress = File(directory, "pennant-real-season-42-progress.csv")
+        progress.writeText("elapsed_ms,completed_games,day_index,busy,active_game_id,active_pitches,used_heap_bytes\n")
+        var lastSample = 0L
+        click(PennantTags.SEASON)
+        try {
+            compose.waitUntil(1_200_000) {
+                val now = SystemClock.elapsedRealtime()
+                val ui = vm.state.value
+                if (now - lastSample >= 10_000) {
+                    lastSample = now
+                    val runtime = Runtime.getRuntime()
+                    val sample = "${now - started},${ui.season?.results?.size},${ui.season?.dayIndex},${ui.busy},${ui.season?.active?.game?.fixture?.gameId},${ui.season?.active?.snapshot?.pitchesAccepted},${runtime.totalMemory() - runtime.freeMemory()}"
+                    progress.appendText(sample + "\n")
+                    Log.i("Pennant720", sample)
+                    // Bounded samples locate hot paths if a full real run stalls.
+                    val stacks = Thread.getAllStackTraces().entries.filter { it.key.name.startsWith("DefaultDispatcher-worker") }
+                    File(directory, "pennant-real-season-42-worker-samples.txt").appendText("elapsed_ms=${now - started}\n" + stacks.joinToString("\n") { (thread, stack) -> thread.name + "\n" + stack.take(12).joinToString("\n") } + "\n")
+                }
+                ui.loaded && !ui.busy
+            }
+            assertNull(vm.state.value.error)
+        } catch (failure: Throwable) {
+            vm.requestStop()
+            File(directory, "pennant-real-season-42-failure.txt").writeText(failure.stackTraceToString())
+            throw failure
+        }
         val state = vm.state.value.season!!
         assertEquals(SeasonStatus.COMPLETE, state.status); assertEquals(720, state.results.size); assertEquals(141, state.dayIndex)
         assertNull(state.active); assertTrue(state.standings.all { it.totals.played == 120L })
         assertEquals(108, state.playerCounts.size)
         val frame = CheckpointCodec.encodeSeason(state)
-        val directory = pennantTestOutputDirectory()
         File(directory, "pennant-real-season-42.bin").writeBytes(frame)
         val context = InstrumentationRegistry.getInstrumentation().targetContext
         val database = context.getDatabasePath(PennantDatabase.FILE_NAME)
