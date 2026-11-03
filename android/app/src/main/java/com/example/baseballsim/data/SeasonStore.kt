@@ -22,7 +22,17 @@ interface SeasonStore {
     suspend fun hasSlot(): Boolean
 }
 
-internal fun hash(bytes: ByteArray): String = MessageDigest.getInstance("SHA-256").digest(bytes).joinToString("") { "%02x".format(it) }
+internal fun hash(bytes: ByteArray): String = lowercaseHex(MessageDigest.getInstance("SHA-256").digest(bytes))
+internal fun lowercaseHex(bytes: ByteArray): String {
+    val digits = "0123456789abcdef"
+    val text = CharArray(bytes.size * 2)
+    bytes.forEachIndexed { index, byte ->
+        val value = byte.toInt() and 0xff
+        text[index * 2] = digits[value ushr 4]
+        text[index * 2 + 1] = digits[value and 0x0f]
+    }
+    return String(text)
+}
 internal fun validIdentifier(value: String) = Regex("[A-Za-z0-9._-]{1,128}").matches(value)
 internal fun outsideMatch(state: SeasonState) = state.active == null
 internal fun checkedState(bytes: ByteArray, expectedHash: String): SeasonState {
