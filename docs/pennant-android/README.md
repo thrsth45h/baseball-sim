@@ -1,6 +1,6 @@
 # Android最小ペナント（Phase 5a）
 
-[承認済み設計](../PENNANT_BASIC_DESIGN.md)・[保存層](../pennant-store/README.md)をAndroidへ接続する技術検証版。[PR #44](https://github.com/thrsth45h/baseball-sim/pull/44)。初回受入れは単年度で、製品の年数上限や永久の保存互換を定めない。現時点では最終CIの検証中であり、未検証を完成済みと報告しない。[検証記録](VALIDATION.md)を参照。
+[承認済み設計](../PENNANT_BASIC_DESIGN.md)・[保存層](../pennant-store/README.md)をAndroidへ接続する技術検証版。[PR #44](https://github.com/thrsth45h/baseball-sim/pull/44)。12球団の全720試合・保存/復旧・Android操作をAPI35の隔離CIで確認した。初回受入れは単年度で、製品の年数上限や永久の保存互換を定めない。[検証記録](VALIDATION.md)を参照。
 
 ## 操作
 
@@ -23,7 +23,13 @@
 
 ## APKとCI成果物
 
-最終の検証済みAPK取得先・source head・SHA256・14日保持期限は、検証完了後に[検証記録](VALIDATION.md)へ固定する。CIの`pennant-debug-<source SHA>` ZIPに`app-debug.apk`、hash、`source-info.json`、Room/KSP/schemaを含む`pennant-source-info.json`、process復旧の検証結果を同梱する。
+1. GitHubへログインし、[検証済みAPKのZIP](https://github.com/thrsth45h/baseball-sim/actions/runs/41675777477/artifacts/13251715616)を取得する。期限は **2026-11-18 01:40:13 JST**。
+2. ZIPを展開し、Android端末へ`app-debug.apk`を移して自分でインストールする。Android8.0/API26以上を宣言しているが、実行検証済みはAPI35のエミュレータ。
+3. 起動後「ペナント」へ切り替える。オフラインで動作し、PCサーバ/Pythonは不要。
+
+APKのsourceは `7ec9d0e478447899a081c684d33b9c4635511b79`、SHA256は `178f1f4a32d5034f317c9573ff6147efbd470099a368d34d484639d03b18ca4f`。ZIPにhash/source-info/Room・KSP・schemaの情報/manifest検査/process復旧結果を同梱。実720試合の全frame/記録/PNGは[device成果物](https://github.com/thrsth45h/baseball-sim/actions/runs/41675777560/artifacts/13251258753)。配布APK自体のhost操作と、同sourceを別runnerでビルドした通常device検査を区別する。
+
+CIのdebug/厳密保存検査では全720試合が18分30.228秒かかった。高速化を合格済みとせず、実機の所要時間は未検証。容量/測定条件/制約は[検証記録](VALIDATION.md)に残す。
 
 debug署名はCI runnerごとに異なる場合があり、versionCodeが増えても以前のdebug APKから保存を保った更新を保証しない。同一applicationIdで署名が違うと更新できず、アンインストールすると端末内セーブも消える。こちらから端末へ自動インストール/アンインストールはしない。固定の製品署名やPlay配信は今回の範囲外。
 

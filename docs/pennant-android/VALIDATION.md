@@ -1,31 +1,56 @@
 # Phase 5a Android接続の検証記録
 
-2026-11-02 日本時間。**最終CI検証中**。[PR #44](https://github.com/thrsth45h/baseball-sim/pull/44)。数値・APK・sourceは検証完了後の値を固定し、未検証を成功と称さない。
+2026-11-04 日本時間。[PR #44](https://github.com/thrsth45h/baseball-sim/pull/44)のworker検証完了。責任者が独立レビュー・最終統合を管理する。実装/検査/CI固定sourceは `7ec9d0e478447899a081c684d33b9c4635511b79`、tree `0e144a3376e0683b1b7a04deed1c74781935a209`。この後の完了報告は文書だけの変更として区別し、APKのsourceを報告commitへ付け替えない。[機械可読のCI証拠](CI_EVIDENCE.json)にrun/job/artifactを固定した。
 
-## 実装と検査対象
+## 結果
 
-- 新PennantViewModelは同期busy claimで連打をqueueせず、各操作の世代を確認してから公開する。確定済みStoredSeasonだけを表示し、書込失敗時の計算済みSessionを使い回さない。
-- 旧単独1試合モードを初期画面として保ち、上部のペナント切替からRoomの保存/復旧へ接続する。
-- VMのJVM検査は8 method。初回head5512be67の7 methodを含む既存CIは成功したが、追加した回帰と最終headはこれから確認する。
-- 通常のAPI35 instrumented検査は新Activity 5 method、狭幅/診断/読込失敗表示3 method。通常runnerはhost専用processクラスを除外する。
-- host process probeは、保存済みcheckpointを画面へ公開したprepare processを生存待機させ、hostが同じPIDを確認してforce-stopする。prepareは意図的に終了するsetupであり、成功JUnit件数へ数えない。recover 1 methodは別プロセスで同じworld/generation/revision・GameId・checkpoint hashを照合し、次の1球だけを進める。
+固定sourceの全10workflow/18jobsは成功し、全stepはsuccessまたは意図したskipped。[通常Android CI](https://github.com/thrsth45h/baseball-sim/actions/runs/41675777560)と[専用process CI](https://github.com/thrsth45h/baseball-sim/actions/runs/41675777477)を確認した。
 
-## 機械可読の証拠
+| 検査 | method数 | failure/error/skip |
+|---|---:|---:|
+| app JVM（旧12・保存11・新VM8） | 31 | 0/0/0 |
+| 純Kotlin core/season | 22 | 0/0/0 |
+| API35通常device（旧6・保存17・新操作/表示8） | 31 | 0/0/0 |
+| hostの復旧 | 1 | 0/0/0 |
+| hostの局所profile | 1 | 0/0/0 |
 
-`pennant-real-season-42.bin`は実Activity/Roomを通して720試合を進めた最終SeasonStateの全値codec。対応JSONへmaster seed、12球団の順位/成績、108人のイベント件数、frame SHA256・保存容量・経過時間を出す。合成の最大payload試験やメモリ内完走とは区別する。
+prepareはhostが意図的にkillする生存setupであり、成功methodへ数えない。profileはfixture起点の局所計測であり、実720試合の完走件数へ加算しない。実XMLを回収確認。lintはerror 0 / warning 8（固定依存の更新案内等）で、依存更新をこの実装へ広げていない。
 
-process成果物は`expected.json`、`before-pid.txt`、`after-force-stop-pid.txt`、`recovery.json`、正常recoverログと`verification.json`。force-stop前のPID生存と後の不在をhostが検査する。JUnit終了後にプロセスが自然終了し得るため、recover後もPIDが生存し続けることを要件にはしない。回復テスト内のProcess.myPidと新しい証拠ファイルで別プロセスを確認する。
+新VMは連打の同期拒否、読込失敗時の上書き禁止、書込失敗後の再読、古いcallback/世代の拒否、停止予約、試合中手動save/load禁止、LOAD/reloadで保存seedを採用した際の古い入力エラー解消を検査。実Activityは観戦3操作、回転で同じVM/状態、日程/順位/12球団108人の記録、実ボタンによる停止、手動slot/新世代、全skipを検査した。狭幅320dpでは表の範囲と「勝率」「本塁打」への実横スクロールを確認し、BLOCKEDの保存GameId/理由と読込失敗表示も確認した。
 
-PNGは新規/進行中/順位/記録/シーズン完了/狭幅/未完了診断/process前後をCI追加出力へ保存する。実際に取得/目視した範囲を完了時に記録する。
+## 実Activity/Roomの720試合
 
-## 現時点のCI事実
+seed42を新規作成してシーズン終了まで進め、全720試合・全12球団各120試合・day141・108人・activeなしを検査した。完了後の再読でもSeasonState全値が一致した。[device成果物](https://github.com/thrsth45h/baseball-sim/actions/runs/41675777560/artifacts/13251258753)の `pennant-real-season-42.bin` は最終SeasonState全値codec、JSONは全順位/打者件数を持つ。全投球ログは保存しない。
 
-head5512be67の全9workflowは成功。これは最終受入れ一式ではない。head261aa22のdeviceはテストへ到達する前、SDK emulator ZIP取得のエラーで停止した。アプリのテスト失敗や動作成功とは扱わない。新しいheadで結果を確認し、取得だけの一時障害なら最終対象の限定再実行で確認する。
+| 計測 | 値 |
+|---|---:|
+| 実UI操作開始から完了/検算出力まで | 1,110,228ms（18分30.228秒） |
+| 最終frame | 1,585,652byte |
+| DB / WAL | 5,046,272 / 3,065,312byte |
+| 10秒間隔のheap標本最大 | 47,618,192byte |
 
-headc212の専用hostは、エミュレータ起動時のuserdata領域要求約7.2GiBに対してCI runnerの空きが不足し、テスト前に停止した。専用CIのAVDだけを`disk-size: 2048M`へ明示し、API35と実際の`/data`容量をhost証拠へ記録する。[使用中actionの正式input](https://raw.githubusercontent.com/ReactiveCircus/android-emulator-runner/a421e43855164a8197daf9d8d40fe71c6996bb0d/action.yml)に従う設定で、ユーザーPCやアプリの保存上限を変更するものではない。
+frame SHA256は `0bde5d0de901771b13e75adc64aab9d21a5854c8f7aed9e34aafb72a3881bbde`。責任者が11/2に旧公開core613＋別JDK21で事前固定した期待frameと全byte一致を独立確認した。720要約/12順位/108記録/plan/seed/day141を含み、worker結果へ後合わせした基準ではない。heapは標本最大で、瞬間最大メモリやRSSではない。DB/WALはその時点の値で、peakや閉じた後の容量ではなく、再起動後のcheckpoint等で変わり得る。このdebug/厳密再検証の保存処理は遅く、「高速」を実証したとは扱わない。API35の一台のエミュレータ値を実機一般性能へ外挿しない。3master計2,160試合の全skip/混在一致・最大メモリ等は[純Kotlinの別検証](../pennant-core/VALIDATION.md)で、実720transactionと区別する。
 
-headf1b8のhostでも設定記入後に同じ最小userdata要求が残り、テストへ未到達だった。通常deviceと同様、専用hostもエミュレータ起動後にAPKをビルドする順へ変更する。同headの通常deviceは旧6検査が成功した後、実720検査が20分の条件待ち上限で失敗し、job全体も30分上限でcancelされた。成功扱いにはせず、10秒間隔の到達試合数・heapとworker stackを検査出力へ追加して原因と修正効果を測る。
+## 実プロセス強制終了
 
-## 未検証・範囲外
+配布APKとtest APKを一度だけ導入し、prepare/recoverの間は再導入・データ消去なし。公開済みcheckpointのprepare PID4194をhostのpidofで生存確認し、am force-stop後に不在を確認。新PID4298で同world/generation/revision3・GameId `S1-D002-L1-R01-M1-G1`・受理5球/advance5・checkpoint hashを復旧し、replay予測どおり次の1球だけを進めた。
 
-最終APK・host復旧・720実transaction・追加8表示/操作methodの成功はまだ未確定。物理端末、API26での実行、電源断/媒体故障、長期年度移行/保存互換、能力/CPU采配/経営/研究モデル採用は対象外または未検証。API35の1台のエミュレータの時間やメモリを端末一般性能へ外挿しない。
+保存hash `18c8ff07180fbc60ed5935c01ace7b94d60c7433dbc8fee5e6273e46e0e246f7` → 次球hash `f57af0454af300bb99316126cb7a489da6a0240566691e4891159d1562e3262c`。[host成果物](https://github.com/thrsth45h/baseball-sim/actions/runs/41675777477/artifacts/13251900282)に旧PID生存/不在・expected/recovery JSON・正常JUnitログ・PNGを保存。JUnit後に回復プロセスが自然終了すること自体は失敗とせず、テスト内の新PIDと新しい証拠で確認した。DB close/open、Activity.recreate、保存transaction障害注入とは別の証拠である。保存前/中の全kill窓、電源断、媒体故障を保証する試験ではない。
+
+## 計算量修正と旧失敗
+
+保存hashのFormatterを同じ小文字hex変換へ置換し、結果prefixを除いてから新規rowだけを変換した。保存byte/schema/codec、厳密検査の回数、CAS/replay/世代/操作ID拒否は維持し、キャッシュは導入しない。全byte/既知SHA/固定bufferと実DBの0/1row追加・既存prefix全byte保持/改変拒否を検査した。
+
+baseline `cfe3e96` と固定sourceの局所profileは、正規メモリ内prefix0/100/300を別DBへfixture導入し、cold read1/warm3・marker/core/result各2回を分離測定した。prefix300のmarkerは旧約653ms/新約645–661ms、resultは旧約642–648ms/新約658–672ms。別runner単発で高速化は確認できず、改善率は主張しない。成果物のprofile-output/screenshotsの同じJSONコピーを二重試行として数えない。
+
+旧f1b8/cfeの実720検査は20分上限で失敗。cfeは1,190.721秒で633試合まで継続前進し、heapとstackはcodec/hash作業の継続を示した。timeout後に停止が終わる前の後続3検査はreadbusy由来の表示エラーとなった。これを独立した保存破損や合格と扱わない。固定sourceは既存20分/test・30分/jobの範囲で全31検査を完了し、上限延長や検査省略は追加していない。
+
+旧261のdeviceはSDK ZIP取得、旧c212/f1b8のhostはuserdata最低要求約7.2GiBに対する空き不足でテスト未到達。正式inputの2048M設定が記入されても最低値は残ったため、hostを通常device同様のboot→build順へ変更して解消した。要求2048Mと実df 6,082,144KiBを区別する。ユーザーPCへSDK等を導入しない。
+
+## APK・表示確認・限界
+
+[検証済み配布ZIP](https://github.com/thrsth45h/baseball-sim/actions/runs/41675777477/artifacts/13251715616)の `app-debug.apk` は10,876,017byte、versionCode2 / 0.2-pennant-tech。実SHA256は `178f1f4a32d5034f317c9573ff6147efbd470099a368d34d484639d03b18ca4f`。取得期限は **2026-11-18 01:40:13 JST**（14日保持）。source-info/pennant-source-info/offline-manifest/process検証を同梱し、回収APKの実hash/source/treeを照合した。配布APK自体をhostで操作し、通常31deviceは同sourceの別runnerビルドである。
+
+実行環境はAPI35/google_apis/x86_64/pixel_2、emulator37.2.13.0 build16740729、Room2.8.5/KSP2.2.21-2.0.5。schema SHAは `3af7cc7ed8cc59fd2d65666aa5464afb80598b5979428c3f88ae3e4d5f7004a8`。INTERNET権限なしのmerged/packaged manifestを検査した。新規/進行中/順位/記録/完了/狭幅2枚/BLOCKED/process前後の実PNGを回収し、workerも完了・狭幅・復旧画面を目視した。責任者も進行中/完了/process前後/狭幅右端2表/BLOCKED/12番球団記録を独立目視し、必須問題なしと確認した。全frameの独立照合と合わせ、worker自己点検と区別する。
+
+物理端末・API26実行・電源断/媒体故障・長期保存互換/次年度移行・能力/采配/経営/研究モデル採用は未検証または範囲外。debug署名が違えば旧版から保存維持更新できず、アンインストールすると端末内セーブが消える。[操作/取得手順](README.md)を参照。次工程は設計案の相談だけで、未承認の機能へ自動着手しない。
