@@ -59,7 +59,7 @@ class RoomSeasonStore(
     private fun requireToken(head: WorkingEntity?, expected: StoreToken) {
         if (head == null || token(head) != expected) throw StoreConflict("Saved generation or revision changed")
     }
-    private fun resultRows(state: SeasonState, world: String, generation: String): List<ResultEntity> = state.results.map { result ->
+    private fun resultRows(results: List<GameSummary>, world: String, generation: String): List<ResultEntity> = results.map { result ->
         val bytes = CheckpointCodec.encodeSummary(result)
         ResultEntity(world, generation, result.game.fixture.seasonId, result.game.fixture.gameId, result.game.fixture.ordinal, hash(bytes), bytes)
     }
@@ -151,7 +151,7 @@ class RoomSeasonStore(
             faults.hit(StoreFaultPoint.AFTER_COMMIT)
             return boundRead(before.token, before.operationId)
         }
-        val rows = withContext(computation) { resultRows(candidate, expected.worldId, expected.generationId).drop(before.state.results.size) }
+        val rows = withContext(computation) { resultRows(candidate.results.drop(before.state.results.size), expected.worldId, expected.generationId) }
         val revision = Math.addExact(expected.revision, 1)
         faults.hit(StoreFaultPoint.BEFORE_TRANSACTION)
         val committed = withContext(io) { database.withTransaction {
@@ -195,7 +195,7 @@ class RoomSeasonStore(
         require(outsideMatch(restored))
         val generation = newId(); val revision = Math.addExact(expected.revision, 1)
         StoreToken(slot.worldId, generation, revision)
-        val rows = withContext(computation) { resultRows(restored, slot.worldId, generation) }
+        val rows = withContext(computation) { resultRows(restored.results, slot.worldId, generation) }
         faults.hit(StoreFaultPoint.BEFORE_TRANSACTION)
         val committed = withContext(io) { database.withTransaction {
             duplicate(operationId, signature) ?: run {
