@@ -2,6 +2,8 @@
 
 [承認済み設計](../PENNANT_BASIC_DESIGN.md)に従う第2実装。画面接続は第3PRで行う。旧core/season/既存画面は変更しない。
 
+独立レビュー修正後のsource `6e9ee0be613808939a3a46dacba953c9597930cc`のCI検証は完了。[検証記録と未検証事項](VALIDATION.md)・[機械可読証拠](CI_EVIDENCE.json)を参照。旧f8cの成功記録と、追加された並行更新/操作IDの回帰検証を区別する。
+
 ## Android側の利用
 
 `PennantDatabase.open(applicationContext)`で端末内DBを作り、`RoomSeasonStore(database)`を`SeasonCoordinator`へ渡す。DBはApplication相当のownerが保持し、1つのViewModelの画面回転で閉じたり再作成したりしない。
@@ -24,7 +26,7 @@ val next = coordinator.advance(SeasonAdvance.PITCH) // PLATE_APPEARANCE / GAME�
 
 各進行操作は`tryLock`で排他し、重なった呼出しをqueueせず`SeasonBusy`で拒否する。ViewModelもbusy中の操作を無効化し、画面破棄後の古い処理を公開しない。callback自体が失敗・中断しても、既に確定した保存を巻き戻さない。
 
-保存失敗時は計算済みSessionを保持しない。CoordinatorはNonCancellableの再読でcommit成否を確認する。応答を失っただけで最後のoperationIdが一致する場合は、その確定データを返す。キャンセルされた呼出しは再読後もキャンセルを伝播し、破棄済み画面へ公開しない。その他の失敗は元データを残して返し、UIが自動新規作成へ進まないこと。
+保存失敗時は計算済みSessionを保持しない。CoordinatorはNonCancellableの再読でcommit成否を確認する。応答を失った場合も、operationIdだけでなく期待するtoken遷移と候補stateが一致する場合だけ確定データを返す。StoreConflictは成功へ変換せず伝播する。storeの通常応答・duplicate・no-opも当該commitまたは既存no-op境界のworld/generation/revision/operationIdへ結び付け、別writerが更新/ロードした後の新しいheadを古いbulk処理が引き継がない。キャンセルされた呼出しは再読後もキャンセルを伝播し、破棄済み画面へ公開しない。その他の失敗は元データを残して返し、UIが自動新規作成へ進まないこと。
 
 ## 保存の正本
 
