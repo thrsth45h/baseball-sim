@@ -1,6 +1,6 @@
 # Codex間の引き継ぎ
 
-2026-11-01 日本時間。GitHubで確認できた研究・承認・マージ状態を記す。仕様の確定性は[決定台帳](../DECISIONS.md)、運用は[WORKFLOW.md](WORKFLOW.md)を優先する。
+2026-11-04 日本時間。GitHubで確認できた研究・承認・マージ状態を記す。仕様の確定性は[決定台帳](../DECISIONS.md)、運用は[WORKFLOW.md](WORKFLOW.md)を優先する。以下の旧工程の記述/数値/当時の次工程は履歴として保持する。
 
 ## 参照先
 
@@ -9,6 +9,8 @@
 - 統計研究：[statcast-swing-model-v1](https://github.com/thrsth45h/statcast-swing-model-v1)（Phase 1b [PR #1](https://github.com/thrsth45h/statcast-swing-model-v1/pull/1) はマージ済み、squash SHA `f3b65653d90b004ea8bfaf233b94231876233980`）
 
 ## 現在の到達点
+
+- **Phase 5a Android接続PR #44は実装/CI/独立frame・表示確認を完了、責任者の最終統合待ち。** [core PR #42](https://github.com/thrsth45h/baseball-sim/pull/42)をmain `e0a61b54`、[保存PR #43](https://github.com/thrsth45h/baseball-sim/pull/43)をmain `7fd25f01a38465d36de3244fe79bf71ce0b2cf9a`へ統合済み。そのmainを通常mergeした[第3PR #44](https://github.com/thrsth45h/baseball-sim/pull/44)は、旧単独試合を保持して12球団/各120試合の観戦・日程skip・順位/108人限定記録・Room保存/復旧を接続。runtime/tests/CI固定source `7ec9d0e478447899a081c684d33b9c4635511b79`、全10workflow/18jobs成功、実XML app31/core22/device31とhost復旧1/profile1はfailure/error/skip0。prepareを成功methodへ加算しない。実Activity/Roomの720試合は18分30.228秒、最終frame1,585,652byte/SHA `0bde5d0de901771b13e75adc64aab9d21a5854c8f7aed9e34aafb72a3881bbde`で、責任者が11/2事前固定の別JDK期待値と全byte一致を確認。実PID4194→force-stop不在→4298で公開5球checkpointを復旧し次1球だけ進めた。APK source7ecの実SHA `178f1f4a32d5034f317c9573ff6147efbd470099a368d34d484639d03b18ca4f`、[取得/操作](pennant-android/README.md)、期限2026-11-18 01:40:13 JST、[検証/未検証](pennant-android/VALIDATION.md)、[CI証拠](pennant-android/CI_EVIDENCE.json)。API35の実PNGも責任者が独立確認。schema/codec/厳密検査/CAS/replay不変の保存費用2件だけ修正し、実機高速性は主張しない。完了文書commitはAPK sourceと区別し、最終doc-only差分/CI/PRマージは責任者が管理する。worker `work/pennant-android-worker` の回収資料を保持。ユーザーPC画面/入力/既存環境やローカルSDK/Gradleを操作していない。実機/API26/電源断/長期互換/次年度/能力/経営は未検証または範囲外。次工程は設計案のみで、未承認機能へ自動着手しない。
 
 - **Android実装PR #40をマージ済み。** main `470467a27d6390b6415e5b16b44c0c1a0aa1704f`。レビューhead `baa45e2836063c8d0641a756a762fab1274ee414`と統合treeは一致し、APK source `2b0708294887f23fced10cd71a726dbd5fde030a`からAndroid/tests/CIは不変。最終headの全8workflow/16jobs成功と独立レビューを確認して統合した。既存worktree/ignored証拠を保持し、研究repoは変更していない。
 - **Phase 5aの試作範囲・worker実装〜APK完成を本人承認済み。** [設計PR #41](https://github.com/thrsth45h/baseball-sim/pull/41)・[正本](PENNANT_BASIC_DESIGN.md)の12球団/固定各9人/120試合・既存coreの観戦/スキップ・順位/限定記録・Room保存/復旧・単年度試作を示す確認に、2026-11-01本人が「はい」と回答。D057/D058は本試作のみCONFIRMED、ADR-0015 Accepted。設計レビュー/CI/マージ後、workerへ日程/集計→保存/復旧→Android接続を直接委任し、責任者の独立レビュー/修正確認/CI/問題のないPRマージでAPKまで進める。通常判断を繰り返し確認しない。製品日程/長期保存/年度移行/能力や経営は今回含めない。

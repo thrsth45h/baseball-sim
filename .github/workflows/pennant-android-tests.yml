@@ -1,0 +1,68 @@
+name: pennant-android-recovery
+on: [push, pull_request]
+permissions:
+  contents: read
+env:
+  SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+jobs:
+  process-recovery:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    defaults:
+      run:
+        working-directory: android
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5
+        with:
+          distribution: temurin
+          java-version: '17.0.21+9'
+      - name: Verify official Wrapper bytes
+        run: echo '81a82aaea5abcc8ff68b3dfcb58b3c3c429378efd98e7433460610fecd7ae45f  gradle/wrapper/gradle-wrapper.jar' | sha256sum --check
+      - uses: gradle/actions/setup-gradle@0723195856401067f7a2779048b490ace7a47d7c # v5
+      - name: Fixed SDK packages in CI only
+        run: '"$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-36" "build-tools;35.0.0"'
+      - name: Allow KVM inside this disposable runner
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - uses: ReactiveCircus/android-emulator-runner@a421e43855164a8197daf9d8d40fe71c6996bb0d # v2
+        with:
+          api-level: 35
+          arch: x86_64
+          target: google_apis
+          profile: pixel_2
+          disk-size: 2048M
+          working-directory: android
+          disable-animations: true
+          emulator-options: -no-window -no-audio -no-boot-anim -no-snapshot -gpu swiftshader_indirect -camera-back none
+          # Boot before compilation: the current image has a minimum userdata
+          # allocation larger than disk-size, despite accepting the config value.
+          script: |
+            bash gradlew :app:assembleDebug :app:assembleDebugAndroidTest --no-daemon --stacktrace
+            python3 tools/offline_manifest.py
+            python3 tools/source_info.py
+            python3 tools/pennant_source_info.py
+            (cd app/build/outputs/apk/debug && sha256sum app-debug.apk > app-debug.apk.sha256)
+            bash tools/pennant_process_recovery.sh
+      - name: Stage the verified APK
+        run: |
+          mkdir -p build/pennant-distribution
+          cp app/build/outputs/apk/debug/app-debug.apk app/build/outputs/apk/debug/app-debug.apk.sha256 app/build/outputs/apk/debug/source-info.json app/build/outputs/apk/debug/pennant-source-info.json app/build/outputs/apk/debug/offline-manifest-check.json build/pennant-distribution/
+          cp app/build/pennant-process-proof/verification.json build/pennant-distribution/process-recovery-verification.json
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: pennant-debug-${{ env.SOURCE_SHA }}
+          path: android/build/pennant-distribution/
+          if-no-files-found: error
+          retention-days: 14
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: always()
+        with:
+          name: pennant-process-proof-${{ env.SOURCE_SHA }}
+          path: android/app/build/pennant-process-proof/
+          if-no-files-found: error
+          retention-days: 14

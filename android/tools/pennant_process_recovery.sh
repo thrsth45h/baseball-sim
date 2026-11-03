@@ -1,0 +1,93 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Runs only inside the disposable CI emulator. Do not clear app data or reinstall
+# between preparation and recovery: those would invalidate the process-death test.
+report="app/build/pennant-process-proof"
+mkdir -p "$report"
+trap 'adb logcat -d > "$report/logcat.txt" || true' EXIT
+adb wait-for-device
+adb shell getprop ro.build.version.sdk | tr -d '\r' > "$report/device-api.txt"
+adb shell df -k /data > "$report/device-data-filesystem.txt"
+test "$(cat "$report/device-api.txt")" = 35
+adb install -r -t app/build/outputs/apk/debug/app-debug.apk
+adb install -r -t app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
+
+run_case() {
+    local method="$1"
+    local logfile="$2"
+    adb shell am instrument -w -r \
+      -e class "com.example.baseballsim.PennantProcessRecoveryTest#$method" \
+      -e additionalTestOutputDir /sdcard/Android/media/com.example.baseballsim/additional_test_output \
+      com.example.baseballsim.test/androidx.test.runner.AndroidJUnitRunner | tee "$logfile"
+    grep -F 'OK (1 test)' "$logfile"
+    if grep -E 'FAILURES!!!|INSTRUMENTATION_FAILED|Process crashed' "$logfile"; then return 1; fi
+}
+
+# Separate short diagnostic. Prefix setup is explicitly a canonical fixture,
+# never reported as the full Activity/Room 720-transaction acceptance result.
+run_case profileRealStoreCostsAtCanonicalPrefixBoundaries "$report/store-profile.txt"
+adb pull /sdcard/Android/media/com.example.baseballsim/additional_test_output "$report/profile-output"
+
+# Remove only this test's own stale probe files. App/database state is untouched.
+adb shell run-as com.example.baseballsim rm -f files/pennant-process-expected.json files/pennant-process-proof.json
+adb shell am instrument -w -r \
+  -e class 'com.example.baseballsim.PennantProcessRecoveryTest#prepareDurableCheckpointBeforeHostKill' \
+  -e additionalTestOutputDir /sdcard/Android/media/com.example.baseballsim/additional_test_output \
+  com.example.baseballsim.test/androidx.test.runner.AndroidJUnitRunner > "$report/prepare.txt" 2>&1 &
+prepare_adb_pid=$!
+ready=false
+for attempt in $(seq 1 180); do
+    if adb exec-out run-as com.example.baseballsim cat files/pennant-process-expected.json > "$report/expected-candidate.json" 2>/dev/null; then
+        if python3 -c 'import json,sys; assert json.load(open(sys.argv[1]))["prepare_probe_waiting_for_host"] is True' "$report/expected-candidate.json"; then
+            mv "$report/expected-candidate.json" "$report/expected.json"
+            ready=true
+            break
+        fi
+    fi
+    sleep 1
+done
+test "$ready" = true
+kill -0 "$prepare_adb_pid"
+adb shell pidof com.example.baseballsim | tr -d '\r' > "$report/before-pid.txt"
+test -s "$report/before-pid.txt"
+python3 -c 'import json,sys; from pathlib import Path; p=Path(sys.argv[1]); assert str(json.loads((p/"expected.json").read_text())["pid"])==(p/"before-pid.txt").read_text().strip()' "$report"
+
+adb shell am force-stop com.example.baseballsim
+wait "$prepare_adb_pid" || true
+sleep 1
+adb shell pidof com.example.baseballsim | tr -d '\r' > "$report/after-force-stop-pid.txt" || true
+test ! -s "$report/after-force-stop-pid.txt"
+
+run_case recoverTheSamePublishedCheckpointAndAdvanceExactlyOnce "$report/recover.txt"
+adb shell pidof com.example.baseballsim | tr -d '\r' > "$report/recovered-pid.txt" || true
+adb exec-out run-as com.example.baseballsim cat files/pennant-process-proof.json > "$report/recovery.json"
+python3 - <<'PY'
+from pathlib import Path
+import json
+p=Path('app/build/pennant-process-proof')
+before=(p/'before-pid.txt').read_text().strip()
+expected=json.loads((p/'expected.json').read_text())
+proof=json.loads((p/'recovery.json').read_text())
+after=str(proof['new_pid'])
+surviving=(p/'recovered-pid.txt').read_text().strip()
+assert before and after and before!=after
+assert (p/'after-force-stop-pid.txt').read_text().strip()==''
+assert str(expected['pid'])==before
+assert proof['previous_pid']==expected['pid'] and str(proof['new_pid'])==after
+assert not surviving or after in surviving.split()
+assert proof['same_world_generation_and_checkpoint'] is True
+assert proof['one_additional_pitch_only'] is True
+assert proof['saved_checkpoint_sha256']==expected['checkpoint_sha256']
+assert proof['next_checkpoint_sha256']!=expected['checkpoint_sha256']
+record={'schema':'pennant-process-recovery-v1','same_install_and_database':True,
+        'device_api':int((p/'device-api.txt').read_text().strip()),
+        'requested_ci_data_partition':'2048M',
+        'prepare_instrumentation_intentionally_terminated':True,
+        'force_stop_observed_process_absent':True,'new_process_id':after,'old_process_id':before,
+        'recovery_process_observed_alive_after_junit':bool(surviving),
+        'same_committed_checkpoint_recovered':True,'exactly_one_next_pitch':True,
+        'power_loss_or_physical_device_tested':False}
+with (p/'verification.json').open('x') as f:json.dump(record,f,indent=2);f.write('\n')
+PY
+adb pull /sdcard/Android/media/com.example.baseballsim/additional_test_output "$report/screenshots"

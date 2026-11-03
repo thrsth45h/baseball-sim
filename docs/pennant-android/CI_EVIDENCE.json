@@ -1,0 +1,292 @@
+{
+  "schema": "pennant-android-ci-evidence-v1",
+  "recorded_date_jst": "2026-11-04",
+  "source_head": "7ec9d0e478447899a081c684d33b9c4635511b79",
+  "source_tree": "0e144a3376e0683b1b7a04deed1c74781935a209",
+  "recorded_before_pr_merge": true,
+  "workflow_count": 10,
+  "job_count": 18,
+  "runs": [
+    {
+      "name": "phase4f-single-game-tests",
+      "id": 41675780389,
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "name": "unittest (3.11)",
+          "id": 126055868100,
+          "status": "completed",
+          "conclusion": "success",
+          "all_steps_success_or_skipped": true
+        },
+        {
+          "name": "unittest (3.12)",
+          "id": 126055869144,
+          "status": "completed",
+          "conclusion": "success",
+          "all_steps_success_or_skipped": true
+        }
+      ]
+    },
+    {
+      "name": "phase4a-reference-tests",
+      "id": 41675777272,
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "name": "unittest (3.12)",
+          "id": 126055858082,
+          "status": "completed",
+          "conclusion": "success",
+          "all_steps_success_or_skipped": true
+        },
+        {
+          "name": "unittest (3.11)",
+          "id": 126055858709,
+          "status": "completed",
+          "conclusion": "success",
+          "all_steps_success_or_skipped": true
+        }
+      ]
+    },
+    {
+      "name": "phase4e-reference-tests",
+      "id": 41675777407,
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "name": "unittest (3.11)",
+          "id": 126055859257,
+          "status": "completed",
+          "conclusion": "success",
+          "all_steps_success_or_skipped": true
+        },
+        {
+          "name": "unittest (3.12)",
+          "id": 126055859724,
+          "status": "completed",
+          "conclusion": "success",
+          "all_steps_success_or_skipped": true
+        }
+      ]
+    },
+    {
+      "name": "phase4b-reference-tests",
+      "id": 41675777497,
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "name": "unittest (3.11)",
+          "id": 126055860200,
+          "status": "completed",
+          "conclusion": "success",
+          "all_steps_success_or_skipped": true
+        },
+        {
+          "name": "unittest (3.12)",
+          "id": 126055860919,
+          "status": "completed",
+          "conclusion": "success",
+          "all_steps_success_or_skipped": true
+        }
+      ]
+    },
+    {
+      "name": "local-match-view-tests",
+      "id": 41675777399,
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "name": "unittest (3.11)",
+          "id": 126055859538,
+          "status": "completed",
+          "conclusion": "success",
+          "all_steps_success_or_skipped": true
+        },
+        {
+          "name": "unittest (3.12)",
+          "id": 126055860659,
+          "status": "completed",
+          "conclusion": "success",
+          "all_steps_success_or_skipped": true
+        }
+      ]
+    },
+    {
+      "name": "pennant-core-tests",
+      "id": 41675777281,
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "name": "repeat-core",
+          "id": 126055857929,
+          "status": "completed",
+          "conclusion": "success",
+          "all_steps_success_or_skipped": true
+        }
+      ]
+    },
+    {
+      "name": "phase4d-reference-tests",
+      "id": 41675777243,
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "name": "unittest (3.12)",
+          "id": 126055857902,
+          "status": "completed",
+          "conclusion": "success",
+          "all_steps_success_or_skipped": true
+        },
+        {
+          "name": "unittest (3.11)",
+          "id": 126055858214,
+          "status": "completed",
+          "conclusion": "success",
+          "all_steps_success_or_skipped": true
+        }
+      ]
+    },
+    {
+      "name": "phase4c-reference-tests",
+      "id": 41675777285,
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "name": "unittest (3.11)",
+          "id": 126055858069,
+          "status": "completed",
+          "conclusion": "success",
+          "all_steps_success_or_skipped": true
+        },
+        {
+          "name": "unittest (3.12)",
+          "id": 126055858334,
+          "status": "completed",
+          "conclusion": "success",
+          "all_steps_success_or_skipped": true
+        }
+      ]
+    },
+    {
+      "name": "pennant-android-recovery",
+      "id": 41675777477,
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "name": "process-recovery",
+          "id": 126055858820,
+          "status": "completed",
+          "conclusion": "success",
+          "all_steps_success_or_skipped": true
+        }
+      ]
+    },
+    {
+      "name": "android-first-match",
+      "id": 41675777560,
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "name": "device",
+          "id": 126055859996,
+          "status": "completed",
+          "conclusion": "success",
+          "all_steps_success_or_skipped": true
+        },
+        {
+          "name": "verify",
+          "id": 126055860900,
+          "status": "completed",
+          "conclusion": "success",
+          "all_steps_success_or_skipped": true
+        }
+      ]
+    }
+  ],
+  "tests": {
+    "app_jvm": 31,
+    "core_jvm": 22,
+    "standard_device": 31,
+    "host_recovery_methods": 1,
+    "host_profile_methods": 1,
+    "prepare_probe_intentionally_killed": true,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0
+  },
+  "apk": {
+    "artifact_id": 13251715616,
+    "artifact_url": "https://github.com/thrsth45h/baseball-sim/actions/runs/41675777477/artifacts/13251715616",
+    "sha256": "178f1f4a32d5034f317c9573ff6147efbd470099a368d34d484639d03b18ca4f",
+    "bytes": 10876017,
+    "expires_at_utc": "2026-11-17T16:40:13Z",
+    "version_code": 2,
+    "version_name": "0.2-pennant-tech"
+  },
+  "device_artifact": {
+    "id": 13251258753,
+    "zip_sha256": "dcefde03320f0a79634b02e98d12157af088849959c3bdee613cb164c93df9f4"
+  },
+  "actual_transactional_season": {
+    "master_seed": "42",
+    "completed_games": 720,
+    "day_index": 141,
+    "players": 108,
+    "clubs": 12,
+    "games_per_club": 120,
+    "elapsed_ms": 1110228,
+    "frame_bytes": 1585652,
+    "frame_sha256": "0bde5d0de901771b13e75adc64aab9d21a5854c8f7aed9e34aafb72a3881bbde",
+    "database_bytes": 5046272,
+    "wal_bytes": 3065312,
+    "maximum_sampled_heap_bytes": 47618192,
+    "heap_sample_interval_seconds": 10,
+    "heap_sampling_is_not_peak_rss": true
+  },
+  "process_recovery": {
+    "artifact_id": 13251900282,
+    "old_pid": 4194,
+    "new_pid": 4298,
+    "old_pid_alive_before_force_stop": true,
+    "old_pid_absent_after_force_stop": true,
+    "world": "972b5ac1-ecd0-433a-9a36-a9a1477ad099",
+    "generation": "ea499830-dd24-4ced-865b-62af300b0dbf",
+    "revision": 3,
+    "game_id": "S1-D002-L1-R01-M1-G1",
+    "accepted_pitches": 5,
+    "saved_checkpoint_sha256": "18c8ff07180fbc60ed5935c01ace7b94d60c7433dbc8fee5e6273e46e0e246f7",
+    "next_checkpoint_sha256": "f57af0454af300bb99316126cb7a489da6a0240566691e4891159d1562e3262c",
+    "same_install_and_database": true,
+    "one_next_pitch_only": true
+  },
+  "runtime": {
+    "api": 35,
+    "emulator": "37.2.13.0 build 16740729",
+    "profile": "pixel_2",
+    "arch": "x86_64",
+    "target": "google_apis",
+    "requested_data_partition": "2048M",
+    "actual_df_data_kib": 6082144,
+    "room": "2.8.5",
+    "ksp": "2.2.21-2.0.5",
+    "schema_sha256": "3af7cc7ed8cc59fd2d65666aa5464afb80598b5979428c3f88ae3e4d5f7004a8"
+  },
+  "unverified": [
+    "physical Android device",
+    "API26 execution",
+    "power loss or media failure",
+    "long term schema compatibility or next season",
+    "product abilities or management or Statcast model adoption"
+  ]
+}
