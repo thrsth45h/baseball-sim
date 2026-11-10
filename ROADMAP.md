@@ -102,7 +102,7 @@ worker実装・責任者の独立レビュー後、[実装PR #35](https://github
 
 ## Phase 5 — Androidゲームと長期ペナント
 
-**2026-11-10現在：Phase 5aの3実装PR #42/#43/#44はすべてマージ済み。** main `7ebb4a46a319ffde5e390a86b8f0a3a0352e4866`、[検証APK・操作手順](docs/pennant-android/README.md)、[結果と限界](docs/pennant-android/VALIDATION.md)。次は[保存・日程スキップの性能改善設計案](docs/PENNANT_PERFORMANCE_DESIGN.md)（ADR-0016 Proposed）。新規ゲーム機能を広げず、正確な同一結果/復旧を維持した内部改善の効果を計測する提案で、実装・改善の実証はまだ行っていない。以下はPhase 5a開始時の承認記録として保持する。
+**2026-11-11現在：Phase 5aの3実装PR #42/#43/#44はすべてマージ済み。** main `7ebb4a46a319ffde5e390a86b8f0a3a0352e4866`、[検証APK・操作手順](docs/pennant-android/README.md)、[結果と限界](docs/pennant-android/VALIDATION.md)。次は[保存・日程スキップの性能改善](docs/PENNANT_PERFORMANCE_DESIGN.md)（ADR-0016 Accepted）。PR #45と限定案の提示後の本人「つぎへ」と既存の通常実装委任に基づき、新規ゲーム機能を広げず、正確な同一結果/復旧を維持した内部改善をworker実装へ進める。効果はまだ実測していない。以下はPhase 5a開始時の承認記録として保持する。
 
 Androidの単独1試合APKは[PR #40](https://github.com/thrsth45h/baseball-sim/pull/40)としてmain `470467a27d6390b6415e5b16b44c0c1a0aa1704f`へ統合済み。次は[Phase 5a最小ペナント](docs/PENNANT_BASIC_DESIGN.md)・[ADR-0015](docs/adr/0015-pennant-basic.md)。120試合/球団の仮日程・既存coreの観戦/スキップ・順位/限定イベント集計・Room保存/復旧をAPKまで通す試作で、**2026-11-01に本人が具体範囲とworker実装へ「はい」と回答して承認**。D057/D058は本試作のみCONFIRMED。設計PR #41のレビュー/CI/マージ後に3実装PRへ委任し、最後のAPKまで進める。製品規約・長期保存はOPENを維持する。
 
