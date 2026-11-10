@@ -17,6 +17,7 @@ class RoomSeasonStore(
 ) : SeasonStore {
     private val dao get() = database.pennantDao()
     private data class Raw(val head: WorkingEntity, val results: List<ResultEntity>, val receipt: ReceiptEntity?)
+    private data class Verified(val raw: Raw, val saved: StoredSeason)
     private fun token(head: WorkingEntity) = StoreToken(head.worldId, head.generationId, head.revision)
     private suspend fun raw(): Raw? = withContext(io) { database.withTransaction {
         val head = dao.head()
@@ -25,7 +26,8 @@ class RoomSeasonStore(
             null
         } else Raw(head, dao.results(head.worldId, head.generationId), dao.receipt(head.operationId))
     } }
-    override suspend fun read(): StoredSeason? {
+    override suspend fun read(): StoredSeason? = verified()?.saved
+    private suspend fun verified(): Verified? {
         val raw = raw() ?: return null
         return withContext(computation) {
             val receipt = raw.receipt
@@ -41,7 +43,7 @@ class RoomSeasonStore(
                     throw StoreCorruption("Result ledger and saved frame disagree")
                 }
             }
-            StoredSeason(savedToken, state, raw.head.operationId)
+            Verified(raw, StoredSeason(savedToken, state, raw.head.operationId))
         }
     }
     private fun operation(value: String) { require(validIdentifier(value)) }
@@ -77,6 +79,27 @@ class RoomSeasonStore(
     private suspend fun afterCommit(receipt: ReceiptEntity): StoredSeason {
         faults.hit(StoreFaultPoint.AFTER_COMMIT)
         return boundRead(StoreToken(receipt.worldId, receipt.generationId, receipt.revision), receipt.operationId)
+    }
+    private fun sameHead(a: WorkingEntity, b: WorkingEntity) =
+        a.id == b.id && a.worldId == b.worldId && a.generationId == b.generationId && a.revision == b.revision &&
+            a.operationId == b.operationId && a.payloadHash == b.payloadHash && a.payload.contentEquals(b.payload)
+    private fun sameResult(a: ResultEntity, b: ResultEntity) =
+        a.worldId == b.worldId && a.generationId == b.generationId && a.seasonId == b.seasonId && a.gameId == b.gameId &&
+            a.ordinal == b.ordinal && a.payloadHash == b.payloadHash && a.payload.contentEquals(b.payload)
+    /** The proof and decoded value belong only to this invocation; no caller-owned candidate or cache is retained. */
+    private suspend fun acknowledge(proof: Raw, value: SeasonState): StoredSeason {
+        faults.hit(StoreFaultPoint.AFTER_COMMIT)
+        val fresh = try { raw() } catch (error: StoreCorruption) {
+            throw StoreConflict("Committed contents cannot be acknowledged; saved records have been retained")
+        }
+        // A conflict must bypass the coordinator's ambiguous-response recovery. Even the same token can have
+        // altered bytes or a changed fingerprint; a less strict public read must not convert that into success.
+        return withContext(computation) {
+            if (fresh == null || !sameHead(proof.head, fresh.head) || proof.receipt != fresh.receipt ||
+                proof.results.size != fresh.results.size || !proof.results.indices.all { sameResult(proof.results[it], fresh.results[it]) })
+                throw StoreConflict("Committed contents changed before acknowledgement; saved records have been retained")
+            StoredSeason(token(proof.head), value, proof.head.operationId)
+        }
     }
     override suspend fun create(masterSeed: String, selectedClubId: String, operationId: String, expected: StoreToken?, replacementConfirmed: Boolean): StoredSeason {
         operation(operationId)
@@ -114,35 +137,36 @@ class RoomSeasonStore(
         operation(operationId)
         val bytes = withContext(computation) { CheckpointCodec.encodeSeason(candidate) }
         val bodyHash = hash(bytes); val signature = fingerprint("commit", expected, bodyHash)
-        withContext(computation) { checkedState(bytes, bodyHash) }
-        val before = read() ?: throw StoreConflict("No active save")
+        val value = withContext(computation) { checkedState(bytes, bodyHash) }
+        val priorState = verified() ?: throw StoreConflict("No active save")
+        val before = priorState.saved
         if (before.token != expected) {
             // A duplicate completed operation may be retried after its successful response was lost.
             val prior = withContext(io) { database.withTransaction { duplicate(operationId, signature) } }
             if (prior != null) return afterCommit(prior)
             throw StoreConflict("Saved generation or revision changed")
         }
-        require(candidate.masterSeed == before.state.masterSeed && candidate.games == before.state.games)
-        require(candidate.dayIndex >= before.state.dayIndex) { "Ordinary updates cannot rewind the calendar" }
-        require(candidate.results.size >= before.state.results.size && candidate.results.take(before.state.results.size) == before.state.results)
-        require(candidate.results.size <= before.state.results.size + 1) { "Commit at most one completed game at a time" }
-        if (candidate.results.size == before.state.results.size + 1) {
+        require(value.masterSeed == before.state.masterSeed && value.games == before.state.games)
+        require(value.dayIndex >= before.state.dayIndex) { "Ordinary updates cannot rewind the calendar" }
+        require(value.results.size >= before.state.results.size && value.results.take(before.state.results.size) == before.state.results)
+        require(value.results.size <= before.state.results.size + 1) { "Commit at most one completed game at a time" }
+        if (value.results.size == before.state.results.size + 1) {
             require(before.state.active != null) { "Persist the start marker before any pitch" }
-            val accepted = before.state.accept(candidate.results.last())
-            require(candidate.active == null && candidate.dayIndex == accepted.dayIndex) { "Result and day transition must be one canonical update" }
+            val accepted = before.state.accept(value.results.last())
+            require(value.active == null && value.dayIndex == accepted.dayIndex) { "Result and day transition must be one canonical update" }
         }
         val priorActive = before.state.active
-        val nextActive = candidate.active
+        val nextActive = value.active
         if (priorActive == null) {
-            require(candidate.results.size == before.state.results.size) { "Persist the start marker before any pitch" }
+            require(value.results.size == before.state.results.size) { "Persist the start marker before any pitch" }
             nextActive?.let { require(it.advanceCalls == 0L && it.snapshot == it.initial) { "A new start marker must be unadvanced" } }
         } else if (nextActive != null) {
             require(nextActive.game == priorActive.game && nextActive.advanceCalls >= priorActive.advanceCalls)
             if (nextActive.advanceCalls == priorActive.advanceCalls) require(nextActive == priorActive)
         } else {
-            require(candidate.results.size == before.state.results.size + 1) { "An active match cannot silently disappear" }
+            require(value.results.size == before.state.results.size + 1) { "An active match cannot silently disappear" }
         }
-        if (before.state.status == SeasonStatus.BLOCKED) require(candidate.active == before.state.active && candidate.results == before.state.results)
+        if (before.state.status == SeasonStatus.BLOCKED) require(value.active == before.state.active && value.results == before.state.results)
         if (CheckpointCodec.encodeSeason(before.state).contentEquals(bytes)) {
             val prior = withContext(io) { database.withTransaction {
                 duplicate(operationId, signature).also { if (it == null) requireToken(dao.head(), expected) }
@@ -151,22 +175,25 @@ class RoomSeasonStore(
             faults.hit(StoreFaultPoint.AFTER_COMMIT)
             return boundRead(before.token, before.operationId)
         }
-        val rows = withContext(computation) { resultRows(candidate.results.drop(before.state.results.size), expected.worldId, expected.generationId) }
+        val rows = withContext(computation) { resultRows(value.results.drop(before.state.results.size), expected.worldId, expected.generationId) }
         val revision = Math.addExact(expected.revision, 1)
+        val head = WorkingEntity(worldId = expected.worldId, generationId = expected.generationId, revision = revision,
+            operationId = operationId, payloadHash = bodyHash, payload = bytes)
+        val proof = Raw(head, priorState.raw.results + rows,
+            ReceiptEntity(operationId, signature, expected.worldId, expected.generationId, revision))
         faults.hit(StoreFaultPoint.BEFORE_TRANSACTION)
         val committed = withContext(io) { database.withTransaction {
-            duplicate(operationId, signature) ?: run {
+            duplicate(operationId, signature)?.let { it to false } ?: run {
                 val old = dao.head(); requireToken(old, expected)
                 rows.forEach { dao.insertResult(it) }
                 faults.hit(StoreFaultPoint.AFTER_RESULTS)
                 check(dao.compareAndSetHead(expected.worldId, expected.generationId, expected.revision,
                     expected.worldId, expected.generationId, revision, operationId, bodyHash, bytes) == 1)
                 faults.hit(StoreFaultPoint.AFTER_HEAD)
-                finishWrite(operationId, signature, WorkingEntity(worldId = expected.worldId, generationId = expected.generationId,
-                    revision = revision, operationId = operationId, payloadHash = bodyHash, payload = bytes))
+                finishWrite(operationId, signature, head) to true
             }
         } }
-        return afterCommit(committed)
+        return if (committed.second) acknowledge(proof, value) else afterCommit(committed.first)
     }
     override suspend fun saveSlot(expected: StoreToken, operationId: String): StoredSeason {
         operation(operationId); val signature = fingerprint("save-slot", expected)
