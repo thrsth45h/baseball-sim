@@ -1,6 +1,6 @@
 # Codex間の引き継ぎ
 
-2026-11-04 日本時間。GitHubで確認できた研究・承認・マージ状態を記す。仕様の確定性は[決定台帳](../DECISIONS.md)、運用は[WORKFLOW.md](WORKFLOW.md)を優先する。以下の旧工程の記述/数値/当時の次工程は履歴として保持する。
+2026-11-10 日本時間。GitHubで確認できた研究・承認・マージ状態を記す。仕様の確定性は[決定台帳](../DECISIONS.md)、運用は[WORKFLOW.md](WORKFLOW.md)を優先する。以下の旧工程の記述/数値/当時の次工程は履歴として保持する。
 
 ## 参照先
 
@@ -9,6 +9,9 @@
 - 統計研究：[statcast-swing-model-v1](https://github.com/thrsth45h/statcast-swing-model-v1)（Phase 1b [PR #1](https://github.com/thrsth45h/statcast-swing-model-v1/pull/1) はマージ済み、squash SHA `f3b65653d90b004ea8bfaf233b94231876233980`）
 
 ## 現在の到達点
+
+- **2026-11-10再開確認：Phase 5aはAPKまで完成し、PR #44もマージ済み。** 現在mainは `7ebb4a46a319ffde5e390a86b8f0a3a0352e4866`。報告head `e88355ffe88e33f5612bdab37078b4a685b1b40f` と統合treeは同じで、最終headの全10workflow/18jobs成功を確認して統合した。APK sourceは下記の `7ec9d0e` のままで、報告commitと区別する。直下の11/4「最終統合待ち」は報告作成時点の履歴。既存作業領域と未追跡/除外資料は保持する。
+- **次工程は保存・日程スキップの[性能改善設計案](PENNANT_PERFORMANCE_DESIGN.md)。** 11/10の「次へ」を受け、通常commit成功応答の重複解釈を減らす案、全byte/全列の新鮮なDB照合、反例テスト、計測/採否を文書化。ADR-0016はProposed、コード変更・性能改善・新しいゲーム仕様の承認は未実施。実装へ進む場合は限定範囲を採用後、専用worker→責任者独立レビューとする。D057/D058を維持し、製品DB/次年度/能力/経営を今回へ追加しない。
 
 - **Phase 5a Android接続PR #44は実装/CI/独立frame・表示確認を完了、責任者の最終統合待ち。** [core PR #42](https://github.com/thrsth45h/baseball-sim/pull/42)をmain `e0a61b54`、[保存PR #43](https://github.com/thrsth45h/baseball-sim/pull/43)をmain `7fd25f01a38465d36de3244fe79bf71ce0b2cf9a`へ統合済み。そのmainを通常mergeした[第3PR #44](https://github.com/thrsth45h/baseball-sim/pull/44)は、旧単独試合を保持して12球団/各120試合の観戦・日程skip・順位/108人限定記録・Room保存/復旧を接続。runtime/tests/CI固定source `7ec9d0e478447899a081c684d33b9c4635511b79`、全10workflow/18jobs成功、実XML app31/core22/device31とhost復旧1/profile1はfailure/error/skip0。prepareを成功methodへ加算しない。実Activity/Roomの720試合は18分30.228秒、最終frame1,585,652byte/SHA `0bde5d0de901771b13e75adc64aab9d21a5854c8f7aed9e34aafb72a3881bbde`で、責任者が11/2事前固定の別JDK期待値と全byte一致を確認。実PID4194→force-stop不在→4298で公開5球checkpointを復旧し次1球だけ進めた。APK source7ecの実SHA `178f1f4a32d5034f317c9573ff6147efbd470099a368d34d484639d03b18ca4f`、[取得/操作](pennant-android/README.md)、期限2026-11-18 01:40:13 JST、[検証/未検証](pennant-android/VALIDATION.md)、[CI証拠](pennant-android/CI_EVIDENCE.json)。API35の実PNGも責任者が独立確認。schema/codec/厳密検査/CAS/replay不変の保存費用2件だけ修正し、実機高速性は主張しない。完了文書commitはAPK sourceと区別し、最終doc-only差分/CI/PRマージは責任者が管理する。worker `work/pennant-android-worker` の回収資料を保持。ユーザーPC画面/入力/既存環境やローカルSDK/Gradleを操作していない。実機/API26/電源断/長期互換/次年度/能力/経営は未検証または範囲外。次工程は設計案のみで、未承認機能へ自動着手しない。
 
