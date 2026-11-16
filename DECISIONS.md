@@ -70,6 +70,7 @@
 | D057 | CONFIRMED | [Phase 5a最小ペナント](docs/PENNANT_BASIC_DESIGN.md)・[ADR-0015](docs/adr/0015-pennant-basic.md)・[承認PR #41](https://github.com/thrsth45h/baseball-sim/pull/41)。12球団2リーグ、固定各9打順、同リーグ120試合/球団（全720）、交流戦/PSなし、同率同順位。既存coreによる観戦/日程スキップ・順位・限定打者イベント集計をAndroidへ接続。2026-11-01、具体範囲とworker実装〜APK完成を示した確認に本人が「はい」と回答。本試作のみで、製品日程D031はOPEN。 |
 | D058 | CONFIRMED | Phase 5aに限りRoom/SQLiteの端末保存、試合外の手動slot、固定seedとadvance呼出し数等による試合中自動復旧を導入する。結果/集計/進行位置をatomicにし、保存成功後に公開。D057と同じ本人承認に基づく本試作の採用。D056の製品DB/長期保存/schema互換を確定するものではない。 |
 | D059 | CONFIRMED | [Pennant Spirits](docs/PENNANT_SPIRITS_BASELINE.md)をゲーム全体の機能構成・年間の球団運営の主な設計基準にする。[ADR-0017](docs/adr/0017-pennant-spirits-baseline.md)。2026-11-17、本人がPC版をベースにしたいと公式マニュアル21ページを提示し、責任者の日程/編成/成績/オフから翌年へという整理に「はい」と回答。架空12球団/Android/能力1〜20/内部1球/固定終了年なし/手動とCPU委任等の既定方針は維持。参照作品の数値・規約・PC操作・内部計算式や、新しい実装段階の詳細を一括承認したものではない。D029/D030/D031/D056はOPENを維持する。 |
+| D060 | PROVISIONAL | [球団ホーム・選手一覧/詳細案](docs/CLUB_HOME_DESIGN.md)・[ADR-0018](docs/adr/0018-club-home-player-browser.md)。D059の段階Aとして、既存の固定108人/限定5件数と日程/成績/観戦/設定を結ぶ。操作球団と閲覧球団を分離し、UI選択をworld/generationへ結び付け、閲覧だけでは保存/進行を起こさない。新規起動の既定ペナント化、画面/復元/受入条件は今回提示する提案。本人の「続けて」は具体設計を進める指示で、詳細・実装開始は未承認。能力/編成/公式記録/年次/経営や製品DBの採用は含めない。 |
 
 D036は当時承認された研究範囲の記録として保持する。「通常スイングのみ」「fair_in_play＝物理的フェア」という解釈は保証できないことを後に確認した。実際の5description母集団と旧数値は変えず、[設計書冒頭の注記](docs/PHASE2A_DESIGN.md)を優先して解釈する。
 
