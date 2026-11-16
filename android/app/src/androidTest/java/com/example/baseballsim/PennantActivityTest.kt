@@ -44,10 +44,29 @@ class PennantActivityTest {
         compose.waitUntil(timeout) { val s = compose.activity.pennantViewModel.state.value; s.loaded && !s.busy }
         return compose.activity.pennantViewModel.also { assertNull(it.state.value.error) }
     }
-    private fun click(tag: String) = compose.onNodeWithTag(tag).performScrollTo().performClick()
+    private fun home() {
+        while (compose.onAllNodesWithTag(PennantTags.BACK).fetchSemanticsNodes().isNotEmpty())
+            compose.onNodeWithTag(PennantTags.BACK).performClick()
+    }
+    private fun page(tag: String) { home(); val node = compose.onNodeWithTag(tag)
+        if (tag != PennantTags.STOP) node.performScrollTo()
+        node.performClick() }
+    private fun click(tag: String) {
+        if (compose.onAllNodesWithTag(tag).fetchSemanticsNodes().isEmpty()) {
+            when (tag) {
+                PennantTags.SEED, PennantTags.CREATE, PennantTags.SAVE, PennantTags.LOAD -> page(PennantTags.NAV_SETTINGS)
+                PennantTags.PITCH, PennantTags.PA, PennantTags.FINISH_GAME -> page(PennantTags.NAV_MATCH)
+                else -> home()
+            }
+        }
+        val node = compose.onNodeWithTag(tag)
+        if (tag !in listOf(PennantTags.BACK, PennantTags.STOP, PennantTags.RELOAD)) node.performScrollTo()
+        node.performClick()
+    }
     private fun fresh(): PennantViewModel {
         compose.onNodeWithTag("mode_pennant").performClick()
         val vm = ready()
+        if (vm.state.value.season != null) page(PennantTags.NAV_SETTINGS)
         compose.onNodeWithTag(PennantTags.SEED).performScrollTo().performTextReplacement("42")
         val exists = vm.state.value.season != null
         click(PennantTags.CREATE)
@@ -81,6 +100,7 @@ class PennantActivityTest {
         click(PennantTags.SAVE); ready()
         val savedGeneration = vm.state.value.display!!.stored.token.generationId
         click(PennantTags.OPEN); ready(); click(PennantTags.PITCH); ready()
+        page(PennantTags.NAV_SETTINGS)
         compose.onNodeWithTag(PennantTags.SAVE).performScrollTo().assertIsNotEnabled()
         compose.onNodeWithTag(PennantTags.LOAD).performScrollTo().assertIsNotEnabled()
         click(PennantTags.FINISH_GAME); ready()
@@ -91,25 +111,65 @@ class PennantActivityTest {
     }
     @Test fun invalidSeedAndStoppedBulkRequestLeaveTheCommittedGameUntouched() {
         val vm = fresh(); val before = vm.state.value.display
+        page(PennantTags.NAV_SETTINGS)
         compose.onNodeWithTag(PennantTags.SEED).performScrollTo().performTextReplacement("18446744073709551616")
         click(PennantTags.CREATE); compose.onNodeWithTag(PennantTags.CONFIRM_CREATE).performClick()
         assertSame(before, vm.state.value.display); assertNotNull(vm.state.value.seedError)
         click(PennantTags.SEASON)
         compose.waitUntil(15_000) { vm.state.value.busy && vm.state.value.bulk }
+        click(PennantTags.NAV_PLAYERS)
+        click(PennantTags.player("L1-T01-P09"))
+        compose.onNodeWithTag(PennantTags.PLAYER_DETAIL).assertExists()
+        compose.activityRule.scenario.recreate()
+        assertSame(vm, compose.activity.pennantViewModel)
+        compose.onNodeWithTag(PennantTags.PLAYER_DETAIL).assertExists()
+        compose.pennantScreenshot("pennant-live-bulk-player.png")
         click(PennantTags.STOP)
         val acceptedAtStop = vm.state.value.season!!.results.size
         ready()
         assertTrue(vm.state.value.season!!.results.size <= acceptedAtStop + 1)
         assertTrue(vm.state.value.season!!.results.size < 720); assertNull(vm.state.value.season!!.active)
+        compose.onNodeWithTag(PennantTags.PLAYER_DETAIL).assertExists()
+    }
+    @Test fun coldLaunchPrefersPennantAndRestoredStandaloneModeKeepsItsViewModel() {
+        ready()
+        compose.onNodeWithTag(PennantTags.SCREEN).assertIsDisplayed()
+        compose.onNodeWithTag("mode_match").performClick()
+        val vm = compose.activity.matchViewModel
+        compose.waitUntil(15_000) { !vm.state.value.isBusy && vm.state.value.game != null }
+        val game = vm.state.value.game
+        compose.activityRule.scenario.recreate()
+        compose.onNodeWithTag(MatchTags.SCREEN).assertIsDisplayed()
+        assertSame(vm, compose.activity.matchViewModel)
+        assertSame(game, vm.state.value.game)
+    }
+    @Test fun androidBackReturnsDetailToListAndDismissesTheConfirmationBeforeLeavingSettings() {
+        val vm = fresh(); val before = vm.state.value.display
+        click(PennantTags.NAV_PLAYERS); click(PennantTags.player("L1-T01-P09"))
+        androidx.test.espresso.Espresso.pressBack()
+        compose.onNodeWithTag(PennantTags.PLAYERS).assertExists()
+        compose.onNodeWithTag(PennantTags.PLAYER_DETAIL).assertDoesNotExist()
+        androidx.test.espresso.Espresso.pressBack()
+        compose.onNodeWithTag(PennantTags.HOME).assertExists()
+        compose.onNodeWithTag(PennantTags.BACK).assertDoesNotExist()
+        click(PennantTags.NAV_SETTINGS); click(PennantTags.CREATE)
+        compose.onNodeWithTag(PennantTags.CONFIRM_CREATE).assertExists()
+        androidx.test.espresso.Espresso.pressBack()
+        compose.onNodeWithTag(PennantTags.CONFIRM_CREATE).assertDoesNotExist()
+        compose.onNodeWithTag(PennantTags.SEED).assertExists()
+        assertSame(before, vm.state.value.display)
+        androidx.test.espresso.Espresso.pressBack()
+        compose.onNodeWithTag(PennantTags.HOME).assertExists()
+        assertSame(before, vm.state.value.display)
     }
     @Test fun calendarStandingsAndAllClubsRecordsAreReachable() {
         val vm = fresh()
         click(PennantTags.DAY); ready(); assertEquals(2, vm.state.value.season!!.dayIndex)
-        compose.onNodeWithText("順位", useUnmergedTree = true).performScrollTo().performClick()
+        page(PennantTags.NAV_STANDINGS)
         compose.onNodeWithTag(PennantTags.STANDINGS).performScrollTo().assertIsDisplayed()
         compose.onNodeWithText("リーグ2").performClick()
         compose.pennantScreenshot("pennant-standings.png")
-        compose.onNodeWithText("記録", useUnmergedTree = true).performScrollTo().performClick()
+        page(PennantTags.NAV_RECORDS)
         compose.onNodeWithTag(PennantTags.RECORDS).performScrollTo().assertIsDisplayed()
         compose.onNodeWithText("記録を見る球団：仮球団1").performClick()
         compose.onNodeWithText("仮球団12", useUnmergedTree = true).performScrollTo().performClick()

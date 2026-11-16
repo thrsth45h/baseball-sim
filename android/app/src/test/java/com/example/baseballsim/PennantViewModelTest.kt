@@ -145,4 +145,29 @@ class PennantViewModelTest {
         vm.reload(); advanceUntilIdle()
         assertEquals("42", vm.state.value.seedInput); assertNull(vm.state.value.seedError)
     }
+    @Test fun confirmationsAreComparedWithTheLatestPublishedTokenAtCommandAcceptance() = runTest(main.dispatcher) {
+        val fake = FakeActions(initial()).apply { slot = initial() }
+        val vm = PennantViewModel(fake, main.dispatcher); advanceUntilIdle()
+        val displayed = vm.state.value.display!!.stored.token
+        vm.execute(PennantCommand.DAY); advanceUntilIdle()
+        val afterProgress = vm.state.value.display
+        val calls = fake.calls
+        vm.execute(PennantCommand.CREATE, true, confirmationToken = displayed)
+        vm.execute(PennantCommand.LOAD, confirmationToken = displayed)
+        advanceUntilIdle()
+        assertEquals(calls, fake.calls); assertSame(afterProgress, vm.state.value.display)
+        val current = vm.state.value.display!!.stored.token
+        vm.execute(PennantCommand.LOAD, confirmationToken = current); advanceUntilIdle()
+        assertEquals(calls + 1, fake.calls)
+        assertNotEquals(current.generationId, vm.state.value.display!!.stored.token.generationId)
+        vm.execute(PennantCommand.CREATE, true, confirmationToken = current); advanceUntilIdle()
+        assertEquals(calls + 1, fake.calls)
+        val loadedToken = vm.state.value.display!!.stored.token
+        fake.stored = fake.stored!!.copy(token = loadedToken.copy(worldId = "other-world"))
+        vm.reload(); advanceUntilIdle()
+        vm.execute(PennantCommand.CREATE, true, confirmationToken = loadedToken); advanceUntilIdle()
+        assertEquals(calls + 1, fake.calls)
+        vm.execute(PennantCommand.CREATE, true, confirmationToken = vm.state.value.display!!.stored.token)
+        advanceUntilIdle(); assertEquals(calls + 2, fake.calls)
+    }
 }
