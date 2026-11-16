@@ -102,6 +102,8 @@ worker実装・責任者の独立レビュー後、[実装PR #35](https://github
 
 ## Phase 5 — Androidゲームと長期ペナント
 
+**2026-11-17の最新方針：Pennant Spiritsを主な設計基準にする（D059本人承認）。** [対応表と工程案](docs/PENNANT_SPIRITS_BASELINE.md)に、球団ホーム/選手情報 → 編成とシーズン → 年度別記録と翌年 → 育成/契約/補強を含む一巡、という利用者向けの段階目標を整理した。完成像の採用と、各段階の細目/実装開始の承認は区別する。次に具体化する案は既存データを結ぶ球団ホーム・選手一覧/詳細で、まだ実装しない。現APKの単年度/固定9人/toy確率/限定件数を完成した球団運営と扱わない。既存エンジン/研究/再現性/保存検証は土台として継続利用し、必要な契約を画面設計と並行して詰める。
+
 **2026-11-17報告：保存の限定性能改善PR #46は実装/検証を完了。** [最新APK・操作](docs/pennant-performance/README.md)・[検証結果](docs/pennant-performance/VALIDATION.md)。source3c1180bの全11workflow/19jobs、実720試合の最終frame全byte一致と実force-stop復旧を確認し、同一emulator局所保存比較で21.3〜23.4%短縮、全10工学ゲートが合格した。以下の「効果未実測」は11/11開始時の履歴である。次年度・長期DB・能力/経営の新実装は今回含めず、次工程は設計提案から扱う。
 
 **2026-11-11現在：Phase 5aの3実装PR #42/#43/#44はすべてマージ済み。** main `7ebb4a46a319ffde5e390a86b8f0a3a0352e4866`、[検証APK・操作手順](docs/pennant-android/README.md)、[結果と限界](docs/pennant-android/VALIDATION.md)。次は[保存・日程スキップの性能改善](docs/PENNANT_PERFORMANCE_DESIGN.md)（ADR-0016 Accepted）。PR #45と限定案の提示後の本人「つぎへ」と既存の通常実装委任に基づき、新規ゲーム機能を広げず、正確な同一結果/復旧を維持した内部改善をworker実装へ進める。効果はまだ実測していない。以下はPhase 5a開始時の承認記録として保持する。

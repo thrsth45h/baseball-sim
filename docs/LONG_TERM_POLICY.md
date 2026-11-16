@@ -2,6 +2,8 @@
 
 2026-11-01 日本時間。ユーザー本人の「Android版実装の正式承認と今後の開発方針」を正本として記録する。**方針の確定と機能の実装済みを区別する。** [決定台帳](../DECISIONS.md)・[Android初版](ANDROID_FIRST_MATCH_DESIGN.md)・[運用](WORKFLOW.md)を参照。
 
+2026-11-17追記：[Pennant Spiritsを主基準とする完成像](PENNANT_SPIRITS_BASELINE.md)を本人承認（D059）。下記の既定方針は維持し、参照作品の数値/細則へ自動的に置換しない。下記「今回」は2026-11-01のAndroid初版の範囲を記録した表現であり、後続Phase 5a/性能改善の実装状況は[最新HANDOFF](HANDOFF.md)を優先する。
+
 ## 今回だけの実装
 
 [設計PR #39](https://github.com/thrsth45h/baseball-sim/pull/39)のKotlin＋Jetpack Compose構成を正式承認。純Kotlinの限定Phase4f移植、オフラインでPCサーバ/Python不要のdebug APK、3進行操作と既存情報表示、新seed、回転/連打の二重進行防止、固定入力の逐球互換、乱数再現/終了/操作同一性を検証する。sm64-v1は今回の技術検証仕様で、将来製品まで永久固定する決定ではない。
