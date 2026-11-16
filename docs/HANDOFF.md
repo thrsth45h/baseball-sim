@@ -1,6 +1,6 @@
 # Codex間の引き継ぎ
 
-2026-11-11 日本時間。GitHubで確認できた研究・承認・マージ状態を記す。仕様の確定性は[決定台帳](../DECISIONS.md)、運用は[WORKFLOW.md](WORKFLOW.md)を優先する。以下の旧工程の記述/数値/当時の次工程は履歴として保持する。
+2026-11-17 日本時間。GitHubで確認できた研究・承認・マージ状態を記す。仕様の確定性は[決定台帳](../DECISIONS.md)、運用は[WORKFLOW.md](WORKFLOW.md)を優先する。以下の旧工程の記述/数値/当時の次工程は履歴として保持する。
 
 ## 参照先
 
@@ -9,6 +9,8 @@
 - 統計研究：[statcast-swing-model-v1](https://github.com/thrsth45h/statcast-swing-model-v1)（Phase 1b [PR #1](https://github.com/thrsth45h/statcast-swing-model-v1/pull/1) はマージ済み、squash SHA `f3b65653d90b004ea8bfaf233b94231876233980`）
 
 ## 現在の到達点
+
+- **2026-11-17再開：限定性能改善PR #46は実装・検証・責任者の独立照合完了、最終報告/統合確認の段階。** 設計PR #45はmain `7569f82f58f703f53401116c8cabd4645875a788`へマージ済み。実装/test/CI/配布APK固定source `3c1180b642a93d99bf9d955c05b0182fe0efa733`、全11workflow/19jobs/全step成功または意図したskipped。app31/core22/device40（新proof9）とhost復旧/profile/ABBA各1は失敗/スキップ0、prepare killを合格へ加算しない。同一API35emulatorのABBA308標本（測定264/warm44）で主要保存操作21.3〜23.4%短縮、全10ゲート合格。全標本をCSVへ保存し、責任者が別rawから全値復元/集計一致を確認。実UI/Room720試合は661,123ms、最終frame1,585,652byte/SHA `0bde5d0de901771b13e75adc64aab9d21a5854c8f7aed9e34aafb72a3881bbde`で既存固定期待frameと全byte一致。PID4240→force-stop不在→4415で同checkpointと次1球を確認。[最新APK取得/操作](pennant-performance/README.md)・[検証/未検証](pennant-performance/VALIDATION.md)・[CI証拠](pennant-performance/CI_EVIDENCE.json)。配布APK SHA `9edf3b5c1fadd2399217536072adc59ad1abf3d71c5cd611ab8a59524fb8997d`、期限2026-11-25 00:59:40 JST。今回の最終更新は文書/計測dataのみでruntime/CIは3cから不変。mainへの統合SHAと最終headの確認は責任者が管理し、未マージをマージ済みとは記録しない。work/pennant-performance-workerの.local-reviewと既存未保存/除外資料を保持。物理端末/API26/電源断/長期互換/次年度/能力/経営は未検証または範囲外。次工程は別途設計提案から扱う。
 
 - **2026-11-10再開確認：Phase 5aはAPKまで完成し、PR #44もマージ済み。** 現在mainは `7ebb4a46a319ffde5e390a86b8f0a3a0352e4866`。報告head `e88355ffe88e33f5612bdab37078b4a685b1b40f` と統合treeは同じで、最終headの全10workflow/18jobs成功を確認して統合した。APK sourceは下記の `7ec9d0e` のままで、報告commitと区別する。直下の11/4「最終統合待ち」は報告作成時点の履歴。既存作業領域と未追跡/除外資料は保持する。
 - **次工程は保存・日程スキップの[性能改善](PENNANT_PERFORMANCE_DESIGN.md)を限定実装へ。** 11/10にPR #45と結果/乱数/保存形式/安全検査を維持した限定案を提示後、11/11本人が「つぎへ」と指示。通常実装判断の委任と合わせ、ADR-0016をAcceptedへ更新し、設計レビュー/CI/マージ→専用worker→責任者独立レビュー/修正/検証→問題のないPR統合とする。まだコード変更/性能計測は未実施。内部方式・数値目標の個別精査は主張しない。D057/D058を維持し、製品DB/次年度/能力/経営を今回へ追加しない。
