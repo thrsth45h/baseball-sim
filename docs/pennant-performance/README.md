@@ -6,7 +6,7 @@
 
 不一致は同tokenでもStoreConflictにして、Coordinatorの曖昧な応答回復が成功へ変換しないようにする。公開readの破損検査は従来のStoreCorruptionのまま。create/saveSlot/loadSlot/duplicate/no-op/例外後の再読は旧厳密経路を保持し、transaction内でduplicateに流れた場合も新しい証拠経路は使わない。保存頻度・start marker・atomic性・schema/codec/core/RNGは変更しない。
 
-2026-11-17報告：[固定source3c1180bの検証](VALIDATION.md)で全11workflow/19jobs、app31/core22/device40、実720試合・実force-stop復旧が成功。同一emulatorの主要保存操作は21.3〜23.4%短縮し、全10工学ゲートを満たした。実720試合は11分1.123秒。旧18分30.228秒は別runnerの歴史的参考で、全シーズンの因果的改善率の分母にはしない。PR #46は責任者の最終統合確認待ち。
+2026-11-17報告：[固定source3c1180bの検証](VALIDATION.md)で全11workflow/19jobs、app31/core22/device40、実720試合・実force-stop復旧が成功。同一emulatorの主要保存操作は21.3〜23.4%短縮し、全10工学ゲートを満たした。実720試合は11分1.123秒。旧18分30.228秒は別runnerの歴史的参考で、全シーズンの因果的改善率の分母にはしない。[実装PR #46](https://github.com/thrsth45h/baseball-sim/pull/46)。
 
 ## APKの取得と操作
 

@@ -39,7 +39,7 @@
 
 ## 現在の状態
 
-**Androidで12球団の限定ペナントを動かす技術検証APK**に、保存の限定性能改善を追加しました。[最新APKの取得・操作手順](docs/pennant-performance/README.md)・[検証記録](docs/pennant-performance/VALIDATION.md)。固定9人・各120試合、観戦/日程スキップ、順位/限定記録、端末内の保存/復旧を備え、API35の隔離CIで実720試合を11分1.123秒で完走し、最終保存データの既存期待値との全byte一致と実プロセス強制終了からの復旧を確認しました。同一emulatorで主要保存操作は21.3〜23.4%短縮しましたが、実機や全シーズンの改善率ではありません。旧18分30.228秒の[初版記録](docs/pennant-android/VALIDATION.md)は別runnerの履歴として保持します。単年度の限定試作で、能力・采配・球団経営・次年度移行や製品版の長期保存は未実装です。旧単独1試合モードも残しています。PR #46は責任者の最終統合確認待ちです。
+**Androidで12球団の限定ペナントを動かす技術検証APK**に、保存の限定性能改善を追加しました。[最新APKの取得・操作手順](docs/pennant-performance/README.md)・[検証記録](docs/pennant-performance/VALIDATION.md)。固定9人・各120試合、観戦/日程スキップ、順位/限定記録、端末内の保存/復旧を備え、API35の隔離CIで実720試合を11分1.123秒で完走し、最終保存データの既存期待値との全byte一致と実プロセス強制終了からの復旧を確認しました。同一emulatorで主要保存操作は21.3〜23.4%短縮しましたが、実機や全シーズンの改善率ではありません。旧18分30.228秒の[初版記録](docs/pennant-android/VALIDATION.md)は別runnerの履歴として保持します。単年度の限定試作で、能力・采配・球団経営・次年度移行や製品版の長期保存は未実装です。旧単独1試合モードも残しています。[性能改善PR #46](https://github.com/thrsth45h/baseball-sim/pull/46)。
 
 **Androidでオフラインの1試合を操作できる技術検証APK**を作成しました。最低API26（Android8.0）。PCサーバやPythonは不要です。[検証済みAPKの取得・操作手順](docs/android-first-match/README.md)と[ビルド/テスト・未検証事項](docs/android-first-match/VALIDATION.md)を参照してください。12球団ペナントや球団経営を備えた製品版は未実装です。
 

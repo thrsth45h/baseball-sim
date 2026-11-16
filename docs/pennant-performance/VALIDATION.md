@@ -1,6 +1,6 @@
 # 限定性能改善の検証記録
 
-検証は2026-11-11、最終報告更新は2026-11-17（日本時間）。[実装PR #46](https://github.com/thrsth45h/baseball-sim/pull/46)は実装・CI・責任者の独立コード/成果物レビューを完了し、最終報告と統合確認の段階にある。計測・テスト・配布APKの固定sourceは **`3c1180b642a93d99bf9d955c05b0182fe0efa733`**、tree `9022770806226fce23b59a76687b95a03081afb8`。後続の文書/dataだけの報告commitをAPK sourceへ付け替えない。[設計](../PENNANT_PERFORMANCE_DESIGN.md)・[CI証拠](CI_EVIDENCE.json)を参照。
+検証は2026-11-11、最終報告更新は2026-11-17（日本時間）。[実装PR #46](https://github.com/thrsth45h/baseball-sim/pull/46)は実装・CI・責任者の独立コード/成果物レビューを完了した。計測・テスト・配布APKの固定sourceは **`3c1180b642a93d99bf9d955c05b0182fe0efa733`**、tree `9022770806226fce23b59a76687b95a03081afb8`。後続の文書/dataだけの報告commitをAPK sourceへ付け替えない。[設計](../PENNANT_PERFORMANCE_DESIGN.md)・[CI証拠](CI_EVIDENCE.json)を参照。
 
 ## 結果と採否
 
@@ -23,7 +23,7 @@ prepareは意図的にkillするsetupで、成功methodへ数えない。旧prof
 
 同世代の後続revisionとの競合、load/createの世代切替、通常/終端/BLOCKED、no-op/再送、transaction内duplicate、immutable入力と独立decoded返却値を確認した。既存のfault・取消・atomic・再生・破損・slot回帰を維持する。公開read/create/saveSlot/loadSlot/duplicate/no-op/例外後再読は従来経路のままで、新しい全byte照合は通常の新規commit成功応答だけに適用する。
 
-責任者と別のreadonly reviewerが実コード/新9テストを点検し、必須問題なしと確認した。保存byte/schema/codec/core/RNG/toy確率/日程/集計/UI/保存頻度は不変。操作をまたぐキャッシュ、検査省略、複数試合のまとめ保存は追加していない。
+責任者と別のreadonly reviewerが実コード/新9テストを点検し、必須問題なしと確認した。保存byte/schema/codec/core/RNG/toy確率/日程/集計/UI/保存頻度は不変。新鮮なDB照合や起動時検証の省略、操作をまたぐキャッシュ、複数試合のまとめ保存は追加していない。
 
 ## 同一emulatorの局所比較
 
