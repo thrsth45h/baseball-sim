@@ -1,0 +1,192 @@
+{
+  "artifact_id": 13781070734,
+  "artifact_zip_sha256": "6860b3ee3cd6f2527e6ce6dd7a6ebfbe58c8017ab65ea4f250d5a0046635dc09",
+  "baseline_commit": "7ebb4a46a319ffde5e390a86b8f0a3a0352e4866",
+  "cold_definition": "first store.read after Room close/open; same process/JIT/OS filesystem cache may already be warm",
+  "csv_encoding": {
+    "all_raw_sample_fields_retained": true,
+    "boolean": "true/false",
+    "charset": "UTF-8",
+    "newline": "LF",
+    "null": "empty field",
+    "phases_ns": "flattened into phase_<name>_ns; empty fields reconstruct missing keys"
+  },
+  "csv_rows": 308,
+  "csv_sha256": "c9e809390d5a9b4e678cd38a63127e9dc1182b514674dbdd4415a05a8d1af285",
+  "device_api": 35,
+  "device_fingerprint": "google/sdk_gphone64_x86_64/emu64xa:15/AE3A.240806.043/12960925:userdebug/dev-keys",
+  "distribution_apk_uses_uninstrumented_production_store": true,
+  "fixture_setup_is_not_actual_720_transaction_progress": true,
+  "fixtures": [
+    {
+      "core_calculation_ns": 64015534,
+      "core_result_frame_sha256": "d208c4f99f28b5676a9a84b7dda113e186f8a84ce36e95b5c692366d6d87fc39",
+      "fixture_setup_ns": 43489300,
+      "marker_input_sha256": "170e27e845f2f16607437c9620945940b8cf88e29b2c54261d6b25df30145079",
+      "plain_input_sha256": "f5819e36784b5e4cef72a9857424fc9b53e207fd33c733f27936672aa580bf52",
+      "prefix": 0
+    },
+    {
+      "core_calculation_ns": 17866517,
+      "core_result_frame_sha256": "dffeb003e3a7dd86a2d38b580ed99b5d822be7f477f8cad07b9ccaf82b4f7830",
+      "fixture_setup_ns": 2141931911,
+      "marker_input_sha256": "f834648ee473c682464a13788ab8df9dd71333588266c90c122f17d4de452dec",
+      "plain_input_sha256": "e3e2536d8ea5b1a6052ab4d1dfc9fcd600aa2ec74168e8a2fd9f2c587b06c20e",
+      "prefix": 100
+    },
+    {
+      "core_calculation_ns": 21832518,
+      "core_result_frame_sha256": "a3a291a60f35f3bd2dbb58ea28fc99bc5fa6542e3d003cb31f56fa0095b3c872",
+      "fixture_setup_ns": 4178795733,
+      "marker_input_sha256": "ead67b7a0c25fd3458b3286093bee46af8dd0a99bb92d2098e75fee646fb981b",
+      "plain_input_sha256": "989530490eb67e2427e9f0bc7f0146d5d0ed3b78bd1dc909b5dd7258cc466b2b",
+      "prefix": 300
+    },
+    {
+      "core_calculation_ns": 23771193,
+      "core_result_frame_sha256": "fce22d98b6a2b241ae743639460806981323d4f1fcf7be54879b3b3bb5830a00",
+      "fixture_setup_ns": 6921698406,
+      "marker_input_sha256": "da57ec9ad51f08b5a9475846e1d8ab72ef3040bcbfade11532eb135f8635c281",
+      "plain_input_sha256": "709de60699a7d1b5d7c8b572ef3b966358987492a9775ac318ab37a0b658847c",
+      "prefix": 600
+    },
+    {
+      "core_calculation_ns": 25286045,
+      "core_result_frame_sha256": "0bde5d0de901771b13e75adc64aab9d21a5854c8f7aed9e34aafb72a3881bbde",
+      "fixture_setup_ns": 3665335115,
+      "marker_input_sha256": "1d0fdd3d2278cdcf451d24790aab2b649c8841a062bdcb04af24c12cb32e810f",
+      "plain_input_sha256": "dcd66544c02b9244366c6896cb140e999d6da654a25c002e91e66d27c9152da5",
+      "prefix": 719
+    },
+    {
+      "core_calculation_ns": 311,
+      "core_result_frame_sha256": null,
+      "fixture_setup_ns": 120373319,
+      "marker_input_sha256": null,
+      "plain_input_sha256": "17734d230df11c00ace33969967b76a8363b1eb185868975d04f00cf5944a022",
+      "prefix": 720
+    }
+  ],
+  "generation": {
+    "baseline": "7ebb4a46a319ffde5e390a86b8f0a3a0352e4866",
+    "baseline_blob": "4cebd3e9bd283d0b0e70e70c81070edf17fae704",
+    "candidate_source_head": "3c1180b642a93d99bf9d955c05b0182fe0efa733",
+    "schema": "pennant-store-benchmark-generation-v1",
+    "scope": "Test APK contains instrumented class-renamed copies; distribution APK uses original production class, without timers or benchmark flags.",
+    "shared_dependencies": [
+      {
+        "baseline_blob": "2eb03be32c133362782e7af21eec27c72fee108b",
+        "path": "android/app/src/main/java/com/example/baseballsim/data/SeasonStore.kt",
+        "sha256": "a13cb0a928c3f62f3820aa76a237483c7b7276c9694c3ae0cccce655274d0515"
+      },
+      {
+        "baseline_blob": "1ccae8104f3af4805ad181329c5d03b49e4e70a9",
+        "path": "android/app/src/main/java/com/example/baseballsim/data/PennantDatabase.kt",
+        "sha256": "5fc8baf5ccaf2da6e8a6e3e651eb8f8fa7c7090ef4264815e57a370c81c1ef5e"
+      },
+      {
+        "baseline_blob": "6ad35fbe6a802b2876b570cd948c728f0c433379",
+        "path": "android/core/src/main/kotlin/com/example/baseballsim/core/GameSession.kt",
+        "sha256": "3d002d674da3463cae4be3f3781dee1a0dc5b98422eff76ab1b5ddc49f5715a1"
+      },
+      {
+        "baseline_blob": "b19141b602b3626451394705d2acf8dfd2d1de00",
+        "path": "android/core/src/main/kotlin/com/example/baseballsim/core/Model.kt",
+        "sha256": "ee3312f594c1ac87dd4a6898bd7ed01be2eaa7d7d8cb922ce2465c49abd6daab"
+      },
+      {
+        "baseline_blob": "ba90de0c61c7a308aee7d4ab9b15ff7cbee570b2",
+        "path": "android/core/src/main/kotlin/com/example/baseballsim/core/RandomSource.kt",
+        "sha256": "ef3886e7807162146d5e90979168e150843759cb49d55a8bec8b075fb1845a70"
+      },
+      {
+        "baseline_blob": "a52f2e48f8e2a276ff443a3a6ddc934b7ae93c45",
+        "path": "android/core/src/main/kotlin/com/example/baseballsim/core/Rules.kt",
+        "sha256": "b7c1fe60b17980477942d4aea651b0ae8d8d444d16fd609286ef1650746c6c43"
+      },
+      {
+        "baseline_blob": "42e2c2a2e638aa58261a301df6a1ef10dc8705cb",
+        "path": "android/core/src/main/kotlin/com/example/baseballsim/season/Checkpoint.kt",
+        "sha256": "edbecd1854cda01cdee2bfb1488aa427b9ac9587ca9644c93f9e7b8910b55122"
+      },
+      {
+        "baseline_blob": "e36ce6664f11d4bde700af1368bdb723808bc47a",
+        "path": "android/core/src/main/kotlin/com/example/baseballsim/season/CheckpointCodec.kt",
+        "sha256": "f85210aef20ac954d7d57ef3267c333caa31273302a88845f4adde9e68ac157b"
+      },
+      {
+        "baseline_blob": "5dffaf4b1e8e82c9a9219781471d8dcd6f0ef04a",
+        "path": "android/core/src/main/kotlin/com/example/baseballsim/season/Records.kt",
+        "sha256": "a667d92086a20353d0ac3b02d5656b5f571b199436bd2671d2185ab1beddce8e"
+      },
+      {
+        "baseline_blob": "4a5b656f5b8ebbad71e03eaf86aaf6f0f89c2e66",
+        "path": "android/core/src/main/kotlin/com/example/baseballsim/season/Schedule.kt",
+        "sha256": "60c865c00b2ef27dbf8c1cbc91dc750de980eb7f7feac63a8f25f3a3f90531b2"
+      },
+      {
+        "baseline_blob": "15410add53dbfc8a22b149565dcec8d1c7902d09",
+        "path": "android/core/src/main/kotlin/com/example/baseballsim/season/Season.kt",
+        "sha256": "2a4193c853d9121bdbcc70f10e72fe5fb8d333c6fad0cd316f793ad79eff7c74"
+      },
+      {
+        "baseline_blob": "479dd3cb35938e58a2c7fa8c319a370faafa83bb",
+        "path": "android/app/schemas/com.example.baseballsim.data.PennantDatabase/1.json",
+        "sha256": "3af7cc7ed8cc59fd2d65666aa5464afb80598b5979428c3f88ae3e4d5f7004a8"
+      }
+    ],
+    "sources": [
+      {
+        "class": "BaselineRoomSeasonStore",
+        "instrumented_sha256": "d3524365fdf6c24b157a5aa91db3753a1c7f533df25263d54ae2d37225ad7a82",
+        "plain_source_differs_only_by_class_name": true,
+        "production_source_instrumented": false,
+        "rename_only_sha256": "074ba88d5febd439eb10a3b284c56470b440faf07df8661feddb0b57a034ee09",
+        "source_sha256": "42060e6be1317d45d2c3deddaa1b796e7da4ad82ac2263f01ab84403839412b7",
+        "timer_removal_matches_rename_only_source": true,
+        "timer_wrapper_count": 5
+      },
+      {
+        "class": "CandidateRoomSeasonStore",
+        "instrumented_sha256": "30b8870994bc26de8f71866f417c99052a4639ce18398e0bd302eeb446e1391d",
+        "plain_source_differs_only_by_class_name": true,
+        "production_source_instrumented": false,
+        "rename_only_sha256": "623a7f5eac4ff05a320c3eb73ccb43ea5cd044632cb0714aef5eb74dcd242f94",
+        "source_sha256": "272f319a8601006b6f42c3f7fba77f407f696adafc0536148d2f85ade1bf2465",
+        "timer_removal_matches_rename_only_source": true,
+        "timer_wrapper_count": 5
+      }
+    ]
+  },
+  "heap_definition": "used heap at sample end; not peak, RSS or physical-device memory",
+  "host_verification": {
+    "abba_three_blocks_per_operation": true,
+    "actual_ui_720_transaction_run": false,
+    "all_samples": 308,
+    "distribution_apk_timing_instrumented": false,
+    "gate_failure_does_not_invalidate_raw_measurement": true,
+    "generation_evidence": "generation.json",
+    "independent_database_per_sample": true,
+    "measured_samples": 264,
+    "performance_gate_passed": true,
+    "same_emulator_same_process": true,
+    "same_prepared_inputs_per_operation": true,
+    "schema": "pennant-store-benchmark-host-verification-v1",
+    "summary_recomputed_from_all_raw_observations": true,
+    "warmup_samples": 44
+  },
+  "job_id": 129945386114,
+  "measured_rows": 264,
+  "phase_relation": "candidate_encode/check, before_read, transaction and after_commit are disjoint subintervals of commit total; sum excludes transition checks, row conversion, hashing and coroutine scheduling; core calculation and fixture preparation are outside commit total",
+  "raw_json_bytes": 270603,
+  "raw_json_sha256": "0f025a1410feb579d5a53842eaec47806a743129dd12c8604c726efdc6a1b029",
+  "runtime_source": "3c1180b642a93d99bf9d955c05b0182fe0efa733",
+  "runtime_tree": "9022770806226fce23b59a76687b95a03081afb8",
+  "same_process_same_emulator_independent_database_per_sample": true,
+  "schema": "pennant-store-abba-v1",
+  "seed": "42",
+  "variant_A": "baseline test-only renamed/timed copy",
+  "variant_B": "candidate test-only renamed/timed copy",
+  "warmup_rows": 44,
+  "workflow_run": 42849348455
+}
