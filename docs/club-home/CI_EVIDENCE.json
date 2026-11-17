@@ -1,0 +1,365 @@
+{
+  "schema": "club-home-ci-evidence-v1",
+  "recorded_date_jst": "2026-11-17",
+  "recorded_before_pr_merge": true,
+  "implementation_pr": 49,
+  "design_pr": 48,
+  "approved_design_main": "d134204b2c215adc484735d3ae2e956789add3ed",
+  "runtime_source": "53938af62cc2a1be51fc33ccc66a3a822364e7c4",
+  "runtime_tree": "8db52152cd941dd645d5b8c4247a1ee0b0de6b3a",
+  "workflow_count": 11,
+  "job_count": 19,
+  "all_steps_success_or_intended_skipped": true,
+  "workflows": [
+    {
+      "run_id": 43995880242,
+      "name": "pennant-core-tests",
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "id": 133747713520,
+          "name": "repeat-core",
+          "status": "completed",
+          "conclusion": "success",
+          "steps_checked": 15,
+          "steps_success": 15,
+          "steps_intentionally_skipped": []
+        }
+      ]
+    },
+    {
+      "run_id": 43995879941,
+      "name": "pennant-android-recovery",
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "id": 133747712563,
+          "name": "process-recovery",
+          "status": "completed",
+          "conclusion": "success",
+          "steps_checked": 15,
+          "steps_success": 15,
+          "steps_intentionally_skipped": []
+        }
+      ]
+    },
+    {
+      "run_id": 43995880006,
+      "name": "phase4d-reference-tests",
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "id": 133747712774,
+          "name": "unittest (3.11)",
+          "status": "completed",
+          "conclusion": "success",
+          "steps_checked": 10,
+          "steps_success": 10,
+          "steps_intentionally_skipped": []
+        },
+        {
+          "id": 133747713330,
+          "name": "unittest (3.12)",
+          "status": "completed",
+          "conclusion": "success",
+          "steps_checked": 10,
+          "steps_success": 10,
+          "steps_intentionally_skipped": []
+        }
+      ]
+    },
+    {
+      "run_id": 43995879929,
+      "name": "local-match-view-tests",
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "id": 133747712268,
+          "name": "unittest (3.12)",
+          "status": "completed",
+          "conclusion": "success",
+          "steps_checked": 13,
+          "steps_success": 13,
+          "steps_intentionally_skipped": []
+        },
+        {
+          "id": 133747712512,
+          "name": "unittest (3.11)",
+          "status": "completed",
+          "conclusion": "success",
+          "steps_checked": 13,
+          "steps_success": 13,
+          "steps_intentionally_skipped": []
+        }
+      ]
+    },
+    {
+      "run_id": 43995880200,
+      "name": "phase4e-reference-tests",
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "id": 133747713109,
+          "name": "unittest (3.11)",
+          "status": "completed",
+          "conclusion": "success",
+          "steps_checked": 11,
+          "steps_success": 11,
+          "steps_intentionally_skipped": []
+        },
+        {
+          "id": 133747713595,
+          "name": "unittest (3.12)",
+          "status": "completed",
+          "conclusion": "success",
+          "steps_checked": 11,
+          "steps_success": 11,
+          "steps_intentionally_skipped": []
+        }
+      ]
+    },
+    {
+      "run_id": 43995880004,
+      "name": "phase4b-reference-tests",
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "id": 133747712589,
+          "name": "unittest (3.12)",
+          "status": "completed",
+          "conclusion": "success",
+          "steps_checked": 8,
+          "steps_success": 8,
+          "steps_intentionally_skipped": []
+        },
+        {
+          "id": 133747712820,
+          "name": "unittest (3.11)",
+          "status": "completed",
+          "conclusion": "success",
+          "steps_checked": 8,
+          "steps_success": 8,
+          "steps_intentionally_skipped": []
+        }
+      ]
+    },
+    {
+      "run_id": 43995880017,
+      "name": "phase4f-single-game-tests",
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "id": 133747712566,
+          "name": "unittest (3.11)",
+          "status": "completed",
+          "conclusion": "success",
+          "steps_checked": 12,
+          "steps_success": 12,
+          "steps_intentionally_skipped": []
+        },
+        {
+          "id": 133747713171,
+          "name": "unittest (3.12)",
+          "status": "completed",
+          "conclusion": "success",
+          "steps_checked": 12,
+          "steps_success": 12,
+          "steps_intentionally_skipped": []
+        }
+      ]
+    },
+    {
+      "run_id": 43995880160,
+      "name": "phase4c-reference-tests",
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "id": 133747712815,
+          "name": "unittest (3.12)",
+          "status": "completed",
+          "conclusion": "success",
+          "steps_checked": 9,
+          "steps_success": 9,
+          "steps_intentionally_skipped": []
+        },
+        {
+          "id": 133747713312,
+          "name": "unittest (3.11)",
+          "status": "completed",
+          "conclusion": "success",
+          "steps_checked": 9,
+          "steps_success": 9,
+          "steps_intentionally_skipped": []
+        }
+      ]
+    },
+    {
+      "run_id": 43995880008,
+      "name": "phase4a-reference-tests",
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "id": 133747712813,
+          "name": "unittest (3.12)",
+          "status": "completed",
+          "conclusion": "success",
+          "steps_checked": 7,
+          "steps_success": 7,
+          "steps_intentionally_skipped": []
+        },
+        {
+          "id": 133747713193,
+          "name": "unittest (3.11)",
+          "status": "completed",
+          "conclusion": "success",
+          "steps_checked": 7,
+          "steps_success": 7,
+          "steps_intentionally_skipped": []
+        }
+      ]
+    },
+    {
+      "run_id": 43995880044,
+      "name": "pennant-store-benchmark",
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "id": 133747712637,
+          "name": "paired-benchmark",
+          "status": "completed",
+          "conclusion": "success",
+          "steps_checked": 14,
+          "steps_success": 14,
+          "steps_intentionally_skipped": []
+        }
+      ]
+    },
+    {
+      "run_id": 43995880058,
+      "name": "android-first-match",
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "id": 133747712903,
+          "name": "verify",
+          "status": "completed",
+          "conclusion": "success",
+          "steps_checked": 21,
+          "steps_success": 21,
+          "steps_intentionally_skipped": []
+        },
+        {
+          "id": 133747713181,
+          "name": "device",
+          "status": "completed",
+          "conclusion": "success",
+          "steps_checked": 13,
+          "steps_success": 13,
+          "steps_intentionally_skipped": []
+        }
+      ]
+    }
+  ],
+  "artifacts": {
+    "canonical_apk": {
+      "run_id": 43995879941,
+      "artifact_id": 14289816997,
+      "apk_bytes": 10892409,
+      "apk_sha256": "78856f8c750bd18926f0d96a06af14aeb5fa2d0569e27617af27bf6f7621f504",
+      "expires_at_utc": "2026-12-01T01:32:32Z"
+    },
+    "process_proof": {
+      "run_id": 43995879941,
+      "artifact_id": 14289312283
+    },
+    "unit_lint": {
+      "run_id": 43995880058,
+      "artifact_id": 14289393419
+    },
+    "device": {
+      "run_id": 43995880058,
+      "artifact_id": 14291031151
+    },
+    "benchmark": {
+      "run_id": 43995880044,
+      "artifact_id": 14289714398
+    }
+  },
+  "tests": {
+    "app_jvm_methods": 36,
+    "core_methods": 22,
+    "device_methods": 46,
+    "host_recovery_methods": 1,
+    "host_profile_methods": 1,
+    "host_benchmark_methods": 1,
+    "prepare_probe_counted_as_success": false,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "lint_errors": 0,
+    "lint_warnings": 8
+  },
+  "benchmark": {
+    "correctness_junit_passed": true,
+    "historical_performance_gate_passed": false,
+    "failed_comparisons": [
+      {
+        "prefix": 600,
+        "operation": "result",
+        "candidate_over_baseline": 0.8211277569,
+        "required_at_most": 0.8
+      }
+    ],
+    "measured_samples": 264,
+    "warmup_samples": 44,
+    "speed_gate_part_of_this_ui_acceptance": false,
+    "rerun_to_seek_a_pass": false
+  },
+  "validation_limits": {
+    "api35_emulator": true,
+    "api26_runtime_tested": false,
+    "physical_device_tested": false,
+    "power_loss_tested": false,
+    "actual_old_apk_upgrade_tested": false,
+    "old_schema1_fixture_written_with_frozen_old_writer": true,
+    "local_android_toolchain_executed": false
+  },
+  "independent_review": {
+    "code_and_source_completed": true,
+    "artifact_digest_crc_paths_verified": true,
+    "all_40_prior_device_methods_preserved": true,
+    "actual720_elapsed_ms": 594484,
+    "actual720_day_index": 141,
+    "actual720_frame_bytes": 1585652,
+    "actual720_frame_sha256": "0bde5d0de901771b13e75adc64aab9d21a5854c8f7aed9e34aafb72a3881bbde",
+    "actual720_frame_all_bytes_match_prefrozen_reference": true,
+    "all12_standings_match_prior_reference": true,
+    "all108_final_ui_ids_clubs_slots_and5counts_match_prior_reference": true,
+    "partial_ui_players_observed": 108,
+    "png_artifacts": 22,
+    "critical_png_independently_viewed": 8,
+    "critical_png_views": [
+      "home320font150",
+      "players320font150",
+      "detail320font150",
+      "settings320font150",
+      "error320font150",
+      "stop320font150",
+      "blocked_match320font150",
+      "live_bulk_player_detail"
+    ],
+    "process_recovery_png_viewed": true,
+    "remaining_required_findings": 0
+  }
+}

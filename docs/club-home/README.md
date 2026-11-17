@@ -2,6 +2,16 @@
 
 [承認設計 PR #48](https://github.com/thrsth45h/baseball-sim/pull/48)・[設計書](../CLUB_HOME_DESIGN.md)に基づく限定UI。
 
+## APKの取得
+
+1. GitHubへログインし、[同じAPKで実プロセス復旧を検証した配布ZIP](https://github.com/thrsth45h/baseball-sim/actions/runs/43995879941/artifacts/14289816997)を取得する。期限は **2026-12-01 10:32:32 JST**。
+2. ZIP内の `app-debug.apk` をAndroid端末へ手動で導入する。API26以上が宣言上の対象で、実行確認は隔離CIのAPI35。
+3. 起動するとペナントへ入る。PCサーバ・Python・通信は不要。
+
+APK sourceは `53938af62cc2a1be51fc33ccc66a3a822364e7c4`、10,892,409byte、SHA256 `78856f8c750bd18926f0d96a06af14aeb5fa2d0569e27617af27bf6f7621f504`。versionCode3 / 0.3-club-home-tech。後続の報告文書commitをAPK sourceへ付け替えない。別runnerのdebug署名が異なる場合は旧版から保存維持更新できないことがある。アンインストールは端末内セーブを削除するため、自動削除・再導入は行わない。
+
+## 操作
+
 新規起動ではペナントの球団ホームを表示する。シーズンがなければseedと操作球団を選び「新シーズン」を押す。既存の「1試合」モードは上部から切り替えられ、OSが復元したモード選択を尊重する。
 
 - ホームから選手一覧、日程、順位、記録、設定・セーブへ移動する。
