@@ -11,6 +11,20 @@ class PennantNavigationTest {
     private fun ui(season: SeasonState = SeasonState.initial(), world: String = "world", generation: String = "generation", revision: Long = 0) =
         PennantUiState(loaded = true, display = pennantDisplay(StoredSeason(StoreToken(world, generation, revision), season, "operation")))
 
+    @Test fun malformedSavedUiFallsBackToHomeAndThePublishedManagedClub() {
+        val current = ui(SeasonState.initial(selectedClubId = "L1-T03"))
+        for (values in listOf(emptyList(), listOf("world"),
+            listOf("world", "generation", "UNKNOWN", "L2-T06", "L2-T06-P09"))) {
+            assertNull(restorePennantNavigation(values))
+            val fallback = (restorePennantNavigation(values) ?: PennantNavigation()).bind(current)
+            assertEquals(PennantPage.HOME, fallback.page)
+            assertEquals("L1-T03", fallback.browseClubId)
+            assertNull(fallback.playerId)
+        }
+        assertEquals(PennantNavigation("world", "generation", PennantPage.PLAYER_DETAIL, "L2-T06", "L2-T06-P09"),
+            restorePennantNavigation(listOf("world", "generation", "PLAYER_DETAIL", "L2-T06", "L2-T06-P09")))
+    }
+
     @Test fun all108FixedPlayersJoinAllFivePublishedCountsAtZeroPartialAndFullSeason() {
         val session = SeasonSession()
         val states = listOf(session.state, session.finishCurrent(), session.finishSeason())

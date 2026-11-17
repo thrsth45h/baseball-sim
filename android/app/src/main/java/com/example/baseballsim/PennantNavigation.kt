@@ -9,6 +9,13 @@ enum class PennantPage(val title: String) {
     STANDINGS("順位"), RECORDS("記録"), MATCH("試合"), SETTINGS("設定・セーブ")
 }
 
+/** Malformed OS UI restoration falls back to an unbound home, then binds to the published save. */
+internal fun restorePennantNavigation(values: List<String>): PennantNavigation? {
+    if (values.size != 5) return null
+    val page = PennantPage.entries.find { it.name == values[2] } ?: return null
+    return PennantNavigation(values[0].ifEmpty { null }, values[1].ifEmpty { null }, page, values[3], values[4].ifEmpty { null })
+}
+
 /** Saveable UI values only. A revision changes the displayed numbers, not the browsing identity. */
 data class PennantNavigation(
     val worldId: String? = null, val generationId: String? = null,

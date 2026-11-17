@@ -50,6 +50,7 @@ class PennantBrowseActionsTest {
             compose.waitUntil(15_000) { vm.state.value.loaded && !vm.state.value.busy }
             val baseline = fake.calls(); val initial = vm.state.value.display
             click(PennantTags.NAV_PLAYERS); click(PennantTags.player("L1-T01-P09"))
+            compose.onNodeWithTag("player_completed_pa").assertTextEquals("0")
             restoration.emulateSavedInstanceStateRestore()
             compose.onNodeWithTag(PennantTags.PLAYER_DETAIL).assertExists()
             click(PennantTags.BACK); click(PennantTags.BACK)
@@ -71,6 +72,11 @@ class PennantBrowseActionsTest {
             assertEquals(1, vm.state.value.season!!.results.size)
             compose.onNodeWithTag(PennantTags.PLAYER_DETAIL).assertExists()
             compose.onNodeWithText("L1-T01-P09", substring = true).assertExists()
+            val count = vm.state.value.season!!.playerCounts.single { it.playerId == "L1-T01-P09" }.counts
+            assertTrue(count.completedPlateAppearances > 0)
+            listOf("player_completed_pa" to count.completedPlateAppearances, "player_safe_hits" to count.safeHitEvents,
+                "player_walks" to count.walkEvents, "player_strikeouts" to count.strikeoutEvents,
+                "player_home_runs" to count.homeRunEvents).forEach { (tag, value) -> compose.onNodeWithTag(tag).assertTextEquals(value.toString()) }
             click(PennantTags.BACK); click(PennantTags.BACK)
             assertEquals("L1-T01", vm.state.value.season!!.selectedClubId)
         } finally { fake.gate.complete(Unit); compose.runOnUiThread { owner.clear() } }

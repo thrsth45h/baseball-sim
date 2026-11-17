@@ -64,12 +64,14 @@ object PennantTags {
 
 private val NavigationSaver = listSaver<PennantNavigation, String>(
     save = { listOf(it.worldId.orEmpty(), it.generationId.orEmpty(), it.page.name, it.browseClubId, it.playerId.orEmpty()) },
-    restore = { v -> PennantNavigation(v[0].ifEmpty { null }, v[1].ifEmpty { null },
-        PennantPage.entries.find { it.name == v[2] } ?: PennantPage.HOME, v[3], v[4].ifEmpty { null }) })
+    restore = ::restorePennantNavigation)
 private data class PennantConfirmation(val command: PennantCommand, val token: StoreToken)
 private val ConfirmationSaver = listSaver<PennantConfirmation?, String>(
     save = { pending -> pending?.let { listOf(it.command.name, it.token.worldId, it.token.generationId, it.token.revision.toString()) } ?: emptyList() },
-    restore = { v -> if (v.isEmpty()) null else PennantConfirmation(PennantCommand.valueOf(v[0]), StoreToken(v[1], v[2], v[3].toLong())) })
+    restore = { v -> runCatching {
+        if (v.size != 4) null else PennantCommand.valueOf(v[0]).takeIf { it == PennantCommand.CREATE || it == PennantCommand.LOAD }
+            ?.let { PennantConfirmation(it, StoreToken(v[1], v[2], v[3].toLong())) }
+    }.getOrNull() })
 
 @Composable fun PennantRoute(viewModel: PennantViewModel) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -189,10 +191,11 @@ private val ConfirmationSaver = listSaver<PennantConfirmation?, String>(
     state.seedError?.let { Text(it, color = MaterialTheme.colorScheme.error) }
     ClubSelector("操作球団", state.selectedClubInput, state.canUse, selectClub)
     Button(create, enabled = state.canUse, modifier = Modifier.fillMaxWidth().testTag(PennantTags.CREATE)) { Text("新シーズン") }
-    if (state.season != null) {
+    val season = state.season
+    if (season != null) {
         OutlinedButton(save, enabled = state.canSave, modifier = Modifier.fillMaxWidth().testTag(PennantTags.SAVE)) { Text("セーブ") }
         OutlinedButton(load, enabled = state.canLoad, modifier = Modifier.fillMaxWidth().testTag(PennantTags.LOAD)) { Text("ロード") }
-        Text(if (state.season.active != null) "試合中は自動復旧用に保存します。手動セーブ・ロードは試合外で利用できます。"
+        Text(if (season.active != null) "試合中は自動復旧用に保存します。手動セーブ・ロードは試合外で利用できます。"
             else if (state.hasSlot) "手動セーブあり" else "手動セーブなし", style = MaterialTheme.typography.bodySmall)
     }
 }

@@ -233,6 +233,9 @@ class PennantActivityTest {
         File(directory, "pennant-real-season-42.json").writeText(evidence.toString(2))
         compose.onNodeWithTag(PennantTags.PROGRESS).performScrollTo().assertTextEquals("720 / 720試合完了 · seed 42")
         compose.pennantScreenshot("pennant-season-completed.png")
+        val afterSeason = vm.state.value.display
+        compose.observeAllPlayerDetails(state, "player-detail-final720-observed-108.json")
+        assertSame(afterSeason, vm.state.value.display)
         compose.runOnUiThread { vm.reload() }; ready()
         assertEquals(state, vm.state.value.season)
     }
