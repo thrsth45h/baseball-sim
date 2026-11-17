@@ -11,28 +11,46 @@ import java.io.DataOutputStream
  */
 object CheckpointCodec {
     private const val MAX_BYTES = 32 * 1024 * 1024
-    fun encodeGame(value: GameCheckpoint): ByteArray = write { text("pennant-game-checkpoint-v1"); gameCheckpoint(value) }
-    fun decodeGame(bytes: ByteArray): GameCheckpoint = read(bytes) { require(text() == "pennant-game-checkpoint-v1"); gameCheckpoint() }
-    fun encodeSummary(value: GameSummary): ByteArray = write { text("pennant-game-summary-v1"); summary(value) }
-    fun decodeSummary(bytes: ByteArray): GameSummary = read(bytes) { require(text() == "pennant-game-summary-v1"); summary() }
+    private fun header(kind: String, lineup: Boolean) = "pennant-$kind-v${if (lineup) 2 else 1}"
+    fun encodeGame(value: GameCheckpoint): ByteArray = write { text(header("game-checkpoint", value.game.versions.lineupEnabled)); gameCheckpoint(value) }
+    fun decodeGame(bytes: ByteArray): GameCheckpoint = read(bytes) {
+        val v2 = readHeader("game-checkpoint"); gameCheckpoint().also { require(it.game.versions.lineupEnabled == v2) }
+    }
+    fun encodeSummary(value: GameSummary): ByteArray = write { text(header("game-summary", value.game.versions.lineupEnabled)); summary(value) }
+    fun decodeSummary(bytes: ByteArray): GameSummary = read(bytes) {
+        val v2 = readHeader("game-summary"); summary().also { require(it.game.versions.lineupEnabled == v2) }
+    }
     fun encodeSeason(value: SeasonState): ByteArray = write {
-        text("pennant-season-checkpoint-v1"); text(value.masterSeed); text(value.selectedClubId); int(value.dayIndex)
+        text(header("season-checkpoint", value.lineupEnabled)); text(value.masterSeed); text(value.selectedClubId); int(value.dayIndex)
+        if (value.lineupEnabled) {
+            versions(value.versions)
+            int(value.clubLineups.size)
+            value.clubLineups.forEach { (club, people) -> text(club); int(people.size); people.forEach { text(it) } }
+        }
         int(value.games.size); value.games.forEach { scheduled(it) }
         int(value.results.size); value.results.forEach { summary(it) }
         bool(value.active != null); value.active?.let { gameCheckpoint(it) }
         // Persist derived displays as well, then verify them against the result ledger on decoding.
         int(value.standings.size); value.standings.forEach { standing(it) }
-        int(value.playerCounts.size); value.playerCounts.forEach { player(it) }
+        int(value.playerCounts.size); value.playerCounts.forEach { player(it, value.lineupEnabled) }
     }
     fun decodeSeason(bytes: ByteArray): SeasonState = read(bytes) {
-        require(text() == "pennant-season-checkpoint-v1")
+        val v2 = readHeader("season-checkpoint")
         val master = text(); val selected = text(); val day = int()
+        val versions = if (v2) versions().also { require(it.lineupEnabled) } else SeasonVersions()
+        val plans = if (v2) {
+            List(size(12, 12)) { index ->
+                val club = text(); require(club == PennantSchedule.clubIds[index]) { "Noncanonical club plan order" }
+                club to List(size(9, 9)) { text() }
+            }.toMap()
+        } else LineupRoster.defaultPlans(versions)
         val games = List(size(720, 720)) { scheduled() }
         val results = List(size(0, 720)) { summary() }
         val active = if (bool()) gameCheckpoint() else null
         val standings = List(size(12, 12)) { standing() }
-        val players = List(size(108, 108)) { player() }
-        val state = SeasonState.restore(master, selected, day, results, active)
+        val count = if (v2) 144 else 108
+        val players = List(size(count, count)) { player(v2) }
+        val state = SeasonState.restore(master, selected, day, results, active, versions, plans)
         require(games == state.games && standings == state.standings && players == state.playerCounts) { "Saved plan or aggregates disagree with canonical plan/ledger" }
         state
     }
@@ -74,20 +92,34 @@ object CheckpointCodec {
             text(s.kind); long(s.pitchCalls); nullableLong(s.fairCalls); nullableText(s.state); nullableLong(s.rawCalls)
             nullableLong(s.drawCalls); nullableLong(s.rejections); bool(s.scriptedPosition != null); s.scriptedPosition?.let { int(it) }
         }
-        fun gameCheckpoint(v: GameCheckpoint) { scheduled(v.game); long(v.maxPitches); long(v.advanceCalls); snapshot(v.snapshot); source(v.source); snapshot(v.initial) }
+        fun lineup(v: GameLineup) { int(v.away.size); v.away.forEach { text(it) }; int(v.home.size); v.home.forEach { text(it) } }
+        fun gameCheckpoint(v: GameCheckpoint) {
+            scheduled(v.game); long(v.maxPitches); long(v.advanceCalls); snapshot(v.snapshot); source(v.source); snapshot(v.initial)
+            if (v.game.versions.lineupEnabled) lineup(v.lineup)
+        }
         fun summary(s: GameSummary) {
             scheduled(s.game); long(s.maxPitches); text(s.status.name); text(s.outcome); text(s.reason); score(s.score)
             int(s.lineScore.size); s.lineScore.forEach { nullableLong(it) }; score(s.terminalDelta); long(s.pitchesAccepted)
             int(s.batters.size); s.batters.forEach { text(it.playerId); text(it.clubId); int(it.slot); text(it.side); counts(it.counts) }
+            if (s.game.versions.lineupEnabled) lineup(s.lineup)
         }
         fun standing(s: Standing) {
             val t = s.totals; text(t.clubId); long(t.played); long(t.wins); long(t.losses); long(t.draws); long(t.runsFor); long(t.runsAgainst)
             bool(s.rank != null); s.rank?.let { int(it) }
             bool(t.ratio != null); t.ratio?.let { long(it.numerator); long(it.denominator) }
         }
-        fun player(p: PlayerSeasonCounts) { text(p.playerId); text(p.clubId); int(p.slot); counts(p.counts) }
+        fun player(p: PlayerSeasonCounts, v2: Boolean) {
+            text(p.playerId); text(p.clubId)
+            if (v2) require(p.slot == null) else int(requireNotNull(p.slot))
+            counts(p.counts)
+        }
     }
     private class Reader(val input: DataInputStream) {
+        fun readHeader(kind: String): Boolean {
+            val value = text()
+            require(value == header(kind, false) || value == header(kind, true)) { "Unsupported checkpoint header" }
+            return value == header(kind, true)
+        }
         fun int() = input.readInt()
         fun long() = input.readLong()
         fun bool(): Boolean { val n = input.readUnsignedByte(); require(n == 0 || n == 1); return n == 1 }
@@ -116,12 +148,18 @@ object CheckpointCodec {
             return SnapshotDto(SequenceDto(inning, side, away, home, count, half), order, people, pitches, lines, status, nullableText(), nullableText(), score(), text())
         }
         fun source() = SourceCursor(text(), long(), nullableLong(), nullableText(), nullableLong(), nullableLong(), nullableLong(), if (bool()) int() else null)
-        fun gameCheckpoint() = GameCheckpoint(scheduled(), long(), long(), snapshot(), source(), snapshot())
+        fun lineup() = GameLineup(List(size(9, 9)) { text() }, List(size(9, 9)) { text() })
+        fun gameCheckpoint(): GameCheckpoint {
+            val game = scheduled(); val limit = long(); val advances = long(); val current = snapshot(); val cursor = source(); val initial = snapshot()
+            val people = if (game.versions.lineupEnabled) lineup() else GameLineup.initial(game)
+            return GameCheckpoint(game, limit, advances, current, cursor, initial, people)
+        }
         fun summary(): GameSummary {
             val game = scheduled(); val limit = long(); val status = Status.valueOf(text()); val outcome = text(); val reason = text(); val scoreValue = score()
             val lines = List(size(18, 18)) { nullableLong() }; val delta = score(); val pitches = long()
             val people = List(size(18, 18)) { PlayerGameCounts(text(), text(), int(), text(), counts()) }
-            return GameSummary(game, limit, status, outcome, reason, scoreValue, lines, delta, pitches, people)
+            val order = if (game.versions.lineupEnabled) lineup() else GameLineup.initial(game)
+            return GameSummary(game, limit, status, outcome, reason, scoreValue, lines, delta, pitches, people, order)
         }
         fun standing(): Standing {
             val t = ClubTotals(text(), long(), long(), long(), long(), long(), long())
@@ -130,6 +168,6 @@ object CheckpointCodec {
             require(ratio == t.ratio)
             return Standing(t, rank)
         }
-        fun player() = PlayerSeasonCounts(text(), text(), int(), counts())
+        fun player(v2: Boolean) = PlayerSeasonCounts(text(), text(), if (v2) null else int(), counts())
     }
 }
