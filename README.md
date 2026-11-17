@@ -26,7 +26,7 @@
 - [現在の引き継ぎ状況](docs/HANDOFF.md)：承認済み設計、関連PR、未解決事項を確認。
 - [球団ホーム・選手一覧/詳細](docs/club-home/README.md)：段階Aの限定UIを実装。固定108人の詳細と、既存の日程/記録/観戦/設定をつなぐ。[設計と承認範囲](docs/CLUB_HOME_DESIGN.md)。
 - [打順・出場選手の試作版](docs/lineup-roster/README.md)：本人承認のD061に基づき、新規世界の出場9＋控え3を試合/人物別記録へ接続。旧108人世界も維持する。[承認設計](docs/LINEUP_ROSTER_DESIGN.md)。
-- [次案：打者の試作用タイプ](docs/BATTER_PROFILE_DESIGN.md)：標準/ミート型/長打型の仮分布で編成の違いを試す案。D062 PROVISIONALで、採用・実装は未承認。正式能力1〜20や研究モデルの採用ではない。
+- [打者の試作用タイプ設計](docs/BATTER_PROFILE_DESIGN.md)：本人承認のD062に基づき、三タイプの仮分布と新規v3/旧保存維持を採用。設計統合後にworker実装〜検証APKへ進む。正式能力1〜20や研究モデルの採用ではない。
 - [ADR（設計決定記録）のひな型](docs/adr/0000-template.md)：各案の根拠・反証・トレードオフ・承認記録。
 - [AGENTS.md](AGENTS.md)：Codexが守る作業ルール、UIの簡潔さに関する方針。
 
