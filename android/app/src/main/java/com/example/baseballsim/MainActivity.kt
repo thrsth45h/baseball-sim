@@ -40,7 +40,7 @@ class MainActivity : ComponentActivity() {
         )
         setContent {
             BaseballTheme {
-                var pennant by rememberSaveable { mutableStateOf(false) }
+                var pennant by rememberSaveable { mutableStateOf(true) }
                 Scaffold(topBar = {
                     Row(Modifier.fillMaxWidth().windowInsetsPadding(WindowInsets.statusBars)) {
                         TextButton({ pennant = false }, Modifier.testTag("mode_match")) { Text("1試合") }

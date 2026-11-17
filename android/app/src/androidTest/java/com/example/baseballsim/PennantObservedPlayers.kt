@@ -1,0 +1,45 @@
+package com.example.baseballsim
+
+import androidx.compose.ui.semantics.SemanticsProperties
+import androidx.compose.ui.test.*
+import androidx.compose.ui.test.junit4.ComposeContentTestRule
+import com.example.baseballsim.season.PennantSchedule
+import com.example.baseballsim.season.SeasonState
+import org.json.JSONArray
+import org.json.JSONObject
+import org.junit.Assert.assertEquals
+import java.io.File
+
+/** The artifact records rendered semantic Text values; the expected SeasonState is used only for assertions. */
+internal fun ComposeContentTestRule.observeAllPlayerDetails(expected: SeasonState, filename: String) {
+    fun click(tag: String) {
+        val node = onNodeWithTag(tag)
+        if (tag != PennantTags.BACK) node.performScrollTo()
+        node.performClick()
+    }
+    fun text(tag: String) = onNodeWithTag(tag).fetchSemanticsNode().config[SemanticsProperties.Text].joinToString("") { it.text }
+    while (onAllNodesWithTag(PennantTags.BACK).fetchSemanticsNodes().isNotEmpty()) click(PennantTags.BACK)
+    click(PennantTags.NAV_PLAYERS)
+    val observed = JSONArray()
+    PennantSchedule.clubs.forEach { club ->
+        click(PennantTags.BROWSE_CLUB)
+        onNodeWithText(club.displayName, useUnmergedTree = true).performScrollTo().performClick()
+        club.players.forEach { player ->
+            click(PennantTags.player(player.id))
+            onNodeWithTag("player_id").assertTextEquals(player.id)
+            onNodeWithTag("player_club").assertTextEquals(club.displayName)
+            onNodeWithTag("player_slot").assertTextEquals("固定打順 ${player.slot}")
+            val count = expected.playerCounts.single { it.playerId == player.id }.counts
+            val values = listOf("player_completed_pa" to count.completedPlateAppearances, "player_safe_hits" to count.safeHitEvents,
+                "player_walks" to count.walkEvents, "player_strikeouts" to count.strikeoutEvents, "player_home_runs" to count.homeRunEvents)
+            val sample = JSONObject().put("player_id", text("player_id")).put("club", text("player_club")).put("slot", text("player_slot"))
+            values.forEach { (tag, value) -> onNodeWithTag(tag).assertTextEquals(value.toString()); sample.put(tag, text(tag)) }
+            observed.put(sample)
+            click(PennantTags.BACK)
+        }
+    }
+    assertEquals(108, observed.length())
+    File(pennantTestOutputDirectory(), filename).writeText(JSONObject().put("schema", "club-home-observed-ui-v1")
+        .put("source", "Compose semantic Text nodes, not expected-state copies").put("players", observed).toString(2))
+    click(PennantTags.BACK)
+}

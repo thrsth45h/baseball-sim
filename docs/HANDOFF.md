@@ -10,6 +10,8 @@
 
 ## 現在の到達点
 
+- **2026-11-17：限定UI PR #49はworker実装/CI/責任者の独立コード・frame・全108人・主要8画面の照合を完了、最終統合待ち。** 承認設計main `d134204b2c215adc484735d3ae2e956789add3ed` から専用 `work/club-home-worker` / `impl/club-home-player-browser` で実装。固定source `53938af62cc2a1be51fc33ccc66a3a822364e7c4` / tree `8db52152cd941dd645d5b8c4247a1ee0b0de6b3a`、全11workflow/19jobs/全step成功または意図したskipped。app36/core22/device46（旧40保持）とhost復旧/profile/ABBA各1は失敗/スキップ0、lint0error/8warning。実UI/Room720試合594,484ms、最終frame1,585,652byte/既存期待SHA・全byte一致、全12順位と実UIの全108人/5件数一致。PID4214→force-stop不在→4298で同checkpoint/次1球を復旧。[APK取得/操作](club-home/README.md)・[検証/未検証](club-home/VALIDATION.md)・[CI証拠](club-home/CI_EVIDENCE.json)。配布APK SHA `78856f8c750bd18926f0d96a06af14aeb5fa2d0569e27617af27bf6f7621f504`、期限2026-12-01 10:32:32 JST。既存benchmarkは正しさ成功だが旧性能ゲートは600/result比0.8211277569で未達、今回UIの速度採用条件ではない。通過探しの再実行はしない。core/store/schema等15protected source不変、通常の閲覧はActions/保存を増やさない。物理端末/API26/電源断/実旧APK更新/長期互換は未検証。今回の文書commitとAPK source、未マージと統合済みを区別し、最終head/統合SHAは責任者が確認する。他worktree/既存資料とユーザーPC画面/入力/環境を保護。編成/能力/経営/次年度へ自動着手しない。
+
 - **2026-11-17：PR #48の限定UI範囲を本人承認。** 起動後ホーム優先/旧1試合保持、固定108人の一覧/詳細、日程/順位/記録/観戦/保存の連携、閲覧で操作球団/進行不変を提示した回答「はい」により、D060 CONFIRMED/ADR-0018 Acceptedへ更新。設計統合後、専用workerへUI実装/回帰/CI/APKを直接委任し、責任者の独立レビュー・修正・問題のないPR統合まで進める。内部細目の個別精査は主張せず、編成/能力/年次/経営/製品DBは今回の範囲へ広げない。直下の未承認記載は提案時点の履歴。
 
 - **2026-11-17：段階Aの[球団ホーム・選手一覧/詳細](CLUB_HOME_DESIGN.md)を具体設計。** 基準main `edc803ed16a57339e4b87330ae0c83fe86900756`（主基準PR #47統合済み）。本人の「続けて」を、直前に案内した具体設計を進める依頼として扱う。D060 PROVISIONAL/ADR-0018 Proposedで、初期ペナント表示/8表示先/操作と閲覧の分離/世代と確認token/非進行の閲覧/回転やbulk中の扱い/受入条件を提示。詳細・実装開始は未承認で、コード/セーブ/既存APKは変更しない。採用後に専用workerへUI実装/CI/APKを委任し、責任者が独立レビューする。

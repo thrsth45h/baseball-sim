@@ -12,8 +12,8 @@ android {
         applicationId = "com.example.baseballsim"
         minSdk = 26
         targetSdk = 36
-        versionCode = 2
-        versionName = "0.2-pennant-tech"
+        versionCode = 3
+        versionName = "0.3-club-home-tech"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         testInstrumentationRunnerArguments["notClass"] = "com.example.baseballsim.PennantProcessRecoveryTest,com.example.baseballsim.data.RoomSeasonBenchmarkTest"
         testInstrumentationRunnerArguments["additionalTestOutputDir"] = "/sdcard/Android/media/com.example.baseballsim/additional_test_output"

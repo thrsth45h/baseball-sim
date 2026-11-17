@@ -159,22 +159,26 @@ class PennantViewModel(private val actions: PennantActions,
             catch (_: Exception) { failed(token) }
         }
     }
-    fun execute(command: PennantCommand, replacementConfirmed: Boolean = false, club: String = mutable.value.selectedClubInput) {
+    fun execute(command: PennantCommand, replacementConfirmed: Boolean = false, club: String = mutable.value.selectedClubInput,
+        confirmationToken: StoreToken? = null): Unit = synchronized(lock) {
         val before = mutable.value
+        // Compare with the latest published state while claiming the operation under the same lock.
+        // This intentionally makes no promise about DB changes not yet published to this ViewModel.
+        if (confirmationToken != null && confirmationToken != before.display?.stored?.token) return@synchronized
         if (command == PennantCommand.CREATE) {
-            if (before.busy || !before.canUse) return
+            if (before.busy || !before.canUse) return@synchronized
             if (MatchViewModel.validatedSeed(before.seedInput) == null) {
-                synchronized(lock) { if (!cleared && !mutable.value.busy) mutable.value = mutable.value.copy(seedError = MatchViewModel.SEED_ERROR) }
-                return
+                if (!cleared && !mutable.value.busy) mutable.value = mutable.value.copy(seedError = MatchViewModel.SEED_ERROR)
+                return@synchronized
             }
-            if (before.season != null && !replacementConfirmed) return
-        } else if (command == PennantCommand.SELECT) { if (!before.canUse || before.season == null) return }
-        else if (command == PennantCommand.SAVE) { if (!before.canSave) return }
-        else if (command == PennantCommand.LOAD) { if (!before.canLoad) return }
-        else if (command in listOf(PennantCommand.PITCH, PennantCommand.PLATE_APPEARANCE, PennantCommand.GAME)) { if (!before.canAdvanceMatch) return }
-        else if (!before.canProgress) return
+            if (before.season != null && !replacementConfirmed) return@synchronized
+        } else if (command == PennantCommand.SELECT) { if (!before.canUse || before.season == null) return@synchronized }
+        else if (command == PennantCommand.SAVE) { if (!before.canSave) return@synchronized }
+        else if (command == PennantCommand.LOAD) { if (!before.canLoad) return@synchronized }
+        else if (command in listOf(PennantCommand.PITCH, PennantCommand.PLATE_APPEARANCE, PennantCommand.GAME)) { if (!before.canAdvanceMatch) return@synchronized }
+        else if (!before.canProgress) return@synchronized
         val bulk = command in listOf(PennantCommand.OPEN_SELECTED, PennantCommand.DAY, PennantCommand.SEASON)
-        val token = claim(bulk) ?: return
+        val token = claim(bulk) ?: return@synchronized
         viewModelScope.launch {
             try {
                 val (display, slot) = withContext(computation) {

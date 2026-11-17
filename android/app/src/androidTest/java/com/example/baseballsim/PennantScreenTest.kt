@@ -25,16 +25,17 @@ class PennantScreenTest {
     @Test fun narrowTablesStayWithinTheViewportAndCanScroll() {
         val state = ui(SeasonState.initial())
         compose.setContent { BaseballTheme {
-            Box(Modifier.width(320.dp)) { PennantScreen(state, {}, {}, { _, _ -> }, {}, {}) }
+            Box(Modifier.width(320.dp)) { PennantScreen(state, {}, {}, { _, _, _ -> }, {}, {}) }
         } }
-        compose.onNodeWithText("順位", useUnmergedTree = true).performScrollTo().performClick()
+        compose.onNodeWithTag(PennantTags.NAV_STANDINGS).performScrollTo().performClick()
         compose.onNodeWithTag(PennantTags.STANDINGS).performScrollTo().assertIsDisplayed()
         val panel = compose.onNodeWithTag(PennantTags.STANDINGS).fetchSemanticsNode().boundsInRoot
         val viewport = compose.onNodeWithTag(PennantTags.SCREEN).fetchSemanticsNode().boundsInRoot
         assertTrue(panel.left >= viewport.left && panel.right <= viewport.right + 1)
         compose.onNodeWithText("勝率").performScrollTo().assertIsDisplayed()
         compose.pennantScreenshot("pennant-narrow320.png")
-        compose.onNodeWithText("記録", useUnmergedTree = true).performScrollTo().performClick()
+        compose.onNodeWithTag(PennantTags.BACK).performClick()
+        compose.onNodeWithTag(PennantTags.NAV_RECORDS).performScrollTo().performClick()
         compose.onNodeWithText("本塁打").performScrollTo().assertIsDisplayed()
         compose.pennantScreenshot("pennant-narrow320-records.png")
     }
@@ -46,18 +47,22 @@ class PennantScreenTest {
         val source = ToyPitchSource(game.seed)
         source.nextPitch(PitchContext(SequenceState(), Score(), "away", "away_1", 1))
         val blocked = initial.checkpoint(GameCheckpoint(game, 10_000, 1, SnapshotDto.fromCore(snapshot), SourceCursor.capture(source)))
-        compose.setContent { BaseballTheme { PennantScreen(ui(blocked), {}, {}, { _, _ -> }, {}, {}) } }
+        compose.setContent { BaseballTheme { PennantScreen(ui(blocked), {}, {}, { _, _, _ -> }, {}, {}) } }
         compose.onNodeWithText("試合ID：${game.fixture.gameId}").performScrollTo().assertIsDisplayed()
         compose.onNodeWithText("理由：投球処理でエラーが発生しました（source_error）").performScrollTo().assertIsDisplayed()
+        compose.pennantScreenshot("pennant-blocked-home.png")
+        compose.onNodeWithTag(PennantTags.NAV_MATCH).performScrollTo().performClick()
         compose.onNodeWithTag(PennantTags.PITCH).performScrollTo().assertIsNotEnabled()
+        compose.onNodeWithTag(PennantTags.BACK).performClick()
+        compose.onNodeWithTag(PennantTags.NAV_SETTINGS).performScrollTo().performClick()
         compose.onNodeWithTag(PennantTags.SAVE).performScrollTo().assertIsNotEnabled()
         compose.onNodeWithTag(PennantTags.LOAD).performScrollTo().assertIsNotEnabled()
-        compose.pennantScreenshot("pennant-blocked.png")
+        compose.pennantScreenshot("pennant-blocked-settings.png")
     }
     @Test fun failedReadDoesNotOfferToOverwriteUnreadableData() {
-        compose.setContent { BaseballTheme { PennantScreen(PennantUiState(loaded = true, error = "保存データを読めません"), {}, {}, { _, _ -> }, {}, {}) } }
+        compose.setContent { BaseballTheme { PennantScreen(PennantUiState(loaded = true, error = "保存データを読めません"), {}, {}, { _, _, _ -> }, {}, {}) } }
         compose.onNodeWithTag(PennantTags.CREATE).performScrollTo().assertIsNotEnabled()
-        compose.onNodeWithTag(PennantTags.RELOAD).performScrollTo().assertIsEnabled()
-        compose.onNodeWithTag(PennantTags.ERROR).performScrollTo().assertTextEquals("保存データを読めません")
+        compose.onNodeWithTag(PennantTags.RELOAD).assertIsEnabled()
+        compose.onNodeWithTag(PennantTags.ERROR).assertTextEquals("保存データを読めません")
     }
 }
