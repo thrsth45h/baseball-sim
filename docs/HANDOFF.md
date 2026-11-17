@@ -10,6 +10,10 @@
 
 ## 現在の到達点
 
+- **2026-11-17：設計PR #50の限定範囲とworker実装〜検証APKを本人承認。** 出場9＋控え3の打者12人、試合前の打順/入替え、実選手への個人記録、旧セーブ継続、仮確率据置きで戦力差なしを提示した確認への「はい」に基づきD061 CONFIRMED/ADR-0019 Acceptedへ更新。設計レビュー/統合後に専用workerへ直接委任し、責任者が独立レビュー/修正/CI/APKと問題のないPR統合を管理する。編成/保存の詳細は[正本](LINEUP_ROSTER_DESIGN.md)。投手/能力差/一二軍/年次/製品DBは未採用のまま。直下の未承認記載は設計提案時点の履歴であり、この更新段階では実装はまだ開始していない。
+
+- **2026-11-17：PR #49をmain `c745d65dd72aed0df301c373df96a500bf9ed32a`へ統合済み。** レビューhead `6e5514740896b343c05e6a089dd9d426350254a9`と統合treeは一致。APK/検証sourceは `53938af62cc2a1be51fc33ccc66a3a822364e7c4`のまま。下の統合待ちは報告commit時点の履歴。本人の「次へ」を受け、専用 `work/lineup-roster-design` / `design/lineup-roster` で[打順・出場選手](LINEUP_ROSTER_DESIGN.md)・ADR-0019/D061 PROVISIONALを提案する。12人の試作人数/試合間の変更/個人記録/旧新保存併存はまだ未承認。設計レビューと仕様提示まで進め、worker実装や設計マージは承認後。コード/既存APK/セーブ/研究repoは変更しない。既存worktreeとPC画面/入力/環境を保護する。
+
 - **2026-11-17：限定UI PR #49はworker実装/CI/責任者の独立コード・frame・全108人・主要8画面の照合を完了、最終統合待ち。** 承認設計main `d134204b2c215adc484735d3ae2e956789add3ed` から専用 `work/club-home-worker` / `impl/club-home-player-browser` で実装。固定source `53938af62cc2a1be51fc33ccc66a3a822364e7c4` / tree `8db52152cd941dd645d5b8c4247a1ee0b0de6b3a`、全11workflow/19jobs/全step成功または意図したskipped。app36/core22/device46（旧40保持）とhost復旧/profile/ABBA各1は失敗/スキップ0、lint0error/8warning。実UI/Room720試合594,484ms、最終frame1,585,652byte/既存期待SHA・全byte一致、全12順位と実UIの全108人/5件数一致。PID4214→force-stop不在→4298で同checkpoint/次1球を復旧。[APK取得/操作](club-home/README.md)・[検証/未検証](club-home/VALIDATION.md)・[CI証拠](club-home/CI_EVIDENCE.json)。配布APK SHA `78856f8c750bd18926f0d96a06af14aeb5fa2d0569e27617af27bf6f7621f504`、期限2026-12-01 10:32:32 JST。既存benchmarkは正しさ成功だが旧性能ゲートは600/result比0.8211277569で未達、今回UIの速度採用条件ではない。通過探しの再実行はしない。core/store/schema等15protected source不変、通常の閲覧はActions/保存を増やさない。物理端末/API26/電源断/実旧APK更新/長期互換は未検証。今回の文書commitとAPK source、未マージと統合済みを区別し、最終head/統合SHAは責任者が確認する。他worktree/既存資料とユーザーPC画面/入力/環境を保護。編成/能力/経営/次年度へ自動着手しない。
 
 - **2026-11-17：PR #48の限定UI範囲を本人承認。** 起動後ホーム優先/旧1試合保持、固定108人の一覧/詳細、日程/順位/記録/観戦/保存の連携、閲覧で操作球団/進行不変を提示した回答「はい」により、D060 CONFIRMED/ADR-0018 Acceptedへ更新。設計統合後、専用workerへUI実装/回帰/CI/APKを直接委任し、責任者の独立レビュー・修正・問題のないPR統合まで進める。内部細目の個別精査は主張せず、編成/能力/年次/経営/製品DBは今回の範囲へ広げない。直下の未承認記載は提案時点の履歴。
