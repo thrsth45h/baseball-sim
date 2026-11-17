@@ -1,6 +1,6 @@
 # 打順・出場選手を試合と記録へ接続する設計案
 
-2026-11-17 JST。**Proposed / D061 PROVISIONAL。具体仕様・実装開始は未承認。** 基準mainは `c745d65dd72aed0df301c373df96a500bf9ed32a`（球団ホーム版PR #49統合済み）。本人の「次へ」は次工程の設計を進める依頼として扱い、この文書の人数・保存方式まで承認されたとは扱わない。[ADR-0019](adr/0019-lineup-roster.md)・[完成像](PENNANT_SPIRITS_BASELINE.md)を参照。
+2026-11-17 JST。**Proposed / D061 PROVISIONAL。具体仕様・実装開始は未承認。** [設計PR #50](https://github.com/thrsth45h/baseball-sim/pull/50)。基準mainは `c745d65dd72aed0df301c373df96a500bf9ed32a`（球団ホーム版PR #49統合済み）。本人の「次へ」は次工程の設計を進める依頼として扱い、この文書の人数・保存方式まで承認されたとは扱わない。[ADR-0019](adr/0019-lineup-roster.md)・[完成像](PENNANT_SPIRITS_BASELINE.md)を参照。
 
 ## 利用者に届く成果と限界
 

@@ -2,7 +2,7 @@
 
 - Status: Proposed
 - 関連Issue：小規模な設計提案として設計PRへ集約
-- 設計PR：作成後に記録
+- 設計PR：[PR #50](https://github.com/thrsth45h/baseball-sim/pull/50)（未承認・未マージ）
 - DECISIONS ID：D061 PROVISIONAL
 - ユーザーの明示承認記録：**未承認**。PR #49完成後の「次へ」は設計着手の根拠であり、未提示の人数/保存方式の採用ではない。
 - 正本：[打順・出場選手の設計案](../LINEUP_ROSTER_DESIGN.md)
