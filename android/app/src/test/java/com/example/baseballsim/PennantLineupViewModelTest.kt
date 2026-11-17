@@ -15,13 +15,16 @@ class PennantLineupViewModelTest {
     private class Actions : PennantActions {
         var stored = StoredSeason(StoreToken("world", "generation", 0), SeasonState.initialLineup(), "initial")
         var calls = 0
+        var reads = 0
+        var failApply = false
         var gate: CompletableDeferred<Unit>? = null
-        override suspend fun read() = stored
+        override suspend fun read(): StoredSeason { reads++; return stored }
         override suspend fun hasSlot() = false
         override suspend fun execute(command: PennantCommand, seed: String, club: String, replacement: Boolean,
             stop: () -> Boolean, progress: suspend (StoredSeason) -> Unit): StoredSeason = error("Unexpected normal command")
         override suspend fun applyLineup(expected: StoreToken, clubId: String, players: List<String>): StoredSeason {
             calls++; gate?.await()
+            if (failApply) throw StoreConflict("Injected stale apply")
             check(stored.token == expected)
             stored = stored.copy(token = expected.copy(revision = expected.revision + 1), state = stored.state.applyLineup(clubId, players), operationId = "edit$calls")
             return stored
@@ -62,4 +65,16 @@ class PennantLineupViewModelTest {
         vm.applyLineup(actions.stored.token, "L1-T01", order); advanceUntilIdle(); assertEquals(0, actions.calls)
         assertNull(restoreLineupDraft(listOf("bad")))
     }
+    @Test fun failedApplyDoesNotCallTheNormalReadRecoveryUntilExplicitReload() = runTest(main.dispatcher) {
+        val actions = Actions(); val vm = PennantViewModel(actions, main.dispatcher); advanceUntilIdle()
+        val before = vm.state.value.display
+        val reads = actions.reads
+        actions.failApply = true
+        vm.applyLineup(actions.stored.token, "L1-T01", order); advanceUntilIdle()
+        assertNotNull(vm.state.value.error); assertSame(before, vm.state.value.display)
+        assertEquals(reads, actions.reads); assertEquals(1, actions.calls)
+        vm.reload(); advanceUntilIdle()
+        assertEquals(reads + 1, actions.reads); assertNull(vm.state.value.error)
+    }
+
 }

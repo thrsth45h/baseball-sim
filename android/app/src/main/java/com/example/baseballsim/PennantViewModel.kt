@@ -220,11 +220,8 @@ class PennantViewModel(private val actions: PennantActions,
                 publish(token, display, slot, finished = true, notice = "打順を保存しました")
             } catch (cancelled: CancellationException) { throw cancelled }
             catch (_: Exception) {
-                try {
-                    val (display, slot) = withContext(computation) { actions.read()?.let(::pennantDisplay) to actions.hasSlot() }
-                    publish(token, display, slot, finished = true)
-                } catch (cancelled: CancellationException) { throw cancelled }
-                catch (_: Exception) { /* Keep the last published state if the durable read also fails. */ }
+                // A normal read can finalize a durable completed checkpoint. Failed APPLY must
+                // remain isolated, so retain the prior published value until explicit reload.
                 failed(token)
             }
         }
