@@ -25,6 +25,7 @@
 - [設計・実装・レビュー運用](docs/WORKFLOW.md)：責任者がユーザーと仕様を相談し、承認後にworkerへ実装を委任。責任者がレビュー・修正指示・統合を行い、ユーザーによる依頼文の転送は不要。
 - [現在の引き継ぎ状況](docs/HANDOFF.md)：承認済み設計、関連PR、未解決事項を確認。
 - [球団ホーム・選手一覧/詳細](docs/club-home/README.md)：段階Aの限定UIを実装。固定108人の詳細と、既存の日程/記録/観戦/設定をつなぐ。[設計と承認範囲](docs/CLUB_HOME_DESIGN.md)。
+- [次工程の打順・出場選手案](docs/LINEUP_ROSTER_DESIGN.md)：控えとの入替えを試合/個人記録へ接続する提案。D061 PROVISIONALで、まだ実装しない。
 - [ADR（設計決定記録）のひな型](docs/adr/0000-template.md)：各案の根拠・反証・トレードオフ・承認記録。
 - [AGENTS.md](AGENTS.md)：Codexが守る作業ルール、UIの簡潔さに関する方針。
 
@@ -40,7 +41,7 @@
 
 ## 現在の状態
 
-**球団ホームから固定108人の選手詳細へ移動するAndroid版**を実装し、CIと最終保存データの独立照合を完了しました。[APK取得・操作](docs/club-home/README.md)・[検証記録](docs/club-home/VALIDATION.md)・[PR #49](https://github.com/thrsth45h/baseball-sim/pull/49)。閲覧だけでは操作球団・試合・保存を変えず、日程/順位/記録/観戦/設定へ移動できます。source53938afのapp36/core22/device46 methodは失敗/スキップ0、API35で実720試合と配布APKの実force-stop復旧を確認。責任者の独立コード・成果物・画面レビューを完了し、統合待ちです。単年度・固定9人・仮確率の限定試作で、能力/編成/経営/次年度は今回追加していません。
+**球団ホームから固定108人の選手詳細へ移動するAndroid版**を実装し、CIと最終保存データの独立照合を完了しました。[APK取得・操作](docs/club-home/README.md)・[検証記録](docs/club-home/VALIDATION.md)・[PR #49](https://github.com/thrsth45h/baseball-sim/pull/49)。閲覧だけでは操作球団・試合・保存を変えず、日程/順位/記録/観戦/設定へ移動できます。source53938afのapp36/core22/device46 methodは失敗/スキップ0、API35で実720試合と配布APKの実force-stop復旧を確認。責任者の独立コード・成果物・画面レビュー後、main `c745d65`へ統合済みです。単年度・固定9人・仮確率の限定試作で、能力/編成/経営/次年度は今回追加していません。
 
 **Androidで12球団の限定ペナントを動かす技術検証APK**に、保存の限定性能改善を追加しました。[旧性能改善版のAPK・操作手順](docs/pennant-performance/README.md)・[検証記録](docs/pennant-performance/VALIDATION.md)。固定9人・各120試合、観戦/日程スキップ、順位/限定記録、端末内の保存/復旧を備え、API35の隔離CIで実720試合を11分1.123秒で完走し、最終保存データの既存期待値との全byte一致と実プロセス強制終了からの復旧を確認しました。同一emulatorで主要保存操作は21.3〜23.4%短縮しましたが、実機や全シーズンの改善率ではありません。旧18分30.228秒の[初版記録](docs/pennant-android/VALIDATION.md)は別runnerの履歴として保持します。単年度の限定試作で、能力・采配・球団経営・次年度移行や製品版の長期保存は未実装です。旧単独1試合モードも残しています。[性能改善PR #46](https://github.com/thrsth45h/baseball-sim/pull/46)。
 
