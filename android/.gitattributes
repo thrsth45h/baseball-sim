@@ -1,4 +1,6 @@
 * text eol=lf
 gradle/wrapper/gradle-wrapper.jar binary
 *.gz binary
+# Neutral-extension gzip fixture: preserve its original bytes in Git and APK.
+app/src/androidTest/assets/lineup/one-game-v1.fixture.bin binary
 gradlew.bat text eol=crlf

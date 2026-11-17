@@ -22,7 +22,9 @@ class RoomLineupStoreTest {
         val name = "independent-v1-${UUID.randomUUID()}.db"
         val path = context.getDatabasePath(name)
         path.parentFile!!.mkdirs()
-        val packed = InstrumentationRegistry.getInstrumentation().context.assets.open("lineup/one-game-v1.db.gz").use { it.readBytes() }
+        // The neutral packaging alias retains the original gzip bytes/hash. CI also
+        // verifies the exact asset entry in the assembled instrumentation APK.
+        val packed = InstrumentationRegistry.getInstrumentation().context.assets.open("lineup/one-game-v1.fixture.bin").use { it.readBytes() }
         assertEquals("8596765ca1ef34c0e33b619529acf3ce52541801888691796b0c0f13a0da272f", hash(packed))
         val raw = GZIPInputStream(packed.inputStream()).use { it.readBytes() }
         assertEquals("4247d3c43dbce76e505c7676eb419df03c6602adf9ce020340e74fef6dd557c4", hash(raw))
