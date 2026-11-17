@@ -20,6 +20,7 @@ class LineupStateTest {
         session.finishCurrent()
         val first = session.state.results.single()
         val firstBytes = CheckpointCodec.encodeSummary(first)
+        assertEquals(first, CheckpointCodec.decodeSummary(firstBytes))
         val p01 = session.state.playerCounts.single { it.playerId == "$club-P01" }.counts
         assertTrue(p01.completedPlateAppearances > 0)
         beforeOwnGame(session, 2)
