@@ -79,7 +79,8 @@ class SeasonCoordinator(
     }
     /** The original published identity is carried to the store's real CAS boundary by commit. */
     suspend fun applyLineup(expected: StoreToken, clubId: String, players: List<String>): StoredSeason = exclusive {
-        val before = current()
+        // APPLY is isolated: do not use current()/readLocked(), which may finalize a completed checkpoint.
+        val before = store.read() ?: throw StoreConflict("No season has been created")
         if (before.token != expected) throw StoreConflict("The lineup draft belongs to an older saved state")
         require(clubId == before.state.selectedClubId) { "Only the operating club may be edited" }
         val candidate = withContext(computation) { before.state.applyLineup(clubId, players) }

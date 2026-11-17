@@ -95,6 +95,9 @@ class PennantLineupFullSeasonTest {
                     .put("club_id", row.clubId).put("slot", row.slot).put("side", row.side).put("counts", counts(row.counts))) } })) } })
         File(output, "lineup-real-season-42.json").writeText(report.toString(2))
         compose.pennantScreenshot("lineup-season-completed.png")
+        val beforeBrowsing = vm.state.value.display
+        compose.observeAllPlayerDetails(state, "lineup-player-detail-observed-144.json")
+        assertSame(beforeBrowsing, vm.state.value.display)
         compose.runOnUiThread { vm.reload() }; ready(); assertEquals(state, vm.state.value.season)
     }
 }

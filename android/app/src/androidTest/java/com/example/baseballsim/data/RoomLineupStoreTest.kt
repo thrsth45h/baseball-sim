@@ -46,8 +46,8 @@ class RoomLineupStoreTest {
             val pitched = store.commit(begun.token, "pitch-v1", SeasonSession(begun.state).advanceOnePitch())
             assertEquals(expected, pitched.state.active)
             val completed = store.commit(pitched.token, "finish-v1", SeasonSession(pitched.state).finishCurrent())
-            store.saveSlot(completed.token, "save-v1")
-            val modern = store.createLineup("42", club, "again-v2", completed.token, true)
+            val savedLegacy = store.saveSlot(completed.token, "save-v1")
+            val modern = store.createLineup("42", club, "again-v2", savedLegacy.token, true)
             val edited = store.commit(modern.token, "edit-v2", modern.state.applyLineup(club, order()))
             val slotted = store.saveSlot(edited.token, "save-v2")
             val legacy = store.create("0", club, "new-v1", slotted.token, true)
@@ -136,6 +136,26 @@ class RoomLineupStoreTest {
             db.openHelper.writableDatabase.execSQL("UPDATE working_state SET payload=?, payloadHash=? WHERE id=1", arrayOf(frame, hash(frame)))
             assertThrows(StoreCorruption::class.java) { runBlocking { store.read() } }
             assertArrayEquals(frame, db.pennantDao().head()!!.payload)
+        } finally { db.close(); context.deleteDatabase(name) }
+    }
+
+    @Test fun rejectedApplyNeverFinalizesADurableCompletedCheckpoint(): Unit = runBlocking {
+        val name = "lineup-isolated-${UUID.randomUUID()}.db"; val db = PennantDatabase.open(context, name)
+        try {
+            val store = RoomSeasonStore(db)
+            val created = store.createLineup("42", club, "create")
+            val begun = store.commit(created.token, "begin", created.state.beginNext())
+            val match = begun.state.active!!.recover("42"); match.finish()
+            val pending = store.commit(begun.token, "completed-checkpoint", begun.state.checkpoint(match.checkpoint()))
+            val frame = CheckpointCodec.encodeSeason(pending.state)
+            assertTrue(pending.state.results.isEmpty()); assertNotNull(pending.state.active)
+            val coordinator = SeasonCoordinator(store)
+            assertThrows(StoreConflict::class.java) { runBlocking { coordinator.applyLineup(created.token, club, order()) } }
+            assertEquals(pending, store.read())
+            assertThrows(IllegalStateException::class.java) { runBlocking { coordinator.applyLineup(pending.token, club, order()) } }
+            assertEquals(pending, store.read())
+            assertArrayEquals(frame, db.pennantDao().head()!!.payload)
+            assertEquals(0, db.pennantDao().results(pending.token.worldId, pending.token.generationId).size)
         } finally { db.close(); context.deleteDatabase(name) }
     }
 
