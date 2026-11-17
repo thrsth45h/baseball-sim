@@ -30,7 +30,11 @@ data class SeasonVersions(
     val roster: String = "season-roster-v1",
     val checkpoint: String = "season-checkpoint-v1",
 ) {
-    fun requireSupported() { require(this == SeasonVersions()) { "Unsupported saved versions" } }
+    val lineupEnabled get() = this == lineup()
+    fun requireSupported() { require(this == SeasonVersions() || this == lineup()) { "Unsupported saved versions" } }
+    companion object {
+        fun lineup() = SeasonVersions(roster = "season-roster-v2", checkpoint = "season-checkpoint-v2")
+    }
 }
 
 data class Fixture(
@@ -85,8 +89,9 @@ object PennantSchedule {
     }
     val calendar = freeze((1..140).map { day -> CalendarDay(day, (day - 1) / 7 + 1, weekdays[(day - 1) % 7],
         (day - 1) % 7 == 0, fixtures.filter { it.dayIndex == day }.map { it.ordinal }) })
-    fun allocate(masterSeed: String): List<ScheduledGame> {
+    fun allocate(masterSeed: String, versions: SeasonVersions = SeasonVersions()): List<ScheduledGame> {
+        versions.requireSupported()
         val rng = Sm64(seedFromText(masterSeed))
-        return freeze(fixtures.map { ScheduledGame(it, rng.nextRaw().toString()) })
+        return freeze(fixtures.map { ScheduledGame(it, rng.nextRaw().toString(), versions) })
     }
 }

@@ -1,0 +1,27 @@
+{
+  "schema": "independent-v1-database-fixture-v1",
+  "provenance": "Python-constructed schema1 from historical frozen SQL and v1 frame fragments, NOT old APK output/upgrade",
+  "imports_D061_code": false,
+  "old_full_frame_roundtrips_all_bytes": true,
+  "master_seed": "42",
+  "day_index": 2,
+  "completed_games": 1,
+  "world": "golden-v1-world",
+  "generation": "golden-v1-generation",
+  "revision": 2,
+  "operation": "golden-v1-result",
+  "files": {
+    "one-game-v1.bin": {
+      "bytes": 211226,
+      "sha256": "d208c4f99f28b5676a9a84b7dda113e186f8a84ce36e95b5c692366d6d87fc39"
+    },
+    "one-game-v1.db": {
+      "bytes": 466944,
+      "sha256": "4247d3c43dbce76e505c7676eb419df03c6602adf9ce020340e74fef6dd557c4"
+    },
+    "one-game-v1.db.gz": {
+      "bytes": 43832,
+      "sha256": "8596765ca1ef34c0e33b619529acf3ce52541801888691796b0c0f13a0da272f"
+    }
+  }
+}

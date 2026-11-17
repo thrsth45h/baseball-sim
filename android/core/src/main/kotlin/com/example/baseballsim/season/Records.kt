@@ -4,16 +4,18 @@ import com.example.baseballsim.core.*
 import java.math.BigInteger
 
 data class PlayerGameCounts(val playerId: String, val clubId: String, val slot: Int, val side: String, val counts: EventCounts)
-data class PlayerSeasonCounts(val playerId: String, val clubId: String, val slot: Int, val counts: EventCounts)
+/** Legacy totals retain their historical fixed slot; v2 person totals deliberately have no slot. */
+data class PlayerSeasonCounts(val playerId: String, val clubId: String, val slot: Int?, val counts: EventCounts)
 
 /** Immutable completed summary; accepting one is not a proof of its full legal pitch history. */
 class GameSummary(val game: ScheduledGame, val maxPitches: Long, val status: Status, val outcome: String, val reason: String,
     val score: Score, lineScore: List<Long?>, val terminalDelta: Score, val pitchesAccepted: Long,
-    batters: List<PlayerGameCounts>) : SeasonValue() {
+    batters: List<PlayerGameCounts>, val lineup: GameLineup = GameLineup.initial(game)) : SeasonValue() {
     val lineScore = freeze(lineScore)
     val batters = freeze(batters)
-    override val values get() = listOf(game, maxPitches, status, outcome, reason, score, lineScore, terminalDelta, pitchesAccepted, batters)
+    override val values get() = listOf(game, maxPitches, status, outcome, reason, score, lineScore, terminalDelta, pitchesAccepted, batters, lineup)
     init {
+        lineup.validate(game)
         require(status == Status.COMPLETED && reason in endingReasons)
         require(maxPitches > 0 && pitchesAccepted in 0..maxPitches)
         require(outcome == if (score.away > score.home) "away_win" else if (score.home > score.away) "home_win" else "draw")
@@ -41,15 +43,17 @@ class GameSummary(val game: ScheduledGame, val maxPitches: Long, val status: Sta
         batters.forEachIndexed { index, row ->
             val side = if (index < 9) "away" else "home"
             val club = PennantSchedule.club(if (index < 9) game.fixture.awayClubId else game.fixture.homeClubId)
-            require(row.side == side && row.slot == index % 9 + 1 && row.clubId == club.id && row.playerId == club.players[index % 9].id)
+            val person = (if (index < 9) lineup.away else lineup.home)[index % 9]
+            require(row.side == side && row.slot == index % 9 + 1 && row.clubId == club.id && row.playerId == person)
         }
     }
     companion object {
-        fun fromCore(game: ScheduledGame, snapshot: GameSnapshot, maxPitches: Long = 10_000): GameSummary {
+        fun fromCore(game: ScheduledGame, snapshot: GameSnapshot, maxPitches: Long = 10_000,
+            lineup: GameLineup = GameLineup.initial(game)): GameSummary {
             require(snapshot.status == Status.COMPLETED) { "Only COMPLETED games enter the ledger" }
             return GameSummary(game, maxPitches, snapshot.status, snapshot.outcome!!, snapshot.reason!!, snapshot.score,
                 snapshot.lineScore, snapshot.terminalScoreDelta, snapshot.pitchesAccepted,
-                SeasonRecords.project(game.fixture, snapshot.batterCounts))
+                SeasonRecords.project(game.fixture, snapshot.batterCounts, lineup), lineup)
         }
     }
 }
@@ -82,17 +86,24 @@ data class Standing(val totals: ClubTotals, val rank: Int?)
 object SeasonRecords {
     fun plusCounts(a: EventCounts, b: EventCounts) = EventCounts(add(a.completedPlateAppearances, b.completedPlateAppearances),
         add(a.safeHitEvents, b.safeHitEvents), add(a.walkEvents, b.walkEvents), add(a.strikeoutEvents, b.strikeoutEvents), add(a.homeRunEvents, b.homeRunEvents))
-    fun project(fixture: Fixture, counts: List<EventCounts>): List<PlayerGameCounts> {
+    fun project(fixture: Fixture, counts: List<EventCounts>, lineup: GameLineup = GameLineup(
+        PennantSchedule.club(fixture.awayClubId).players.map { it.id }, PennantSchedule.club(fixture.homeClubId).players.map { it.id })): List<PlayerGameCounts> {
         require(counts.size == 18)
+        LineupRoster.validate(fixture.awayClubId, lineup.away, SeasonVersions.lineup())
+        LineupRoster.validate(fixture.homeClubId, lineup.home, SeasonVersions.lineup())
         return freeze(counts.mapIndexed { i, count ->
             val club = PennantSchedule.club(if (i < 9) fixture.awayClubId else fixture.homeClubId)
-            PlayerGameCounts(club.players[i % 9].id, club.id, i % 9 + 1, if (i < 9) "away" else "home", count)
+            PlayerGameCounts((if (i < 9) lineup.away else lineup.home)[i % 9], club.id, i % 9 + 1, if (i < 9) "away" else "home", count)
         })
     }
-    fun players(contributions: List<List<PlayerGameCounts>>): List<PlayerSeasonCounts> {
-        val records = PennantSchedule.clubs.flatMap { club -> club.players.map { PlayerSeasonCounts(it.id, club.id, it.slot, EventCounts()) } }.associateBy { it.playerId }.toMutableMap()
+    fun players(contributions: List<List<PlayerGameCounts>>, versions: SeasonVersions = SeasonVersions()): List<PlayerSeasonCounts> {
+        versions.requireSupported()
+        val records = PennantSchedule.clubs.flatMap { club -> LineupRoster.playerIds(club.id, versions).mapIndexed { i, id ->
+            PlayerSeasonCounts(id, club.id, if (versions.lineupEnabled) null else i + 1, EventCounts())
+        } }.associateBy { it.playerId }.toMutableMap()
         contributions.forEach { game -> game.forEach { row ->
-            val before = requireNotNull(records[row.playerId]); require(before.clubId == row.clubId && before.slot == row.slot)
+            val before = requireNotNull(records[row.playerId]); require(before.clubId == row.clubId && (versions.lineupEnabled || before.slot == row.slot))
+            require(row.slot in 1..9 && row.side in setOf("away", "home"))
             records[row.playerId] = before.copy(counts = plusCounts(before.counts, row.counts))
         } }
         return freeze(records.values)

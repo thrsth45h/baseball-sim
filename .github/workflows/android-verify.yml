@@ -39,7 +39,9 @@ jobs:
       - name: Android lint
         run: bash gradlew :app:lintDebug --no-daemon --stacktrace
       - name: Debug APK
-        run: bash gradlew :app:assembleDebug --no-daemon --stacktrace
+        run: bash gradlew :app:assembleDebug :app:assembleDebugAndroidTest --no-daemon --stacktrace
+      - name: Verify independent v1 fixture in the built test APK
+        run: python3 tools/verify_lineup_fixture.py
       - name: Verify merged manifest has no network permission
         run: python3 tools/offline_manifest.py
       - name: APK digest
@@ -65,6 +67,7 @@ jobs:
             android/core/build/reports/tests/
             android/app/build/test-results/
             android/app/build/reports/
+            android/app/build/lineup-fixture-packaging.json
           retention-days: 14
   device:
     runs-on: ubuntu-24.04
@@ -97,7 +100,10 @@ jobs:
           working-directory: android
           disable-animations: true
           emulator-options: -no-window -no-audio -no-boot-anim -no-snapshot -gpu swiftshader_indirect -camera-back none
-          script: bash gradlew :app:connectedDebugAndroidTest --no-daemon --stacktrace
+          script: |
+            bash gradlew :app:assembleDebugAndroidTest --no-daemon --stacktrace
+            python3 tools/verify_lineup_fixture.py
+            bash gradlew :app:connectedDebugAndroidTest --no-daemon --stacktrace
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: always()
         with:
@@ -106,4 +112,49 @@ jobs:
             android/app/build/reports/androidTests/
             android/app/build/outputs/androidTest-results/
             android/app/build/outputs/connected_android_test_additional_output/
+            android/app/build/lineup-fixture-packaging.json
+          retention-days: 14
+
+  device-lineup:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5
+        with:
+          distribution: temurin
+          java-version: '17.0.21+9'
+      - name: Verify official Wrapper bytes
+        working-directory: android
+        run: echo '81a82aaea5abcc8ff68b3dfcb58b3c3c429378efd98e7433460610fecd7ae45f  gradle/wrapper/gradle-wrapper.jar' | sha256sum --check
+      - uses: gradle/actions/setup-gradle@0723195856401067f7a2779048b490ace7a47d7c # v5
+      - name: Fixed SDK packages in CI only
+        run: '"$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-36" "build-tools;35.0.0"'
+      - name: Allow KVM inside the disposable CI runner
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - uses: ReactiveCircus/android-emulator-runner@a421e43855164a8197daf9d8d40fe71c6996bb0d # v2
+        with:
+          api-level: 35
+          arch: x86_64
+          target: google_apis
+          profile: pixel_2
+          working-directory: android
+          disable-animations: true
+          emulator-options: -no-window -no-audio -no-boot-anim -no-snapshot -gpu swiftshader_indirect -camera-back none
+          script: |
+            bash gradlew :app:assembleDebug :app:assembleDebugAndroidTest --no-daemon --stacktrace
+            python3 tools/verify_lineup_fixture.py
+            bash tools/lineup_device.sh
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: always()
+        with:
+          name: lineup-device-${{ env.SOURCE_SHA }}
+          path: |
+            android/app/build/lineup-device/
+            android/app/build/lineup-fixture-packaging.json
           retention-days: 14

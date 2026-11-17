@@ -1,0 +1,123 @@
+{
+  "schema": "lineup-manager-scenario-v1",
+  "master_seeds": [
+    "0",
+    "42",
+    "2026"
+  ],
+  "initial_selected_club": "L1-T01",
+  "initial_lineup": "P01..P09 for every club; P10..P12 bench",
+  "operation_boundary": "At no-active checkpoint immediately before listed global game ordinal; SELECT then APPLY, in list order. Other plans persist.",
+  "scenarios": {
+    "default": [],
+    "order_bench": [
+      {
+        "before_ordinal": 7,
+        "select_club": "L1-T01",
+        "lineup": [
+          "L1-T01-P09",
+          "L1-T01-P02",
+          "L1-T01-P03",
+          "L1-T01-P04",
+          "L1-T01-P05",
+          "L1-T01-P06",
+          "L1-T01-P07",
+          "L1-T01-P08",
+          "L1-T01-P01"
+        ]
+      },
+      {
+        "before_ordinal": 13,
+        "select_club": "L1-T01",
+        "lineup": [
+          "L1-T01-P09",
+          "L1-T01-P02",
+          "L1-T01-P03",
+          "L1-T01-P04",
+          "L1-T01-P05",
+          "L1-T01-P06",
+          "L1-T01-P07",
+          "L1-T01-P08",
+          "L1-T01-P10"
+        ]
+      },
+      {
+        "before_ordinal": 19,
+        "select_club": "L1-T01",
+        "lineup": [
+          "L1-T01-P10",
+          "L1-T01-P02",
+          "L1-T01-P03",
+          "L1-T01-P04",
+          "L1-T01-P05",
+          "L1-T01-P06",
+          "L1-T01-P07",
+          "L1-T01-P08",
+          "L1-T01-P01"
+        ]
+      }
+    ],
+    "selection_persists": [
+      {
+        "before_ordinal": 1,
+        "select_club": "L1-T01",
+        "lineup": [
+          "L1-T01-P10",
+          "L1-T01-P02",
+          "L1-T01-P03",
+          "L1-T01-P04",
+          "L1-T01-P05",
+          "L1-T01-P06",
+          "L1-T01-P07",
+          "L1-T01-P08",
+          "L1-T01-P09"
+        ]
+      },
+      {
+        "before_ordinal": 1,
+        "select_club": "L2-T06",
+        "lineup": [
+          "L2-T06-P01",
+          "L2-T06-P02",
+          "L2-T06-P03",
+          "L2-T06-P04",
+          "L2-T06-P05",
+          "L2-T06-P06",
+          "L2-T06-P07",
+          "L2-T06-P08",
+          "L2-T06-P12"
+        ]
+      },
+      {
+        "before_ordinal": 13,
+        "select_club": "L1-T01",
+        "lineup": [
+          "L1-T01-P09",
+          "L1-T01-P08",
+          "L1-T01-P07",
+          "L1-T01-P06",
+          "L1-T01-P05",
+          "L1-T01-P04",
+          "L1-T01-P03",
+          "L1-T01-P02",
+          "L1-T01-P11"
+        ]
+      },
+      {
+        "before_ordinal": 13,
+        "select_club": "L2-T06",
+        "lineup": [
+          "L2-T06-P12",
+          "L2-T06-P02",
+          "L2-T06-P03",
+          "L2-T06-P04",
+          "L2-T06-P05",
+          "L2-T06-P06",
+          "L2-T06-P07",
+          "L2-T06-P08",
+          "L2-T06-P01"
+        ]
+      }
+    ]
+  }
+}

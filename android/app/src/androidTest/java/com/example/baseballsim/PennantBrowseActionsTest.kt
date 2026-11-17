@@ -56,7 +56,9 @@ class PennantBrowseActionsTest {
             click(PennantTags.BACK); click(PennantTags.BACK)
             assertEquals(baseline, fake.calls()); assertSame(initial, vm.state.value.display)
             click(PennantTags.SEASON)
-            compose.waitUntil(15_000) { vm.state.value.busy && vm.state.value.bulk }
+            // Busy is published before the worker coroutine enters execute(). Observe
+            // that first command before taking the no-additional-actions baseline.
+            compose.waitUntil(15_000) { vm.state.value.busy && vm.state.value.bulk && fake.commands.get() == 1 }
             val busyCalls = fake.calls()
             click(PennantTags.NAV_PLAYERS); click(PennantTags.player("L1-T01-P09"))
             compose.onNodeWithTag(PennantTags.STOP).assertIsEnabled()

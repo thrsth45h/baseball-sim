@@ -95,7 +95,17 @@ class PennantProcessRecoveryTest {
     }
     @Test fun prepareDurableCheckpointBeforeHostKill() {
         compose.onNodeWithTag("mode_pennant").performClick(); val vm = ready()
-        compose.runOnUiThread { vm.changeSeed("42"); vm.execute(PennantCommand.CREATE, replacementConfirmed = true) }; ready()
+        val lineupWorld = InstrumentationRegistry.getArguments().getString("lineup_world") == "true"
+        if (lineupWorld) {
+            compose.runOnUiThread { vm.changeSeed("42"); vm.execute(PennantCommand.CREATE, replacementConfirmed = true) }; ready()
+            val token = vm.state.value.display!!.stored.token
+            val people = (listOf(10) + (2..9)).map { "L1-T01-P${it.toString().padStart(2, '0')}" }
+            compose.runOnUiThread { vm.applyLineup(token, "L1-T01", people) }; ready()
+        } else {
+            runBlocking { createLegacyTargetWorld() }
+            compose.runOnUiThread { vm.reload() }; ready()
+        }
+        assertEquals(lineupWorld, vm.state.value.season!!.lineupEnabled)
         compose.runOnUiThread { vm.execute(PennantCommand.OPEN_SELECTED) }; ready()
         compose.runOnUiThread { vm.execute(PennantCommand.PLATE_APPEARANCE) }; ready()
         compose.runOnUiThread { vm.execute(PennantCommand.PITCH) }; ready()
@@ -105,6 +115,7 @@ class PennantProcessRecoveryTest {
             .put("generation", stored.token.generationId).put("revision", stored.token.revision)
             .put("game_id", active.game.fixture.gameId).put("checkpoint_sha256", active.stateHash)
             .put("pitches", active.snapshot.pitchesAccepted).put("advance_calls", active.advanceCalls)
+            .put("lineup_world", lineupWorld).put("away_lineup", JSONArray(active.lineup.away)).put("home_lineup", JSONArray(active.lineup.home))
         compose.pennantScreenshot("pennant-before-process-kill.png")
         // This is intentionally a live setup probe, not a completed JUnit assertion case.
         // The host kills this exact process after observing the ready record and pidof.
@@ -125,6 +136,9 @@ class PennantProcessRecoveryTest {
         assertEquals(expected.getString("checkpoint_sha256"), active.stateHash)
         assertEquals(expected.getLong("pitches"), active.snapshot.pitchesAccepted)
         assertEquals(expected.getLong("advance_calls"), active.advanceCalls)
+        assertEquals(expected.getBoolean("lineup_world"), stored.state.lineupEnabled)
+        assertEquals(expected.getJSONArray("away_lineup").toString(), JSONArray(active.lineup.away).toString())
+        assertEquals(expected.getJSONArray("home_lineup").toString(), JSONArray(active.lineup.home).toString())
         val replay = active.recover(stored.state.masterSeed); replay.advanceOnePitch()
         val expectedNext: GameCheckpoint = replay.checkpoint()
         compose.runOnUiThread { vm.execute(PennantCommand.PITCH) }; ready()

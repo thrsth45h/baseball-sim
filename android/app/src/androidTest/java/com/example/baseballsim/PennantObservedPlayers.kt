@@ -24,12 +24,15 @@ internal fun ComposeContentTestRule.observeAllPlayerDetails(expected: SeasonStat
     PennantSchedule.clubs.forEach { club ->
         click(PennantTags.BROWSE_CLUB)
         onNodeWithText(club.displayName, useUnmergedTree = true).performScrollTo().performClick()
-        club.players.forEach { player ->
-            click(PennantTags.player(player.id))
-            onNodeWithTag("player_id").assertTextEquals(player.id)
+        val people = expected.playerIds(club.id)
+        assertEquals(if (expected.lineupEnabled) 12 else 9, people.size)
+        people.forEach { id ->
+            click(PennantTags.player(id))
+            onNodeWithTag("player_id").assertTextEquals(id)
             onNodeWithTag("player_club").assertTextEquals(club.displayName)
-            onNodeWithTag("player_slot").assertTextEquals("固定打順 ${player.slot}")
-            val count = expected.playerCounts.single { it.playerId == player.id }.counts
+            val row = expected.playerCounts.single { it.playerId == id }
+            onNodeWithTag("player_slot").assertTextEquals(playerRoleLabel(expected, row))
+            val count = row.counts
             val values = listOf("player_completed_pa" to count.completedPlateAppearances, "player_safe_hits" to count.safeHitEvents,
                 "player_walks" to count.walkEvents, "player_strikeouts" to count.strikeoutEvents, "player_home_runs" to count.homeRunEvents)
             val sample = JSONObject().put("player_id", text("player_id")).put("club", text("player_club")).put("slot", text("player_slot"))
@@ -38,8 +41,9 @@ internal fun ComposeContentTestRule.observeAllPlayerDetails(expected: SeasonStat
             click(PennantTags.BACK)
         }
     }
-    assertEquals(108, observed.length())
+    assertEquals(if (expected.lineupEnabled) 144 else 108, observed.length())
     File(pennantTestOutputDirectory(), filename).writeText(JSONObject().put("schema", "club-home-observed-ui-v1")
+        .put("world_format", if (expected.lineupEnabled) "v2" else "v1").put("completed_games", expected.results.size)
         .put("source", "Compose semantic Text nodes, not expected-state copies").put("players", observed).toString(2))
     click(PennantTags.BACK)
 }

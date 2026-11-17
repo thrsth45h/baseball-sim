@@ -69,6 +69,23 @@ class SeasonCoordinator(
             store.create(masterSeed, selectedClubId, id, old?.token, replacementConfirmed)
         }
     }
+    suspend fun createLineup(masterSeed: String = "42", selectedClubId: String = "L1-T01", replacementConfirmed: Boolean = false): StoredSeason = exclusive {
+        val old = store.read()
+        val initial = withContext(computation) { SeasonState.initialLineup(masterSeed, selectedClubId) }
+        val id = operationId()
+        resolveWrite(id, { it.state == initial && it.token.revision == 0L && (old == null || it.token.generationId != old.token.generationId) }) {
+            store.createLineup(masterSeed, selectedClubId, id, old?.token, replacementConfirmed)
+        }
+    }
+    /** The original published identity is carried to the store's real CAS boundary by commit. */
+    suspend fun applyLineup(expected: StoreToken, clubId: String, players: List<String>): StoredSeason = exclusive {
+        // APPLY is isolated: do not use current()/readLocked(), which may finalize a completed checkpoint.
+        val before = store.read() ?: throw StoreConflict("No season has been created")
+        if (before.token != expected) throw StoreConflict("The lineup draft belongs to an older saved state")
+        require(clubId == before.state.selectedClubId) { "Only the operating club may be edited" }
+        val candidate = withContext(computation) { before.state.applyLineup(clubId, players) }
+        commit(before, candidate)
+    }
     suspend fun selectClub(clubId: String): StoredSeason = exclusive {
         val before = current()
         val candidate = withContext(computation) { before.state.selectClub(clubId) }

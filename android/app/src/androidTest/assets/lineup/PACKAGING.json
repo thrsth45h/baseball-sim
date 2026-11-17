@@ -1,0 +1,10 @@
+{
+  "schema": "independent-v1-fixture-packaging-v1",
+  "original_source_name": "one-game-v1.db.gz",
+  "asset_name": "one-game-v1.fixture.bin",
+  "content_encoding": "gzip",
+  "bytes_unchanged": true,
+  "sha256": "8596765ca1ef34c0e33b619529acf3ce52541801888691796b0c0f13a0da272f",
+  "reason": "The .gz asset path was unavailable in the instrumented APK. Use a neutral packaging extension and verify the built APK entry before device tests.",
+  "original_manifest": "MANIFEST.json"
+}

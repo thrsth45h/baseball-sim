@@ -54,9 +54,11 @@ data class SourceCursor(val kind: String, val pitchCalls: Long, val fairCalls: L
 }
 
 class GameCheckpoint(val game: ScheduledGame, val maxPitches: Long, val advanceCalls: Long, val snapshot: SnapshotDto,
-    val source: SourceCursor, val initial: SnapshotDto = SnapshotDto.fromCore(GameSnapshot.initial())) : SeasonValue() {
-    override val values get() = listOf(game, maxPitches, advanceCalls, snapshot, source, initial)
+    val source: SourceCursor, val initial: SnapshotDto = SnapshotDto.fromCore(GameSnapshot.initial()),
+    val lineup: GameLineup = GameLineup.initial(game)) : SeasonValue() {
+    override val values get() = listOf(game, maxPitches, advanceCalls, snapshot, source, initial, lineup)
     init {
+        lineup.validate(game)
         require(maxPitches > 0 && advanceCalls >= 0 && snapshot.pitchesAccepted <= maxPitches)
         require(snapshot.pitchesAccepted >= initial.pitchesAccepted)
         require(snapshot.pitchesAccepted - initial.pitchesAccepted <= advanceCalls)
@@ -67,10 +69,10 @@ class GameCheckpoint(val game: ScheduledGame, val maxPitches: Long, val advanceC
     fun recover(masterSeed: String): SeasonMatch {
         game.versions.requireSupported()
         require(game.fixture.ordinal in 1..720)
-        requireProduction(PennantSchedule.allocate(masterSeed)[game.fixture.ordinal - 1])
+        requireProduction(PennantSchedule.allocate(masterSeed, game.versions)[game.fixture.ordinal - 1])
         require(snapshot.status != Status.ABORTED) { "Incomplete game is blocked; diagnostic must be retained" }
         require(source.kind == "toy")
-        val restored = SeasonMatch(game, GameSession(game.seed, maxPitches, initial = initial.toCore()))
+        val restored = SeasonMatch(game, GameSession(game.seed, maxPitches, initial = initial.toCore()), lineup)
         repeatLong(advanceCalls) { restored.advanceOnePitch() }
         require(restored.checkpoint() == this) { "Saved snapshot or RNG/source cursor does not match replay" }
         return restored
@@ -85,7 +87,9 @@ internal fun repeatLong(count: Long, block: () -> Unit) { var i = 0L; while (i <
 internal fun sha256(bytes: ByteArray) = MessageDigest.getInstance("SHA-256").digest(bytes).joinToString("") { "%02x".format(it) }
 
 /** Mutable calculation candidate; a store must discard it if commit fails. */
-class SeasonMatch internal constructor(val game: ScheduledGame, internal val engine: GameSession = GameSession(game.seed)) {
+class SeasonMatch internal constructor(val game: ScheduledGame, internal val engine: GameSession = GameSession(game.seed),
+    val lineup: GameLineup = GameLineup.initial(game)) {
+    init { lineup.validate(game) }
     var advanceCalls: Long = 0; private set
     val snapshot get() = engine.snapshot
     val events get() = engine.events
@@ -102,5 +106,5 @@ class SeasonMatch internal constructor(val game: ScheduledGame, internal val eng
         return snapshot
     }
     fun finish(): GameSnapshot { while (!snapshot.done) advanceOnePitch(); return snapshot }
-    fun checkpoint() = GameCheckpoint(game, engine.maxPitches, advanceCalls, SnapshotDto.fromCore(snapshot), SourceCursor.capture(engine.source), SnapshotDto.fromCore(engine.initialSnapshot))
+    fun checkpoint() = GameCheckpoint(game, engine.maxPitches, advanceCalls, SnapshotDto.fromCore(snapshot), SourceCursor.capture(engine.source), SnapshotDto.fromCore(engine.initialSnapshot), lineup)
 }

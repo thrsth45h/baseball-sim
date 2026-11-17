@@ -12,10 +12,10 @@ android {
         applicationId = "com.example.baseballsim"
         minSdk = 26
         targetSdk = 36
-        versionCode = 3
-        versionName = "0.3-club-home-tech"
+        versionCode = 4
+        versionName = "0.4-lineup-tech"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        testInstrumentationRunnerArguments["notClass"] = "com.example.baseballsim.PennantProcessRecoveryTest,com.example.baseballsim.data.RoomSeasonBenchmarkTest"
+        testInstrumentationRunnerArguments["notClass"] = "com.example.baseballsim.PennantProcessRecoveryTest,com.example.baseballsim.data.RoomSeasonBenchmarkTest,com.example.baseballsim.PennantLineupFullSeasonTest"
         testInstrumentationRunnerArguments["additionalTestOutputDir"] = "/sdcard/Android/media/com.example.baseballsim/additional_test_output"
     }
     compileOptions {
