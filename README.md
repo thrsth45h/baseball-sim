@@ -25,7 +25,7 @@
 - [設計・実装・レビュー運用](docs/WORKFLOW.md)：責任者がユーザーと仕様を相談し、承認後にworkerへ実装を委任。責任者がレビュー・修正指示・統合を行い、ユーザーによる依頼文の転送は不要。
 - [現在の引き継ぎ状況](docs/HANDOFF.md)：承認済み設計、関連PR、未解決事項を確認。
 - [球団ホーム・選手一覧/詳細](docs/club-home/README.md)：段階Aの限定UIを実装。固定108人の詳細と、既存の日程/記録/観戦/設定をつなぐ。[設計と承認範囲](docs/CLUB_HOME_DESIGN.md)。
-- [次工程の打順・出場選手案](docs/LINEUP_ROSTER_DESIGN.md)：控えとの入替えを試合/個人記録へ接続する提案。D061 PROVISIONALで、まだ実装しない。
+- [次工程の打順・出場選手案](docs/LINEUP_ROSTER_DESIGN.md)：出場9＋控え3の入替えを試合/個人記録へ接続する限定範囲を本人承認（D061）。設計統合後にworker実装/検証APKへ進める。
 - [ADR（設計決定記録）のひな型](docs/adr/0000-template.md)：各案の根拠・反証・トレードオフ・承認記録。
 - [AGENTS.md](AGENTS.md)：Codexが守る作業ルール、UIの簡潔さに関する方針。
 
