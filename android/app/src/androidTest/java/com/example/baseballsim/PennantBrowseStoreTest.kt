@@ -116,7 +116,7 @@ class PennantBrowseStoreTest {
             compose.onNodeWithTag(PennantTags.PLAYER_DETAIL).assertExists()
             compose.onNodeWithText("L2-T06-P09", substring = true).assertExists()
             home()
-            for (tag in listOf(PennantTags.NAV_SCHEDULE, PennantTags.NAV_STANDINGS, PennantTags.NAV_RECORDS, PennantTags.NAV_MATCH, PennantTags.NAV_SETTINGS)) {
+            for (tag in listOf(PennantTags.NAV_LINEUP, PennantTags.NAV_SCHEDULE, PennantTags.NAV_STANDINGS, PennantTags.NAV_RECORDS, PennantTags.NAV_MATCH, PennantTags.NAV_SETTINGS)) {
                 click(tag); home()
             }
             assertSame(published, vm.state.value.display)

@@ -33,6 +33,9 @@ class PennantLineupActivityTest {
     }
     @Test fun editingIsUiOnlyUntilApplyAndRotationAndBackDoNotWriteTheDraft() {
         val vm = fresh(); val before = vm.state.value.display
+        // No bulk/external writer is active during this snapshot window. These are persisted
+        // head/token/frame/ledger/slot/receipts, not just the ViewModel's published object.
+        val beforeRows = targetPennantDatabaseRows(compose.activity.applicationContext)
         click(PennantTags.NAV_LINEUP)
         click("lineup_replace_1"); compose.onNodeWithTag("lineup_reserve_L1-T01-P10").performClick()
         compose.onNodeWithTag("lineup_player_1").assertTextEquals("1番  L1-T01-P10")
@@ -43,6 +46,7 @@ class PennantLineupActivityTest {
         click(PennantTags.BACK); click(PennantTags.NAV_LINEUP)
         compose.onNodeWithTag("lineup_player_1").assertTextEquals("1番  L1-T01-P01")
         assertSame(before, vm.state.value.display)
+        assertEquals(beforeRows, targetPennantDatabaseRows(compose.activity.applicationContext))
         click("lineup_replace_1"); compose.onNodeWithTag("lineup_reserve_L1-T01-P10").performClick()
         click(PennantTags.APPLY_LINEUP); ready()
         assertEquals(before!!.stored.token.revision + 1, vm.state.value.display!!.stored.token.revision)
