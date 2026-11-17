@@ -16,6 +16,9 @@ class StoreCorruption(message: String, cause: Throwable? = null) : IllegalStateE
 interface SeasonStore {
     suspend fun read(): StoredSeason?
     suspend fun create(masterSeed: String, selectedClubId: String, operationId: String, expected: StoreToken? = null, replacementConfirmed: Boolean = false): StoredSeason
+    /** New worlds only; legacy create remains the fixed v1 entry for existing callers/fixtures. */
+    suspend fun createLineup(masterSeed: String, selectedClubId: String, operationId: String, expected: StoreToken? = null, replacementConfirmed: Boolean = false): StoredSeason =
+        throw UnsupportedOperationException("This store does not create lineup worlds")
     suspend fun commit(expected: StoreToken, operationId: String, candidate: SeasonState): StoredSeason
     suspend fun saveSlot(expected: StoreToken, operationId: String): StoredSeason
     suspend fun loadSlot(expected: StoreToken, operationId: String): StoredSeason

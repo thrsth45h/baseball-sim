@@ -101,9 +101,13 @@ class RoomSeasonStore(
             StoredSeason(token(proof.head), value, proof.head.operationId)
         }
     }
-    override suspend fun create(masterSeed: String, selectedClubId: String, operationId: String, expected: StoreToken?, replacementConfirmed: Boolean): StoredSeason {
+    override suspend fun create(masterSeed: String, selectedClubId: String, operationId: String, expected: StoreToken?, replacementConfirmed: Boolean): StoredSeason =
+        createWorld(masterSeed, selectedClubId, operationId, expected, replacementConfirmed, false)
+    override suspend fun createLineup(masterSeed: String, selectedClubId: String, operationId: String, expected: StoreToken?, replacementConfirmed: Boolean): StoredSeason =
+        createWorld(masterSeed, selectedClubId, operationId, expected, replacementConfirmed, true)
+    private suspend fun createWorld(masterSeed: String, selectedClubId: String, operationId: String, expected: StoreToken?, replacementConfirmed: Boolean, lineup: Boolean): StoredSeason {
         operation(operationId)
-        val initial = withContext(computation) { SeasonState.initial(masterSeed, selectedClubId) }
+        val initial = withContext(computation) { if (lineup) SeasonState.initialLineup(masterSeed, selectedClubId) else SeasonState.initial(masterSeed, selectedClubId) }
         val bytes = withContext(computation) { CheckpointCodec.encodeSeason(initial) }
         val bodyHash = hash(bytes); val signature = fingerprint("create", expected, bodyHash)
         val world = newId(); val generation = newId()
@@ -147,6 +151,13 @@ class RoomSeasonStore(
             throw StoreConflict("Saved generation or revision changed")
         }
         require(value.masterSeed == before.state.masterSeed && value.games == before.state.games)
+        require(value.versions == before.state.versions) { "Ordinary updates cannot change the world format" }
+        if (value.clubLineups != before.state.clubLineups) {
+            // The complete candidate must be exactly one selected-club edit, not a combined SELECT,
+            // calendar/progress update, or another team's mutation hidden in the same frame.
+            val exact = before.state.applyLineup(before.state.selectedClubId, value.lineup(before.state.selectedClubId))
+            require(value == exact) { "Lineup edits must be an isolated selected-club update" }
+        }
         require(value.dayIndex >= before.state.dayIndex) { "Ordinary updates cannot rewind the calendar" }
         require(value.results.size >= before.state.results.size && value.results.take(before.state.results.size) == before.state.results)
         require(value.results.size <= before.state.results.size + 1) { "Commit at most one completed game at a time" }
@@ -159,9 +170,11 @@ class RoomSeasonStore(
         val nextActive = value.active
         if (priorActive == null) {
             require(value.results.size == before.state.results.size) { "Persist the start marker before any pitch" }
-            nextActive?.let { require(it.advanceCalls == 0L && it.snapshot == it.initial) { "A new start marker must be unadvanced" } }
+            nextActive?.let {
+                require(it == before.state.beginNext().active) { "A new start marker must freeze the current saved plans before any advance" }
+            }
         } else if (nextActive != null) {
-            require(nextActive.game == priorActive.game && nextActive.advanceCalls >= priorActive.advanceCalls)
+            require(nextActive.game == priorActive.game && nextActive.initial == priorActive.initial && nextActive.lineup == priorActive.lineup && nextActive.advanceCalls >= priorActive.advanceCalls)
             if (nextActive.advanceCalls == priorActive.advanceCalls) require(nextActive == priorActive)
         } else {
             require(value.results.size == before.state.results.size + 1) { "An active match cannot silently disappear" }

@@ -26,6 +26,8 @@ enum class PennantCommand { CREATE, SELECT, PITCH, PLATE_APPEARANCE, GAME, OPEN_
 interface PennantActions {
     suspend fun read(): StoredSeason?
     suspend fun hasSlot(): Boolean
+    suspend fun applyLineup(expected: StoreToken, clubId: String, players: List<String>): StoredSeason =
+        throw UnsupportedOperationException("This action source does not edit lineups")
     suspend fun execute(command: PennantCommand, seed: String, club: String, replacement: Boolean,
         stop: () -> Boolean, progress: suspend (StoredSeason) -> Unit): StoredSeason
 }
@@ -33,9 +35,10 @@ interface PennantActions {
 class DurablePennantActions(private val coordinator: SeasonCoordinator) : PennantActions {
     override suspend fun read() = coordinator.read()
     override suspend fun hasSlot() = coordinator.hasSlot()
+    override suspend fun applyLineup(expected: StoreToken, clubId: String, players: List<String>) = coordinator.applyLineup(expected, clubId, players)
     override suspend fun execute(command: PennantCommand, seed: String, club: String, replacement: Boolean,
         stop: () -> Boolean, progress: suspend (StoredSeason) -> Unit): StoredSeason = when (command) {
-        PennantCommand.CREATE -> coordinator.create(seed, club, replacement)
+        PennantCommand.CREATE -> coordinator.createLineup(seed, club, replacement)
         PennantCommand.SELECT -> coordinator.selectClub(club)
         PennantCommand.PITCH -> coordinator.advance(SeasonAdvance.PITCH)
         PennantCommand.PLATE_APPEARANCE -> coordinator.advance(SeasonAdvance.PLATE_APPEARANCE)
@@ -74,7 +77,7 @@ internal fun pennantDisplay(stored: StoredSeason): PennantDisplay {
     // the one displayed game and check it before showing its recent plays.
     val replay = GameSession(last.game.seed)
     replay.runToEnd()
-    check(GameSummary.fromCore(last.game, replay.snapshot) == last) { "Displayed result disagrees with its fixed game" }
+    check(GameSummary.fromCore(last.game, replay.snapshot, lineup = last.lineup) == last) { "Displayed result disagrees with its fixed game" }
     return PennantDisplay(stored, last.game.fixture, replay.snapshot, replay.events.takeLast(12).mapNotNull(::pennantEvent))
 }
 
@@ -105,6 +108,7 @@ data class PennantUiState(
     val canAdvanceMatch get() = canProgress && season?.active?.snapshot?.status == Status.IN_PROGRESS
     val canSave get() = canUse && season != null && season?.active == null
     val canLoad get() = canSave && hasSlot
+    val canEditLineup get() = canUse && season?.lineupEnabled == true && season?.status == SeasonStatus.IN_PROGRESS && season?.active == null
 }
 
 class PennantViewModel(private val actions: PennantActions,
@@ -197,6 +201,30 @@ class PennantViewModel(private val actions: PennantActions,
                     publish(token, display, slot, finished = true)
                 } catch (cancelled: CancellationException) { throw cancelled }
                 catch (_: Exception) { /* The previous published value remains visible. */ }
+                failed(token)
+            }
+        }
+    }
+    fun applyLineup(expected: StoreToken, clubId: String, players: List<String>): Unit = synchronized(lock) {
+        val before = mutable.value
+        if (!before.canEditLineup || before.display?.stored?.token != expected || before.season?.selectedClubId != clubId) return@synchronized
+        val order = players.toList()
+        // A malformed UI draft is refused before dispatch; storage independently validates the candidate.
+        if (runCatching { before.season!!.applyLineup(clubId, order) }.isFailure) return@synchronized
+        val token = claim(false) ?: return@synchronized
+        viewModelScope.launch {
+            try {
+                val (display, slot) = withContext(computation) {
+                    pennantDisplay(actions.applyLineup(expected, clubId, order)) to actions.hasSlot()
+                }
+                publish(token, display, slot, finished = true, notice = "打順を保存しました")
+            } catch (cancelled: CancellationException) { throw cancelled }
+            catch (_: Exception) {
+                try {
+                    val (display, slot) = withContext(computation) { actions.read()?.let(::pennantDisplay) to actions.hasSlot() }
+                    publish(token, display, slot, finished = true)
+                } catch (cancelled: CancellationException) { throw cancelled }
+                catch (_: Exception) { /* Keep the last published state if the durable read also fails. */ }
                 failed(token)
             }
         }

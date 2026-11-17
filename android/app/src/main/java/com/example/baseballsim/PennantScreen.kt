@@ -53,6 +53,10 @@ object PennantTags {
     const val PLAYER_DETAIL = "pennant_player_detail"
     const val BACK = "pennant_back"
     const val BROWSE_CLUB = "pennant_browse_club"
+    const val NAV_LINEUP = "pennant_nav_lineup"
+    const val LINEUP = "pennant_lineup"
+    const val APPLY_LINEUP = "pennant_apply_lineup"
+    const val RESET_LINEUP = "pennant_reset_lineup"
     const val NAV_PLAYERS = "pennant_nav_players"
     const val NAV_SCHEDULE = "pennant_nav_schedule"
     const val NAV_STANDINGS = "pennant_nav_standings"
@@ -76,11 +80,12 @@ private val ConfirmationSaver = listSaver<PennantConfirmation?, String>(
 @Composable fun PennantRoute(viewModel: PennantViewModel) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     PennantScreen(state, viewModel::changeSeed, viewModel::selectClub,
-        { command, confirmed, token -> viewModel.execute(command, confirmed, confirmationToken = token) }, viewModel::requestStop, viewModel::reload)
+        { command, confirmed, token -> viewModel.execute(command, confirmed, confirmationToken = token) }, viewModel::requestStop, viewModel::reload, viewModel::applyLineup)
 }
 
 @Composable fun PennantScreen(state: PennantUiState, changeSeed: (String) -> Unit, selectClub: (String) -> Unit,
-    execute: (PennantCommand, Boolean, StoreToken?) -> Unit, stop: () -> Unit, reload: () -> Unit) {
+    execute: (PennantCommand, Boolean, StoreToken?) -> Unit, stop: () -> Unit, reload: () -> Unit,
+    applyLineup: (StoreToken, String, List<String>) -> Unit = { _, _, _ -> }) {
     var savedNavigation by rememberSaveable(stateSaver = NavigationSaver) { mutableStateOf(PennantNavigation()) }
     var confirmation by rememberSaveable(stateSaver = ConfirmationSaver) { mutableStateOf<PennantConfirmation?>(null) }
     val navigation = savedNavigation.bind(state)
@@ -92,12 +97,15 @@ private val ConfirmationSaver = listSaver<PennantConfirmation?, String>(
     LaunchedEffect(state.loaded, state.error, token) {
         if (state.loaded && (state.display != null || state.error == null) && confirmation?.token != token) confirmation = null
     }
-    val back = { savedNavigation = navigation.back() }
+    val back = {
+        if (navigation.page == PennantPage.LINEUP) pages.removeState("${navigation.worldId}/${navigation.generationId}/${navigation.page}")
+        savedNavigation = navigation.back()
+    }
     BackHandler(enabled = season != null && confirmation == null && navigation.page != PennantPage.HOME) { back() }
     fun command(value: PennantCommand) { execute(value, false, null) }
     fun open(page: PennantPage) {
         if (season != null) {
-            if (page == PennantPage.PLAYERS || page == PennantPage.RECORDS) {
+            if (page in listOf(PennantPage.PLAYERS, PennantPage.RECORDS, PennantPage.LINEUP)) {
                 pages.removeState("${navigation.worldId}/${navigation.generationId}/$page")
             }
             savedNavigation = navigation.open(page, season)
@@ -139,6 +147,7 @@ private val ConfirmationSaver = listSaver<PennantConfirmation?, String>(
                             val standing = season.standings.first { it.totals.clubId == season.selectedClubId }
                             Text("${standing.rank?.let { "${it}位" } ?: "順位 —"} · ${standing.totals.wins}勝 ${standing.totals.losses}敗 ${standing.totals.draws}分")
                             if (season.status == SeasonStatus.BLOCKED) BlockedDiagnostic(state)
+                            NavigationButton("打順・出場選手", PennantTags.NAV_LINEUP) { open(PennantPage.LINEUP) }
                             NavigationButton("選手一覧", PennantTags.NAV_PLAYERS) { open(PennantPage.PLAYERS) }
                             NavigationButton("日程", PennantTags.NAV_SCHEDULE) { open(PennantPage.SCHEDULE) }
                             NavigationButton("順位", PennantTags.NAV_STANDINGS) { open(PennantPage.STANDINGS) }
@@ -150,9 +159,10 @@ private val ConfirmationSaver = listSaver<PennantConfirmation?, String>(
                             ProgressButton("シーズン終了まで", PennantTags.SEASON, state.canProgress, Modifier.fillMaxWidth()) { command(PennantCommand.SEASON) }
                             NavigationButton("設定・セーブ", PennantTags.NAV_SETTINGS) { open(PennantPage.SETTINGS) }
                         }
+                        PennantPage.LINEUP -> token?.let { LineupPanel(state, it, applyLineup) }
                         PennantPage.PLAYERS -> PlayersPanel(season, navigation.browseClubId,
                             { savedNavigation = navigation.browse(it) }, { savedNavigation = navigation.player(it) })
-                        PennantPage.PLAYER_DETAIL -> PlayerPanel(pennantPlayers(season, navigation.browseClubId).first { it.playerId == navigation.playerId })
+                        PennantPage.PLAYER_DETAIL -> PlayerPanel(pennantPlayers(season, navigation.browseClubId).first { it.playerId == navigation.playerId }, season)
                         PennantPage.SCHEDULE -> SchedulePanel(season)
                         PennantPage.STANDINGS -> StandingsPanel(season)
                         PennantPage.RECORDS -> RecordsPanel(season, navigation.browseClubId) { savedNavigation = navigation.browse(it) }
@@ -207,17 +217,17 @@ private val ConfirmationSaver = listSaver<PennantConfirmation?, String>(
             Card(Modifier.fillMaxWidth().testTag(PennantTags.player(row.playerId)).clickable(onClickLabel = "選手詳細を開く") { select(row.playerId) }) {
                 Column(Modifier.padding(12.dp)) {
                     Text(row.playerId, fontWeight = FontWeight.SemiBold)
-                    Text("固定打順 ${row.slot} · 完了打席 ${row.counts.completedPlateAppearances}")
+                    Text("${playerRoleLabel(state, row)} · 完了打席 ${row.counts.completedPlateAppearances}")
                 }
             }
         }
     }
 }
-@Composable private fun PlayerPanel(row: PlayerSeasonCounts) {
+@Composable private fun PlayerPanel(row: PlayerSeasonCounts, state: SeasonState) {
     Column(Modifier.testTag(PennantTags.PLAYER_DETAIL), verticalArrangement = Arrangement.spacedBy(12.dp)) {
         Text(row.playerId, Modifier.testTag("player_id"), style = MaterialTheme.typography.titleLarge)
         Text(PennantSchedule.club(row.clubId).displayName, Modifier.testTag("player_club"))
-        Text("固定打順 ${row.slot}", Modifier.testTag("player_slot"))
+        Text(playerRoleLabel(state, row), Modifier.testTag("player_slot"))
         Text("確定試合の記録", style = MaterialTheme.typography.titleMedium)
         val c = row.counts
         listOf(Triple("完了打席", c.completedPlateAppearances, "player_completed_pa"), Triple("セーフ安打", c.safeHitEvents, "player_safe_hits"),
@@ -263,6 +273,10 @@ private val ConfirmationSaver = listSaver<PennantConfirmation?, String>(
                 val sequence = snapshot.sequence
                 val slot = snapshot.battingIndices[if (sequence.side == Side.TOP) 0 else 1] + 1
                 Text("${sequence.inning}回${if (sequence.side == Side.TOP) "表" else "裏"} · 打順 $slot")
+                if (display.stored.state.lineupEnabled) {
+                    val lineup = display.stored.state.active?.lineup ?: display.stored.state.results.lastOrNull()?.lineup
+                    lineup?.let { Text("打者 ${if (sequence.side == Side.TOP) it.away[slot - 1] else it.home[slot - 1]}", Modifier.testTag("pennant_batter_id")) }
+                }
                 Text("B ${sequence.count?.balls ?: 0}   S ${sequence.count?.strikes ?: 0}   O ${sequence.half.outs}", Modifier.testTag(PennantTags.COUNT), fontFamily = FontFamily.Monospace)
                 Text(sequence.half.bases.mapIndexed { index, on -> "${index + 1}塁 ${if (on) "有" else "無"}" }.joinToString(" · "))
             } else if (snapshot.status == Status.COMPLETED) Text("試合終了")
@@ -327,20 +341,20 @@ private val ConfirmationSaver = listSaver<PennantConfirmation?, String>(
         Text("確定試合の記録。セーフ安打には本塁打を含みます。", style = MaterialTheme.typography.bodySmall)
         Surface(Modifier.fillMaxWidth()) {
             Column(Modifier.horizontalScroll(rememberScrollState())) {
-                TableRow(listOf("打順", "完了打席", "セーフ安打", "四球", "三振", "本塁打"), records = true)
+                TableRow(listOf(if (state.lineupEnabled) "選手" else "打順", "完了打席", "セーフ安打", "四球", "三振", "本塁打"), records = true, firstWide = state.lineupEnabled)
                 pennantPlayers(state, club).forEach { row ->
                     val c = row.counts
-                    TableRow(listOf(row.slot.toString(), c.completedPlateAppearances.toString(), c.safeHitEvents.toString(),
-                        c.walkEvents.toString(), c.strikeoutEvents.toString(), c.homeRunEvents.toString()), records = true)
+                    TableRow(listOf(if (state.lineupEnabled) row.playerId else row.slot.toString(), c.completedPlateAppearances.toString(), c.safeHitEvents.toString(),
+                        c.walkEvents.toString(), c.strikeoutEvents.toString(), c.homeRunEvents.toString()), records = true, firstWide = state.lineupEnabled)
                 }
             }
         }
     }
 }
 
-@Composable private fun TableRow(values: List<String>, records: Boolean = false) {
+@Composable private fun TableRow(values: List<String>, records: Boolean = false, firstWide: Boolean = false) {
     Row(Modifier.padding(vertical = 6.dp)) {
-        values.forEachIndexed { i, value -> Text(value, Modifier.width(if (records) 82.dp else when (i) { 0 -> 32.dp; 1 -> 86.dp; 8 -> 64.dp; else -> 48.dp }), fontFamily = FontFamily.Monospace) }
+        values.forEachIndexed { i, value -> Text(value, Modifier.width(if (records) (if (i == 0 && firstWide) 156.dp else 82.dp) else when (i) { 0 -> 32.dp; 1 -> 86.dp; 8 -> 64.dp; else -> 48.dp }), fontFamily = FontFamily.Monospace) }
     }
 }
 private fun weekday(value: String) = mapOf("Mon" to "月曜", "Tue" to "火曜", "Wed" to "水曜", "Thu" to "木曜", "Fri" to "金曜", "Sat" to "土曜", "Sun" to "日曜").getValue(value)

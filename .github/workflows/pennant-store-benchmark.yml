@@ -6,7 +6,27 @@ permissions:
 env:
   SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
 jobs:
+  applicability:
+    runs-on: ubuntu-24.04
+    outputs:
+      applicable: ${{ steps.scope.outputs.applicable }}
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - name: Verify historical comparison applicability
+        id: scope
+        run: python3 android/tools/benchmark_applicability.py --output android/build/benchmark-applicability.json
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: pennant-benchmark-applicability-${{ env.SOURCE_SHA }}
+          path: android/build/benchmark-applicability.json
+          if-no-files-found: error
+          retention-days: 14
   paired-benchmark:
+    needs: applicability
+    if: needs.applicability.outputs.applicable == 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 40
     defaults:

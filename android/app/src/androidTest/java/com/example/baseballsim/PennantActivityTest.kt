@@ -66,12 +66,9 @@ class PennantActivityTest {
     private fun fresh(): PennantViewModel {
         compose.onNodeWithTag("mode_pennant").performClick()
         val vm = ready()
-        if (vm.state.value.season != null) page(PennantTags.NAV_SETTINGS)
-        compose.onNodeWithTag(PennantTags.SEED).performScrollTo().performTextReplacement("42")
-        val exists = vm.state.value.season != null
-        click(PennantTags.CREATE)
-        if (exists) compose.onNodeWithTag(PennantTags.CONFIRM_CREATE).performClick()
-        ready()
+        // Preserve the legacy 108-person/full-frame regression. New UI CREATE is tested separately as v2.
+        kotlinx.coroutines.runBlocking { createLegacyTargetWorld() }
+        compose.runOnUiThread { vm.reload() }; ready()
         assertEquals("42", vm.state.value.season!!.masterSeed)
         assertEquals(0, vm.state.value.season!!.results.size)
         return vm

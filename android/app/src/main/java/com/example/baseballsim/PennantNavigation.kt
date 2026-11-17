@@ -5,7 +5,7 @@ import com.example.baseballsim.season.PlayerSeasonCounts
 import com.example.baseballsim.season.SeasonState
 
 enum class PennantPage(val title: String) {
-    HOME("球団ホーム"), PLAYERS("選手一覧"), PLAYER_DETAIL("選手詳細"), SCHEDULE("日程"),
+    HOME("球団ホーム"), LINEUP("打順・出場選手"), PLAYERS("選手一覧"), PLAYER_DETAIL("選手詳細"), SCHEDULE("日程"),
     STANDINGS("順位"), RECORDS("記録"), MATCH("試合"), SETTINGS("設定・セーブ")
 }
 
@@ -31,7 +31,7 @@ data class PennantNavigation(
             return PennantNavigation(stored.token.worldId, stored.token.generationId, browseClubId = club)
         }
         val validClub = PennantSchedule.clubs.find { it.id == browseClubId }
-        val validPlayer = playerId == null || validClub?.players?.any { it.id == playerId } == true
+        val validPlayer = playerId == null || (validClub != null && playerId in stored.state.playerIds(browseClubId))
         if (validClub == null || !validPlayer || (page == PennantPage.PLAYER_DETAIL && playerId == null)) {
             return PennantNavigation(worldId, generationId, browseClubId = club)
         }
@@ -48,7 +48,13 @@ data class PennantNavigation(
 /** Join only the fixed roster to the already published, completed-game counts. No replay or IO. */
 fun pennantPlayers(state: SeasonState, clubId: String): List<PlayerSeasonCounts> {
     val published = state.playerCounts.associateBy { it.playerId }
-    return PennantSchedule.club(clubId).players.map { player ->
-        checkNotNull(published[player.id]).also { check(it.clubId == player.clubId && it.slot == player.slot) }
+    return state.playerIds(clubId).map { id ->
+        checkNotNull(published[id]).also { check(it.clubId == clubId) }
     }
+}
+
+internal fun playerRoleLabel(state: SeasonState, row: PlayerSeasonCounts): String {
+    if (!state.lineupEnabled) return "固定打順 ${row.slot}"
+    val position = state.lineup(row.clubId).indexOf(row.playerId)
+    return if (position < 0) "控え" else "${position + 1}番"
 }
