@@ -135,7 +135,9 @@ object CheckpointCodec {
     private class Reader(val input: DataInputStream) {
         fun readHeader(kind: String): Int {
             val value = text()
-            return (1..3).singleOrNull { value == header(kind, it) } ?: error("Unsupported checkpoint header")
+            val version = (1..3).singleOrNull { value == header(kind, it) }
+            require(version != null) { "Unsupported checkpoint header" }
+            return version
         }
         fun int() = input.readInt()
         fun long() = input.readLong()
