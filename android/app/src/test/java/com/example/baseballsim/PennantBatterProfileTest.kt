@@ -67,7 +67,7 @@ class PennantBatterProfileTest {
         val nextPlan = (listOf(12) + (2..9)).map { "L1-T01-P${it.toString().padStart(2, '0')}" }
         val edited = session.state.applyLineup("L1-T01", nextPlan)
         val display = pennantDisplay(stored(edited))
-        assertEquals(completed.replay().snapshot, display.snapshot)
+        assertEquals(SnapshotDto.fromCore(completed.replay().snapshot), SnapshotDto.fromCore(display.snapshot!!))
         assertEquals(completed.game.fixture, display.fixture)
         assertEquals("standard", completed.profileInput!!.profile("home", 1))
         assertEquals("slugger", edited.playerProfile("L1-T01-P12"))
