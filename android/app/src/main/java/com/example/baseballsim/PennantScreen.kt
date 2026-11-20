@@ -136,7 +136,7 @@ private val ConfirmationSaver = listSaver<PennantConfirmation?, String>(
                 Column(Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()).padding(horizontal = 16.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp)) {
                     if (season == null) {
-                        Text("仮の12球団で1シーズンを進めます。各球団120試合、選手と確率は試作用の同一設定です。")
+                        Text("仮の12球団で1シーズンを進めます。各球団120試合、打者の3タイプは試作用の仮設定です。")
                         SeasonSettings(state, changeSeed, selectClub, { command(PennantCommand.CREATE) }, {}, {})
                     } else when (navigation.page) {
                         PennantPage.HOME -> Column(Modifier.testTag(PennantTags.HOME), verticalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -213,10 +213,12 @@ private val ConfirmationSaver = listSaver<PennantConfirmation?, String>(
     Column(Modifier.testTag(PennantTags.PLAYERS), verticalArrangement = Arrangement.spacedBy(8.dp)) {
         ClubSelector("閲覧球団", club, true, browse, PennantTags.BROWSE_CLUB)
         Text("確定試合の記録", style = MaterialTheme.typography.bodySmall)
+        if (state.profilesEnabled) Text("試作用タイプ", style = MaterialTheme.typography.bodySmall)
         pennantPlayers(state, club).forEach { row ->
             Card(Modifier.fillMaxWidth().testTag(PennantTags.player(row.playerId)).clickable(onClickLabel = "選手詳細を開く") { select(row.playerId) }) {
                 Column(Modifier.padding(12.dp)) {
                     Text(row.playerId, fontWeight = FontWeight.SemiBold)
+                    state.playerProfile(row.playerId)?.let { Text(batterProfileLabel(it)) }
                     Text("${playerRoleLabel(state, row)} · 完了打席 ${row.counts.completedPlateAppearances}")
                 }
             }
@@ -228,6 +230,10 @@ private val ConfirmationSaver = listSaver<PennantConfirmation?, String>(
         Text(row.playerId, Modifier.testTag("player_id"), style = MaterialTheme.typography.titleLarge)
         Text(PennantSchedule.club(row.clubId).displayName, Modifier.testTag("player_club"))
         Text(playerRoleLabel(state, row), Modifier.testTag("player_slot"))
+        state.playerProfile(row.playerId)?.let {
+            Text("試作用タイプ", style = MaterialTheme.typography.bodySmall)
+            Text(batterProfileLabel(it), Modifier.testTag("player_profile"))
+        }
         Text("確定試合の記録", style = MaterialTheme.typography.titleMedium)
         val c = row.counts
         listOf(Triple("完了打席", c.completedPlateAppearances, "player_completed_pa"), Triple("セーフ安打", c.safeHitEvents, "player_safe_hits"),
@@ -276,6 +282,10 @@ private val ConfirmationSaver = listSaver<PennantConfirmation?, String>(
                 if (display.stored.state.lineupEnabled) {
                     val lineup = display.stored.state.active?.lineup ?: display.stored.state.results.lastOrNull()?.lineup
                     lineup?.let { Text("打者 ${if (sequence.side == Side.TOP) it.away[slot - 1] else it.home[slot - 1]}", Modifier.testTag("pennant_batter_id")) }
+                    // Match labels use the frozen start input, never the club's current plan.
+                    val profiles = display.stored.state.active?.profileInput ?: display.stored.state.results.lastOrNull()?.profileInput
+                    profiles?.let { Text("試作用タイプ · ${batterProfileLabel(it.profile(if (sequence.side == Side.TOP) "away" else "home", slot))}",
+                        Modifier.testTag("pennant_batter_profile")) }
                 }
                 Text("B ${sequence.count?.balls ?: 0}   S ${sequence.count?.strikes ?: 0}   O ${sequence.half.outs}", Modifier.testTag(PennantTags.COUNT), fontFamily = FontFamily.Monospace)
                 Text(sequence.half.bases.mapIndexed { index, on -> "${index + 1}塁 ${if (on) "有" else "無"}" }.joinToString(" · "))

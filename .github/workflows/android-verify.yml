@@ -1,5 +1,10 @@
 name: android-first-match
-on: [push, pull_request]
+on:
+  push:
+    paths: ['android/**', 'prototypes/**', 'reports/phase4*/**', '.github/workflows/**']
+  pull_request:
+    paths: ['android/**', 'prototypes/**', 'reports/phase4*/**', '.github/workflows/**']
+  workflow_dispatch:
 permissions:
   contents: read
 env:
@@ -115,7 +120,7 @@ jobs:
             android/app/build/lineup-fixture-packaging.json
           retention-days: 14
 
-  device-lineup:
+  device-batter-profile:
     runs-on: ubuntu-24.04
     timeout-minutes: 40
     steps:
@@ -149,12 +154,12 @@ jobs:
           script: |
             bash gradlew :app:assembleDebug :app:assembleDebugAndroidTest --no-daemon --stacktrace
             python3 tools/verify_lineup_fixture.py
-            bash tools/lineup_device.sh
+            bash tools/batter_profile_device.sh
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: always()
         with:
-          name: lineup-device-${{ env.SOURCE_SHA }}
+          name: batter-profile-device-${{ env.SOURCE_SHA }}
           path: |
-            android/app/build/lineup-device/
+            android/app/build/batter-profile-device/
             android/app/build/lineup-fixture-packaging.json
           retention-days: 14

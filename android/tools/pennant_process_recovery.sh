@@ -16,9 +16,9 @@ adb install -r -t app/build/outputs/apk/androidTest/debug/app-debug-androidTest.
 run_case() {
     local method="$1"
     local logfile="$2"
-    local lineup_world="${3:-false}"
+    local world_format="${3:-v1}"
     adb shell am instrument -w -r \
-      -e lineup_world "$lineup_world" \
+      -e world_format "$world_format" \
       -e class "com.example.baseballsim.PennantProcessRecoveryTest#$method" \
       -e additionalTestOutputDir /sdcard/Android/media/com.example.baseballsim/additional_test_output \
       com.example.baseballsim.test/androidx.test.runner.AndroidJUnitRunner | tee "$logfile"
@@ -31,19 +31,18 @@ run_case() {
 run_case profileRealStoreCostsAtCanonicalPrefixBoundaries "$report/store-profile.txt"
 adb pull /sdcard/Android/media/com.example.baseballsim/additional_test_output "$report/profile-output"
 
-# Keep one installation and database throughout both format-specific host-death experiments.
+# Keep one installation and database throughout all three format-specific host-death experiments.
 base_report="$report"
-for format in v1 v2; do
+for format in v1 v2 v3; do
     report="$base_report/$format"
     mkdir -p "$report"
-    lineup_world=false
-    if test "$format" = v2; then lineup_world=true; fi
+    world_format="$format"
     adb shell getprop ro.build.version.sdk | tr -d '\r' > "$report/device-api.txt"
 # Remove only this test's own stale probe files. App/database state is untouched.
 adb shell run-as com.example.baseballsim rm -f files/pennant-process-expected.json files/pennant-process-proof.json
 adb shell am instrument -w -r \
   -e class 'com.example.baseballsim.PennantProcessRecoveryTest#prepareDurableCheckpointBeforeHostKill' \
-  -e lineup_world "$lineup_world" \
+  -e world_format "$world_format" \
   -e additionalTestOutputDir /sdcard/Android/media/com.example.baseballsim/additional_test_output \
   com.example.baseballsim.test/androidx.test.runner.AndroidJUnitRunner > "$report/prepare.txt" 2>&1 &
 prepare_adb_pid=$!
@@ -70,7 +69,7 @@ sleep 1
 adb shell pidof com.example.baseballsim | tr -d '\r' > "$report/after-force-stop-pid.txt" || true
 test ! -s "$report/after-force-stop-pid.txt"
 
-run_case recoverTheSamePublishedCheckpointAndAdvanceExactlyOnce "$report/recover.txt" "$lineup_world"
+run_case recoverTheSamePublishedCheckpointAndAdvanceExactlyOnce "$report/recover.txt" "$world_format"
 adb shell pidof com.example.baseballsim | tr -d '\r' > "$report/recovered-pid.txt" || true
 adb exec-out run-as com.example.baseballsim cat files/pennant-process-proof.json > "$report/recovery.json"
 RECOVERY_REPORT="$report" python3 - <<'PY'
@@ -91,7 +90,7 @@ assert proof['same_world_generation_and_checkpoint'] is True
 assert proof['one_additional_pitch_only'] is True
 assert proof['saved_checkpoint_sha256']==expected['checkpoint_sha256']
 assert proof['next_checkpoint_sha256']!=expected['checkpoint_sha256']
-record={'schema':'pennant-process-recovery-v1','same_install_and_database':True,'lineup_world':expected['lineup_world'],
+record={'schema':'pennant-process-recovery-v1','same_install_and_database':True,'lineup_world':expected['lineup_world'],'world_format':expected['world_format'],'profiles_world':expected['profiles_world'],
         'device_api':int((p/'device-api.txt').read_text().strip()),
         'requested_ci_data_partition':'2048M',
         'prepare_instrumentation_intentionally_terminated':True,
@@ -113,9 +112,12 @@ import json
 p=Path('app/build/pennant-process-proof')
 old=json.loads((p/'v1/verification.json').read_text())
 modern=json.loads((p/'v2/verification.json').read_text())
+profile=json.loads((p/'v3/verification.json').read_text())
 assert old['lineup_world'] is False and modern['lineup_world'] is True
-assert all(v['same_install_and_database'] and v['same_committed_checkpoint_recovered'] and v['exactly_one_next_pitch'] for v in (old,modern))
-old['formats']={'v1':old.copy(),'v2':modern}
+assert all(v['same_install_and_database'] and v['same_committed_checkpoint_recovered'] and v['exactly_one_next_pitch'] for v in (old,modern,profile))
+assert profile['world_format']=='v3' and profile['profiles_world'] is True
+old['formats']={'v1':old.copy(),'v2':modern,'v3':profile}
+old['all_three_formats_verified']=True
 old['both_formats_verified']=True
 (p/'verification.json').write_text(json.dumps(old,indent=2)+'\n')
 PY

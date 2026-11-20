@@ -77,6 +77,14 @@ class SeasonCoordinator(
             store.createLineup(masterSeed, selectedClubId, id, old?.token, replacementConfirmed)
         }
     }
+    suspend fun createBatterProfile(masterSeed: String = "42", selectedClubId: String = "L1-T01", replacementConfirmed: Boolean = false): StoredSeason = exclusive {
+        val old = store.read()
+        val initial = withContext(computation) { SeasonState.initialBatterProfile(masterSeed, selectedClubId) }
+        val id = operationId()
+        resolveWrite(id, { it.state == initial && it.token.revision == 0L && (old == null || it.token.generationId != old.token.generationId) }) {
+            store.createBatterProfile(masterSeed, selectedClubId, id, old?.token, replacementConfirmed)
+        }
+    }
     /** The original published identity is carried to the store's real CAS boundary by commit. */
     suspend fun applyLineup(expected: StoreToken, clubId: String, players: List<String>): StoredSeason = exclusive {
         // APPLY is isolated: do not use current()/readLocked(), which may finalize a completed checkpoint.

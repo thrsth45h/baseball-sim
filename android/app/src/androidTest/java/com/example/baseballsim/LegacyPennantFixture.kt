@@ -16,3 +16,14 @@ internal suspend fun createLegacyTargetWorld(): StoredSeason {
         store.create("42", "L1-T01", "legacy-fixture-${UUID.randomUUID()}", before?.token, before != null)
     } finally { db.close() }
 }
+
+/** Explicit v2 fixture entry, kept separate from the v3 UI CREATE command. */
+internal suspend fun createLineupTargetWorld(): StoredSeason {
+    val context = InstrumentationRegistry.getInstrumentation().targetContext
+    val db = PennantDatabase.open(context)
+    return try {
+        val store = RoomSeasonStore(db)
+        val before = store.read()
+        store.createLineup("42", "L1-T01", "lineup-fixture-${UUID.randomUUID()}", before?.token, before != null)
+    } finally { db.close() }
+}

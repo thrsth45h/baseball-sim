@@ -30,10 +30,12 @@ data class SeasonVersions(
     val roster: String = "season-roster-v1",
     val checkpoint: String = "season-checkpoint-v1",
 ) {
-    val lineupEnabled get() = this == lineup()
-    fun requireSupported() { require(this == SeasonVersions() || this == lineup()) { "Unsupported saved versions" } }
+    val lineupEnabled get() = this == lineup() || this == batterProfile()
+    val profilesEnabled get() = this == batterProfile()
+    fun requireSupported() { require(this == SeasonVersions() || this == lineup() || this == batterProfile()) { "Unsupported saved versions" } }
     companion object {
         fun lineup() = SeasonVersions(roster = "season-roster-v2", checkpoint = "season-checkpoint-v2")
+        fun batterProfile() = SeasonVersions(toy = BatterProfiles.SOURCE_VERSION, roster = "season-roster-v2", checkpoint = "season-checkpoint-v3")
     }
 }
 

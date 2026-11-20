@@ -58,3 +58,11 @@ internal fun playerRoleLabel(state: SeasonState, row: PlayerSeasonCounts): Strin
     val position = state.lineup(row.clubId).indexOf(row.playerId)
     return if (position < 0) "控え" else "${position + 1}番"
 }
+
+/** These labels describe this prototype's fixed tables, not calibrated 1–20 skills. */
+internal fun batterProfileLabel(profileId: String): String = when (profileId) {
+    "standard" -> "標準"
+    "contact" -> "ミート型"
+    "slugger" -> "長打型"
+    else -> error("Unknown saved batter profile")
+}

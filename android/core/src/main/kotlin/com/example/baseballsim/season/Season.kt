@@ -9,15 +9,22 @@ enum class SeasonStatus { IN_PROGRESS, COMPLETE, BLOCKED }
 class SeasonState private constructor(val masterSeed: String, val selectedClubId: String, val dayIndex: Int,
     val results: List<GameSummary>, val active: GameCheckpoint?, val games: List<ScheduledGame>,
     val standings: List<Standing>, val playerCounts: List<PlayerSeasonCounts>, val versions: SeasonVersions,
-    plans: Map<String, List<String>>, validateLedger: Boolean) : SeasonValue() {
+    plans: Map<String, List<String>>, validateLedger: Boolean,
+    val worldProfileTableVersion: String?, profiles: Map<String, String>) : SeasonValue() {
     // Public restore validates/copies; private transitions only share already deeply immutable plans.
     val clubLineups = if (validateLedger) LineupRoster.checkedPlans(plans, versions) else plans
+    val worldProfiles = if (validateLedger) BatterProfiles.checkedWorld(versions, worldProfileTableVersion, profiles) else profiles
+    val profilesEnabled get() = versions.profilesEnabled
+    fun playerProfile(playerId: String): String? {
+        require(PennantSchedule.clubIds.any { playerId in playerIds(it) }) { "Unknown person" }
+        return worldProfiles[playerId]
+    }
     val lineupEnabled get() = versions.lineupEnabled
     fun playerIds(clubId: String) = LineupRoster.playerIds(clubId, versions)
     fun lineup(clubId: String): List<String> = requireNotNull(clubLineups[clubId]) { "Unknown club" }
     val nextOrdinal get() = results.size + 1
     val status get() = when { active?.snapshot?.status == Status.ABORTED -> SeasonStatus.BLOCKED; results.size == 720 -> SeasonStatus.COMPLETE; else -> SeasonStatus.IN_PROGRESS }
-    override val values get() = listOf(masterSeed, selectedClubId, dayIndex, results, active, standings, playerCounts, versions, clubLineups)
+    override val values get() = listOf(masterSeed, selectedClubId, dayIndex, results, active, standings, playerCounts, versions, clubLineups, worldProfileTableVersion, worldProfiles)
     init {
         versions.requireSupported()
         seedFromText(masterSeed); PennantSchedule.club(selectedClubId)
@@ -50,11 +57,12 @@ class SeasonState private constructor(val masterSeed: String, val selectedClubId
     fun beginNext(): SeasonState {
         check(status == SeasonStatus.IN_PROGRESS && active == null)
         val game = games[results.size]
-        return changed(day = game.fixture.dayIndex, nextActive = SeasonMatch(game, lineup = GameLineup.fromPlans(game, clubLineups)).checkpoint())
+        val lineup = GameLineup.fromPlans(game, clubLineups)
+        return changed(day = game.fixture.dayIndex, nextActive = SeasonMatch(game, lineup = lineup, profileInput = GameProfileInput.fromWorld(game, lineup, worldProfiles)).checkpoint())
     }
     fun checkpoint(match: GameCheckpoint): SeasonState {
         check(status == SeasonStatus.IN_PROGRESS && active != null)
-        require(match.game == active.game && match.maxPitches == active.maxPitches && match.initial == active.initial && match.lineup == active.lineup)
+        require(match.game == active.game && match.maxPitches == active.maxPitches && match.initial == active.initial && match.lineup == active.lineup && match.profileInput == active.profileInput)
         require(match.advanceCalls >= active.advanceCalls)
         if (match.advanceCalls == active.advanceCalls) require(match == active) { "The same advance boundary must have the same state" }
         return changed(nextActive = match)
@@ -63,7 +71,7 @@ class SeasonState private constructor(val masterSeed: String, val selectedClubId
         val prior = results.find { it.game.fixture.gameId == result.game.fixture.gameId }
         if (prior != null) { require(prior == result) { "Conflicting completed result" }; return this }
         check(status == SeasonStatus.IN_PROGRESS && active != null)
-        require(result.game == active.game && result.maxPitches == active.maxPitches && result.lineup == active.lineup)
+        require(result.game == active.game && result.maxPitches == active.maxPitches && result.lineup == active.lineup && result.profileInput == active.profileInput)
         val updated = results + result
         val moreToday = updated.size < 720 && games[updated.size].fixture.dayIndex == dayIndex
         return changed(day = if (moreToday) dayIndex else dayIndex + 1, nextResults = freeze(updated), nextActive = null)
@@ -76,15 +84,19 @@ class SeasonState private constructor(val masterSeed: String, val selectedClubId
     private fun changed(selected: String = selectedClubId, day: Int = dayIndex, nextResults: List<GameSummary> = results,
         nextActive: GameCheckpoint? = active, nextPlans: Map<String, List<String>> = clubLineups) = SeasonState(masterSeed, selected, day, nextResults, nextActive, games,
             if (nextResults === results) standings else SeasonRecords.standings(nextResults),
-            if (nextResults === results) playerCounts else SeasonRecords.players(nextResults.map { it.batters }, versions), versions, nextPlans, false)
+            if (nextResults === results) playerCounts else SeasonRecords.players(nextResults.map { it.batters }, versions), versions, nextPlans, false, worldProfileTableVersion, worldProfiles)
     companion object {
         fun initial(masterSeed: String = "42", selectedClubId: String = "L1-T01") = restore(masterSeed, selectedClubId, 1, emptyList(), null)
         fun initialLineup(masterSeed: String = "42", selectedClubId: String = "L1-T01") =
             restore(masterSeed, selectedClubId, 1, emptyList(), null, SeasonVersions.lineup())
+        fun initialBatterProfile(masterSeed: String = "42", selectedClubId: String = "L1-T01") =
+            restore(masterSeed, selectedClubId, 1, emptyList(), null, SeasonVersions.batterProfile())
         fun restore(masterSeed: String, selectedClubId: String, dayIndex: Int, results: List<GameSummary>, active: GameCheckpoint?,
-            versions: SeasonVersions = SeasonVersions(), lineups: Map<String, List<String>> = LineupRoster.defaultPlans(versions)) =
+            versions: SeasonVersions = SeasonVersions(), lineups: Map<String, List<String>> = LineupRoster.defaultPlans(versions),
+            worldProfileTableVersion: String? = if (versions.profilesEnabled) BatterProfiles.TABLE_VERSION else null,
+            worldProfiles: Map<String, String> = BatterProfiles.defaultWorld(versions)) =
             SeasonState(masterSeed, selectedClubId, dayIndex, freeze(results), active, PennantSchedule.allocate(masterSeed, versions),
-                SeasonRecords.standings(results), SeasonRecords.players(results.map { it.batters }, versions), versions, lineups, true)
+                SeasonRecords.standings(results), SeasonRecords.players(results.map { it.batters }, versions), versions, lineups, true, worldProfileTableVersion, worldProfiles)
     }
 }
 
@@ -118,7 +130,7 @@ class SeasonSession(initial: SeasonState = SeasonState.initial()) {
         val owned = checkNotNull(match); val checkpoint = owned.checkpoint()
         state = state.checkpoint(checkpoint)
         if (checkpoint.snapshot.status == Status.COMPLETED) {
-            state = state.accept(GameSummary.fromCore(owned.game, owned.snapshot, owned.engine.maxPitches, owned.lineup)); lastCompletedCheckpoint = checkpoint; match = null
+            state = state.accept(GameSummary.fromCore(owned.game, owned.snapshot, owned.engine.maxPitches, owned.lineup, owned.profileInput)); lastCompletedCheckpoint = checkpoint; match = null
         }
         return state
     }

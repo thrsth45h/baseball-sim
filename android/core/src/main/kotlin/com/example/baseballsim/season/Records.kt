@@ -10,12 +10,14 @@ data class PlayerSeasonCounts(val playerId: String, val clubId: String, val slot
 /** Immutable completed summary; accepting one is not a proof of its full legal pitch history. */
 class GameSummary(val game: ScheduledGame, val maxPitches: Long, val status: Status, val outcome: String, val reason: String,
     val score: Score, lineScore: List<Long?>, val terminalDelta: Score, val pitchesAccepted: Long,
-    batters: List<PlayerGameCounts>, val lineup: GameLineup = GameLineup.initial(game)) : SeasonValue() {
+    batters: List<PlayerGameCounts>, val lineup: GameLineup = GameLineup.initial(game),
+    val profileInput: GameProfileInput? = GameProfileInput.canonical(game, lineup)) : SeasonValue() {
     val lineScore = freeze(lineScore)
     val batters = freeze(batters)
-    override val values get() = listOf(game, maxPitches, status, outcome, reason, score, lineScore, terminalDelta, pitchesAccepted, batters, lineup)
+    override val values get() = listOf(game, maxPitches, status, outcome, reason, score, lineScore, terminalDelta, pitchesAccepted, batters, lineup, profileInput)
     init {
         lineup.validate(game)
+        SeasonSources.validate(game, lineup, profileInput)
         require(status == Status.COMPLETED && reason in endingReasons)
         require(maxPitches > 0 && pitchesAccepted in 0..maxPitches)
         require(outcome == if (score.away > score.home) "away_win" else if (score.home > score.away) "home_win" else "draw")
@@ -47,13 +49,20 @@ class GameSummary(val game: ScheduledGame, val maxPitches: Long, val status: Sta
             require(row.side == side && row.slot == index % 9 + 1 && row.clubId == club.id && row.playerId == person)
         }
     }
+    fun replay(): GameSession {
+        val engine = GameSession(game.seed, maxPitches, source = SeasonSources.create(game, lineup, profileInput))
+        engine.runToEnd()
+        require(fromCore(game, engine.snapshot, maxPitches, lineup, profileInput) == this) { "Completed result disagrees with frozen replay" }
+        return engine
+    }
     companion object {
         fun fromCore(game: ScheduledGame, snapshot: GameSnapshot, maxPitches: Long = 10_000,
-            lineup: GameLineup = GameLineup.initial(game)): GameSummary {
+            lineup: GameLineup = GameLineup.initial(game),
+            profileInput: GameProfileInput? = GameProfileInput.canonical(game, lineup)): GameSummary {
             require(snapshot.status == Status.COMPLETED) { "Only COMPLETED games enter the ledger" }
             return GameSummary(game, maxPitches, snapshot.status, snapshot.outcome!!, snapshot.reason!!, snapshot.score,
                 snapshot.lineScore, snapshot.terminalScoreDelta, snapshot.pitchesAccepted,
-                SeasonRecords.project(game.fixture, snapshot.batterCounts, lineup), lineup)
+                SeasonRecords.project(game.fixture, snapshot.batterCounts, lineup), lineup, profileInput)
         }
     }
 }
