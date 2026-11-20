@@ -19,6 +19,9 @@ interface SeasonStore {
     /** New worlds only; legacy create remains the fixed v1 entry for existing callers/fixtures. */
     suspend fun createLineup(masterSeed: String, selectedClubId: String, operationId: String, expected: StoreToken? = null, replacementConfirmed: Boolean = false): StoredSeason =
         throw UnsupportedOperationException("This store does not create lineup worlds")
+    /** Explicit v3 entry; v1/v2 callers and saved worlds retain their original generators. */
+    suspend fun createBatterProfile(masterSeed: String, selectedClubId: String, operationId: String, expected: StoreToken? = null, replacementConfirmed: Boolean = false): StoredSeason =
+        throw UnsupportedOperationException("This store does not create batter-profile worlds")
     suspend fun commit(expected: StoreToken, operationId: String, candidate: SeasonState): StoredSeason
     suspend fun saveSlot(expected: StoreToken, operationId: String): StoredSeason
     suspend fun loadSlot(expected: StoreToken, operationId: String): StoredSeason

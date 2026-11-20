@@ -33,12 +33,14 @@ private val DraftSaver = listSaver<LineupDraft?, String>(
     val bench = season.playerIds(club).filter { it !in draft.players }
     Column(Modifier.fillMaxWidth().testTag(PennantTags.LINEUP), verticalArrangement = Arrangement.spacedBy(10.dp)) {
         Text(com.example.baseballsim.season.PennantSchedule.club(club).displayName, style = MaterialTheme.typography.titleLarge)
+        if (season.profilesEnabled) Text("試作用タイプ", style = MaterialTheme.typography.bodySmall)
         if (!season.lineupEnabled) Text("旧形式の固定オーダーです。新シーズンから編成を変更できます。")
         else if (!editable) Text(if (season.active != null) "試合中は変更できません" else "現在は変更できません")
         draft.players.forEachIndexed { index, id ->
             Card(Modifier.fillMaxWidth().testTag("lineup_row_${index + 1}")) {
                 Column(Modifier.padding(12.dp)) {
                     Text("${index + 1}番  $id", fontWeight = FontWeight.SemiBold, modifier = Modifier.testTag("lineup_player_${index + 1}"))
+                    season.playerProfile(id)?.let { Text(batterProfileLabel(it), Modifier.testTag("lineup_profile_${index + 1}")) }
                     if (season.lineupEnabled) Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                         fun swap(other: Int) {
                             val next = draft.players.toMutableList()
@@ -52,7 +54,7 @@ private val DraftSaver = listSaver<LineupDraft?, String>(
                         Box {
                             TextButton({ expanded = true }, enabled = editable, modifier = Modifier.testTag("lineup_replace_${index + 1}")) { Text("控えと交換") }
                             DropdownMenu(expanded && editable, { expanded = false }) {
-                                bench.forEach { reserve -> DropdownMenuItem(text = { Text(reserve) }, onClick = {
+                                bench.forEach { reserve -> DropdownMenuItem(text = { Text(reserve + season.playerProfile(reserve)?.let { " · ${batterProfileLabel(it)}" }.orEmpty()) }, onClick = {
                                     expanded = false
                                     restored = draft.copy(players = draft.players.mapIndexed { i, old -> if (i == index) reserve else old })
                                 }, modifier = Modifier.testTag("lineup_reserve_$reserve")) }
@@ -64,7 +66,10 @@ private val DraftSaver = listSaver<LineupDraft?, String>(
         }
         if (season.lineupEnabled) {
             Text("控え", style = MaterialTheme.typography.titleMedium)
-            bench.forEach { Text(it, Modifier.testTag("lineup_bench_$it")) }
+            bench.forEach { id ->
+                Text(id, Modifier.testTag("lineup_bench_$id"))
+                season.playerProfile(id)?.let { Text(batterProfileLabel(it), Modifier.testTag("lineup_bench_profile_$id")) }
+            }
             Button({ apply(draft.token, draft.clubId, draft.players.toList()) }, enabled = editable && draft.players != saved,
                 modifier = Modifier.fillMaxWidth().testTag(PennantTags.APPLY_LINEUP)) { Text("適用") }
             OutlinedButton({ restored = fresh }, enabled = draft.players != saved,

@@ -1,5 +1,10 @@
 name: pennant-core-tests
-on: [push, pull_request]
+on:
+  push:
+    paths: ['android/**', 'prototypes/**', 'reports/phase4*/**', '.github/workflows/**']
+  pull_request:
+    paths: ['android/**', 'prototypes/**', 'reports/phase4*/**', '.github/workflows/**']
+  workflow_dispatch:
 permissions:
   contents: read
 env:
