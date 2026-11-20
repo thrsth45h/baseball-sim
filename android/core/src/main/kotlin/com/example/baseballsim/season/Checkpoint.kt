@@ -94,7 +94,17 @@ class SeasonMatch internal constructor(val game: ScheduledGame, engine: GameSess
     val lineup: GameLineup = GameLineup.initial(game),
     val profileInput: GameProfileInput? = GameProfileInput.canonical(game, lineup)) {
     internal val engine = engine ?: GameSession(game.seed, source = SeasonSources.create(game, lineup, profileInput))
-    init { lineup.validate(game); SeasonSources.validate(game, lineup, profileInput) }
+    init {
+        lineup.validate(game); SeasonSources.validate(game, lineup, profileInput)
+        if (game.versions.profilesEnabled) {
+            val input = requireNotNull(profileInput)
+            val source = this.engine.source
+            require(source is ProfileToyPitchSource && this.engine.seed == game.seed) { "Wrong v3 engine source" }
+            require(source.awayProfiles == input.away.map { it.profileId } && source.homeProfiles == input.home.map { it.profileId }) {
+                "Engine profiles disagree with frozen participants"
+            }
+        }
+    }
     var advanceCalls: Long = 0; private set
     val snapshot get() = engine.snapshot
     val events get() = engine.events

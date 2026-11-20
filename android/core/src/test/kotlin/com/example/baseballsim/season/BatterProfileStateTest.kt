@@ -99,6 +99,9 @@ class BatterProfileStateTest {
         assertEquals("ordinary_foul_uncaught", BatterProfileTables.pitchEvent("slugger", 77))
         assertEquals("home_run", BatterProfileTables.fairPlay("slugger", 90, listOf(false,false,false)).kind)
         assertEquals("safe_hit", BatterProfileTables.fairPlay("contact", 90, listOf(false,false,false)).kind)
+        val game = newState().games.first()
+        val diagnostic = ProfileToyPitchSource(game.seed, List(9) { "standard" }, List(9) { "standard" })
+        assertThrows(IllegalArgumentException::class.java) { SeasonMatch(game, GameSession(game.seed, source = diagnostic)) }
     }
     @Test fun sameTypeExchangeChangesOnlyPeopleAndFrozenReplaySurvivesLaterPlans() {
         val base = newState()
