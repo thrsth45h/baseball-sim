@@ -3,7 +3,11 @@ set -euo pipefail
 # This script runs only inside a disposable CI emulator, never on a user's device.
 report=app/build/batter-profile-device
 mkdir -p "$report"
-trap 'adb logcat -d > "$report/logcat.txt" || true' EXIT
+collect_diagnostics() {
+  adb pull /sdcard/Android/media/com.example.baseballsim/additional_test_output "$report/observations" || true
+  adb logcat -d > "$report/logcat.txt" || true
+}
+trap collect_diagnostics EXIT
 git rev-parse HEAD > "$report/SOURCE_HEAD.txt"
 adb shell getprop ro.build.version.sdk | tr -d '\r' > "$report/device-api.txt"
 test "$(cat "$report/device-api.txt")" = 35
@@ -16,3 +20,5 @@ adb shell am instrument -w -r \
 grep -F 'OK (1 test)' "$report/instrumentation.txt"
 if grep -E 'FAILURES!!!|INSTRUMENTATION_FAILED|Process crashed' "$report/instrumentation.txt"; then exit 1; fi
 adb pull /sdcard/Android/media/com.example.baseballsim/additional_test_output "$report/observations"
+trap - EXIT
+adb logcat -d > "$report/logcat.txt" || true

@@ -1,6 +1,7 @@
 package com.example.baseballsim
 
 import android.os.SystemClock
+import android.util.Log
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -62,15 +63,30 @@ class PennantBatterProfileFullSeasonTest {
         setOrder(listOf(9, 2, 3, 4, 5, 6, 7, 8, 1)); ownGame()
         setOrder(listOf(9, 2, 3, 4, 5, 6, 7, 8, 10)); ownGame()
         setOrder(listOf(10, 2, 3, 4, 5, 6, 7, 8, 1))
+        val prefixGames = vm.state.value.season!!.results.size
+        assertEquals(13, prefixGames)
         val output = pennantTestOutputDirectory()
         val progress = File(output, "batter-profile-real-season-42-progress.csv")
         progress.writeText("elapsed_ms,completed_games,busy\n")
-        val started = SystemClock.elapsedRealtime(); var lastSample = 0L
+        val started = SystemClock.elapsedRealtime()
+        var lastSample = -10_000L
+        fun recordProgress() {
+            val current = vm.state.value
+            val elapsed = SystemClock.elapsedRealtime() - started
+            val sample = "$elapsed,${current.season!!.results.size},${current.busy}"
+            progress.appendText("$sample\n")
+            Log.i("BatterProfileSeason", "elapsed_ms,completed_games,busy=$sample")
+            lastSample = elapsed
+        }
         home(); click(PennantTags.SEASON)
-        compose.waitUntil(1_200_000) {
-            val now = SystemClock.elapsedRealtime(); val current = vm.state.value
-            if (now - lastSample >= 10_000) { progress.appendText("${now - started},${current.season!!.results.size},${current.busy}\n"); lastSample = now }
-            !current.busy
+        try {
+            // The disposable emulator's previous 20-minute allowance expired during this run.
+            compose.waitUntil(1_920_000) {
+                if (SystemClock.elapsedRealtime() - started - lastSample >= 10_000) recordProgress()
+                !vm.state.value.busy
+            }
+        } finally {
+            recordProgress()
         }
         assertNull(vm.state.value.error)
         val state = vm.state.value.season!!
@@ -84,7 +100,7 @@ class PennantBatterProfileFullSeasonTest {
             .put("walkEvents", c.walkEvents).put("strikeoutEvents", c.strikeoutEvents).put("homeRunEvents", c.homeRunEvents)
         val report = JSONObject().put("schema", "batter-profile-real-transactions-v1").put("master_seed", "42").put("scenario", "order_bench")
             .put("completed_games", 720).put("day_index", 141).put("elapsed_ms_bulk_remaining_707", SystemClock.elapsedRealtime() - started)
-            .put("prefix_games_also_real_transactions", 13).put("frame_bytes", frame.size)
+            .put("prefix_games_also_real_transactions", prefixGames).put("frame_bytes", frame.size)
             .put("frame_sha256", MessageDigest.getInstance("SHA-256").digest(frame).joinToString("") { "%02x".format(it) })
             .put("players", JSONObject().apply { state.playerCounts.forEach { put(it.playerId, counts(it.counts)) } })
             .put("games", JSONArray().apply { state.results.forEach { game -> put(JSONObject()
