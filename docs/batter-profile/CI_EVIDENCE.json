@@ -1,0 +1,488 @@
+{
+  "schema": "batter-profile-ci-evidence-v1",
+  "recorded_date_jst": "2026-11-22",
+  "recorded_before_pr_merge": true,
+  "implementation_pr": 53,
+  "design_pr": 52,
+  "approved_design_main": "d69f74409ffa5df658b5c34d02ae58b55694a7b9",
+  "runtime_source": "98988d139cc021e2164580733f8d0c9dd5647096",
+  "runtime_tree": "129ff1754e7e9e7e87bd74c44dbe32050e28afcc",
+  "artifacts": {
+    "android_unit_lint": {
+      "run_id": 44952560094,
+      "artifact_id": 14726267524,
+      "archive_sha256": "70d6defeb54e937f06b44a4cc4d643de9426b84bb9e3af0855a42ee2da1c8b6f",
+      "expires_utc": "2026-12-05T21:42:23Z"
+    },
+    "android_build_only": {
+      "run_id": 44952560094,
+      "artifact_id": 14725854366,
+      "archive_sha256": "0f1cb0bf3b1a8fc19ab31158a775d37762abd74c8a38b9562be51fdcbcdf31b3",
+      "expires_utc": "2026-12-05T21:42:21Z"
+    },
+    "android_core_audit": {
+      "run_id": 44952560094,
+      "artifact_id": 14725868746,
+      "archive_sha256": "32fe2e4f61b1c85ad7bb65f67f3a1c89c44b9d4b238666d4a2f22d2f1aba9474",
+      "expires_utc": "2026-12-05T21:40:20Z"
+    },
+    "apk_distribution": {
+      "run_id": 44952560002,
+      "artifact_id": 14726113339,
+      "archive_sha256": "e7bdd817e127e395c9e4ddda1cd62f7859927ad43038ad4730cf7a57ab3adbff",
+      "expires_utc": "2026-12-05T21:42:11Z"
+    },
+    "process_recovery_proof": {
+      "run_id": 44952560002,
+      "artifact_id": 14725998727,
+      "archive_sha256": "89b1c53587dd5a23015638b4b29e5bcdcfa1e5439077525687521d1827cea2df",
+      "expires_utc": "2026-12-05T21:42:13Z"
+    },
+    "repeat_core": {
+      "run_id": 44952560089,
+      "artifact_id": 14726058362,
+      "archive_sha256": "0e5a46c374c2b06e6106dfc466cec185b116ea86e650274479e9c2e2adced36f",
+      "expires_utc": "2026-12-05T21:41:46Z"
+    },
+    "benchmark_applicability": {
+      "run_id": 44952559912,
+      "artifact_id": 14726530286,
+      "archive_sha256": "ef865ddeb2c1e4225111c03c9132e69b36e38d57ddbde38755ee4edbb96de67e",
+      "expires_utc": "2026-12-05T21:38:29Z"
+    },
+    "normal_device": {
+      "run_id": 44952560094,
+      "artifact_id": 14726772831,
+      "archive_sha256": "c17854e1a7c72362b6fe3de48d76b3d8bc4a296104e86be472c8445c821950d8",
+      "expires_utc": "2026-12-05T21:57:28Z"
+    },
+    "batter_profile_full_season_device": {
+      "run_id": 44952560094,
+      "artifact_id": 14726288321,
+      "archive_sha256": "7ddae41058b258f86f1c78ac5a3d11a3decbbafac3d2277af9360e3ad83fe02d",
+      "expires_utc": "2026-12-05T21:57:34Z"
+    }
+  },
+  "distribution_apk": {
+    "version_code": 5,
+    "version_name": "0.5-batter-profile-tech",
+    "bytes": 10941557,
+    "sha256": "d38187ea4a6bd51597b5e457e61f3546115d422313a2349fbc3694063417a078",
+    "download": "https://github.com/thrsth45h/baseball-sim/actions/runs/44952560002/artifacts/14726113339",
+    "has_internet_permission": false,
+    "sole_distribution_source": "Same API35 process recovery build"
+  },
+  "tests": {
+    "app_jvm_methods": 42,
+    "core_methods": 36,
+    "unit_failures": 0,
+    "unit_errors": 0,
+    "unit_skipped": 0,
+    "lint_errors": 0,
+    "lint_warnings": 8,
+    "host_recovery_methods": 3,
+    "prepare_probes_counted_as_success": false,
+    "legacy_fixture_packaging_verified": [
+      "v1",
+      "v2"
+    ],
+    "ordinary_device_methods": 60,
+    "prior_ordinary_device_methods_retained": 53,
+    "dedicated_v3_season_device_methods": 1,
+    "device_failures": 0,
+    "device_errors": 0,
+    "device_skipped": 0
+  },
+  "same_install_and_database_force_stop_recovery": [
+    {
+      "format": "v1",
+      "previous_pid": 4229,
+      "recovered_pid": 4316
+    },
+    {
+      "format": "v2",
+      "previous_pid": 4390,
+      "recovered_pid": 4463
+    },
+    {
+      "format": "v3",
+      "previous_pid": 4538,
+      "recovered_pid": 4613
+    }
+  ],
+  "benchmark": {
+    "status": "not_applicable",
+    "comparison_executed": false,
+    "performance_gate_passed": null,
+    "changed_shared_dependencies": 6,
+    "historical_generator_and_hashes_unchanged": true
+  },
+  "core_independent_review": {
+    "v3_cases": 9,
+    "v3_games": 6480,
+    "v3_final_person_rows": 1296,
+    "traced_games": 36,
+    "individual_advances": 9754,
+    "integer_boundaries": 300,
+    "profile_count_states": 36,
+    "max_absolute_float_deviation": "4.984901380566953e-14",
+    "unchanged_semantic_and_legacy_export_files": 31,
+    "legacy_v2_cases": 9,
+    "legacy_v2_games": 6480,
+    "legacy_v2_frame_byte_matches": 3,
+    "compact_v3_independently_reencoded_frame_matches": 3,
+    "core_42_order_bench_frame_bytes": 1838493,
+    "core_42_order_bench_frame_sha256": "d255bd19f2a9de71439b82334968d96723bccd79cfe222afc512f09c67e3fc86",
+    "v3_game_record_profile_codes": {
+      "standard": 0,
+      "contact": 1,
+      "slugger": 2
+    },
+    "v3_regression_frame_size_limit_bytes": 1950000,
+    "conservative_current_fixed_state_size_upper_bound_bytes": 1852156
+  },
+  "validation_limits": {
+    "api35_isolated_emulator_tested": true,
+    "api26_execution_tested": false,
+    "physical_android_device_tested": false,
+    "actual_old_apk_in_place_upgrade_tested": false,
+    "power_loss_tested": false,
+    "local_android_toolchain_executed": false,
+    "old_database_fixture_origin": "Independently constructed from the old codec/frame and Room schema rather than an installed old APK.",
+    "older_pre_distribution_v3_checkpoint_bytes_supported": false,
+    "formal_ability_calibration_tested": false,
+    "mlb_model_validity_tested": false
+  },
+  "previous_runs": [
+    {
+      "source": "973c6978b2a3cbf154abb8b9defab2224cd85bd1",
+      "run_id": 44799486352,
+      "normal_device_job": 136507597243,
+      "normal_device_issue": "P11 assertion fired in the top half while away team was batting.",
+      "v3_device_job": 136507597587,
+      "v3_device_issue": "20-minute instrumentation deadline expired; final completed count not recovered."
+    },
+    {
+      "source": "ffbbccfba4a10916d8b221a07103f1cd21c681c0",
+      "run_id": 44950582731,
+      "normal_device_job": 136987396952,
+      "normal_device_conclusion": "success",
+      "v3_device_job": 136987397094,
+      "v3_device_artifact_id": 14725304483,
+      "v3_device_archive_sha256": "132ca9ff26616042a2fc88130068ac2a1585ffae18c4ef3c427c80f070dc77fe",
+      "last_visible_confirmed_games": 696,
+      "elapsed_ms_bulk_on_failure": 911288,
+      "v3_device_issue": "SELECT on working_state exceeded SQLite CursorWindow per-row capacity."
+    }
+  ],
+  "workflows": [
+    {
+      "name": "pennant-android-recovery",
+      "run_id": 44952560002,
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "name": "process-recovery",
+          "id": 136993475978,
+          "status": "completed",
+          "conclusion": "success",
+          "steps_checked": 15,
+          "steps_success": 15,
+          "steps_intentionally_skipped": []
+        }
+      ]
+    },
+    {
+      "name": "phase4a-reference-tests",
+      "run_id": 44952560113,
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "name": "unittest (3.12)",
+          "id": 136993476015,
+          "status": "completed",
+          "conclusion": "success",
+          "steps_checked": 7,
+          "steps_success": 7,
+          "steps_intentionally_skipped": []
+        },
+        {
+          "name": "unittest (3.11)",
+          "id": 136993476230,
+          "status": "completed",
+          "conclusion": "success",
+          "steps_checked": 7,
+          "steps_success": 7,
+          "steps_intentionally_skipped": []
+        }
+      ]
+    },
+    {
+      "name": "phase4e-reference-tests",
+      "run_id": 44952560003,
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "name": "unittest (3.11)",
+          "id": 136993475511,
+          "status": "completed",
+          "conclusion": "success",
+          "steps_checked": 11,
+          "steps_success": 11,
+          "steps_intentionally_skipped": []
+        },
+        {
+          "name": "unittest (3.12)",
+          "id": 136993475881,
+          "status": "completed",
+          "conclusion": "success",
+          "steps_checked": 11,
+          "steps_success": 11,
+          "steps_intentionally_skipped": []
+        }
+      ]
+    },
+    {
+      "name": "local-match-view-tests",
+      "run_id": 44952560202,
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "name": "unittest (3.12)",
+          "id": 136993476470,
+          "status": "completed",
+          "conclusion": "success",
+          "steps_checked": 13,
+          "steps_success": 13,
+          "steps_intentionally_skipped": []
+        },
+        {
+          "name": "unittest (3.11)",
+          "id": 136993476688,
+          "status": "completed",
+          "conclusion": "success",
+          "steps_checked": 13,
+          "steps_success": 13,
+          "steps_intentionally_skipped": []
+        }
+      ]
+    },
+    {
+      "name": "phase4b-reference-tests",
+      "run_id": 44952560028,
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "name": "unittest (3.12)",
+          "id": 136993475604,
+          "status": "completed",
+          "conclusion": "success",
+          "steps_checked": 8,
+          "steps_success": 8,
+          "steps_intentionally_skipped": []
+        },
+        {
+          "name": "unittest (3.11)",
+          "id": 136993475837,
+          "status": "completed",
+          "conclusion": "success",
+          "steps_checked": 8,
+          "steps_success": 8,
+          "steps_intentionally_skipped": []
+        }
+      ]
+    },
+    {
+      "name": "phase4d-reference-tests",
+      "run_id": 44952560124,
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "name": "unittest (3.12)",
+          "id": 136993475972,
+          "status": "completed",
+          "conclusion": "success",
+          "steps_checked": 10,
+          "steps_success": 10,
+          "steps_intentionally_skipped": []
+        },
+        {
+          "name": "unittest (3.11)",
+          "id": 136993476193,
+          "status": "completed",
+          "conclusion": "success",
+          "steps_checked": 10,
+          "steps_success": 10,
+          "steps_intentionally_skipped": []
+        }
+      ]
+    },
+    {
+      "name": "phase4f-single-game-tests",
+      "run_id": 44952560055,
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "name": "unittest (3.12)",
+          "id": 136993475480,
+          "status": "completed",
+          "conclusion": "success",
+          "steps_checked": 12,
+          "steps_success": 12,
+          "steps_intentionally_skipped": []
+        },
+        {
+          "name": "unittest (3.11)",
+          "id": 136993475713,
+          "status": "completed",
+          "conclusion": "success",
+          "steps_checked": 12,
+          "steps_success": 12,
+          "steps_intentionally_skipped": []
+        }
+      ]
+    },
+    {
+      "name": "phase4c-reference-tests",
+      "run_id": 44952559948,
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "name": "unittest (3.11)",
+          "id": 136993475372,
+          "status": "completed",
+          "conclusion": "success",
+          "steps_checked": 9,
+          "steps_success": 9,
+          "steps_intentionally_skipped": []
+        },
+        {
+          "name": "unittest (3.12)",
+          "id": 136993475672,
+          "status": "completed",
+          "conclusion": "success",
+          "steps_checked": 9,
+          "steps_success": 9,
+          "steps_intentionally_skipped": []
+        }
+      ]
+    },
+    {
+      "name": "pennant-store-benchmark",
+      "run_id": 44952559912,
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "name": "applicability",
+          "id": 136993475456,
+          "status": "completed",
+          "conclusion": "success",
+          "steps_checked": 6,
+          "steps_success": 6,
+          "steps_intentionally_skipped": []
+        },
+        {
+          "name": "paired-benchmark",
+          "id": 136993572415,
+          "status": "completed",
+          "conclusion": "skipped",
+          "steps_checked": 0,
+          "steps_success": 0,
+          "steps_intentionally_skipped": []
+        }
+      ]
+    },
+    {
+      "name": "pennant-core-tests",
+      "run_id": 44952560089,
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "name": "repeat-core",
+          "id": 136993475914,
+          "status": "completed",
+          "conclusion": "success",
+          "steps_checked": 15,
+          "steps_success": 15,
+          "steps_intentionally_skipped": []
+        }
+      ]
+    },
+    {
+      "name": "android-first-match",
+      "run_id": 44952560094,
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "name": "device",
+          "id": 136993476238,
+          "status": "completed",
+          "conclusion": "success",
+          "steps_checked": 13,
+          "steps_success": 13,
+          "steps_intentionally_skipped": []
+        },
+        {
+          "name": "verify",
+          "id": 136993476392,
+          "status": "completed",
+          "conclusion": "success",
+          "steps_checked": 22,
+          "steps_success": 22,
+          "steps_intentionally_skipped": []
+        },
+        {
+          "name": "device-batter-profile",
+          "id": 136993476407,
+          "status": "completed",
+          "conclusion": "success",
+          "steps_checked": 13,
+          "steps_success": 13,
+          "steps_intentionally_skipped": []
+        }
+      ]
+    }
+  ],
+  "workflow_count": 11,
+  "job_count": 21,
+  "jobs_success": 20,
+  "jobs_intentionally_skipped": 1,
+  "all_steps_success_or_intended_skipped": true,
+  "device_independent_review": {
+    "api": 35,
+    "v1_completed_games": 720,
+    "v1_elapsed_ms": 648478,
+    "v1_frame_bytes": 1585652,
+    "v1_frame_sha256": "0bde5d0de901771b13e75adc64aab9d21a5854c8f7aed9e34aafb72a3881bbde",
+    "v1_all_bytes_match_independent_reference": true,
+    "v3_completed_games": 720,
+    "v3_prefix_also_real_room_transactions": 13,
+    "v3_elapsed_ms_bulk_remaining_707": 838240,
+    "v3_frame_bytes": 1838493,
+    "v3_frame_sha256": "d255bd19f2a9de71439b82334968d96723bccd79cfe222afc512f09c67e3fc86",
+    "v3_frame_matches_independent_jvm_export_all_bytes": true,
+    "v3_durable_720_games_and_144_person_totals_match_preworker_reference": true,
+    "v3_actual_144_semantic_text_rows_types_roles_and_5_counts_match": true,
+    "v3_manual_slot_roundtrip_exact_after_completion": true,
+    "v3_actual_observation_json_sha256": "4e2731571b5d498b56baf4c49796370510431cb6f8a98b645226f906d78ee1f5",
+    "visual_review": {
+      "viewed_at_runtime_source": ["batter-profile-season-completed.png"],
+      "byte_equal_to_independently_viewed_previous_images": [
+        "batter-profile-lineup-320-font150.png",
+        "batter-profile-player-320-font150.png",
+        "batter-profile-match-frozen.png"
+      ]
+    }
+  }
+}
