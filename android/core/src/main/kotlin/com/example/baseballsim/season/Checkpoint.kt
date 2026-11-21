@@ -35,7 +35,7 @@ data class SourceCursor(val kind: String, val pitchCalls: Long, val fairCalls: L
     init {
         require(pitchCalls >= 0)
         when (kind) {
-            "toy" -> {
+            "toy", BatterProfiles.CURSOR_KIND -> {
                 require(fairCalls != null && fairCalls in 0..pitchCalls && state != null && rawCalls != null && drawCalls != null && rejections != null)
                 seedFromText(state); require(rawCalls >= 0 && drawCalls >= 0 && rejections >= 0)
                 require(drawCalls == add(pitchCalls, fairCalls) && rawCalls == add(drawCalls, rejections) && scriptedPosition == null)
@@ -46,6 +46,7 @@ data class SourceCursor(val kind: String, val pitchCalls: Long, val fairCalls: L
     }
     companion object {
         fun capture(source: PitchSource) = when (source) {
+            is ProfileToyPitchSource -> SourceCursor(BatterProfiles.CURSOR_KIND, source.pitchCalls, source.fairCalls, source.rng.state.toString(), source.rng.rawOutputCalls, source.rng.draw100Calls, source.rng.rejectedRawOutputs)
             is ToyPitchSource -> SourceCursor("toy", source.pitchCalls, source.fairCalls, source.rng.state.toString(), source.rng.rawOutputCalls, source.rng.draw100Calls, source.rng.rejectedRawOutputs)
             is ScriptedSource -> SourceCursor("scripted-diagnostic", source.calls, null, null, null, null, null, source.position)
             else -> error("Source counters are unavailable")
@@ -55,14 +56,16 @@ data class SourceCursor(val kind: String, val pitchCalls: Long, val fairCalls: L
 
 class GameCheckpoint(val game: ScheduledGame, val maxPitches: Long, val advanceCalls: Long, val snapshot: SnapshotDto,
     val source: SourceCursor, val initial: SnapshotDto = SnapshotDto.fromCore(GameSnapshot.initial()),
-    val lineup: GameLineup = GameLineup.initial(game)) : SeasonValue() {
-    override val values get() = listOf(game, maxPitches, advanceCalls, snapshot, source, initial, lineup)
+    val lineup: GameLineup = GameLineup.initial(game),
+    val profileInput: GameProfileInput? = GameProfileInput.canonical(game, lineup)) : SeasonValue() {
+    override val values get() = listOf(game, maxPitches, advanceCalls, snapshot, source, initial, lineup, profileInput)
     init {
         lineup.validate(game)
+        SeasonSources.validate(game, lineup, profileInput)
         require(maxPitches > 0 && advanceCalls >= 0 && snapshot.pitchesAccepted <= maxPitches)
         require(snapshot.pitchesAccepted >= initial.pitchesAccepted)
         require(snapshot.pitchesAccepted - initial.pitchesAccepted <= advanceCalls)
-        require(source.kind == "toy" || snapshot.status == Status.ABORTED) { "Only fixed toy games can resume" }
+        require(source.kind == (if (game.versions.profilesEnabled) BatterProfiles.CURSOR_KIND else "toy") || snapshot.status == Status.ABORTED) { "Only fixed toy games can resume" }
     }
     val stateHash: String get() = sha256(CheckpointCodec.encodeGame(this))
     /** ABORTED is a retained diagnostic, never an engine that can progress again. */
@@ -71,15 +74,15 @@ class GameCheckpoint(val game: ScheduledGame, val maxPitches: Long, val advanceC
         require(game.fixture.ordinal in 1..720)
         requireProduction(PennantSchedule.allocate(masterSeed, game.versions)[game.fixture.ordinal - 1])
         require(snapshot.status != Status.ABORTED) { "Incomplete game is blocked; diagnostic must be retained" }
-        require(source.kind == "toy")
-        val restored = SeasonMatch(game, GameSession(game.seed, maxPitches, initial = initial.toCore()), lineup)
+        require(source.kind == (if (game.versions.profilesEnabled) BatterProfiles.CURSOR_KIND else "toy"))
+        val restored = SeasonMatch(game, GameSession(game.seed, maxPitches, source = SeasonSources.create(game, lineup, profileInput), initial = initial.toCore()), lineup, profileInput)
         repeatLong(advanceCalls) { restored.advanceOnePitch() }
         require(restored.checkpoint() == this) { "Saved snapshot or RNG/source cursor does not match replay" }
         return restored
     }
     internal fun requireProduction(expected: ScheduledGame) {
         require(game == expected && maxPitches == 10_000L && initial == SnapshotDto.fromCore(GameSnapshot.initial())) { "Not the fixed production starting definition" }
-        require(source.kind == "toy") { "Scripted source cursors are diagnostic only" }
+        require(source.kind == (if (game.versions.profilesEnabled) BatterProfiles.CURSOR_KIND else "toy")) { "Wrong production source cursor" }
     }
 }
 
@@ -87,9 +90,21 @@ internal fun repeatLong(count: Long, block: () -> Unit) { var i = 0L; while (i <
 internal fun sha256(bytes: ByteArray) = MessageDigest.getInstance("SHA-256").digest(bytes).joinToString("") { "%02x".format(it) }
 
 /** Mutable calculation candidate; a store must discard it if commit fails. */
-class SeasonMatch internal constructor(val game: ScheduledGame, internal val engine: GameSession = GameSession(game.seed),
-    val lineup: GameLineup = GameLineup.initial(game)) {
-    init { lineup.validate(game) }
+class SeasonMatch internal constructor(val game: ScheduledGame, engine: GameSession? = null,
+    val lineup: GameLineup = GameLineup.initial(game),
+    val profileInput: GameProfileInput? = GameProfileInput.canonical(game, lineup)) {
+    internal val engine = engine ?: GameSession(game.seed, source = SeasonSources.create(game, lineup, profileInput))
+    init {
+        lineup.validate(game); SeasonSources.validate(game, lineup, profileInput)
+        if (game.versions.profilesEnabled) {
+            val input = requireNotNull(profileInput)
+            val source = this.engine.source
+            require(source is ProfileToyPitchSource && this.engine.seed == game.seed) { "Wrong v3 engine source" }
+            require(source.awayProfiles == input.away.map { it.profileId } && source.homeProfiles == input.home.map { it.profileId }) {
+                "Engine profiles disagree with frozen participants"
+            }
+        }
+    }
     var advanceCalls: Long = 0; private set
     val snapshot get() = engine.snapshot
     val events get() = engine.events
@@ -106,5 +121,5 @@ class SeasonMatch internal constructor(val game: ScheduledGame, internal val eng
         return snapshot
     }
     fun finish(): GameSnapshot { while (!snapshot.done) advanceOnePitch(); return snapshot }
-    fun checkpoint() = GameCheckpoint(game, engine.maxPitches, advanceCalls, SnapshotDto.fromCore(snapshot), SourceCursor.capture(engine.source), SnapshotDto.fromCore(engine.initialSnapshot), lineup)
+    fun checkpoint() = GameCheckpoint(game, engine.maxPitches, advanceCalls, SnapshotDto.fromCore(snapshot), SourceCursor.capture(engine.source), SnapshotDto.fromCore(engine.initialSnapshot), lineup, profileInput)
 }

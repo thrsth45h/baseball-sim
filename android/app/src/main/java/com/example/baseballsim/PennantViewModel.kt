@@ -38,7 +38,7 @@ class DurablePennantActions(private val coordinator: SeasonCoordinator) : Pennan
     override suspend fun applyLineup(expected: StoreToken, clubId: String, players: List<String>) = coordinator.applyLineup(expected, clubId, players)
     override suspend fun execute(command: PennantCommand, seed: String, club: String, replacement: Boolean,
         stop: () -> Boolean, progress: suspend (StoredSeason) -> Unit): StoredSeason = when (command) {
-        PennantCommand.CREATE -> coordinator.createLineup(seed, club, replacement)
+        PennantCommand.CREATE -> coordinator.createBatterProfile(seed, club, replacement)
         PennantCommand.SELECT -> coordinator.selectClub(club)
         PennantCommand.PITCH -> coordinator.advance(SeasonAdvance.PITCH)
         PennantCommand.PLATE_APPEARANCE -> coordinator.advance(SeasonAdvance.PLATE_APPEARANCE)
@@ -75,9 +75,7 @@ internal fun pennantDisplay(stored: StoredSeason): PennantDisplay {
     val last = state.results.lastOrNull() ?: return PennantDisplay(stored, null, null, emptyList())
     // The prototype intentionally stores summaries, not every old pitch log. Reconstruct only
     // the one displayed game and check it before showing its recent plays.
-    val replay = GameSession(last.game.seed)
-    replay.runToEnd()
-    check(GameSummary.fromCore(last.game, replay.snapshot, lineup = last.lineup) == last) { "Displayed result disagrees with its fixed game" }
+    val replay = last.replay()
     return PennantDisplay(stored, last.game.fixture, replay.snapshot, replay.events.takeLast(12).mapNotNull(::pennantEvent))
 }
 

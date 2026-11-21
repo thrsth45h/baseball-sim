@@ -1,0 +1,65 @@
+{
+  "schema": "independent-v2-database-fixture-v1",
+  "created_date_jst": "2026-11-21",
+  "constructed_after_worker_started": true,
+  "provenance": "Independently Python-constructed schema1 DB from historical source976 JVM v2 full-frame values and historical SQL. NOT old APK output or actual APK upgrade.",
+  "imports_D062_code": false,
+  "uses_new_D062_code_or_outputs": false,
+  "old_runtime_source": "976eeab33f142f058ae02693e022aae7ea2a3e52",
+  "old_codec_git_source": "68d44b0e87f0a7ac454db1908cb6c41705db0416",
+  "old_codec_git_sha256": "a80e806396221703ffd3de934d84b0d6b41dbf72f28239883d8cd6154b040224",
+  "sql_schema_sha256": "3af7cc7ed8cc59fd2d65666aa5464afb80598b5979428c3f88ae3e4d5f7004a8",
+  "old_full_frame_sha256": "c0a76e83d1d99ba99b805c980f60a95c7758fae181f82c505c69fba02479c356",
+  "old_full_frame_bytes": 1776565,
+  "old_full_frame_decoded_and_reencoded_all_bytes": true,
+  "old_full720_independent_aggregates_match": true,
+  "prefix_decode_reencode_match": true,
+  "master_seed": "42",
+  "day_index": 2,
+  "completed_games": 1,
+  "active": false,
+  "player_count": 144,
+  "club_plans": 12,
+  "scheduled_games": 720,
+  "world": "golden-v2-world",
+  "generation": "golden-v2-generation",
+  "revision": 2,
+  "operation": "golden-v2-result",
+  "first_game_id": "S1-D002-L1-R01-M1-G1",
+  "gzip_mtime": 0,
+  "gzip_asset_alias_same_bytes": true,
+  "room_identity_hash": "8c19fe6637f83bbb8c4e363f065a08d2",
+  "sql_user_version": 1,
+  "six_business_table_rows": {
+    "working_state": 1,
+    "completed_results": 1,
+    "manual_slot": 1,
+    "operation_receipts": 1,
+    "blocked_diagnostics": 0,
+    "generation_registry": 1
+  },
+  "generator_sha256": "9c8a32821718d184be6c5945d0e4cfd4a00204b0700e9badea3cba4be1d05504",
+  "files": {
+    "one-game-v2.bin": {
+      "bytes": 215199,
+      "sha256": "df5bf36fbe28cd27c8008ee8a02f682e42db04d3e80846105e2ebe4f3663ff61"
+    },
+    "one-game-v2.db": {
+      "bytes": 475136,
+      "sha256": "85e6d5316017ecccbd05ee2b8c6773e5337c78abdb42ed9ca66bcb21549481a9"
+    },
+    "one-game-v2.db.gz": {
+      "bytes": 44266,
+      "sha256": "6f50ba22f38304a15dcd5925665355d2ced1915dd223fbcd5781a5869c4e377a"
+    },
+    "one-game-v2.fixture.bin": {
+      "bytes": 44266,
+      "sha256": "6f50ba22f38304a15dcd5925665355d2ced1915dd223fbcd5781a5869c4e377a"
+    },
+    "one-game-v2.summary.bin": {
+      "bytes": 2194,
+      "sha256": "66e5003fe18a79b967e5778fd507c13e7f05a6e45077e1289ea586ad0d918e0c"
+    }
+  },
+  "limits": "Constructed after D062 worker start; no Android execution, old APK update, power loss or physical-device test. Next-pitch compatibility remains for new implementation tests."
+}

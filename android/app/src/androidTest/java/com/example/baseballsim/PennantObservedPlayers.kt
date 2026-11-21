@@ -36,6 +36,10 @@ internal fun ComposeContentTestRule.observeAllPlayerDetails(expected: SeasonStat
             val values = listOf("player_completed_pa" to count.completedPlateAppearances, "player_safe_hits" to count.safeHitEvents,
                 "player_walks" to count.walkEvents, "player_strikeouts" to count.strikeoutEvents, "player_home_runs" to count.homeRunEvents)
             val sample = JSONObject().put("player_id", text("player_id")).put("club", text("player_club")).put("slot", text("player_slot"))
+            expected.playerProfile(id)?.let { profile ->
+                onNodeWithTag("player_profile").assertTextEquals(batterProfileLabel(profile))
+                sample.put("profile", text("player_profile"))
+            }
             values.forEach { (tag, value) -> onNodeWithTag(tag).assertTextEquals(value.toString()); sample.put(tag, text(tag)) }
             observed.put(sample)
             click(PennantTags.BACK)
@@ -43,7 +47,7 @@ internal fun ComposeContentTestRule.observeAllPlayerDetails(expected: SeasonStat
     }
     assertEquals(if (expected.lineupEnabled) 144 else 108, observed.length())
     File(pennantTestOutputDirectory(), filename).writeText(JSONObject().put("schema", "club-home-observed-ui-v1")
-        .put("world_format", if (expected.lineupEnabled) "v2" else "v1").put("completed_games", expected.results.size)
+        .put("world_format", if (expected.profilesEnabled) "v3" else if (expected.lineupEnabled) "v2" else "v1").put("completed_games", expected.results.size)
         .put("source", "Compose semantic Text nodes, not expected-state copies").put("players", observed).toString(2))
     click(PennantTags.BACK)
 }

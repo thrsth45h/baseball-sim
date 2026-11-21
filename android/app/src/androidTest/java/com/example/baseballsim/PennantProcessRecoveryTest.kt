@@ -95,17 +95,22 @@ class PennantProcessRecoveryTest {
     }
     @Test fun prepareDurableCheckpointBeforeHostKill() {
         compose.onNodeWithTag("mode_pennant").performClick(); val vm = ready()
-        val lineupWorld = InstrumentationRegistry.getArguments().getString("lineup_world") == "true"
-        if (lineupWorld) {
+        val format = InstrumentationRegistry.getArguments().getString("world_format") ?: "v1"
+        require(format in setOf("v1", "v2", "v3"))
+        if (format == "v3") {
             compose.runOnUiThread { vm.changeSeed("42"); vm.execute(PennantCommand.CREATE, replacementConfirmed = true) }; ready()
-            val token = vm.state.value.display!!.stored.token
-            val people = (listOf(10) + (2..9)).map { "L1-T01-P${it.toString().padStart(2, '0')}" }
-            compose.runOnUiThread { vm.applyLineup(token, "L1-T01", people) }; ready()
         } else {
-            runBlocking { createLegacyTargetWorld() }
+            runBlocking { if (format == "v2") createLineupTargetWorld() else createLegacyTargetWorld() }
             compose.runOnUiThread { vm.reload() }; ready()
         }
-        assertEquals(lineupWorld, vm.state.value.season!!.lineupEnabled)
+        if (format != "v1") {
+            val token = vm.state.value.display!!.stored.token
+            // v3 uses a nonstandard starter; v2 retains its earlier P10 checkpoint reference.
+            val people = (listOf(if (format == "v3") 11 else 10) + (2..9)).map { "L1-T01-P${it.toString().padStart(2, '0')}" }
+            compose.runOnUiThread { vm.applyLineup(token, "L1-T01", people) }; ready()
+        }
+        assertEquals(format != "v1", vm.state.value.season!!.lineupEnabled)
+        assertEquals(format == "v3", vm.state.value.season!!.profilesEnabled)
         compose.runOnUiThread { vm.execute(PennantCommand.OPEN_SELECTED) }; ready()
         compose.runOnUiThread { vm.execute(PennantCommand.PLATE_APPEARANCE) }; ready()
         compose.runOnUiThread { vm.execute(PennantCommand.PITCH) }; ready()
@@ -115,7 +120,13 @@ class PennantProcessRecoveryTest {
             .put("generation", stored.token.generationId).put("revision", stored.token.revision)
             .put("game_id", active.game.fixture.gameId).put("checkpoint_sha256", active.stateHash)
             .put("pitches", active.snapshot.pitchesAccepted).put("advance_calls", active.advanceCalls)
-            .put("lineup_world", lineupWorld).put("away_lineup", JSONArray(active.lineup.away)).put("home_lineup", JSONArray(active.lineup.home))
+            .put("world_format", format).put("lineup_world", format != "v1").put("profiles_world", format == "v3")
+            .put("away_lineup", JSONArray(active.lineup.away)).put("home_lineup", JSONArray(active.lineup.home))
+        active.profileInput?.let {
+            proof.put("away_profiles", JSONArray(it.away.map { p -> p.profileId })).put("home_profiles", JSONArray(it.home.map { p -> p.profileId }))
+                .put("table_version", it.tableVersion).put("source_version", it.sourceVersion)
+            assertEquals("contact", it.profile("home", 1))
+        }
         compose.pennantScreenshot("pennant-before-process-kill.png")
         // This is intentionally a live setup probe, not a completed JUnit assertion case.
         // The host kills this exact process after observing the ready record and pidof.
@@ -137,8 +148,14 @@ class PennantProcessRecoveryTest {
         assertEquals(expected.getLong("pitches"), active.snapshot.pitchesAccepted)
         assertEquals(expected.getLong("advance_calls"), active.advanceCalls)
         assertEquals(expected.getBoolean("lineup_world"), stored.state.lineupEnabled)
+        assertEquals(expected.getBoolean("profiles_world"), stored.state.profilesEnabled)
         assertEquals(expected.getJSONArray("away_lineup").toString(), JSONArray(active.lineup.away).toString())
         assertEquals(expected.getJSONArray("home_lineup").toString(), JSONArray(active.lineup.home).toString())
+        active.profileInput?.let {
+            assertEquals(expected.getJSONArray("away_profiles").toString(), JSONArray(it.away.map { p -> p.profileId }).toString())
+            assertEquals(expected.getJSONArray("home_profiles").toString(), JSONArray(it.home.map { p -> p.profileId }).toString())
+            assertEquals(expected.getString("table_version"), it.tableVersion); assertEquals(expected.getString("source_version"), it.sourceVersion)
+        }
         val replay = active.recover(stored.state.masterSeed); replay.advanceOnePitch()
         val expectedNext: GameCheckpoint = replay.checkpoint()
         compose.runOnUiThread { vm.execute(PennantCommand.PITCH) }; ready()

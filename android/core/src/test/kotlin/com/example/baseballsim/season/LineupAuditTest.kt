@@ -94,6 +94,13 @@ class LineupAuditTest {
                 if (master == "42" && scenario == "default") {
                     assertEquals("0bde5d0de901771b13e75adc64aab9d21a5854c8f7aed9e34aafb72a3881bbde", Ref.hash(CheckpointCodec.encodeSeason(legacy)))
                 }
+                if (master == "42") {
+                    val frozen = checkNotNull(javaClass.getResourceAsStream("/batter-profile/old-v2-42-$scenario.bin.gz")).use {
+                        java.util.zip.GZIPInputStream(it).use { zipped -> zipped.readBytes() }
+                    }
+                    assertArrayEquals(frozen, CheckpointCodec.encodeSeason(actual.state))
+                    assertArrayEquals(frozen, CheckpointCodec.encodeSeason(CheckpointCodec.decodeSeason(frozen)))
+                }
                 System.getProperty("pennant.audit.dir")?.let { directory ->
                     val output = Path.of(directory).resolve("lineup"); Files.createDirectories(output)
                     Files.writeString(output.resolve("actual-$master-$scenario.json"), Ref.gson.toJson(observation(master, scenario, actual)) + "\n", StandardOpenOption.CREATE_NEW)

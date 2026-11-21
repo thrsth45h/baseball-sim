@@ -102,12 +102,19 @@ class RoomSeasonStore(
         }
     }
     override suspend fun create(masterSeed: String, selectedClubId: String, operationId: String, expected: StoreToken?, replacementConfirmed: Boolean): StoredSeason =
-        createWorld(masterSeed, selectedClubId, operationId, expected, replacementConfirmed, false)
+        createWorld(masterSeed, selectedClubId, operationId, expected, replacementConfirmed, CreationFormat.V1)
     override suspend fun createLineup(masterSeed: String, selectedClubId: String, operationId: String, expected: StoreToken?, replacementConfirmed: Boolean): StoredSeason =
-        createWorld(masterSeed, selectedClubId, operationId, expected, replacementConfirmed, true)
-    private suspend fun createWorld(masterSeed: String, selectedClubId: String, operationId: String, expected: StoreToken?, replacementConfirmed: Boolean, lineup: Boolean): StoredSeason {
+        createWorld(masterSeed, selectedClubId, operationId, expected, replacementConfirmed, CreationFormat.V2)
+    override suspend fun createBatterProfile(masterSeed: String, selectedClubId: String, operationId: String, expected: StoreToken?, replacementConfirmed: Boolean): StoredSeason =
+        createWorld(masterSeed, selectedClubId, operationId, expected, replacementConfirmed, CreationFormat.V3)
+    private enum class CreationFormat { V1, V2, V3 }
+    private suspend fun createWorld(masterSeed: String, selectedClubId: String, operationId: String, expected: StoreToken?, replacementConfirmed: Boolean, format: CreationFormat): StoredSeason {
         operation(operationId)
-        val initial = withContext(computation) { if (lineup) SeasonState.initialLineup(masterSeed, selectedClubId) else SeasonState.initial(masterSeed, selectedClubId) }
+        val initial = withContext(computation) { when (format) {
+            CreationFormat.V1 -> SeasonState.initial(masterSeed, selectedClubId)
+            CreationFormat.V2 -> SeasonState.initialLineup(masterSeed, selectedClubId)
+            CreationFormat.V3 -> SeasonState.initialBatterProfile(masterSeed, selectedClubId)
+        } }
         val bytes = withContext(computation) { CheckpointCodec.encodeSeason(initial) }
         val bodyHash = hash(bytes); val signature = fingerprint("create", expected, bodyHash)
         val world = newId(); val generation = newId()
@@ -152,6 +159,9 @@ class RoomSeasonStore(
         }
         require(value.masterSeed == before.state.masterSeed && value.games == before.state.games)
         require(value.versions == before.state.versions) { "Ordinary updates cannot change the world format" }
+        require(value.worldProfiles == before.state.worldProfiles && value.worldProfileTableVersion == before.state.worldProfileTableVersion) {
+            "Ordinary updates cannot change the world's fixed batter profiles or table"
+        }
         if (value.clubLineups != before.state.clubLineups) {
             // The complete candidate must be exactly one selected-club edit, not a combined SELECT,
             // calendar/progress update, or another team's mutation hidden in the same frame.
@@ -174,7 +184,8 @@ class RoomSeasonStore(
                 require(it == before.state.beginNext().active) { "A new start marker must freeze the current saved plans before any advance" }
             }
         } else if (nextActive != null) {
-            require(nextActive.game == priorActive.game && nextActive.initial == priorActive.initial && nextActive.lineup == priorActive.lineup && nextActive.advanceCalls >= priorActive.advanceCalls)
+            require(nextActive.game == priorActive.game && nextActive.initial == priorActive.initial && nextActive.lineup == priorActive.lineup &&
+                nextActive.profileInput == priorActive.profileInput && nextActive.advanceCalls >= priorActive.advanceCalls)
             if (nextActive.advanceCalls == priorActive.advanceCalls) require(nextActive == priorActive)
         } else {
             require(value.results.size == before.state.results.size + 1) { "An active match cannot silently disappear" }

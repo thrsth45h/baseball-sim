@@ -7,6 +7,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.baseballsim.season.*
 import java.io.File
 import java.security.MessageDigest
+import kotlinx.coroutines.runBlocking
 import org.json.JSONArray
 import org.json.JSONObject
 import org.junit.Assert.*
@@ -50,12 +51,10 @@ class PennantLineupFullSeasonTest {
     }
     @Test fun editedParticipantsComplete720RealGamesAndKeepAll144PersonRecords() {
         compose.onNodeWithTag("mode_pennant").performClick(); val vm = ready()
-        val exists = vm.state.value.season != null
-        if (exists) { home(); click(PennantTags.NAV_SETTINGS) }
-        compose.onNodeWithTag(PennantTags.SEED).performScrollTo().performTextReplacement("42")
-        click(PennantTags.CREATE)
-        if (exists) compose.onNodeWithTag(PennantTags.CONFIRM_CREATE).performClick()
-        ready(); assertTrue(vm.state.value.season!!.lineupEnabled)
+        // UI CREATE now makes v3. Preserve this old v2 acceptance case explicitly.
+        runBlocking { createLineupTargetWorld() }
+        compose.runOnUiThread { vm.reload() }; ready()
+        assertTrue(vm.state.value.season!!.lineupEnabled); assertFalse(vm.state.value.season!!.profilesEnabled)
         fun ownGame() { home(); click(PennantTags.OPEN); ready(); click(PennantTags.FINISH_GAME); ready() }
         ownGame()
         val first = CheckpointCodec.encodeSummary(vm.state.value.season!!.results.first())

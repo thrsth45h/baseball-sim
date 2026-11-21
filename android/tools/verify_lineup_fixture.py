@@ -36,8 +36,27 @@ def verify(apk: Path) -> dict:
             "provenance": "constructed schema1 fixture; not actual old APK output or upgrade"}
 
 
+def verify_v2(apk: Path) -> dict:
+    asset = "assets/batter-profile/one-game-v2.fixture.bin"
+    with zipfile.ZipFile(apk) as archive:
+        if archive.namelist().count(asset) != 1:
+            raise ValueError(f"expected exactly one {asset} in {apk}")
+        packed = archive.read(asset)
+    database = gzip.decompress(packed)
+    packed_sha = hashlib.sha256(packed).hexdigest()
+    database_sha = hashlib.sha256(database).hexdigest()
+    if (len(packed), packed_sha) != (44266, "6f50ba22f38304a15dcd5925665355d2ced1915dd223fbcd5781a5869c4e377a"):
+        raise ValueError("packaged v2 gzip does not match the independent fixture")
+    if (len(database), database_sha) != (475136, "85e6d5316017ecccbd05ee2b8c6773e5337c78abdb42ed9ca66bcb21549481a9"):
+        raise ValueError("decompressed v2 database does not match the independent fixture")
+    return {"asset": asset, "verified": True, "packed_bytes": len(packed), "packed_sha256": packed_sha,
+            "database_bytes": len(database), "database_sha256": database_sha,
+            "provenance": "manager constructed schema1 DB from historical v2 frame/DDL; not actual old APK output or upgrade"}
+
+
 if __name__ == "__main__":
     report = verify(APK)
+    report["additional_fixtures"] = [verify_v2(APK)]
     destination = Path("app/build/lineup-fixture-packaging.json")
     destination.parent.mkdir(parents=True, exist_ok=True)
     destination.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
