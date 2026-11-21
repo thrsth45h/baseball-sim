@@ -107,7 +107,15 @@ object CheckpointCodec {
         fun lineup(v: GameLineup) { int(v.away.size); v.away.forEach { text(it) }; int(v.home.size); v.home.forEach { text(it) } }
         fun profileInput(v: GameProfileInput) {
             text(v.tableVersion); text(v.sourceVersion)
-            for (side in listOf(v.away, v.home)) { int(side.size); side.forEach { text(it.playerId); text(it.profileId) } }
+            // The same frame already carries the immutable away/home lineup IDs in this order.
+            for (side in listOf(v.away, v.home)) side.forEach { entry ->
+                output.writeByte(when (entry.profileId) {
+                    "standard" -> 0
+                    "contact" -> 1
+                    "slugger" -> 2
+                    else -> error("Unsupported batter profile ID")
+                })
+            }
         }
         fun gameCheckpoint(v: GameCheckpoint) {
             scheduled(v.game); long(v.maxPitches); long(v.advanceCalls); snapshot(v.snapshot); source(v.source); snapshot(v.initial)
@@ -168,16 +176,23 @@ object CheckpointCodec {
         }
         fun source() = SourceCursor(text(), long(), nullableLong(), nullableText(), nullableLong(), nullableLong(), nullableLong(), if (bool()) int() else null)
         fun lineup() = GameLineup(List(size(9, 9)) { text() }, List(size(9, 9)) { text() })
-        fun profileInput(): GameProfileInput {
+        fun profileInput(lineup: GameLineup): GameProfileInput {
             val table = text(); val source = text()
-            val away = List(size(9, 9)) { BatterProfileEntry(text(), text()) }
-            val home = List(size(9, 9)) { BatterProfileEntry(text(), text()) }
-            return GameProfileInput(away, home, table, source)
+            fun entries(people: List<String>) = people.map { playerId ->
+                val profileId = when (input.readUnsignedByte()) {
+                    0 -> "standard"
+                    1 -> "contact"
+                    2 -> "slugger"
+                    else -> throw IllegalArgumentException("Unsupported batter profile code")
+                }
+                BatterProfileEntry(playerId, profileId)
+            }
+            return GameProfileInput(entries(lineup.away), entries(lineup.home), table, source)
         }
         fun gameCheckpoint(): GameCheckpoint {
             val game = scheduled(); val limit = long(); val advances = long(); val current = snapshot(); val cursor = source(); val initial = snapshot()
             val people = if (game.versions.lineupEnabled) lineup() else GameLineup.initial(game)
-            val profiles = if (game.versions.profilesEnabled) profileInput() else null
+            val profiles = if (game.versions.profilesEnabled) profileInput(people) else null
             return GameCheckpoint(game, limit, advances, current, cursor, initial, people, profiles)
         }
         fun summary(): GameSummary {
@@ -185,7 +200,7 @@ object CheckpointCodec {
             val lines = List(size(18, 18)) { nullableLong() }; val delta = score(); val pitches = long()
             val people = List(size(18, 18)) { PlayerGameCounts(text(), text(), int(), text(), counts()) }
             val order = if (game.versions.lineupEnabled) lineup() else GameLineup.initial(game)
-            val profiles = if (game.versions.profilesEnabled) profileInput() else null
+            val profiles = if (game.versions.profilesEnabled) profileInput(order) else null
             return GameSummary(game, limit, status, outcome, reason, scoreValue, lines, delta, pitches, people, order, profiles)
         }
         fun standing(): Standing {

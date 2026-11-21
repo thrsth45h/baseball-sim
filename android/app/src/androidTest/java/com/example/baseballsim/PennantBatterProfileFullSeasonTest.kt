@@ -88,6 +88,7 @@ class PennantBatterProfileFullSeasonTest {
         } finally {
             recordProgress()
         }
+        val bulkElapsed = SystemClock.elapsedRealtime() - started
         assertNull(vm.state.value.error)
         val state = vm.state.value.season!!
         assertEquals(720, state.results.size); assertEquals(141, state.dayIndex); assertNull(state.active)
@@ -99,7 +100,7 @@ class PennantBatterProfileFullSeasonTest {
             .put("completedPlateAppearances", c.completedPlateAppearances).put("safeHitEvents", c.safeHitEvents)
             .put("walkEvents", c.walkEvents).put("strikeoutEvents", c.strikeoutEvents).put("homeRunEvents", c.homeRunEvents)
         val report = JSONObject().put("schema", "batter-profile-real-transactions-v1").put("master_seed", "42").put("scenario", "order_bench")
-            .put("completed_games", 720).put("day_index", 141).put("elapsed_ms_bulk_remaining_707", SystemClock.elapsedRealtime() - started)
+            .put("completed_games", 720).put("day_index", 141).put("elapsed_ms_bulk_remaining_707", bulkElapsed)
             .put("prefix_games_also_real_transactions", prefixGames).put("frame_bytes", frame.size)
             .put("frame_sha256", MessageDigest.getInstance("SHA-256").digest(frame).joinToString("") { "%02x".format(it) })
             .put("players", JSONObject().apply { state.playerCounts.forEach { put(it.playerId, counts(it.counts)) } })
@@ -111,11 +112,23 @@ class PennantBatterProfileFullSeasonTest {
                 .put("score", JSONObject().put("away", game.score.away).put("home", game.score.home))
                 .put("participants", JSONArray().apply { game.batters.forEach { row -> put(JSONObject().put("player_id", row.playerId)
                     .put("club_id", row.clubId).put("slot", row.slot).put("side", row.side).put("counts", counts(row.counts))) } })) } })
-        File(output, "batter-profile-real-season-42.json").writeText(report.toString(2))
         compose.pennantScreenshot("batter-profile-season-completed.png")
         val beforeBrowsing = vm.state.value.display
         compose.observeAllPlayerDetails(state, "batter-profile-player-detail-observed-144.json")
         assertSame(beforeBrowsing, vm.state.value.display)
         compose.runOnUiThread { vm.reload() }; ready(); assertEquals(state, vm.state.value.season)
+        val beforeSave = vm.state.value.display!!.stored.token
+        home(); click(PennantTags.NAV_SETTINGS); click(PennantTags.SAVE); ready()
+        val saved = vm.state.value.display!!.stored.token
+        assertEquals(beforeSave.copy(revision = beforeSave.revision + 1), saved)
+        click(PennantTags.LOAD); compose.onNodeWithTag(PennantTags.CONFIRM_LOAD).performClick(); ready()
+        val loaded = vm.state.value.display!!.stored
+        assertEquals(saved.worldId, loaded.token.worldId)
+        assertNotEquals(saved.generationId, loaded.token.generationId)
+        assertEquals(saved.revision + 1, loaded.token.revision)
+        assertEquals(state, loaded.state)
+        assertArrayEquals(frame, CheckpointCodec.encodeSeason(loaded.state))
+        report.put("completed_snapshot_manual_slot_roundtrip", true)
+        File(output, "batter-profile-real-season-42.json").writeText(report.toString(2))
     }
 }

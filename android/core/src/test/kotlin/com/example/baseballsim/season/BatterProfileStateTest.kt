@@ -128,8 +128,14 @@ class BatterProfileStateTest {
         val frame = CheckpointCodec.encodeSeason(session.state)
         assertEquals(session.state, CheckpointCodec.decodeSeason(frame))
         assertArrayEquals(frame, CheckpointCodec.encodeSeason(CheckpointCodec.decodeSeason(frame)))
-        val checkpoint = CheckpointCodec.decodeGame(CheckpointCodec.encodeGame(active))
+        val gameFrame = CheckpointCodec.encodeGame(active)
+        val checkpoint = CheckpointCodec.decodeGame(gameFrame)
         assertEquals(active, checkpoint.recover("42").checkpoint())
+        val firstProfileCode = gameFrame.size - 18
+        val unknownCode = gameFrame.copyOf().apply { this[firstProfileCode] = 3 }
+        assertThrows(IllegalArgumentException::class.java) { CheckpointCodec.decodeGame(unknownCode) }
+        val wrongProfile = gameFrame.copyOf().apply { this[firstProfileCode] = ((this[firstProfileCode] + 1) % 3).toByte() }
+        assertThrows(IllegalArgumentException::class.java) { CheckpointCodec.decodeGame(wrongProfile) }
         val entries = active.profileInput!!.home.toMutableList()
         entries[0] = entries[0].copy(profileId = "slugger")
         val forged = GameProfileInput(active.profileInput.away, entries)
@@ -148,5 +154,24 @@ class BatterProfileStateTest {
         assertThrows(IllegalArgumentException::class.java) {
             SeasonState.restore("42", club, session.state.dayIndex, emptyList(), active, SeasonVersions.lineup())
         }
+    }
+    @Test fun maxSeedNearFullAndCompletedV3FramesFitWithCursorWindowHeadroom() {
+        val session = SeasonSession(SeasonState.initialBatterProfile(ULong.MAX_VALUE.toString(), club))
+        repeat(719) { session.finishCurrent() }
+        session.advanceOnePitch()
+        assertEquals(719, session.state.results.size)
+        assertNotNull(session.state.active)
+        fun checkFrame(state: SeasonState) {
+            val frame = CheckpointCodec.encodeSeason(state)
+            // Android's default CursorWindow also needs space for the row's other columns.
+            assertTrue("Season payload is ${frame.size} bytes", frame.size <= 1_950_000)
+            val decoded = CheckpointCodec.decodeSeason(frame)
+            assertEquals(state, decoded)
+            assertArrayEquals(frame, CheckpointCodec.encodeSeason(decoded))
+        }
+        checkFrame(session.state)
+        session.finishCurrent()
+        assertEquals(SeasonStatus.COMPLETE, session.state.status)
+        checkFrame(session.state)
     }
 }
