@@ -22,7 +22,7 @@ import org.junit.runner.RunWith
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicInteger
 
-/** Creates a schema-1 fixture with the frozen pre-performance writer, not an old-APK upgrade test. */
+/** Exercises the frozen v1 writer through the current Room schema. */
 @RunWith(AndroidJUnit4::class)
 class PennantBrowseStoreTest {
     @get:Rule val compose = createComposeRule()
@@ -73,7 +73,7 @@ class PennantBrowseStoreTest {
             db.close(); db = PennantDatabase.open(context, name)
             val store = RoomSeasonStore(db)
             assertEquals(paused, store.read()); assertEquals(originalRows, rows(db))
-            assertEquals(1, db.openHelper.readableDatabase.version)
+            assertEquals(2, db.openHelper.readableDatabase.version)
             val actions = Counted(DurablePennantActions(SeasonCoordinator(store)))
             lateinit var vm: PennantViewModel
             compose.runOnUiThread { vm = PennantViewModel(actions); owner.put("browse", vm) }
@@ -109,7 +109,7 @@ class PennantBrowseStoreTest {
             }
             File(pennantTestOutputDirectory(), "player-detail-observed-108.json").writeText(JSONObject()
                 .put("schema", "club-home-observed-ui-v1").put("source", "Compose semantic Text nodes, not expected-state copies")
-                .put("fixture", "frozen schema-1 writer, one completed game, next paused match").put("players", observed).toString(2))
+                .put("fixture", "frozen v1 writer, current Room schema, one completed game, next paused match").put("players", observed).toString(2))
             assertEquals(108, observed.length())
             click(PennantTags.player("L2-T06-P09"))
             restoration.emulateSavedInstanceStateRestore()
