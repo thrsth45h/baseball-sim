@@ -1,0 +1,17 @@
+{
+  "interpretation": "Python-assembled schema1 DB of PR53 API35 actual completed-frame content, not a native DB dump",
+  "frame_sha256": "d255bd19f2a9de71439b82334968d96723bccd79cfe222afc512f09c67e3fc86",
+  "schema_sha256": "3af7cc7ed8cc59fd2d65666aa5464afb80598b5979428c3f88ae3e4d5f7004a8",
+  "gzip_sha256": "05136adb14a7fc531c590a8f41377b919d67639c42ae53e771f946cd0c66986c",
+  "bytes": 459205,
+  "results": 720,
+  "club_and_people": [
+    12,
+    144
+  ],
+  "master_seed": "42",
+  "world": "old-v3-season42-world",
+  "generation": "old-v3-season42-generation",
+  "operation": "old-v3-season42-final",
+  "revision": 1440
+}

@@ -187,7 +187,7 @@ private val ConfirmationSaver = listSaver<PennantConfirmation?, String>(
                         PennantPage.RECORDS -> RecordsPanel(pennantPlayers(season, navigation.browseClubId), season.lineupEnabled,
                             navigation.browseClubId) { savedNavigation = navigation.browse(it) }
                         PennantPage.HISTORY -> if (token != null && timeline != null && timeline.year > 1) {
-                            HistoryPanel(token, navigation.browseClubId, { savedNavigation = navigation.browse(it) }, historyYears, historyYear)
+                            HistoryPanel(token, state.canUse, navigation.browseClubId, { savedNavigation = navigation.browse(it) }, historyYears, historyYear)
                         } else Unit
                         PennantPage.MATCH -> {
                             state.display?.let { GameCard(it) }
@@ -204,7 +204,8 @@ private val ConfirmationSaver = listSaver<PennantConfirmation?, String>(
             }
         }
     }
-    confirmation?.takeIf { season != null && state.loaded && it.token == token }?.let { pending ->
+    confirmation?.takeIf { season != null && state.loaded && it.token == token &&
+        (it.command != PennantCommand.NEXT_YEAR || timeline != null) }?.let { pending ->
         val (title, message, button, tag) = when (pending.command) {
             PennantCommand.CREATE -> ConfirmationText("新しいシーズンを開始", "現在の進行データを置き換えます。手動セーブは残ります。", "開始する", PennantTags.CONFIRM_CREATE)
             PennantCommand.NEXT_YEAR -> ConfirmationText("翌年へ進む", "${checkNotNull(timeline).year}年目の成績を残し、同じ選手・打順で翌年を開始します。", "進む", PennantTags.CONFIRM_NEXT_YEAR)
@@ -219,16 +220,19 @@ private val ConfirmationSaver = listSaver<PennantConfirmation?, String>(
 
 private data class ConfirmationText(val title: String, val message: String, val button: String, val tag: String)
 
-@Composable private fun HistoryPanel(token: StoreToken, club: String, browse: (String) -> Unit,
+@Composable private fun HistoryPanel(token: StoreToken, canRead: Boolean, club: String, browse: (String) -> Unit,
     listYears: suspend (StoreToken) -> List<Long>, loadYear: suspend (StoreToken, Long) -> SeasonYear) {
     var requested by rememberSaveable { mutableStateOf<Long?>(null) }
-    var years by remember(token) { mutableStateOf<List<Long>?>(null) }
-    var loaded by remember(token, requested) { mutableStateOf<SeasonYear?>(null) }
-    var error by remember(token, requested) { mutableStateOf(false) }
-    LaunchedEffect(token, requested) {
+    // Ordinary play can publish hundreds of revisions while skipping a season. A history
+    // anchor only changes with the generation, so keep any loaded year and wait for idle.
+    var years by remember(token.worldId, token.generationId) { mutableStateOf<List<Long>?>(null) }
+    var loaded by remember(token.worldId, token.generationId, requested) { mutableStateOf<SeasonYear?>(null) }
+    var error by remember(token, requested, canRead) { mutableStateOf(false) }
+    LaunchedEffect(token, requested, canRead) {
+        if (!canRead) return@LaunchedEffect
         try {
             if (years == null) years = listYears(token)
-            requested?.let { loaded = loadYear(token, it) }
+            if (loaded == null) requested?.let { loaded = loadYear(token, it) }
         } catch (cancelled: CancellationException) { throw cancelled }
         catch (_: Exception) { error = true }
     }

@@ -15,7 +15,7 @@ android {
         versionCode = 6
         versionName = "0.6-season-history-tech"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        testInstrumentationRunnerArguments["notClass"] = "com.example.baseballsim.PennantProcessRecoveryTest,com.example.baseballsim.data.RoomSeasonBenchmarkTest,com.example.baseballsim.PennantLineupFullSeasonTest,com.example.baseballsim.PennantBatterProfileFullSeasonTest"
+        testInstrumentationRunnerArguments["notClass"] = "com.example.baseballsim.PennantProcessRecoveryTest,com.example.baseballsim.data.RoomSeasonBenchmarkTest,com.example.baseballsim.PennantLineupFullSeasonTest,com.example.baseballsim.PennantBatterProfileFullSeasonTest,com.example.baseballsim.PennantAnnualSeasonTest"
         testInstrumentationRunnerArguments["additionalTestOutputDir"] = "/sdcard/Android/media/com.example.baseballsim/additional_test_output"
     }
     compileOptions {
