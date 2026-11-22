@@ -10,6 +10,8 @@
 
 ## 現在の到達点
 
+- **2026-11-22：翌年への移行と年度別成績を本人承認。** 打者タイプ実装 [PR #53](https://github.com/thrsth45h/baseball-sim/pull/53) は `0c63966` に統合済み。[設計PR #55](https://github.com/thrsth45h/baseball-sim/pull/55)の[限定範囲](SEASON_HISTORY_DESIGN.md)とworker実装〜独立レビュー・APK公開を提示後、本人が「はい」と回答した。D063 CONFIRMED・ADR-0021 Accepted。設計を統合してから専用workerへ委任する。APKは [PR #54で確定した配布手順](APK_RELEASES.md) に沿ってGitHub Releasesに添付する。
+
 - **2026-11-22：D062の試作用打者タイプを実装し、隔離CIと責任者の独立検証を完了。** 試合開始時の出場者に標準・ミート型・長打型を固定し、逐球イベントと個人記録に反映する。旧v1/v2の保存形式と確率表は維持した。検証・配布source `98988d139cc021e2164580733f8d0c9dd5647096` / tree `129ff1754e7e9e7e87bd74c44dbe32050e28afcc`。11ワークフロー成功、app42/Core36/通常端末60＋v3完走端末1/実プロセス復旧3。新v3を720試合実進行して144人の表示と集計を独立参照に照合し、最終データのセーブ・ロード往復も確認。開発中にAndroidの1行読取上限で止まったため、配布前のv3保存だけを小型化した。mainの統合状態・統合SHAは実装PRを参照。正式能力と研究モデルの採用は別の判断とする。[設計PR #52](https://github.com/thrsth45h/baseball-sim/pull/52)・[実装PR #53](https://github.com/thrsth45h/baseball-sim/pull/53)・[操作・APK](batter-profile/README.md)・[検証記録](batter-profile/VALIDATION.md)・[CI証拠](batter-profile/CI_EVIDENCE.json)
 
 - **2026-11-17：設計PR #52の限定三タイプ・仮分布・新規v3/旧保存維持・worker実装〜検証APKを本人承認。** 2026-11-17、本人が設計PR #52の三タイプの仮分布・新規v3/旧保存維持・worker実装〜検証APKという範囲確認に『この範囲で進める（推奨）』と回答した。限定範囲の正式承認であり、内部細目の個別精査・正式能力係数や研究採用の承認ではない。 D062 CONFIRMED/ADR-0020 Acceptedへ更新し、設計レビュー/統合後に専用workerへ直接委任する。責任者が独立参照・コード/成果物/実画面レビュー・必要修正・CIと問題のない実装PR統合/APK報告まで管理する。確率表/範囲は[BATTER_PROFILE_DESIGN.md](BATTER_PROFILE_DESIGN.md)を正本とする。下の提案/未承認記述は作成時点の履歴。正式能力/研究採用/投手/年次/経営は範囲外、既存作業とユーザーPC画面/入力/Android環境を保護する。
