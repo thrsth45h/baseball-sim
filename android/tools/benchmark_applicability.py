@@ -1,7 +1,7 @@
-"""Report D061's explicit historical comparison boundary, never a performance pass.
+"""Report the historical writer comparison boundary under D061 and D063.
 
 The original generator and frozen hashes remain unchanged. Missing/corrupt historical
-objects and changes outside the accepted season/codec contract are hard failures.
+objects and changes outside the accepted season, codec and Room contracts are hard failures.
 """
 import argparse
 import hashlib
@@ -16,6 +16,7 @@ OLD_SOURCE = "android/app/src/main/java/com/example/baseballsim/data/RoomSeasonS
 BASELINE_BLOB = "4cebd3e9bd283d0b0e70e70c81070edf17fae704"
 ALLOWED = {
     "android/app/src/main/java/com/example/baseballsim/data/SeasonStore.kt",
+    "android/app/src/main/java/com/example/baseballsim/data/PennantDatabase.kt",
     *[f"android/core/src/main/kotlin/com/example/baseballsim/season/{name}.kt" for name in
       ("Schedule", "Season", "Records", "Checkpoint", "CheckpointCodec")],
 }
@@ -56,7 +57,7 @@ def main():
               "status": "applicable" if supported else "not_applicable",
               "comparison_executed": False, "performance_gate_passed": None,
               "reason": "Shared dependencies unchanged; run the original strict generator" if supported else
-              "D061 changes the season/codec contract; historical shared-dependency premise no longer holds",
+              "D061 changes the season/codec contract and D063 adds Room annual history; the historical shared-dependency premise no longer holds",
               "changed_dependencies": changed,
               "historical_generator_and_hashes_unchanged": True,
               "historical_generator_sha256": digest(approved_generator),

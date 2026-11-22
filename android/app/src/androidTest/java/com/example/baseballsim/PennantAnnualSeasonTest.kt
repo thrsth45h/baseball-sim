@@ -51,6 +51,9 @@ class PennantAnnualSeasonTest {
         assertEquals(first, stored())
         click(PennantTags.NEXT_YEAR)
         compose.onNodeWithTag(PennantTags.CONFIRM_NEXT_YEAR).performClick()
+        compose.runOnUiThread {
+            repeat(8) { vm.execute(PennantCommand.NEXT_YEAR, confirmationToken = first.token) }
+        }
         ready()
         val second = stored()
         assertEquals(2L, second.timeline!!.year)
@@ -58,6 +61,7 @@ class PennantAnnualSeasonTest {
         assertEquals(first.state.clubLineups, second.state.clubLineups)
         assertEquals(first.state.worldProfiles, second.state.worldProfiles)
         assertEquals(first.state.selectedClubId, second.state.selectedClubId)
+        assertEquals(first.token.revision + 1, second.token.revision)
         assertTrue(second.state.results.isEmpty())
         assertTrue(second.state.playerCounts.all { it.counts.completedPlateAppearances == 0L })
         compose.onNodeWithTag(PennantTags.YEAR).assertTextEquals("2年目")

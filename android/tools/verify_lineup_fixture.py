@@ -56,7 +56,7 @@ def verify_v2(apk: Path) -> dict:
 
 
 def verify_completed_v3(apk: Path) -> dict:
-    asset = "assets/season-history/completed-v3.db.gz"
+    asset = "assets/season-history/completed-v3.fixture.bin"
     with zipfile.ZipFile(apk) as archive:
         if archive.namelist().count(asset) != 1:
             raise ValueError(f"expected exactly one {asset} in {apk}")

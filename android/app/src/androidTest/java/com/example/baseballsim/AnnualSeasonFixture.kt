@@ -17,7 +17,7 @@ internal fun installCompletedV3Fixture(context: Context, name: String) {
     check(!destination.exists())
     destination.parentFile!!.mkdirs()
     val packed = InstrumentationRegistry.getInstrumentation().context.assets
-        .open("season-history/completed-v3.db.gz").use { it.readBytes() }
+        .open("season-history/completed-v3.fixture.bin").use { it.readBytes() }
     check(hash(packed) == "05136adb14a7fc531c590a8f41377b919d67639c42ae53e771f946cd0c66986c")
     GZIPInputStream(packed.inputStream()).use { input -> destination.outputStream().use { input.copyTo(it) } }
 }

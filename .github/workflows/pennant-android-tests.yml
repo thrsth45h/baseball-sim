@@ -48,6 +48,7 @@ jobs:
           # allocation larger than disk-size, despite accepting the config value.
           script: |
             bash gradlew :app:assembleDebug :app:assembleDebugAndroidTest --no-daemon --stacktrace
+            python3 tools/verify_lineup_fixture.py
             python3 tools/offline_manifest.py
             python3 tools/source_info.py
             python3 tools/pennant_source_info.py

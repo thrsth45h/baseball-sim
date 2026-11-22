@@ -6,11 +6,15 @@ import java.io.File
 
 class RoomSchemaTest {
     @Test fun generatedRoomSchemaMatchesTheTrackedSchema() {
-        val tracked = File("schemas/com.example.baseballsim.data.PennantDatabase/1.json")
-        val generated = File("build/reports/room-schemas/com.example.baseballsim.data.PennantDatabase/1.json")
+        val tracked = File("schemas/com.example.baseballsim.data.PennantDatabase/2.json")
+        val generated = File("build/reports/room-schemas/com.example.baseballsim.data.PennantDatabase/2.json")
         assertTrue("Tracked schema is required", tracked.isFile)
         assertTrue("The current compiler must export the schema", generated.isFile)
         assertArrayEquals(tracked.readBytes(), generated.readBytes())
+    }
+    @Test fun schemaOneRemainsTheOriginalMigrationSource() {
+        val historical = File("schemas/com.example.baseballsim.data.PennantDatabase/1.json")
+        assertEquals("3af7cc7ed8cc59fd2d65666aa5464afb80598b5979428c3f88ae3e4d5f7004a8", hash(historical.readBytes()))
     }
     @Test fun bothBackupRuleFormatsExcludeThePrototypeDatabase() {
         val manifest = File("src/main/AndroidManifest.xml").readText()

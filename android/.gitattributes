@@ -5,3 +5,4 @@ gradle/wrapper/gradle-wrapper.jar binary
 app/src/androidTest/assets/lineup/one-game-v1.fixture.bin binary
 gradlew.bat text eol=crlf
 app/src/androidTest/assets/batter-profile/one-game-v2.fixture.bin binary
+app/src/androidTest/assets/season-history/completed-v3.fixture.bin binary
