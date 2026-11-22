@@ -42,6 +42,8 @@
 
 ## 現在の状態
 
+次回以降のAndroid検証版は [GitHub Releases](https://github.com/thrsth45h/baseball-sim/releases) からAPK本体を直接ダウンロードできます。[配布手順](docs/APK_RELEASES.md)
+
 **新規シーズンの打者タイプを逐球生成に結び付けるAndroid技術検証版**を実装しました。標準・ミート型・長打型を人物に固定し、打順・控え入替後の出場者を試合と個人記録に反映します。API35の隔離環境で720試合を実際に保存し、144人の表示と完走後のセーブ・ロードを確認しました。旧v1/v2のセーブは当時の試合生成で継続できます。[APK取得・操作](docs/batter-profile/README.md)・[検証記録](docs/batter-profile/VALIDATION.md)・[PR #53](https://github.com/thrsth45h/baseball-sim/pull/53)
 
 **各球団12打者から出場9人を選び、打順を変えられるAndroid技術検証版**を実装しました。[APK取得・操作](docs/lineup-roster/README.md)・[検証記録](docs/lineup-roster/VALIDATION.md)・[PR #51](https://github.com/thrsth45h/baseball-sim/pull/51)。新規v2は144人、旧v1は固定108人のまま継続し、試合前の編成を人物別の記録へ反映します。source976eeabのapp39/core28/通常device53＋別v2全シーズン1は失敗/スキップ0。API35で旧新それぞれ実720試合、実UI全144人、配布APKの両形式force-stop復旧を確認し、責任者の独立コード・期待値・成果物照合後、main `68d44b0`へ統合済みです。全員同じ仮確率で戦力差はまだなく、投手・途中交代・能力・年次・経営は追加していません。
