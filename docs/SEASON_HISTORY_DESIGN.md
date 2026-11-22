@@ -1,6 +1,6 @@
 # 翌年への移行と年度別成績の試作
 
-- 状態：提案。D063 PROVISIONAL、[ADR-0021](adr/0021-season-history.md)。実装開始は未承認。
+- 状態：承認済みの限定試作。D063 CONFIRMED、[ADR-0021](adr/0021-season-history.md)。2026-11-22、[設計PR #55](https://github.com/thrsth45h/baseball-sim/pull/55)の範囲とAPK公開までの進行を提示し、本人が「はい」と回答した。
 - 基準：打者タイプ版 [PR #53](https://github.com/thrsth45h/baseball-sim/pull/53) を統合した `0c63966` と、配布運用 [PR #54](https://github.com/thrsth45h/baseball-sim/pull/54) を統合した `4a41104`。
 
 ## プレイヤーができるようになること
