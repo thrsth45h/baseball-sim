@@ -6,7 +6,7 @@ import com.example.baseballsim.season.SeasonState
 
 enum class PennantPage(val title: String) {
     HOME("球団ホーム"), LINEUP("打順・出場選手"), PLAYERS("選手一覧"), PLAYER_DETAIL("選手詳細"), SCHEDULE("日程"),
-    STANDINGS("順位"), RECORDS("記録"), MATCH("試合"), SETTINGS("設定・セーブ")
+    STANDINGS("順位"), RECORDS("記録"), MATCH("試合"), SETTINGS("設定・セーブ"), HISTORY("年度別成績")
 }
 
 /** Malformed OS UI restoration falls back to an unbound home, then binds to the published save. */
@@ -39,7 +39,7 @@ data class PennantNavigation(
     }
 
     fun open(target: PennantPage, season: SeasonState) = copy(page = target, playerId = null,
-        browseClubId = if (target == PennantPage.PLAYERS || target == PennantPage.RECORDS) season.selectedClubId else browseClubId)
+        browseClubId = if (target in listOf(PennantPage.PLAYERS, PennantPage.RECORDS, PennantPage.HISTORY)) season.selectedClubId else browseClubId)
     fun browse(clubId: String) = copy(browseClubId = clubId, playerId = null)
     fun player(id: String) = copy(page = PennantPage.PLAYER_DETAIL, playerId = id)
     fun back() = copy(page = if (page == PennantPage.PLAYER_DETAIL) PennantPage.PLAYERS else PennantPage.HOME, playerId = null)

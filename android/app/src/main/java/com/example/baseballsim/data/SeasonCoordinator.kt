@@ -59,7 +59,9 @@ class SeasonCoordinator(
         }
         val id = operationId()
         val target = before.token.copy(revision = Math.addExact(before.token.revision, 1))
-        return resolveWrite(id, { it.token == target && it.state == candidate }) { store.commit(before.token, id, candidate) }
+        return resolveWrite(id, { it.token == target && it.state == candidate && it.timeline == before.timeline }) {
+            store.commit(before.token, id, candidate)
+        }
     }
     suspend fun create(masterSeed: String = "42", selectedClubId: String = "L1-T01", replacementConfirmed: Boolean = false): StoredSeason = exclusive {
         val old = store.read()
@@ -164,10 +166,30 @@ class SeasonCoordinator(
         }
         latest
     }
+    suspend fun nextYear(expected: StoreToken): StoredSeason = exclusive {
+        // A confirmation must never finalize or advance another saved context.
+        val before = store.read() ?: throw StoreConflict("No season has been created")
+        if (before.token != expected) throw StoreConflict("The annual confirmation belongs to an older saved state")
+        val timeline = checkNotNull(before.timeline)
+        val nextYear = Math.addExact(timeline.year, 1)
+        val (state, historyId) = withContext(computation) {
+            val archive = AnnualArchive.build(expected.worldId, timeline.rootSeed, timeline.previous, SeasonYear.completed(timeline.year, before.state))
+            SeasonYearSeeds.next(before.state, timeline.rootSeed, timeline.year) to archive.header.id
+        }
+        val nextTimeline = timeline.copy(year = nextYear, previous = historyId)
+        val id = operationId()
+        val revision = Math.addExact(expected.revision, 1)
+        resolveWrite(id, {
+            it.token.worldId == expected.worldId && it.token.generationId != expected.generationId &&
+                it.token.revision == revision && it.state == state && it.timeline == nextTimeline
+        }) { store.nextYear(expected, id) }
+    }
+    suspend fun historyYears(expected: StoreToken): List<Long> = store.historyYears(expected)
+    suspend fun historyYear(expected: StoreToken, year: Long): SeasonYear = store.historyYear(expected, year)
     suspend fun saveSlot(): StoredSeason = exclusive {
         val before = current(); val id = operationId()
         val target = before.token.copy(revision = Math.addExact(before.token.revision, 1))
-        resolveWrite(id, { it.token == target && it.state == before.state }) { store.saveSlot(before.token, id) }
+        resolveWrite(id, { it.token == target && it.state == before.state && it.timeline == before.timeline }) { store.saveSlot(before.token, id) }
     }
     suspend fun loadSlot(): StoredSeason = exclusive {
         val before = current(); val id = operationId()

@@ -3,12 +3,14 @@ package com.example.baseballsim.data
 import com.example.baseballsim.core.Status
 import com.example.baseballsim.season.CheckpointCodec
 import com.example.baseballsim.season.SeasonState
+import com.example.baseballsim.season.SeasonYear
 import java.security.MessageDigest
 
 data class StoreToken(val worldId: String, val generationId: String, val revision: Long) {
     init { require(validIdentifier(worldId) && validIdentifier(generationId) && revision >= 0) }
 }
-data class StoredSeason(val token: StoreToken, val state: SeasonState, val operationId: String)
+data class SeasonTimeline(val rootSeed: String, val year: Long, val previous: String?)
+data class StoredSeason(val token: StoreToken, val state: SeasonState, val operationId: String, val timeline: SeasonTimeline? = null)
 class StoreConflict(message: String) : IllegalStateException(message)
 class StoreCorruption(message: String, cause: Throwable? = null) : IllegalStateException(message, cause)
 
@@ -23,6 +25,11 @@ interface SeasonStore {
     suspend fun createBatterProfile(masterSeed: String, selectedClubId: String, operationId: String, expected: StoreToken? = null, replacementConfirmed: Boolean = false): StoredSeason =
         throw UnsupportedOperationException("This store does not create batter-profile worlds")
     suspend fun commit(expected: StoreToken, operationId: String, candidate: SeasonState): StoredSeason
+    suspend fun nextYear(expected: StoreToken, operationId: String): StoredSeason =
+        throw UnsupportedOperationException("This store does not advance years")
+    suspend fun historyYears(expected: StoreToken): List<Long> = emptyList()
+    suspend fun historyYear(expected: StoreToken, year: Long): SeasonYear =
+        throw UnsupportedOperationException("This store does not read annual history")
     suspend fun saveSlot(expected: StoreToken, operationId: String): StoredSeason
     suspend fun loadSlot(expected: StoreToken, operationId: String): StoredSeason
     suspend fun hasSlot(): Boolean
