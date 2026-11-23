@@ -1,6 +1,7 @@
 package com.example.baseballsim
 
 import android.graphics.Bitmap
+import android.os.ParcelFileDescriptor
 import android.os.SystemClock
 import android.util.Log
 import androidx.compose.ui.graphics.asAndroidBitmap
@@ -49,6 +50,12 @@ class PennantActivityTest {
             compose.onNodeWithTag(PennantTags.BACK).performClick()
     }
     private fun page(tag: String) { home(); compose.clickPennant(tag) }
+    private fun pressSystemBack() {
+        // Let Android dispatch Back to whichever app window is active, including the confirmation dialog.
+        val output = InstrumentationRegistry.getInstrumentation().uiAutomation.executeShellCommand("input keyevent KEYCODE_BACK")
+        ParcelFileDescriptor.AutoCloseInputStream(output).use { it.readBytes() }
+        compose.waitForIdle()
+    }
     private fun click(tag: String) {
         if (compose.onAllNodesWithTag(tag).fetchSemanticsNodes().isEmpty()) {
             when (tag) {
@@ -139,19 +146,19 @@ class PennantActivityTest {
     @Test fun androidBackReturnsDetailToListAndDismissesTheConfirmationBeforeLeavingSettings() {
         val vm = fresh(); val before = vm.state.value.display
         click(PennantTags.NAV_LINEUP); click(PennantTags.NAV_PLAYERS); click(PennantTags.player("L1-T01-P09"))
-        androidx.test.espresso.Espresso.pressBack()
+        pressSystemBack()
         compose.onNodeWithTag(PennantTags.PLAYERS).assertExists()
         compose.onNodeWithTag(PennantTags.PLAYER_DETAIL).assertDoesNotExist()
-        androidx.test.espresso.Espresso.pressBack()
+        pressSystemBack()
         compose.onNodeWithTag(PennantTags.HOME).assertExists()
         compose.onNodeWithTag(PennantTags.BACK).assertDoesNotExist()
         click(PennantTags.NAV_SETTINGS); click(PennantTags.CREATE)
         compose.onNodeWithTag(PennantTags.CONFIRM_CREATE).assertExists()
-        androidx.test.espresso.Espresso.pressBack()
+        pressSystemBack()
         compose.onNodeWithTag(PennantTags.CONFIRM_CREATE).assertDoesNotExist()
         compose.onNodeWithTag(PennantTags.SEED).assertExists()
         assertSame(before, vm.state.value.display)
-        androidx.test.espresso.Espresso.pressBack()
+        pressSystemBack()
         compose.onNodeWithTag(PennantTags.HOME).assertExists()
         assertSame(before, vm.state.value.display)
     }
