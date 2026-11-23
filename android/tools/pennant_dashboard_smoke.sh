@@ -18,9 +18,10 @@ classes=(
     "$prefix.PennantActivityTest#manualSaveLoadIsOutsideMatchesAndChangesTheDurableGeneration"
     "$prefix.PennantRestorationTest"
     "$prefix.PennantDashboardTest"
+    "$prefix.PennantDayFlowActivityTest"
 )
 class_filter=$(IFS=,; echo "${classes[*]}")
 adb shell am instrument -w -r -e class "$class_filter" \
     -e additionalTestOutputDir "$device_output" \
     com.example.baseballsim.test/androidx.test.runner.AndroidJUnitRunner | tee "$report/instrumentation.txt"
-grep -F 'OK (5 tests)' "$report/instrumentation.txt"
+grep -F 'OK (7 tests)' "$report/instrumentation.txt"

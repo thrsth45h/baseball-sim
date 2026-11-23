@@ -142,6 +142,12 @@ class SeasonCoordinator(
     suspend fun advanceDay(stopRequested: () -> Boolean = { false }, onCommitted: suspend (StoredSeason) -> Unit = {}): StoredSeason = exclusive {
         day(current(), stopRequested, onCommitted)
     }
+    suspend fun advanceVisibleDay(expected: StoreToken, dayIndex: Int, stopRequested: () -> Boolean,
+        onCommitted: suspend (StoredSeason) -> Unit): StoredSeason = exclusive {
+        val saved = store.read() ?: throw StoreConflict("No saved season")
+        if (saved.token != expected || saved.state.dayIndex != dayIndex) throw StoreConflict("The displayed day is no longer current")
+        day(saved, stopRequested, onCommitted)
+    }
     suspend fun finishSeason(stopRequested: () -> Boolean = { false }, onCommitted: suspend (StoredSeason) -> Unit = {}): StoredSeason = exclusive {
         var latest = current()
         while (latest.state.status == SeasonStatus.IN_PROGRESS) {
@@ -163,6 +169,24 @@ class SeasonCoordinator(
             latest = advance(latest, SeasonAdvance.GAME)
             onCommitted(latest)
             if (stopRequested()) break
+        }
+        latest
+    }
+    suspend fun openOwnGame(expected: StoreToken, gameId: String, stopRequested: () -> Boolean,
+        onCommitted: suspend (StoredSeason) -> Unit): StoredSeason = exclusive {
+        // Verify the clicked fixture before recovering or progressing another saved match.
+        var latest = store.read() ?: throw StoreConflict("No saved season")
+        if (latest.token != expected) throw StoreConflict("The fixture belongs to an older saved state")
+        val season = latest.state
+        val target = season.games.firstOrNull { it.fixture.gameId == gameId }?.fixture
+        require(target != null && target.dayIndex == season.dayIndex && target.ordinal > season.results.size &&
+            season.selectedClubId in listOf(target.awayClubId, target.homeClubId))
+        while (latest.state.status == SeasonStatus.IN_PROGRESS && latest.state.dayIndex == target.dayIndex && !stopRequested()) {
+            val next = latest.state.games[latest.state.results.size].fixture
+            if (next.ordinal == target.ordinal) return@exclusive begin(latest)
+            check(next.ordinal < target.ordinal)
+            latest = advance(latest, SeasonAdvance.GAME)
+            onCommitted(latest)
         }
         latest
     }

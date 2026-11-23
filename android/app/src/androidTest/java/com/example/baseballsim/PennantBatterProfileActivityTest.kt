@@ -20,7 +20,7 @@ class PennantBatterProfileActivityTest {
     private fun home() { while (compose.onAllNodesWithTag(PennantTags.BACK).fetchSemanticsNodes().isNotEmpty()) click(PennantTags.BACK) }
 
     @Test fun applyingANonstandardStarterFreezesItsTypeAndRotationAndRapidCommandsAdvanceOnlyOnce() {
-        compose.onNodeWithTag("mode_pennant").performClick(); val vm = ready(); home()
+        compose.enterPennantMode(); val vm = ready(); home()
         val exists = vm.state.value.season != null
         if (exists) click(PennantTags.NAV_SETTINGS)
         compose.onNodeWithTag(PennantTags.SEED).performScrollTo().performTextReplacement("42")
@@ -32,7 +32,7 @@ class PennantBatterProfileActivityTest {
         compose.onNodeWithTag("lineup_profile_1").assertTextEquals("ミート型")
         click(PennantTags.APPLY_LINEUP); ready()
         val profiles = vm.state.value.season!!.worldProfiles
-        home(); click(PennantTags.OPEN); ready()
+        home(); compose.openNextOwnGame(); ready()
         val start = requireNotNull(vm.state.value.season!!.active)
         assertEquals("L1-T01", start.game.fixture.homeClubId)
         val frozen = requireNotNull(start.profileInput)

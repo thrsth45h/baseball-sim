@@ -60,7 +60,7 @@ class PennantActivityTest {
         compose.clickPennant(tag)
     }
     private fun fresh(): PennantViewModel {
-        compose.onNodeWithTag("mode_pennant").performClick()
+        compose.enterPennantMode()
         val vm = ready()
         // Preserve the legacy 108-person/full-frame regression. New UI CREATE is tested separately as v2.
         kotlinx.coroutines.runBlocking { createLegacyTargetWorld() }
@@ -72,7 +72,7 @@ class PennantActivityTest {
     @Test fun realActivityUsesAllThreeMatchOperationsAndRetainsRotationState() {
         val vm = fresh()
         compose.pennantScreenshot("pennant-created.png")
-        click(PennantTags.OPEN); ready()
+        compose.openNextOwnGame(); ready()
         assertEquals(0L, vm.state.value.season!!.active!!.snapshot.pitchesAccepted)
         click(PennantTags.PITCH); ready()
         assertEquals(1L, vm.state.value.season!!.active!!.snapshot.pitchesAccepted)
@@ -92,7 +92,7 @@ class PennantActivityTest {
         val vm = fresh()
         click(PennantTags.SAVE); ready()
         val savedGeneration = vm.state.value.display!!.stored.token.generationId
-        click(PennantTags.OPEN); ready(); click(PennantTags.PITCH); ready()
+        compose.openNextOwnGame(); ready(); click(PennantTags.PITCH); ready()
         page(PennantTags.NAV_SETTINGS)
         compose.onNodeWithTag(PennantTags.SAVE).performScrollTo().assertIsNotEnabled()
         compose.onNodeWithTag(PennantTags.LOAD).performScrollTo().assertIsNotEnabled()
@@ -127,7 +127,7 @@ class PennantActivityTest {
     @Test fun coldLaunchPrefersPennantAndRestoredStandaloneModeKeepsItsViewModel() {
         ready()
         compose.onNodeWithTag(PennantTags.SCREEN).assertIsDisplayed()
-        compose.onNodeWithTag("mode_match").performClick()
+        compose.enterStandaloneMatch()
         val vm = compose.activity.matchViewModel
         compose.waitUntil(15_000) { !vm.state.value.isBusy && vm.state.value.game != null }
         val game = vm.state.value.game

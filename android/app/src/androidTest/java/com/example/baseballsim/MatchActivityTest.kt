@@ -20,7 +20,7 @@ class MatchActivityTest {
     @get:Rule val compose = createAndroidComposeRule<MainActivity>()
 
     private fun awaitReady(): MatchViewModel {
-        compose.onNodeWithTag("mode_match").performClick()
+        compose.enterStandaloneMatch()
         compose.waitUntil(15_000) {
             val state = compose.activity.matchViewModel.state.value
             !state.isBusy && state.game != null

@@ -11,15 +11,17 @@ enum class PennantPage(val title: String) {
 
 /** Malformed OS UI restoration falls back to an unbound home, then binds to the published save. */
 internal fun restorePennantNavigation(values: List<String>): PennantNavigation? {
-    if (values.size != 5) return null
+    if (values.size !in 5..6) return null
     val page = PennantPage.entries.find { it.name == values[2] } ?: return null
-    return PennantNavigation(values[0].ifEmpty { null }, values[1].ifEmpty { null }, page, values[3], values[4].ifEmpty { null })
+    return PennantNavigation(values[0].ifEmpty { null }, values[1].ifEmpty { null }, page, values[3], values[4].ifEmpty { null },
+        values.getOrNull(5)?.ifEmpty { null })
 }
 
 /** Saveable UI values only. A revision changes the displayed numbers, not the browsing identity. */
 data class PennantNavigation(
     val worldId: String? = null, val generationId: String? = null,
     val page: PennantPage = PennantPage.HOME, val browseClubId: String = "L1-T01", val playerId: String? = null,
+    val matchId: String? = null,
 ) {
     fun bind(state: PennantUiState): PennantNavigation {
         // OS restoration may arrive before the existing startup read has completed.
@@ -35,14 +37,18 @@ data class PennantNavigation(
         if (validClub == null || !validPlayer || (page == PennantPage.PLAYER_DETAIL && playerId == null)) {
             return PennantNavigation(worldId, generationId, browseClubId = club)
         }
+        if (matchId != null && (page != PennantPage.MATCH ||
+                (stored.state.active?.game?.fixture?.gameId != matchId && stored.state.results.none { it.game.fixture.gameId == matchId }))) {
+            return PennantNavigation(worldId, generationId, browseClubId = club)
+        }
         return this
     }
 
-    fun open(target: PennantPage, season: SeasonState) = copy(page = target, playerId = null,
+    fun open(target: PennantPage, season: SeasonState, gameId: String? = null) = copy(page = target, playerId = null, matchId = gameId,
         browseClubId = if (target in listOf(PennantPage.PLAYERS, PennantPage.RECORDS, PennantPage.HISTORY)) season.selectedClubId else browseClubId)
     fun browse(clubId: String) = copy(browseClubId = clubId, playerId = null)
     fun player(id: String) = copy(page = PennantPage.PLAYER_DETAIL, playerId = id)
-    fun back() = copy(page = if (page == PennantPage.PLAYER_DETAIL) PennantPage.PLAYERS else PennantPage.HOME, playerId = null)
+    fun back() = copy(page = if (page == PennantPage.PLAYER_DETAIL) PennantPage.PLAYERS else PennantPage.HOME, playerId = null, matchId = null)
 }
 
 /** Join only the fixed roster to the already published, completed-game counts. No replay or IO. */

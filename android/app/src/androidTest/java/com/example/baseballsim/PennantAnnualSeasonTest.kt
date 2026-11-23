@@ -38,7 +38,7 @@ class PennantAnnualSeasonTest {
     private fun stored() = vm.state.value.display!!.stored
 
     @Test fun completesSecondYearAndBrowsesTwoSeasonsAfterStartingThird() {
-        compose.onNodeWithTag("mode_pennant").performClick()
+        compose.enterPennantMode()
         ready()
         val first = stored()
         assertEquals(1L, first.timeline!!.year)
@@ -134,7 +134,7 @@ class PennantAnnualSeasonTest {
         assertNotEquals(saved.token.generationId, loaded.token.generationId)
         assertEquals(summaries, runBlocking { vm.historyYears(loaded.token).map { vm.historyYear(loaded.token, it) } })
 
-        click(PennantTags.OPEN)
+        compose.openNextOwnGame()
         ready()
         val start = stored().state.active!!
         assertEquals(third.state.games.first(), start.game)

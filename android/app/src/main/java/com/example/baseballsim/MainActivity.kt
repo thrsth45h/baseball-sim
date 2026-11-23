@@ -42,13 +42,14 @@ class MainActivity : ComponentActivity() {
             BaseballTheme {
                 var pennant by rememberSaveable { mutableStateOf(true) }
                 Scaffold(topBar = {
-                    Row(Modifier.fillMaxWidth().windowInsetsPadding(WindowInsets.statusBars)) {
-                        TextButton({ pennant = false }, Modifier.testTag("mode_match")) { Text("1試合") }
-                        TextButton({ pennant = true }, Modifier.testTag("mode_pennant")) { Text("ペナント") }
+                    if (!pennant) {
+                        Row(Modifier.fillMaxWidth().windowInsetsPadding(WindowInsets.statusBars)) {
+                            TextButton({ pennant = true }, Modifier.testTag("mode_pennant")) { Text("ペナント") }
+                        }
                     }
                 }) { padding ->
                     Box(Modifier.padding(padding).consumeWindowInsets(padding)) {
-                        if (pennant) PennantRoute(pennantViewModel) else MatchRoute(matchViewModel)
+                        if (pennant) PennantRoute(pennantViewModel) { pennant = false } else MatchRoute(matchViewModel)
                     }
                 }
             }

@@ -13,6 +13,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import com.example.baseballsim.data.StoreToken
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.platform.testTag
@@ -40,6 +41,9 @@ object PennantTags {
     const val FINISH_GAME = "pennant_finish_game"
     const val OPEN = "pennant_open"
     const val DAY = "pennant_day"
+    const val NEXT_DAY = "pennant_next_day"
+    const val TOP_BAR = "pennant_top_bar"
+    const val VISIBLE_DAY = "pennant_visible_day"
     const val SEASON = "pennant_season"
     const val STOP = "pennant_stop"
     const val SAVE = "pennant_save"
@@ -79,7 +83,7 @@ object PennantTags {
 }
 
 private val NavigationSaver = listSaver<PennantNavigation, String>(
-    save = { listOf(it.worldId.orEmpty(), it.generationId.orEmpty(), it.page.name, it.browseClubId, it.playerId.orEmpty()) },
+    save = { listOf(it.worldId.orEmpty(), it.generationId.orEmpty(), it.page.name, it.browseClubId, it.playerId.orEmpty(), it.matchId.orEmpty()) },
     restore = ::restorePennantNavigation)
 private data class PennantConfirmation(val command: PennantCommand, val token: StoreToken)
 private val ConfirmationSaver = listSaver<PennantConfirmation?, String>(
@@ -91,18 +95,23 @@ private val ConfirmationSaver = listSaver<PennantConfirmation?, String>(
             ?.let { PennantConfirmation(it, StoreToken(v[1], v[2], v[3].toLong())) }
     }.getOrNull() })
 
-@Composable fun PennantRoute(viewModel: PennantViewModel) {
+@Composable fun PennantRoute(viewModel: PennantViewModel, standaloneMatch: (() -> Unit)? = null) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     PennantScreen(state, viewModel::changeSeed, viewModel::selectClub,
         { command, confirmed, token -> viewModel.execute(command, confirmed, confirmationToken = token) },
-        viewModel::requestStop, viewModel::reload, viewModel::applyLineup, viewModel::historyYears, viewModel::historyYear)
+        viewModel::requestStop, viewModel::reload, viewModel::applyLineup, viewModel::historyYears, viewModel::historyYear,
+        viewModel::advanceVisibleDay, viewModel::openOwnGame, viewModel::consumeOpenedGame, standaloneMatch)
 }
 
 @Composable fun PennantScreen(state: PennantUiState, changeSeed: (String) -> Unit, selectClub: (String) -> Unit,
     execute: (PennantCommand, Boolean, StoreToken?) -> Unit, stop: () -> Unit, reload: () -> Unit,
     applyLineup: (StoreToken, String, List<String>) -> Unit = { _, _, _ -> },
     historyYears: suspend (StoreToken) -> List<Long> = { emptyList() },
-    historyYear: suspend (StoreToken, Long) -> SeasonYear = { _, _ -> error("Annual history is unavailable") }) {
+    historyYear: suspend (StoreToken, Long) -> SeasonYear = { _, _ -> error("Annual history is unavailable") },
+    advanceDay: (StoreToken, Int) -> Boolean = { expected, _ -> execute(PennantCommand.DAY, false, expected); true },
+    openOwnGame: (StoreToken, String) -> Boolean = { _, _ -> false },
+    consumeOpenedGame: (StoreToken, String) -> Boolean = { _, _ -> false },
+    standaloneMatch: (() -> Unit)? = null) {
     var savedNavigation by rememberSaveable(stateSaver = NavigationSaver) { mutableStateOf(PennantNavigation()) }
     var confirmation by rememberSaveable(stateSaver = ConfirmationSaver) { mutableStateOf<PennantConfirmation?>(null) }
     val restoredNavigation = savedNavigation
@@ -127,19 +136,37 @@ private val ConfirmationSaver = listSaver<PennantConfirmation?, String>(
     }
     BackHandler(enabled = season != null && confirmation == null && navigation.page != PennantPage.HOME) { back() }
     fun command(value: PennantCommand) { execute(value, false, null) }
-    fun open(page: PennantPage) {
+    fun open(page: PennantPage, matchId: String? = null) {
         // A tab keeps the same destination when the displayed save generation changes.
         val published = latestPublished
         val currentSeason = published.season ?: return
         val current = savedNavigation.bind(published)
-        if (current.page == page) return
+        if (current.page == page && current.matchId == matchId) return
         if (page in listOf(PennantPage.PLAYERS, PennantPage.RECORDS, PennantPage.LINEUP, PennantPage.HISTORY)) {
             pages.removeState("${current.worldId}/${current.generationId}/$page")
         }
-        savedNavigation = current.open(page, currentSeason)
+        savedNavigation = current.open(page, currentSeason, matchId)
+    }
+    LaunchedEffect(token, state.openedGameId) {
+        val target = state.openedGameId ?: return@LaunchedEffect
+        if (token != null && consumeOpenedGame(token, target) && savedNavigation.bind(latestPublished).page == PennantPage.HOME) {
+            open(PennantPage.MATCH, target)
+        }
     }
     Surface(Modifier.fillMaxSize().testTag(PennantTags.SCREEN), color = MaterialTheme.colorScheme.background) {
         Column(Modifier.fillMaxSize()) {
+            if (season != null && token != null) {
+                val visibleDay = checkNotNull(state.visibleDay)
+                PennantTopBar(state, season, visibleDay,
+                    advance = { if (advanceDay(token, visibleDay)) open(PennantPage.HOME) },
+                    nextYear = {
+                        val latest = latestPublished
+                        if (latest.display?.stored?.token == token && latest.resultDay == null && latest.canAdvanceYear) {
+                            open(PennantPage.HOME)
+                            confirmation = PennantConfirmation(PennantCommand.NEXT_YEAR, token)
+                        }
+                    })
+            }
             // Common state and stop stay reachable independently of the page's scroll position.
             Column(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -169,11 +196,11 @@ private val ConfirmationSaver = listSaver<PennantConfirmation?, String>(
                         if (season == null) {
                             Text("仮の12球団で1シーズンを進めます。各球団120試合、打者の3タイプは試作用の仮設定です。")
                             SeasonSettings(state, changeSeed, selectClub, { command(PennantCommand.CREATE) }, {}, {})
+                            standaloneMatch?.let { NavigationButton("1試合", "mode_match", it) }
                         } else when (navigation.page) {
-                            PennantPage.HOME -> PennantDashboard(state, season, ::command,
-                                openMatch = { open(PennantPage.MATCH) },
-                                openSelected = { open(PennantPage.MATCH); command(PennantCommand.OPEN_SELECTED) },
-                                nextYear = { token?.let { confirmation = PennantConfirmation(PennantCommand.NEXT_YEAR, it) } })
+                            PennantPage.HOME -> PennantDashboard(state, season,
+                                finishSeason = { command(PennantCommand.SEASON) }, openMatch = { open(PennantPage.MATCH) },
+                                openOwnGame = { gameId -> token?.let { openOwnGame(it, gameId) } })
                             PennantPage.LINEUP -> {
                                 NavigationButton("選手一覧", PennantTags.NAV_PLAYERS) { open(PennantPage.PLAYERS) }
                                 token?.let { LineupPanel(state, it, applyLineup) }
@@ -181,7 +208,7 @@ private val ConfirmationSaver = listSaver<PennantConfirmation?, String>(
                             PennantPage.PLAYERS -> PlayersPanel(season, navigation.browseClubId,
                                 { savedNavigation = navigation.browse(it) }, { savedNavigation = navigation.player(it) })
                             PennantPage.PLAYER_DETAIL -> PlayerPanel(pennantPlayers(season, navigation.browseClubId).first { it.playerId == navigation.playerId }, season)
-                            PennantPage.SCHEDULE -> SchedulePanel(season)
+                            PennantPage.SCHEDULE -> SchedulePanel(season, checkNotNull(state.visibleDay))
                             PennantPage.STANDINGS -> {
                                 NavigationButton("個人成績", PennantTags.NAV_RECORDS) { open(PennantPage.RECORDS) }
                                 if (timeline != null && timeline.year > 1) {
@@ -195,14 +222,21 @@ private val ConfirmationSaver = listSaver<PennantConfirmation?, String>(
                                 HistoryPanel(token, state.canUse, navigation.browseClubId, { savedNavigation = navigation.browse(it) }, historyYears, historyYear)
                             } else Unit
                             PennantPage.MATCH -> {
-                                state.display?.let { GameCard(it) }
-                                ProgressButton("1球", PennantTags.PITCH, state.canAdvanceMatch, Modifier.fillMaxWidth()) { command(PennantCommand.PITCH) }
-                                ProgressButton("1打席", PennantTags.PA, state.canAdvanceMatch, Modifier.fillMaxWidth()) { command(PennantCommand.PLATE_APPEARANCE) }
-                                ProgressButton("最後まで", PennantTags.FINISH_GAME, state.canAdvanceMatch, Modifier.fillMaxWidth()) { command(PennantCommand.GAME) }
+                                val selectedId = navigation.matchId
+                                val result = if (selectedId == null) null else season.results.firstOrNull { it.game.fixture.gameId == selectedId }
+                                val match = state.display?.takeIf { selectedId == null || it.fixture?.gameId == selectedId }
+                                if (result != null) CompletedGameCard(result) else match?.let { GameCard(it) }
+                                val canAdvance = state.canAdvanceMatch && result == null && match != null
+                                ProgressButton("1球", PennantTags.PITCH, canAdvance, Modifier.fillMaxWidth()) { command(PennantCommand.PITCH) }
+                                ProgressButton("1打席", PennantTags.PA, canAdvance, Modifier.fillMaxWidth()) { command(PennantCommand.PLATE_APPEARANCE) }
+                                ProgressButton("最後まで", PennantTags.FINISH_GAME, canAdvance, Modifier.fillMaxWidth()) { command(PennantCommand.GAME) }
                             }
-                            PennantPage.SETTINGS -> SeasonSettings(state, changeSeed, selectClub,
-                                { token?.let { confirmation = PennantConfirmation(PennantCommand.CREATE, it) } },
-                                { command(PennantCommand.SAVE) }, { token?.let { confirmation = PennantConfirmation(PennantCommand.LOAD, it) } })
+                            PennantPage.SETTINGS -> {
+                                SeasonSettings(state, changeSeed, selectClub,
+                                    { token?.let { confirmation = PennantConfirmation(PennantCommand.CREATE, it) } },
+                                    { command(PennantCommand.SAVE) }, { token?.let { confirmation = PennantConfirmation(PennantCommand.LOAD, it) } })
+                                standaloneMatch?.let { NavigationButton("1試合", "mode_match", it) }
+                            }
                         }
                         Spacer(Modifier.height(16.dp))
                     }
@@ -364,18 +398,34 @@ private data class ConfirmationText(val title: String, val message: String, val 
                 Text("理由：${pennantFailureReason(snapshot.reason)}", style = MaterialTheme.typography.bodySmall)
             }
             Text("${snapshot.pitchesAccepted}球 · ${snapshot.completedPa}打席終了", style = MaterialTheme.typography.bodySmall)
-            Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                Text("回\n表\n裏")
-                for (inning in 0..8) Text("${inning + 1}\n${snapshot.lineScore[inning * 2] ?: "—"}\n${snapshot.lineScore[inning * 2 + 1] ?: "—"}", fontFamily = FontFamily.Monospace)
-                Text("計\n${snapshot.score.away}\n${snapshot.score.home}", fontFamily = FontFamily.Monospace, fontWeight = FontWeight.Bold)
-            }
+            GameLineScore(snapshot.lineScore, snapshot.score.away, snapshot.score.home)
             display.recent.takeLast(5).forEach { Text(it, style = MaterialTheme.typography.bodySmall) }
         }
     }
 }
 
-@Composable private fun SchedulePanel(state: SeasonState) {
-    var day by rememberSaveable { mutableIntStateOf(minOf(state.dayIndex, 140)) }
+@Composable private fun CompletedGameCard(result: GameSummary) {
+    val fixture = result.game.fixture
+    Card(Modifier.fillMaxWidth().testTag(PennantTags.GAME)) {
+        Column(Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Text("${PennantSchedule.club(fixture.awayClubId).displayName} − ${PennantSchedule.club(fixture.homeClubId).displayName}")
+            Text("${result.score.away} − ${result.score.home}", style = MaterialTheme.typography.titleLarge, fontFamily = FontFamily.Monospace)
+            Text("試合終了")
+            GameLineScore(result.lineScore, result.score.away, result.score.home)
+        }
+    }
+}
+
+@Composable private fun GameLineScore(lineScore: List<Long?>, away: Long, home: Long) {
+    Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        Text("回\n表\n裏")
+        for (inning in 0..8) Text("${inning + 1}\n${lineScore[inning * 2] ?: "—"}\n${lineScore[inning * 2 + 1] ?: "—"}", fontFamily = FontFamily.Monospace)
+        Text("計\n$away\n$home", fontFamily = FontFamily.Monospace, fontWeight = FontWeight.Bold)
+    }
+}
+
+@Composable private fun SchedulePanel(state: SeasonState, visibleDay: Int) {
+    var day by rememberSaveable(visibleDay) { mutableIntStateOf(minOf(visibleDay, PennantSchedule.calendar.size)) }
     val calendar = PennantSchedule.calendar[day - 1]
     Column(Modifier.testTag(PennantTags.SCHEDULE), verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {

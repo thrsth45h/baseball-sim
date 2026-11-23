@@ -107,7 +107,7 @@ class PennantProcessRecoveryTest {
     @Test fun prepareDurableCheckpointBeforeHostKill() {
         val format = InstrumentationRegistry.getArguments().getString("world_format") ?: "v1"
         require(format in setOf("v1", "v2", "v3", "annual"))
-        compose.onNodeWithTag("mode_pennant").performClick(); val vm = ready()
+        compose.enterPennantMode(); val vm = ready()
         if (format == "v3") {
             compose.runOnUiThread { vm.changeSeed("42"); vm.execute(PennantCommand.CREATE, replacementConfirmed = true) }; ready()
         } else if (format != "annual") {
@@ -157,7 +157,7 @@ class PennantProcessRecoveryTest {
     @Test fun recoverTheSamePublishedCheckpointAndAdvanceExactlyOnce() {
         val expected = JSONObject(evidence().readText())
         assertNotEquals("Host must really terminate the old app process", expected.getInt("pid"), Process.myPid())
-        compose.onNodeWithTag("mode_pennant").performClick(); val vm = ready()
+        compose.enterPennantMode(); val vm = ready()
         val stored = vm.state.value.display!!.stored; val active = stored.state.active!!
         assertEquals(StoreToken(expected.getString("world"), expected.getString("generation"), expected.getLong("revision")), stored.token)
         assertEquals(expected.getString("game_id"), active.game.fixture.gameId)
