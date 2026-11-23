@@ -1,5 +1,6 @@
 package com.example.baseballsim
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.selection.selectable
@@ -9,6 +10,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.PointerEventPass
+import androidx.compose.ui.input.pointer.PointerEventType
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
@@ -47,8 +51,11 @@ private enum class BottomTab(val label: String, val page: PennantPage, val icon:
         BottomTab.entries.forEach { tab ->
             val active = tab == selected
             Column(
-                Modifier.weight(1f).heightIn(min = 72.dp).testTag(tab.tag)
-                    .selectable(selected = active, role = Role.Tab, onClick = { open(tab.page) })
+                Modifier.weight(1f).heightIn(min = 72.dp).testTag(tab.tag).traceDashboardTouch(tab.tag)
+                    .selectable(selected = active, role = Role.Tab, onClick = {
+                        Log.i("DashboardTouchProbe", "tab onClick ${tab.tag} from $page")
+                        open(tab.page)
+                    })
                     .padding(vertical = 6.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterVertically),
@@ -61,6 +68,19 @@ private enum class BottomTab(val label: String, val page: PennantPage, val icon:
                 }
                 Text(tab.label, maxLines = 1, style = MaterialTheme.typography.labelSmall,
                     color = if (active) colors.onPrimaryContainer else colors.onSurfaceVariant)
+            }
+        }
+    }
+}
+
+internal fun Modifier.traceDashboardTouch(target: String) = pointerInput(target) {
+    awaitPointerEventScope {
+        while (true) {
+            val initial = awaitPointerEvent(PointerEventPass.Initial)
+            val final = awaitPointerEvent(PointerEventPass.Final)
+            if (initial.type in listOf(PointerEventType.Press, PointerEventType.Release)) {
+                Log.i("DashboardTouchProbe", "$target ${initial.type} local=${initial.changes.firstOrNull()?.position} " +
+                    "consumedAtFinal=${final.changes.any { it.isConsumed }}")
             }
         }
     }

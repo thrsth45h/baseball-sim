@@ -1,5 +1,6 @@
 package com.example.baseballsim
 
+import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
@@ -111,6 +112,7 @@ private val ConfirmationSaver = listSaver<PennantConfirmation?, String>(
     val token = state.display?.stored?.token
     val timeline = state.timeline
     val pages = rememberSaveableStateHolder()
+    val latestPublished by rememberUpdatedState(state)
     SideEffect {
         // Only persist a rebinding if the user has not already chosen another page.
         if (navigation != restoredNavigation && savedNavigation == restoredNavigation) savedNavigation = navigation
@@ -129,13 +131,15 @@ private val ConfirmationSaver = listSaver<PennantConfirmation?, String>(
     fun open(page: PennantPage) {
         if (season == null) return
         val current = savedNavigation.bind(state)
+        Log.i("DashboardTouchProbe", "open ${current.page} -> $page; captured=${state.display?.stored?.token}; " +
+            "latest=${latestPublished.display?.stored?.token}; bound=$current")
         if (current.page == page) return
         if (page in listOf(PennantPage.PLAYERS, PennantPage.RECORDS, PennantPage.LINEUP, PennantPage.HISTORY)) {
             pages.removeState("${current.worldId}/${current.generationId}/$page")
         }
         savedNavigation = current.open(page, season)
     }
-    Surface(Modifier.fillMaxSize().testTag(PennantTags.SCREEN), color = MaterialTheme.colorScheme.background) {
+    Surface(Modifier.fillMaxSize().testTag(PennantTags.SCREEN).traceDashboardTouch("root"), color = MaterialTheme.colorScheme.background) {
         Column(Modifier.fillMaxSize()) {
             // Common state and stop stay reachable independently of the page's scroll position.
             Column(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
