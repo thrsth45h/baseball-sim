@@ -35,11 +35,7 @@ class PennantBrowseActionsTest {
         }
         fun calls() = listOf(reads.get(), slots.get(), commands.get())
     }
-    private fun click(tag: String) {
-        val node = compose.onNodeWithTag(tag)
-        if (tag !in listOf(PennantTags.BACK, PennantTags.STOP, PennantTags.RELOAD)) node.performScrollTo()
-        node.performClick()
-    }
+    private fun click(tag: String) = compose.clickPennant(tag)
     @Test fun navigationRestorationAndBusyBrowsingNeverSendAnotherActionOrStealTheSelectedPage() {
         val fake = Fake(); val owner = ViewModelStore()
         lateinit var vm: PennantViewModel
@@ -49,7 +45,7 @@ class PennantBrowseActionsTest {
             restoration.setContent { BaseballTheme { PennantRoute(vm) } }
             compose.waitUntil(15_000) { vm.state.value.loaded && !vm.state.value.busy }
             val baseline = fake.calls(); val initial = vm.state.value.display
-            click(PennantTags.NAV_PLAYERS); click(PennantTags.player("L1-T01-P09"))
+            click(PennantTags.NAV_LINEUP); click(PennantTags.NAV_PLAYERS); click(PennantTags.player("L1-T01-P09"))
             compose.onNodeWithTag("player_completed_pa").assertTextEquals("0")
             restoration.emulateSavedInstanceStateRestore()
             compose.onNodeWithTag(PennantTags.PLAYER_DETAIL).assertExists()
@@ -60,7 +56,7 @@ class PennantBrowseActionsTest {
             // that first command before taking the no-additional-actions baseline.
             compose.waitUntil(15_000) { vm.state.value.busy && vm.state.value.bulk && fake.commands.get() == 1 }
             val busyCalls = fake.calls()
-            click(PennantTags.NAV_PLAYERS); click(PennantTags.player("L1-T01-P09"))
+            click(PennantTags.NAV_LINEUP); click(PennantTags.NAV_PLAYERS); click(PennantTags.player("L1-T01-P09"))
             compose.onNodeWithTag(PennantTags.STOP).assertIsEnabled()
             restoration.emulateSavedInstanceStateRestore()
             compose.onNodeWithTag(PennantTags.PLAYER_DETAIL).assertExists()

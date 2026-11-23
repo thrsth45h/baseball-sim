@@ -12,14 +12,10 @@ import java.io.File
 
 /** The artifact records rendered semantic Text values; the expected SeasonState is used only for assertions. */
 internal fun ComposeContentTestRule.observeAllPlayerDetails(expected: SeasonState, filename: String) {
-    fun click(tag: String) {
-        val node = onNodeWithTag(tag)
-        if (tag != PennantTags.BACK) node.performScrollTo()
-        node.performClick()
-    }
+    fun click(tag: String) = clickPennant(tag)
     fun text(tag: String) = onNodeWithTag(tag).fetchSemanticsNode().config[SemanticsProperties.Text].joinToString("") { it.text }
     while (onAllNodesWithTag(PennantTags.BACK).fetchSemanticsNodes().isNotEmpty()) click(PennantTags.BACK)
-    click(PennantTags.NAV_PLAYERS)
+    click(PennantTags.NAV_LINEUP); click(PennantTags.NAV_PLAYERS)
     val observed = JSONArray()
     PennantSchedule.clubs.forEach { club ->
         click(PennantTags.BROWSE_CLUB)

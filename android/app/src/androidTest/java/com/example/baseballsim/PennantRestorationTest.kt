@@ -24,11 +24,7 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class PennantRestorationTest {
     @get:Rule val compose = createComposeRule()
-    private fun click(tag: String) {
-        val node = compose.onNodeWithTag(tag)
-        if (tag != PennantTags.BACK) node.performScrollTo()
-        node.performClick()
-    }
+    private fun click(tag: String) = compose.clickPennant(tag)
     private fun offset(): Float = compose.onNode(SemanticsMatcher.keyIsDefined(SemanticsProperties.VerticalScrollAxisRange))
         .fetchSemanticsNode().config[SemanticsProperties.VerticalScrollAxisRange].value()
     @Test fun scrollAndRestoredCandidatesRespectLoadingErrorsRevisionWorldAndGenerationBoundaries() {
@@ -43,7 +39,7 @@ class PennantRestorationTest {
                 Box(Modifier.width(320.dp)) { PennantScreen(state.value, {}, {}, { _, _, _ -> commands++ }, {}, {}) }
             }
         } }
-        click(PennantTags.NAV_PLAYERS)
+        click(PennantTags.NAV_LINEUP); click(PennantTags.NAV_PLAYERS)
         compose.onNodeWithTag(PennantTags.player("L1-T01-P09")).performScrollTo()
         val listOffset = offset()
         assertTrue("The narrow enlarged list must actually scroll", listOffset > 0f)
@@ -51,7 +47,7 @@ class PennantRestorationTest {
         restoration.emulateSavedInstanceStateRestore()
         click(PennantTags.BACK)
         assertEquals(listOffset, offset(), 1f)
-        click(PennantTags.BACK); click(PennantTags.NAV_PLAYERS)
+        click(PennantTags.BACK); click(PennantTags.NAV_LINEUP); click(PennantTags.NAV_PLAYERS)
         assertEquals(0f, offset(), 1f)
         click(PennantTags.player("L1-T01-P09"))
         compose.runOnUiThread { state.value = PennantUiState() }
@@ -68,7 +64,7 @@ class PennantRestorationTest {
         val newWorld = revision.copy(token = revision.token.copy(worldId = "same-seed-new-world"), state = SeasonState.initial(selectedClubId = "L2-T06"))
         compose.runOnUiThread { state.value = original.copy(display = pennantDisplay(newWorld)) }
         compose.onNodeWithTag(PennantTags.HOME).assertExists()
-        click(PennantTags.NAV_PLAYERS)
+        click(PennantTags.NAV_LINEUP); click(PennantTags.NAV_PLAYERS)
         compose.onNodeWithTag(PennantTags.BROWSE_CLUB).assertTextEquals("閲覧球団：仮球団12")
         assertEquals(0f, offset(), 1f)
         click(PennantTags.BACK); click(PennantTags.NAV_SETTINGS); click(PennantTags.CREATE)

@@ -106,8 +106,9 @@ jobs:
           disable-animations: true
           emulator-options: -no-window -no-audio -no-boot-anim -no-snapshot -gpu swiftshader_indirect -camera-back none
           script: |
-            bash gradlew :app:assembleDebugAndroidTest --no-daemon --stacktrace
+            bash gradlew :app:assembleDebug :app:assembleDebugAndroidTest --no-daemon --stacktrace
             python3 tools/verify_lineup_fixture.py
+            bash tools/pennant_dashboard_smoke.sh
             bash gradlew :app:connectedDebugAndroidTest --no-daemon --stacktrace
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: always()
@@ -118,6 +119,7 @@ jobs:
             android/app/build/outputs/androidTest-results/
             android/app/build/outputs/connected_android_test_additional_output/
             android/app/build/lineup-fixture-packaging.json
+            android/app/build/dashboard-navigation-smoke/
           retention-days: 14
 
   device-batter-profile:

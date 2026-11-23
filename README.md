@@ -44,6 +44,8 @@
 
 Android検証版は [GitHub Releases](https://github.com/thrsth45h/baseball-sim/releases) からAPK本体を直接ダウンロードできます。[配布手順](docs/APK_RELEASES.md)
 
+**ペナントのメイン画面と下部ナビゲーションを更新しました。** 操作球団の状況、当日の対戦カード、所属リーグの順位をホームに表示し、ホーム・日程・編成・成績・設定へ固定タブで移動できます。[APKと操作](docs/pennant-dashboard/README.md)・[検証記録](docs/pennant-dashboard/VALIDATION.md)・[PR #58](https://github.com/thrsth45h/baseball-sim/pull/58)
+
 **同じ球団・選手・打順のまま翌年へ進めるAndroid技術検証版**を実装しました。シーズン終了後に前年度の順位と144人の既存打者イベント件数を保存し、過年度を閲覧できます。2年目の全720試合、3年目開始、手動セーブ・ロードをAPI35で確認しました。[APKと操作](docs/season-history/README.md)・[検証記録](docs/season-history/VALIDATION.md)・[PR #56](https://github.com/thrsth45h/baseball-sim/pull/56)
 
 **新規シーズンの打者タイプを逐球生成に結び付けるAndroid技術検証版**を実装しました。標準・ミート型・長打型を人物に固定し、打順・控え入替後の出場者を試合と個人記録に反映します。API35の隔離環境で720試合を実際に保存し、144人の表示と完走後のセーブ・ロードを確認しました。旧v1/v2のセーブは当時の試合生成で継続できます。[APK取得・操作](docs/batter-profile/README.md)・[検証記録](docs/batter-profile/VALIDATION.md)・[PR #53](https://github.com/thrsth45h/baseball-sim/pull/53)

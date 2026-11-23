@@ -48,9 +48,7 @@ class PennantActivityTest {
         while (compose.onAllNodesWithTag(PennantTags.BACK).fetchSemanticsNodes().isNotEmpty())
             compose.onNodeWithTag(PennantTags.BACK).performClick()
     }
-    private fun page(tag: String) { home(); val node = compose.onNodeWithTag(tag)
-        if (tag != PennantTags.STOP) node.performScrollTo()
-        node.performClick() }
+    private fun page(tag: String) { home(); compose.clickPennant(tag) }
     private fun click(tag: String) {
         if (compose.onAllNodesWithTag(tag).fetchSemanticsNodes().isEmpty()) {
             when (tag) {
@@ -59,9 +57,7 @@ class PennantActivityTest {
                 else -> home()
             }
         }
-        val node = compose.onNodeWithTag(tag)
-        if (tag !in listOf(PennantTags.BACK, PennantTags.STOP, PennantTags.RELOAD)) node.performScrollTo()
-        node.performClick()
+        compose.clickPennant(tag)
     }
     private fun fresh(): PennantViewModel {
         compose.onNodeWithTag("mode_pennant").performClick()
@@ -114,7 +110,7 @@ class PennantActivityTest {
         assertSame(before, vm.state.value.display); assertNotNull(vm.state.value.seedError)
         click(PennantTags.SEASON)
         compose.waitUntil(15_000) { vm.state.value.busy && vm.state.value.bulk }
-        click(PennantTags.NAV_PLAYERS)
+        click(PennantTags.NAV_LINEUP); click(PennantTags.NAV_PLAYERS)
         click(PennantTags.player("L1-T01-P09"))
         compose.onNodeWithTag(PennantTags.PLAYER_DETAIL).assertExists()
         compose.activityRule.scenario.recreate()
@@ -142,7 +138,7 @@ class PennantActivityTest {
     }
     @Test fun androidBackReturnsDetailToListAndDismissesTheConfirmationBeforeLeavingSettings() {
         val vm = fresh(); val before = vm.state.value.display
-        click(PennantTags.NAV_PLAYERS); click(PennantTags.player("L1-T01-P09"))
+        click(PennantTags.NAV_LINEUP); click(PennantTags.NAV_PLAYERS); click(PennantTags.player("L1-T01-P09"))
         androidx.test.espresso.Espresso.pressBack()
         compose.onNodeWithTag(PennantTags.PLAYERS).assertExists()
         compose.onNodeWithTag(PennantTags.PLAYER_DETAIL).assertDoesNotExist()
@@ -166,7 +162,7 @@ class PennantActivityTest {
         compose.onNodeWithTag(PennantTags.STANDINGS).performScrollTo().assertIsDisplayed()
         compose.onNodeWithText("リーグ2").performClick()
         compose.pennantScreenshot("pennant-standings.png")
-        page(PennantTags.NAV_RECORDS)
+        page(PennantTags.NAV_STANDINGS); click(PennantTags.NAV_RECORDS)
         compose.onNodeWithTag(PennantTags.RECORDS).performScrollTo().assertIsDisplayed()
         compose.onNodeWithText("記録を見る球団：仮球団1").performClick()
         compose.onNodeWithText("仮球団12", useUnmergedTree = true).performScrollTo().performClick()

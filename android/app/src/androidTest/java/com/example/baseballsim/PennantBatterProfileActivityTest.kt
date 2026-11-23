@@ -16,11 +16,7 @@ class PennantBatterProfileActivityTest {
         compose.waitUntil(120_000) { val s = compose.activity.pennantViewModel.state.value; s.loaded && !s.busy }
         return compose.activity.pennantViewModel.also { assertNull(it.state.value.error) }
     }
-    private fun click(tag: String) {
-        val node = compose.onNodeWithTag(tag)
-        if (tag != PennantTags.BACK) node.performScrollTo()
-        node.performClick()
-    }
+    private fun click(tag: String) = compose.clickPennant(tag)
     private fun home() { while (compose.onAllNodesWithTag(PennantTags.BACK).fetchSemanticsNodes().isNotEmpty()) click(PennantTags.BACK) }
 
     @Test fun applyingANonstandardStarterFreezesItsTypeAndRotationAndRapidCommandsAdvanceOnlyOnce() {

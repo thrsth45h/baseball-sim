@@ -36,11 +36,7 @@ class PennantBrowseStoreTest {
         }
         fun log() = listOf(reads.get(), slots.get(), commands.get())
     }
-    private fun click(tag: String) {
-        val node = compose.onNodeWithTag(tag)
-        if (tag !in listOf(PennantTags.BACK, PennantTags.STOP, PennantTags.RELOAD)) node.performScrollTo()
-        node.performClick()
-    }
+    private fun click(tag: String) = compose.clickPennant(tag)
     private fun home() {
         while (compose.onAllNodesWithTag(PennantTags.BACK).fetchSemanticsNodes().isNotEmpty()) click(PennantTags.BACK)
     }
@@ -85,7 +81,7 @@ class PennantBrowseStoreTest {
             val before = rows(db); val calls = actions.log()
             val observed = JSONArray()
             fun text(tag: String) = compose.onNodeWithTag(tag).fetchSemanticsNode().config[SemanticsProperties.Text].joinToString("") { it.text }
-            click(PennantTags.NAV_PLAYERS)
+            click(PennantTags.NAV_LINEUP); click(PennantTags.NAV_PLAYERS)
             PennantSchedule.clubs.forEach { club ->
                 click(PennantTags.BROWSE_CLUB)
                 compose.onNodeWithText(club.displayName, useUnmergedTree = true).performScrollTo().performClick()
@@ -117,6 +113,7 @@ class PennantBrowseStoreTest {
             compose.onNodeWithText("L2-T06-P09", substring = true).assertExists()
             home()
             for (tag in listOf(PennantTags.NAV_LINEUP, PennantTags.NAV_SCHEDULE, PennantTags.NAV_STANDINGS, PennantTags.NAV_RECORDS, PennantTags.NAV_MATCH, PennantTags.NAV_SETTINGS)) {
+                if (tag == PennantTags.NAV_RECORDS) click(PennantTags.NAV_STANDINGS)
                 click(tag); home()
             }
             assertSame(published, vm.state.value.display)

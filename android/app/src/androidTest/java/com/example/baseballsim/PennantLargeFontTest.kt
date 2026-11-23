@@ -23,11 +23,7 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class PennantLargeFontTest {
     @get:Rule val compose = createComposeRule()
-    private fun click(tag: String) {
-        val node = compose.onNodeWithTag(tag)
-        if (tag !in listOf(PennantTags.BACK, PennantTags.STOP, PennantTags.RELOAD)) node.performScrollTo()
-        node.performClick()
-    }
+    private fun click(tag: String) = compose.clickPennant(tag)
     @Test fun narrow320AndFont150KeepsHomeListDetailSettingsErrorsAndStopReachable() {
         val initial = PennantUiState(loaded = true, hasSlot = true,
             display = pennantDisplay(StoredSeason(StoreToken("font-world", "font-generation", 0), SeasonState.initial(), "initial")))
@@ -40,7 +36,7 @@ class PennantLargeFontTest {
             }
         } }
         compose.pennantScreenshot("pennant-home-320-font150.png")
-        click(PennantTags.NAV_PLAYERS)
+        click(PennantTags.NAV_LINEUP); click(PennantTags.NAV_PLAYERS)
         compose.onNodeWithTag(PennantTags.player("L1-T01-P09")).performScrollTo().assertIsDisplayed()
         compose.pennantScreenshot("pennant-players-320-font150.png")
         click(PennantTags.player("L1-T01-P09"))
@@ -56,7 +52,7 @@ class PennantLargeFontTest {
         compose.onNodeWithTag(PennantTags.LOAD).performScrollTo().assertIsNotEnabled()
         compose.onNodeWithTag(PennantTags.RELOAD).assertIsEnabled()
         compose.pennantScreenshot("pennant-retained-error-320-font150.png")
-        click(PennantTags.BACK); click(PennantTags.NAV_PLAYERS); click(PennantTags.player("L1-T01-P01"))
+        click(PennantTags.BACK); click(PennantTags.NAV_LINEUP); click(PennantTags.NAV_PLAYERS); click(PennantTags.player("L1-T01-P01"))
         compose.onNodeWithTag(PennantTags.PLAYER_DETAIL).assertExists()
         compose.onNodeWithTag(PennantTags.ERROR).assertIsDisplayed()
         compose.runOnUiThread { state.value = initial.copy(busy = true, bulk = true) }
