@@ -10,6 +10,8 @@
 
 ## 現在の到達点
 
+- **2026-11-23：D063の実装と独立レビューを完了。** [実装PR #56](https://github.com/thrsth45h/baseball-sim/pull/56)で、完走済みv3から同じ球団・選手・打順で翌年を開始し、年度別成績を保存・閲覧できる。API35で2年目720試合、3年目への移行、手動セーブ・ロードと強制終了復旧を確認。配布APKのビルド元は `8205744`。移行後の版番号を参照するテスト2件を修正した `9e62d0e` で、通常の端末試験63件と全11ワークフローが成功した。コードと配布APKの詳細、旧デバッグ版と署名が異なることによる上書き不可は[検証記録](season-history/VALIDATION.md)・[APKと操作](season-history/README.md)を参照。新しいゲーム仕様はD063の限定範囲まで。
+
 - **2026-11-22：翌年への移行と年度別成績を本人承認。** 打者タイプ実装 [PR #53](https://github.com/thrsth45h/baseball-sim/pull/53) は `0c63966` に統合済み。[設計PR #55](https://github.com/thrsth45h/baseball-sim/pull/55)の[限定範囲](SEASON_HISTORY_DESIGN.md)とworker実装〜独立レビュー・APK公開を提示後、本人が「はい」と回答した。D063 CONFIRMED・ADR-0021 Accepted。設計を統合してから専用workerへ委任する。APKは [PR #54で確定した配布手順](APK_RELEASES.md) に沿ってGitHub Releasesに添付する。
 
 - **2026-11-22：D062の試作用打者タイプを実装し、隔離CIと責任者の独立検証を完了。** 試合開始時の出場者に標準・ミート型・長打型を固定し、逐球イベントと個人記録に反映する。旧v1/v2の保存形式と確率表は維持した。検証・配布source `98988d139cc021e2164580733f8d0c9dd5647096` / tree `129ff1754e7e9e7e87bd74c44dbe32050e28afcc`。11ワークフロー成功、app42/Core36/通常端末60＋v3完走端末1/実プロセス復旧3。新v3を720試合実進行して144人の表示と集計を独立参照に照合し、最終データのセーブ・ロード往復も確認。開発中にAndroidの1行読取上限で止まったため、配布前のv3保存だけを小型化した。mainの統合状態・統合SHAは実装PRを参照。正式能力と研究モデルの採用は別の判断とする。[設計PR #52](https://github.com/thrsth45h/baseball-sim/pull/52)・[実装PR #53](https://github.com/thrsth45h/baseball-sim/pull/53)・[操作・APK](batter-profile/README.md)・[検証記録](batter-profile/VALIDATION.md)・[CI証拠](batter-profile/CI_EVIDENCE.json)
