@@ -56,7 +56,7 @@ class RoomLineupStoreTest {
             val loadedModern = store.loadSlot(legacy.token, "load-v2")
             assertTrue(loadedModern.state.lineupEnabled); assertEquals(edited.state, loadedModern.state)
             assertEquals(order(), loadedModern.state.lineup(club))
-            assertEquals(1, db.openHelper.readableDatabase.version)
+            assertEquals(2, db.openHelper.readableDatabase.version)
         } finally { db.close(); context.deleteDatabase(name) }
     }
 

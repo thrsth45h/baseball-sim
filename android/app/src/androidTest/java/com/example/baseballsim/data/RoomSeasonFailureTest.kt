@@ -86,13 +86,13 @@ class RoomSeasonFailureTest {
         context.openOrCreateDatabase(name, 0, null).use {
             it.execSQL("CREATE TABLE retained_sentinel (value TEXT NOT NULL)")
             it.execSQL("INSERT INTO retained_sentinel VALUES ('keep')")
-            it.execSQL("PRAGMA user_version=2")
+            it.execSQL("PRAGMA user_version=3")
         }
         val db = PennantDatabase.open(context, name)
         try {
             assertThrows(Exception::class.java) { runBlocking { RoomSeasonStore(db).read() } }
             SQLiteDatabase.openDatabase(context.getDatabasePath(name).absolutePath, null, SQLiteDatabase.OPEN_READONLY).use { raw ->
-                raw.rawQuery("PRAGMA user_version", null).use { assertTrue(it.moveToFirst()); assertEquals(2, it.getInt(0)) }
+                raw.rawQuery("PRAGMA user_version", null).use { assertTrue(it.moveToFirst()); assertEquals(3, it.getInt(0)) }
                 raw.rawQuery("SELECT value FROM retained_sentinel", null).use { assertTrue(it.moveToFirst()); assertEquals("keep", it.getString(0)) }
             }
         } finally { db.close(); context.deleteDatabase(name) }

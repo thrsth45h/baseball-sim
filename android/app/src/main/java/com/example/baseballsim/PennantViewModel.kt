@@ -20,7 +20,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-enum class PennantCommand { CREATE, SELECT, PITCH, PLATE_APPEARANCE, GAME, OPEN_SELECTED, DAY, SEASON, SAVE, LOAD }
+enum class PennantCommand { CREATE, SELECT, PITCH, PLATE_APPEARANCE, GAME, OPEN_SELECTED, DAY, SEASON, SAVE, LOAD, NEXT_YEAR }
 
 /** The UI receives only values returned after durable commit, never a mutable game engine. */
 interface PennantActions {
@@ -28,6 +28,11 @@ interface PennantActions {
     suspend fun hasSlot(): Boolean
     suspend fun applyLineup(expected: StoreToken, clubId: String, players: List<String>): StoredSeason =
         throw UnsupportedOperationException("This action source does not edit lineups")
+    suspend fun nextYear(expected: StoreToken): StoredSeason =
+        throw UnsupportedOperationException("This action source does not advance years")
+    suspend fun historyYears(expected: StoreToken): List<Long> = emptyList()
+    suspend fun historyYear(expected: StoreToken, year: Long): SeasonYear =
+        throw UnsupportedOperationException("This action source does not read annual history")
     suspend fun execute(command: PennantCommand, seed: String, club: String, replacement: Boolean,
         stop: () -> Boolean, progress: suspend (StoredSeason) -> Unit): StoredSeason
 }
@@ -36,6 +41,9 @@ class DurablePennantActions(private val coordinator: SeasonCoordinator) : Pennan
     override suspend fun read() = coordinator.read()
     override suspend fun hasSlot() = coordinator.hasSlot()
     override suspend fun applyLineup(expected: StoreToken, clubId: String, players: List<String>) = coordinator.applyLineup(expected, clubId, players)
+    override suspend fun nextYear(expected: StoreToken) = coordinator.nextYear(expected)
+    override suspend fun historyYears(expected: StoreToken) = coordinator.historyYears(expected)
+    override suspend fun historyYear(expected: StoreToken, year: Long) = coordinator.historyYear(expected, year)
     override suspend fun execute(command: PennantCommand, seed: String, club: String, replacement: Boolean,
         stop: () -> Boolean, progress: suspend (StoredSeason) -> Unit): StoredSeason = when (command) {
         PennantCommand.CREATE -> coordinator.createBatterProfile(seed, club, replacement)
@@ -48,6 +56,7 @@ class DurablePennantActions(private val coordinator: SeasonCoordinator) : Pennan
         PennantCommand.SEASON -> coordinator.finishSeason(stop, progress)
         PennantCommand.SAVE -> coordinator.saveSlot()
         PennantCommand.LOAD -> coordinator.loadSlot()
+        PennantCommand.NEXT_YEAR -> error("Annual progression requires a confirmed save token")
     }
 }
 
@@ -107,6 +116,8 @@ data class PennantUiState(
     val canSave get() = canUse && season != null && season?.active == null
     val canLoad get() = canSave && hasSlot
     val canEditLineup get() = canUse && season?.lineupEnabled == true && season?.status == SeasonStatus.IN_PROGRESS && season?.active == null
+    val timeline get() = display?.stored?.timeline
+    val canAdvanceYear get() = canUse && timeline != null && season?.status == SeasonStatus.COMPLETE
 }
 
 class PennantViewModel(private val actions: PennantActions,
@@ -145,7 +156,7 @@ class PennantViewModel(private val actions: PennantActions,
         if (!current(token)) return@synchronized
         val old = mutable.value
         mutable.value = old.copy(display = value, hasSlot = slot ?: old.hasSlot,
-            seedInput = if (inputs && value != null) value.stored.state.masterSeed else old.seedInput,
+            seedInput = if (inputs && value != null) value.stored.timeline?.rootSeed ?: value.stored.state.masterSeed else old.seedInput,
             selectedClubInput = value?.stored?.state?.selectedClubId ?: old.selectedClubInput,
             seedError = if (inputs && value != null) null else old.seedError,
             loaded = true, busy = !finished, bulk = if (finished) false else old.bulk,
@@ -177,6 +188,7 @@ class PennantViewModel(private val actions: PennantActions,
         } else if (command == PennantCommand.SELECT) { if (!before.canUse || before.season == null) return@synchronized }
         else if (command == PennantCommand.SAVE) { if (!before.canSave) return@synchronized }
         else if (command == PennantCommand.LOAD) { if (!before.canLoad) return@synchronized }
+        else if (command == PennantCommand.NEXT_YEAR) { if (!before.canAdvanceYear || confirmationToken == null) return@synchronized }
         else if (command in listOf(PennantCommand.PITCH, PennantCommand.PLATE_APPEARANCE, PennantCommand.GAME)) { if (!before.canAdvanceMatch) return@synchronized }
         else if (!before.canProgress) return@synchronized
         val bulk = command in listOf(PennantCommand.OPEN_SELECTED, PennantCommand.DAY, PennantCommand.SEASON)
@@ -184,7 +196,8 @@ class PennantViewModel(private val actions: PennantActions,
         viewModelScope.launch {
             try {
                 val (display, slot) = withContext(computation) {
-                    val committed = actions.execute(command, before.seedInput, club, replacementConfirmed, stopping::get) { value ->
+                    val committed = if (command == PennantCommand.NEXT_YEAR) actions.nextYear(checkNotNull(confirmationToken))
+                    else actions.execute(command, before.seedInput, club, replacementConfirmed, stopping::get) { value ->
                         publish(token, pennantDisplay(value))
                     }
                     pennantDisplay(committed) to actions.hasSlot()
@@ -203,6 +216,8 @@ class PennantViewModel(private val actions: PennantActions,
             }
         }
     }
+    suspend fun historyYears(expected: StoreToken) = withContext(computation) { actions.historyYears(expected) }
+    suspend fun historyYear(expected: StoreToken, year: Long) = withContext(computation) { actions.historyYear(expected, year) }
     fun applyLineup(expected: StoreToken, clubId: String, players: List<String>): Unit = synchronized(lock) {
         val before = mutable.value
         if (!before.canEditLineup || before.display?.stored?.token != expected || before.season?.selectedClubId != clubId) return@synchronized

@@ -31,9 +31,9 @@ run_case() {
 run_case profileRealStoreCostsAtCanonicalPrefixBoundaries "$report/store-profile.txt"
 adb pull /sdcard/Android/media/com.example.baseballsim/additional_test_output "$report/profile-output"
 
-# Keep one installation and database throughout all three format-specific host-death experiments.
+# Keep one installation and database throughout the four host-death experiments.
 base_report="$report"
-for format in v1 v2 v3; do
+for format in v1 v2 v3 annual; do
     report="$base_report/$format"
     mkdir -p "$report"
     world_format="$format"
@@ -98,6 +98,10 @@ record={'schema':'pennant-process-recovery-v1','same_install_and_database':True,
         'recovery_process_observed_alive_after_junit':bool(surviving),
         'same_committed_checkpoint_recovered':True,'exactly_one_next_pitch':True,
         'power_loss_or_physical_device_tested':False}
+if expected['world_format']=='annual':
+    assert proof['annual_year']==expected['annual_year']==2
+    assert proof['previous_archive']==expected['previous_archive']
+    record.update(annual_year=proof['annual_year'], root_seed=expected['root_seed'], previous_archive=proof['previous_archive'])
 with (p/'verification.json').open('x') as f:json.dump(record,f,indent=2);f.write('\n')
 PY
 adb pull /sdcard/Android/media/com.example.baseballsim/additional_test_output "$report/screenshots"
@@ -113,11 +117,13 @@ p=Path('app/build/pennant-process-proof')
 old=json.loads((p/'v1/verification.json').read_text())
 modern=json.loads((p/'v2/verification.json').read_text())
 profile=json.loads((p/'v3/verification.json').read_text())
+annual=json.loads((p/'annual/verification.json').read_text())
 assert old['lineup_world'] is False and modern['lineup_world'] is True
-assert all(v['same_install_and_database'] and v['same_committed_checkpoint_recovered'] and v['exactly_one_next_pitch'] for v in (old,modern,profile))
+assert all(v['same_install_and_database'] and v['same_committed_checkpoint_recovered'] and v['exactly_one_next_pitch'] for v in (old,modern,profile,annual))
 assert profile['world_format']=='v3' and profile['profiles_world'] is True
 old['formats']={'v1':old.copy(),'v2':modern,'v3':profile}
 old['all_three_formats_verified']=True
 old['both_formats_verified']=True
+old['annual_v3_after_rollover']=annual
 (p/'verification.json').write_text(json.dumps(old,indent=2)+'\n')
 PY

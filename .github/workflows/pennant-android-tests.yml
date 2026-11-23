@@ -48,16 +48,19 @@ jobs:
           # allocation larger than disk-size, despite accepting the config value.
           script: |
             bash gradlew :app:assembleDebug :app:assembleDebugAndroidTest --no-daemon --stacktrace
+            python3 tools/verify_lineup_fixture.py
             python3 tools/offline_manifest.py
             python3 tools/source_info.py
             python3 tools/pennant_source_info.py
             (cd app/build/outputs/apk/debug && sha256sum app-debug.apk > app-debug.apk.sha256)
+            "$ANDROID_HOME/build-tools/35.0.0/apksigner" verify --print-certs app/build/outputs/apk/debug/app-debug.apk > app/build/outputs/apk/debug/apk-signer.txt
             bash tools/pennant_process_recovery.sh
       - name: Stage the verified APK
         run: |
           mkdir -p build/pennant-distribution
           cp app/build/outputs/apk/debug/app-debug.apk app/build/outputs/apk/debug/app-debug.apk.sha256 app/build/outputs/apk/debug/source-info.json app/build/outputs/apk/debug/pennant-source-info.json app/build/outputs/apk/debug/offline-manifest-check.json build/pennant-distribution/
           cp app/build/pennant-process-proof/verification.json build/pennant-distribution/process-recovery-verification.json
+          cp app/build/outputs/apk/debug/apk-signer.txt app/build/reports/room-schemas/com.example.baseballsim.data.PennantDatabase/2.json build/pennant-distribution/
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: pennant-debug-${{ env.SOURCE_SHA }}

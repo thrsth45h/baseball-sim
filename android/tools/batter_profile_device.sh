@@ -1,7 +1,13 @@
 #!/usr/bin/env bash
 set -euo pipefail
 # This script runs only inside a disposable CI emulator, never on a user's device.
-report=app/build/batter-profile-device
+proof="${1:-batter-profile}"
+case "$proof" in
+  batter-profile) test_class=PennantBatterProfileFullSeasonTest ;;
+  annual-season) test_class=PennantAnnualSeasonTest ;;
+  *) exit 2 ;;
+esac
+report="app/build/$proof-device"
 mkdir -p "$report"
 collect_diagnostics() {
   adb pull /sdcard/Android/media/com.example.baseballsim/additional_test_output "$report/observations" || true
@@ -14,7 +20,7 @@ test "$(cat "$report/device-api.txt")" = 35
 adb install -r -t app/build/outputs/apk/debug/app-debug.apk
 adb install -r -t app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
 adb shell am instrument -w -r \
-  -e class com.example.baseballsim.PennantBatterProfileFullSeasonTest \
+  -e class "com.example.baseballsim.$test_class" \
   -e additionalTestOutputDir /sdcard/Android/media/com.example.baseballsim/additional_test_output \
   com.example.baseballsim.test/androidx.test.runner.AndroidJUnitRunner | tee "$report/instrumentation.txt"
 grep -F 'OK (1 test)' "$report/instrumentation.txt"

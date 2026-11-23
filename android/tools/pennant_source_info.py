@@ -13,6 +13,8 @@ def main():
     app = (project / 'app/build.gradle.kts').read_text()
     plugins = (project / 'build.gradle.kts').read_text()
     schema = project / 'app/schemas/com.example.baseballsim.data.PennantDatabase/1.json'
+    active_schema = project / 'app/build/reports/room-schemas/com.example.baseballsim.data.PennantDatabase/2.json'
+    assert json.loads(active_schema.read_text())['database']['version'] == 2
     assert base['apk_sha256'] == hashlib.sha256(apk.read_bytes()).hexdigest()
     pins = {'room': re.search(r'androidx\.room:room-runtime:([0-9.]+)', app).group(1),
             'ksp': re.search(r'com\.google\.devtools\.ksp"\) version "([^"]+)', plugins).group(1)}
@@ -22,7 +24,9 @@ def main():
         'version_code':int(re.search(r'versionCode = ([0-9]+)',app).group(1)),
         'version_name':re.search(r'versionName = "([^"]+)',app).group(1),
         'additional_pins':pins,'room_schema_sha256':hashlib.sha256(schema.read_bytes()).hexdigest(),
-        'scope':'Phase5a single-season technical prototype; no permanent product save compatibility promise'}
+        'room_active_schema_version':2,
+        'room_active_schema_sha256':hashlib.sha256(active_schema.read_bytes()).hexdigest(),
+        'scope':'Multi-year v3 technical prototype; no permanent product save compatibility promise'}
     with (output/'pennant-source-info.json').open('x',encoding='utf-8',newline='\n') as f:
         json.dump(info,f,sort_keys=True,indent=2);f.write('\n')
 

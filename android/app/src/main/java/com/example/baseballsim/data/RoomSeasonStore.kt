@@ -16,7 +16,8 @@ class RoomSeasonStore(
     private val faults: StoreFaults = StoreFaults {},
 ) : SeasonStore {
     private val dao get() = database.pennantDao()
-    private data class Raw(val head: WorkingEntity, val results: List<ResultEntity>, val receipt: ReceiptEntity?)
+    private data class Raw(val head: WorkingEntity, val results: List<ResultEntity>, val receipt: ReceiptEntity?,
+        val parent: AnnualArchive?)
     private data class Verified(val raw: Raw, val saved: StoredSeason)
     private fun token(head: WorkingEntity) = StoreToken(head.worldId, head.generationId, head.revision)
     private suspend fun raw(): Raw? = withContext(io) { database.withTransaction {
@@ -24,7 +25,8 @@ class RoomSeasonStore(
         if (head == null) {
             if (dao.hasSavedData()) throw StoreCorruption("Saved records exist without a current head; data has been retained")
             null
-        } else Raw(head, dao.results(head.worldId, head.generationId), dao.receipt(head.operationId))
+        } else Raw(head, dao.results(head.worldId, head.generationId), dao.receipt(head.operationId),
+            head.timeline.previous?.let { readArchive(it) })
     } }
     override suspend fun read(): StoredSeason? = verified()?.saved
     private suspend fun verified(): Verified? {
@@ -35,6 +37,7 @@ class RoomSeasonStore(
                 throw StoreCorruption("Saved head and operation receipt disagree")
             val savedToken = try { token(raw.head) } catch (error: Exception) { throw StoreCorruption("Saved identity or revision is invalid", error) }
             val state = checkedState(raw.head.payload, raw.head.payloadHash)
+            val timeline = checkedTimeline(raw.head.worldId, raw.head.timeline, state, raw.parent)
             if (raw.results.size != state.results.size) throw StoreCorruption("Result ledger count differs from the saved frame")
             raw.results.zip(state.results).forEach { (row, result) ->
                 val bytes = CheckpointCodec.encodeSummary(result)
@@ -43,7 +46,7 @@ class RoomSeasonStore(
                     throw StoreCorruption("Result ledger and saved frame disagree")
                 }
             }
-            Verified(raw, StoredSeason(savedToken, state, raw.head.operationId))
+            Verified(raw, StoredSeason(savedToken, state, raw.head.operationId, timeline))
         }
     }
     private fun operation(value: String) { require(validIdentifier(value)) }
@@ -82,12 +85,20 @@ class RoomSeasonStore(
     }
     private fun sameHead(a: WorkingEntity, b: WorkingEntity) =
         a.id == b.id && a.worldId == b.worldId && a.generationId == b.generationId && a.revision == b.revision &&
-            a.operationId == b.operationId && a.payloadHash == b.payloadHash && a.payload.contentEquals(b.payload)
+            a.operationId == b.operationId && a.payloadHash == b.payloadHash && a.payload.contentEquals(b.payload) &&
+            a.timeline == b.timeline
+    private suspend fun readArchive(id: String): AnnualArchive? =
+        dao.archive(id)?.let { AnnualArchive(it, dao.annualClubs(id), dao.annualPlayers(id)) }
+    private suspend fun setTimeline(head: WorkingEntity) {
+        val timeline = head.timeline
+        check(dao.setTimeline(head.worldId, head.generationId, head.revision, timeline.version, timeline.rootSeed,
+            timeline.year, timeline.previous, timeline.seal) == 1)
+    }
     private fun sameResult(a: ResultEntity, b: ResultEntity) =
         a.worldId == b.worldId && a.generationId == b.generationId && a.seasonId == b.seasonId && a.gameId == b.gameId &&
             a.ordinal == b.ordinal && a.payloadHash == b.payloadHash && a.payload.contentEquals(b.payload)
     /** The proof and decoded value belong only to this invocation; no caller-owned candidate or cache is retained. */
-    private suspend fun acknowledge(proof: Raw, value: SeasonState): StoredSeason {
+    private suspend fun acknowledge(proof: Raw, value: SeasonState, timeline: SeasonTimeline?): StoredSeason {
         faults.hit(StoreFaultPoint.AFTER_COMMIT)
         val fresh = try { raw() } catch (error: StoreCorruption) {
             throw StoreConflict("Committed contents cannot be acknowledged; saved records have been retained")
@@ -95,10 +106,10 @@ class RoomSeasonStore(
         // A conflict must bypass the coordinator's ambiguous-response recovery. Even the same token can have
         // altered bytes or a changed fingerprint; a less strict public read must not convert that into success.
         return withContext(computation) {
-            if (fresh == null || !sameHead(proof.head, fresh.head) || proof.receipt != fresh.receipt ||
+            if (fresh == null || !sameHead(proof.head, fresh.head) || proof.receipt != fresh.receipt || proof.parent != fresh.parent ||
                 proof.results.size != fresh.results.size || !proof.results.indices.all { sameResult(proof.results[it], fresh.results[it]) })
                 throw StoreConflict("Committed contents changed before acknowledgement; saved records have been retained")
-            StoredSeason(token(proof.head), value, proof.head.operationId)
+            StoredSeason(token(proof.head), value, proof.head.operationId, timeline)
         }
     }
     override suspend fun create(masterSeed: String, selectedClubId: String, operationId: String, expected: StoreToken?, replacementConfirmed: Boolean): StoredSeason =
@@ -136,6 +147,7 @@ class RoomSeasonStore(
                 val head = WorkingEntity(worldId = world, generationId = generation, revision = 0, operationId = operationId, payloadHash = bodyHash, payload = bytes)
                 if (old == null) dao.insertHead(head) else {
                     check(dao.compareAndSetHead(old.worldId, old.generationId, old.revision, world, generation, 0, operationId, bodyHash, bytes) == 1)
+                    if (old.timeline.version != 0) setTimeline(head)
                     dao.deleteResults(old.worldId, old.generationId)
                 }
                 faults.hit(StoreFaultPoint.AFTER_HEAD)
@@ -201,10 +213,9 @@ class RoomSeasonStore(
         }
         val rows = withContext(computation) { resultRows(value.results.drop(before.state.results.size), expected.worldId, expected.generationId) }
         val revision = Math.addExact(expected.revision, 1)
-        val head = WorkingEntity(worldId = expected.worldId, generationId = expected.generationId, revision = revision,
-            operationId = operationId, payloadHash = bodyHash, payload = bytes)
+        val head = priorState.raw.head.copy(revision = revision, operationId = operationId, payloadHash = bodyHash, payload = bytes)
         val proof = Raw(head, priorState.raw.results + rows,
-            ReceiptEntity(operationId, signature, expected.worldId, expected.generationId, revision))
+            ReceiptEntity(operationId, signature, expected.worldId, expected.generationId, revision), priorState.raw.parent)
         faults.hit(StoreFaultPoint.BEFORE_TRANSACTION)
         val committed = withContext(io) { database.withTransaction {
             duplicate(operationId, signature)?.let { it to false } ?: run {
@@ -217,7 +228,100 @@ class RoomSeasonStore(
                 finishWrite(operationId, signature, head) to true
             }
         } }
-        return if (committed.second) acknowledge(proof, value) else afterCommit(committed.first)
+        return if (committed.second) acknowledge(proof, value, before.timeline) else afterCommit(committed.first)
+    }
+    override suspend fun nextYear(expected: StoreToken, operationId: String): StoredSeason {
+        operation(operationId)
+        val signature = fingerprint("next-year", expected)
+        val before = verified() ?: throw StoreConflict("No active save")
+        if (before.saved.token != expected) {
+            val prior = withContext(io) { database.withTransaction { duplicate(operationId, signature) } }
+            if (prior != null) return afterCommit(prior)
+            throw StoreConflict("Saved generation or revision changed")
+        }
+        val timeline = checkNotNull(before.saved.timeline) { "This season has no annual progression" }
+        val year = Math.addExact(timeline.year, 1)
+        val (archive, next, bytes) = withContext(computation) {
+            val completed = SeasonYear.completed(timeline.year, before.saved.state)
+            val archived = AnnualArchive.build(expected.worldId, timeline.rootSeed, timeline.previous, completed)
+            val season = SeasonYearSeeds.next(before.saved.state, timeline.rootSeed, timeline.year)
+            Triple(archived, season, CheckpointCodec.encodeSeason(season))
+        }
+        val generation = newId()
+        val revision = Math.addExact(expected.revision, 1)
+        StoreToken(expected.worldId, generation, revision)
+        val nextTimeline = timeline.copy(year = year, previous = archive.header.id)
+        val columns = TimelineColumns.create(expected.worldId, nextTimeline)
+        val bodyHash = hash(bytes)
+        val head = WorkingEntity(worldId = expected.worldId, generationId = generation, revision = revision,
+            operationId = operationId, payloadHash = bodyHash, payload = bytes, timeline = columns)
+        val receipt = ReceiptEntity(operationId, signature, expected.worldId, generation, revision)
+        val proof = Raw(head, emptyList(), receipt, archive)
+        faults.hit(StoreFaultPoint.BEFORE_TRANSACTION)
+        val committed = withContext(io) { database.withTransaction {
+            duplicate(operationId, signature)?.let { it to false } ?: run {
+                val old = dao.head()
+                requireToken(old, expected)
+                val oldRows = dao.results(expected.worldId, expected.generationId)
+                if (!sameHead(before.raw.head, checkNotNull(old)) || oldRows.size != before.raw.results.size ||
+                    !oldRows.indices.all { sameResult(before.raw.results[it], oldRows[it]) } ||
+                    dao.receipt(old.operationId) != before.raw.receipt ||
+                    old.timeline.previous?.let { readArchive(it) } != before.raw.parent) {
+                    throw StoreConflict("The completed season changed before annual rollover")
+                }
+                val existing = readArchive(archive.header.id)
+                if (existing == null) {
+                    dao.insertArchive(archive.header)
+                    dao.insertAnnualClubs(archive.clubs)
+                    dao.insertAnnualPlayers(archive.players)
+                } else if (existing != archive) {
+                    throw StoreCorruption("An existing archive does not match this completed year")
+                }
+                dao.insertGeneration(GenerationEntity(generation, expected.worldId))
+                faults.hit(StoreFaultPoint.AFTER_RESULTS)
+                check(dao.compareAndSetHead(expected.worldId, expected.generationId, expected.revision,
+                    expected.worldId, generation, revision, operationId, bodyHash, bytes) == 1)
+                setTimeline(head)
+                dao.deleteResults(expected.worldId, expected.generationId)
+                faults.hit(StoreFaultPoint.AFTER_HEAD)
+                finishWrite(operationId, signature, head) to true
+            }
+        } }
+        return if (committed.second) acknowledge(proof, next, nextTimeline) else afterCommit(committed.first)
+    }
+    private suspend fun <T> withHistory(expected: StoreToken, block: suspend (SeasonTimeline?) -> T): T {
+        val before = verified() ?: throw StoreConflict("No active save")
+        if (before.saved.token != expected) throw StoreConflict("The history view belongs to an older saved state")
+        return withContext(io) { database.withTransaction {
+            val head = dao.head()
+            requireToken(head, expected)
+            if (!sameHead(before.raw.head, checkNotNull(head))) throw StoreConflict("The saved history changed")
+            checkedHistory { block(before.saved.timeline) }
+        } }
+    }
+    private suspend fun traverse(timeline: SeasonTimeline, world: String, visit: (AnnualArchiveEntity) -> Boolean) {
+        var year = timeline.year - 1
+        var id = timeline.previous
+        while (year > 0) {
+            val entry = requireNotNull(id?.let { dao.archive(it) })
+            checkArchiveHeader(entry, id, world, timeline.rootSeed, year)
+            if (!visit(entry)) return
+            id = entry.parent
+            year--
+        }
+    }
+    override suspend fun historyYears(expected: StoreToken): List<Long> = withHistory(expected) { timeline ->
+        if (timeline == null) emptyList()
+        else buildList { traverse(timeline, expected.worldId) { header -> add(header.year); true } }
+    }
+    override suspend fun historyYear(expected: StoreToken, year: Long): SeasonYear = withHistory(expected) { timeline ->
+        require(timeline != null && year in 1 until timeline.year)
+        var id: String? = null
+        traverse(timeline, expected.worldId) { header ->
+            if (header.year == year) id = header.id
+            header.year != year
+        }
+        requireNotNull(readArchive(requireNotNull(id))).checkedSummary()
     }
     override suspend fun saveSlot(expected: StoreToken, operationId: String): StoredSeason {
         operation(operationId); val signature = fingerprint("save-slot", expected)
@@ -227,7 +331,7 @@ class RoomSeasonStore(
         val committed = withContext(io) { database.withTransaction {
             duplicate(operationId, signature) ?: run {
                 val old = dao.head(); requireToken(old, expected); old!!
-                dao.putSlot(SlotEntity(worldId = old.worldId, payloadHash = old.payloadHash, payload = old.payload))
+                dao.putSlot(SlotEntity(worldId = old.worldId, payloadHash = old.payloadHash, payload = old.payload, timeline = old.timeline))
                 val revision = Math.addExact(expected.revision, 1)
                 check(dao.compareAndSetHead(expected.worldId, expected.generationId, expected.revision, expected.worldId,
                     expected.generationId, revision, operationId, old.payloadHash, old.payload) == 1)
@@ -241,8 +345,12 @@ class RoomSeasonStore(
         operation(operationId); val signature = fingerprint("load-slot", expected)
         val before = read() ?: throw StoreConflict("No active save")
         require(outsideMatch(before.state)) { "Manual load is disabled during a match" }
-        val slot = withContext(io) { dao.slot() } ?: throw StoreConflict("Manual slot is empty")
+        val (slot, parent) = withContext(io) { database.withTransaction {
+            val entry = dao.slot() ?: throw StoreConflict("Manual slot is empty")
+            entry to entry.timeline.previous?.let { readArchive(it) }
+        } }
         val restored = withContext(computation) { checkedState(slot.payload, slot.payloadHash) }
+        withContext(computation) { checkedTimeline(slot.worldId, slot.timeline, restored, parent) }
         require(outsideMatch(restored))
         val generation = newId(); val revision = Math.addExact(expected.revision, 1)
         StoreToken(slot.worldId, generation, revision)
@@ -252,17 +360,21 @@ class RoomSeasonStore(
             duplicate(operationId, signature) ?: run {
                 val old = dao.head(); requireToken(old, expected)
                 val currentSlot = dao.slot() ?: throw StoreConflict("Manual slot disappeared")
-                if (currentSlot.worldId != slot.worldId || currentSlot.payloadHash != slot.payloadHash || !currentSlot.payload.contentEquals(slot.payload))
+                if (currentSlot.worldId != slot.worldId || currentSlot.payloadHash != slot.payloadHash ||
+                    !currentSlot.payload.contentEquals(slot.payload) || currentSlot.timeline != slot.timeline ||
+                    slot.timeline.previous?.let { readArchive(it) } != parent)
                     throw StoreConflict("Manual slot changed")
                 dao.insertGeneration(GenerationEntity(generation, slot.worldId))
                 rows.forEach { dao.insertResult(it) }
                 faults.hit(StoreFaultPoint.AFTER_RESULTS)
                 check(dao.compareAndSetHead(expected.worldId, expected.generationId, expected.revision, slot.worldId,
                     generation, revision, operationId, slot.payloadHash, slot.payload) == 1)
+                val head = WorkingEntity(worldId = slot.worldId, generationId = generation, revision = revision,
+                    operationId = operationId, payloadHash = slot.payloadHash, payload = slot.payload, timeline = slot.timeline)
+                if (checkNotNull(old).timeline != slot.timeline) setTimeline(head)
                 dao.deleteResults(expected.worldId, expected.generationId)
                 faults.hit(StoreFaultPoint.AFTER_HEAD)
-                finishWrite(operationId, signature, WorkingEntity(worldId = slot.worldId, generationId = generation, revision = revision,
-                    operationId = operationId, payloadHash = slot.payloadHash, payload = slot.payload))
+                finishWrite(operationId, signature, head)
             }
         } }
         return afterCommit(committed)

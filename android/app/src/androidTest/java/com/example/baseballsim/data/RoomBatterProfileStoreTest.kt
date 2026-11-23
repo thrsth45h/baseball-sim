@@ -73,7 +73,7 @@ class RoomBatterProfileStoreTest {
                 assertEquals(expected, pitched.state.active)
                 db.close(); db = PennantDatabase.open(context, name); store = RoomSeasonStore(db)
                 assertEquals(pitched, store.read())
-                assertEquals(1, db.openHelper.readableDatabase.version)
+                assertEquals(2, db.openHelper.readableDatabase.version)
             } finally { db.close(); context.deleteDatabase(name) }
         }
     }

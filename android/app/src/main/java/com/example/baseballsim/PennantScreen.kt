@@ -24,6 +24,7 @@ import com.example.baseballsim.core.Side
 import com.example.baseballsim.core.Status
 import com.example.baseballsim.season.*
 import java.util.Locale
+import kotlinx.coroutines.CancellationException
 
 object PennantTags {
     const val SCREEN = "pennant_screen"
@@ -63,6 +64,11 @@ object PennantTags {
     const val NAV_RECORDS = "pennant_nav_records"
     const val NAV_MATCH = "pennant_nav_match"
     const val NAV_SETTINGS = "pennant_nav_settings"
+    const val YEAR = "pennant_year"
+    const val NEXT_YEAR = "pennant_next_year"
+    const val CONFIRM_NEXT_YEAR = "pennant_confirm_next_year"
+    const val NAV_HISTORY = "pennant_nav_history"
+    fun historyYear(year: Long) = "pennant_history_$year"
     fun player(id: String) = "pennant_player_$id"
 }
 
@@ -73,24 +79,30 @@ private data class PennantConfirmation(val command: PennantCommand, val token: S
 private val ConfirmationSaver = listSaver<PennantConfirmation?, String>(
     save = { pending -> pending?.let { listOf(it.command.name, it.token.worldId, it.token.generationId, it.token.revision.toString()) } ?: emptyList() },
     restore = { v -> runCatching {
-        if (v.size != 4) null else PennantCommand.valueOf(v[0]).takeIf { it == PennantCommand.CREATE || it == PennantCommand.LOAD }
+        if (v.size != 4) null else PennantCommand.valueOf(v[0]).takeIf {
+            it in listOf(PennantCommand.CREATE, PennantCommand.LOAD, PennantCommand.NEXT_YEAR)
+        }
             ?.let { PennantConfirmation(it, StoreToken(v[1], v[2], v[3].toLong())) }
     }.getOrNull() })
 
 @Composable fun PennantRoute(viewModel: PennantViewModel) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     PennantScreen(state, viewModel::changeSeed, viewModel::selectClub,
-        { command, confirmed, token -> viewModel.execute(command, confirmed, confirmationToken = token) }, viewModel::requestStop, viewModel::reload, viewModel::applyLineup)
+        { command, confirmed, token -> viewModel.execute(command, confirmed, confirmationToken = token) },
+        viewModel::requestStop, viewModel::reload, viewModel::applyLineup, viewModel::historyYears, viewModel::historyYear)
 }
 
 @Composable fun PennantScreen(state: PennantUiState, changeSeed: (String) -> Unit, selectClub: (String) -> Unit,
     execute: (PennantCommand, Boolean, StoreToken?) -> Unit, stop: () -> Unit, reload: () -> Unit,
-    applyLineup: (StoreToken, String, List<String>) -> Unit = { _, _, _ -> }) {
+    applyLineup: (StoreToken, String, List<String>) -> Unit = { _, _, _ -> },
+    historyYears: suspend (StoreToken) -> List<Long> = { emptyList() },
+    historyYear: suspend (StoreToken, Long) -> SeasonYear = { _, _ -> error("Annual history is unavailable") }) {
     var savedNavigation by rememberSaveable(stateSaver = NavigationSaver) { mutableStateOf(PennantNavigation()) }
     var confirmation by rememberSaveable(stateSaver = ConfirmationSaver) { mutableStateOf<PennantConfirmation?>(null) }
     val navigation = savedNavigation.bind(state)
     val season = state.season
     val token = state.display?.stored?.token
+    val timeline = state.timeline
     val pages = rememberSaveableStateHolder()
     LaunchedEffect(navigation) { savedNavigation = navigation }
     // Do not discard OS restoration candidates until the startup identity is known.
@@ -105,7 +117,7 @@ private val ConfirmationSaver = listSaver<PennantConfirmation?, String>(
     fun command(value: PennantCommand) { execute(value, false, null) }
     fun open(page: PennantPage) {
         if (season != null) {
-            if (page in listOf(PennantPage.PLAYERS, PennantPage.RECORDS, PennantPage.LINEUP)) {
+            if (page in listOf(PennantPage.PLAYERS, PennantPage.RECORDS, PennantPage.LINEUP, PennantPage.HISTORY)) {
                 pages.removeState("${navigation.worldId}/${navigation.generationId}/$page")
             }
             savedNavigation = navigation.open(page, season)
@@ -141,12 +153,19 @@ private val ConfirmationSaver = listSaver<PennantConfirmation?, String>(
                     } else when (navigation.page) {
                         PennantPage.HOME -> Column(Modifier.testTag(PennantTags.HOME), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                             Text(PennantSchedule.club(season.selectedClubId).displayName, style = MaterialTheme.typography.titleLarge)
+                            if (timeline != null) Text("${timeline.year}年目", Modifier.testTag(PennantTags.YEAR))
                             Text("${season.results.size} / 720試合完了 · seed ${season.masterSeed}", Modifier.testTag(PennantTags.PROGRESS))
                             val calendar = PennantSchedule.calendar[minOf(season.dayIndex, 140) - 1]
                             Text(if (season.status == SeasonStatus.COMPLETE) "シーズン終了" else "第${calendar.week}週 ${weekday(calendar.weekday)}")
                             val standing = season.standings.first { it.totals.clubId == season.selectedClubId }
                             Text("${standing.rank?.let { "${it}位" } ?: "順位 —"} · ${standing.totals.wins}勝 ${standing.totals.losses}敗 ${standing.totals.draws}分")
                             if (season.status == SeasonStatus.BLOCKED) BlockedDiagnostic(state)
+                            if (timeline != null && season.status == SeasonStatus.COMPLETE && token != null) {
+                                ProgressButton("翌年へ進む", PennantTags.NEXT_YEAR, state.canAdvanceYear, Modifier.fillMaxWidth()) {
+                                    confirmation = PennantConfirmation(PennantCommand.NEXT_YEAR, token)
+                                }
+                            }
+                            if (timeline != null && timeline.year > 1) NavigationButton("年度別成績", PennantTags.NAV_HISTORY) { open(PennantPage.HISTORY) }
                             NavigationButton("打順・出場選手", PennantTags.NAV_LINEUP) { open(PennantPage.LINEUP) }
                             NavigationButton("選手一覧", PennantTags.NAV_PLAYERS) { open(PennantPage.PLAYERS) }
                             NavigationButton("日程", PennantTags.NAV_SCHEDULE) { open(PennantPage.SCHEDULE) }
@@ -164,8 +183,12 @@ private val ConfirmationSaver = listSaver<PennantConfirmation?, String>(
                             { savedNavigation = navigation.browse(it) }, { savedNavigation = navigation.player(it) })
                         PennantPage.PLAYER_DETAIL -> PlayerPanel(pennantPlayers(season, navigation.browseClubId).first { it.playerId == navigation.playerId }, season)
                         PennantPage.SCHEDULE -> SchedulePanel(season)
-                        PennantPage.STANDINGS -> StandingsPanel(season)
-                        PennantPage.RECORDS -> RecordsPanel(season, navigation.browseClubId) { savedNavigation = navigation.browse(it) }
+                        PennantPage.STANDINGS -> StandingsPanel(season.standings)
+                        PennantPage.RECORDS -> RecordsPanel(pennantPlayers(season, navigation.browseClubId), season.lineupEnabled,
+                            navigation.browseClubId) { savedNavigation = navigation.browse(it) }
+                        PennantPage.HISTORY -> if (token != null && timeline != null && timeline.year > 1) {
+                            HistoryPanel(token, state.canUse, navigation.browseClubId, { savedNavigation = navigation.browse(it) }, historyYears, historyYear)
+                        } else Unit
                         PennantPage.MATCH -> {
                             state.display?.let { GameCard(it) }
                             ProgressButton("1球", PennantTags.PITCH, state.canAdvanceMatch, Modifier.fillMaxWidth()) { command(PennantCommand.PITCH) }
@@ -181,13 +204,51 @@ private val ConfirmationSaver = listSaver<PennantConfirmation?, String>(
             }
         }
     }
-    confirmation?.takeIf { season != null && state.loaded && it.token == token }?.let { pending ->
-        val create = pending.command == PennantCommand.CREATE
-        AlertDialog(onDismissRequest = { confirmation = null }, title = { Text(if (create) "新しいシーズンを開始" else "手動セーブをロード") },
-            text = { Text(if (create) "現在の進行データを置き換えます。手動セーブは残ります。" else "保存した時点に戻ります。現在の進行を置き換えます。") },
-            confirmButton = { TextButton({ confirmation = null; execute(pending.command, create, pending.token) },
-                Modifier.testTag(if (create) PennantTags.CONFIRM_CREATE else PennantTags.CONFIRM_LOAD)) { Text(if (create) "開始する" else "読み込む") } },
+    confirmation?.takeIf { season != null && state.loaded && it.token == token &&
+        (it.command != PennantCommand.NEXT_YEAR || timeline != null) }?.let { pending ->
+        val (title, message, button, tag) = when (pending.command) {
+            PennantCommand.CREATE -> ConfirmationText("新しいシーズンを開始", "現在の進行データを置き換えます。手動セーブは残ります。", "開始する", PennantTags.CONFIRM_CREATE)
+            PennantCommand.NEXT_YEAR -> ConfirmationText("翌年へ進む", "${checkNotNull(timeline).year}年目の成績を残し、同じ選手・打順で翌年を開始します。", "進む", PennantTags.CONFIRM_NEXT_YEAR)
+            else -> ConfirmationText("手動セーブをロード", "保存した時点に戻ります。現在の進行を置き換えます。", "読み込む", PennantTags.CONFIRM_LOAD)
+        }
+        AlertDialog(onDismissRequest = { confirmation = null }, title = { Text(title) }, text = { Text(message) },
+            confirmButton = { TextButton({ confirmation = null; execute(pending.command, pending.command == PennantCommand.CREATE, pending.token) },
+                Modifier.testTag(tag)) { Text(button) } },
             dismissButton = { TextButton({ confirmation = null }) { Text("戻る") } })
+    }
+}
+
+private data class ConfirmationText(val title: String, val message: String, val button: String, val tag: String)
+
+@Composable private fun HistoryPanel(token: StoreToken, canRead: Boolean, club: String, browse: (String) -> Unit,
+    listYears: suspend (StoreToken) -> List<Long>, loadYear: suspend (StoreToken, Long) -> SeasonYear) {
+    var requested by rememberSaveable { mutableStateOf<Long?>(null) }
+    // Ordinary play can publish hundreds of revisions while skipping a season. A history
+    // anchor only changes with the generation, so keep any loaded year and wait for idle.
+    var years by remember(token.worldId, token.generationId) { mutableStateOf<List<Long>?>(null) }
+    var loaded by remember(token.worldId, token.generationId, requested) { mutableStateOf<SeasonYear?>(null) }
+    var error by remember(token, requested, canRead) { mutableStateOf(false) }
+    LaunchedEffect(token, requested, canRead) {
+        if (!canRead) return@LaunchedEffect
+        try {
+            if (years == null) years = listYears(token)
+            if (loaded == null) requested?.let { loaded = loadYear(token, it) }
+        } catch (cancelled: CancellationException) { throw cancelled }
+        catch (_: Exception) { error = true }
+    }
+    when {
+        error -> Text("年度別成績を読み込めませんでした。", color = MaterialTheme.colorScheme.error)
+        requested != null -> {
+            TextButton({ requested = null }) { Text("年度一覧へ") }
+            val year = loaded
+            if (year == null) Text("成績を読み込み中") else {
+                Text("${year.number}年目", style = MaterialTheme.typography.titleLarge)
+                StandingsPanel(year.standings)
+                RecordsPanel(year.players.filter { it.clubId == club }, true, club, browse)
+            }
+        }
+        else -> years?.forEach { year -> NavigationButton("${year}年目", PennantTags.historyYear(year)) { requested = year } }
+            ?: Text("年度を読み込み中")
     }
 }
 
@@ -327,14 +388,14 @@ private val ConfirmationSaver = listSaver<PennantConfirmation?, String>(
     }
 }
 
-@Composable private fun StandingsPanel(state: SeasonState) {
+@Composable private fun StandingsPanel(standings: List<Standing>) {
     var league by rememberSaveable { mutableStateOf("L1") }
     Column(Modifier.testTag(PennantTags.STANDINGS), verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Row { listOf("L1", "L2").forEach { id -> TextButton({ league = id }) { Text("リーグ${id.last()}") } } }
         Surface(Modifier.fillMaxWidth()) {
             Column(Modifier.horizontalScroll(rememberScrollState())) {
                 TableRow(listOf("位", "球団", "試", "勝", "敗", "分", "得点", "失点", "勝率"))
-                state.standings.filter { PennantSchedule.club(it.totals.clubId).leagueId == league }.forEach { row ->
+                standings.filter { PennantSchedule.club(it.totals.clubId).leagueId == league }.forEach { row ->
                     val t = row.totals
                     val ratio = t.ratio?.let { String.format(Locale.ROOT, "%.3f", it.numerator.toDouble() / it.denominator) } ?: "—"
                     TableRow(listOf(row.rank?.toString() ?: "—", PennantSchedule.club(t.clubId).displayName, t.played.toString(), t.wins.toString(),
@@ -345,17 +406,17 @@ private val ConfirmationSaver = listSaver<PennantConfirmation?, String>(
     }
 }
 
-@Composable private fun RecordsPanel(state: SeasonState, club: String, browse: (String) -> Unit) {
+@Composable private fun RecordsPanel(players: List<PlayerSeasonCounts>, lineupEnabled: Boolean, club: String, browse: (String) -> Unit) {
     Column(Modifier.testTag(PennantTags.RECORDS), verticalArrangement = Arrangement.spacedBy(8.dp)) {
         ClubSelector("記録を見る球団", club, true, browse, PennantTags.BROWSE_CLUB)
         Text("確定試合の記録。セーフ安打には本塁打を含みます。", style = MaterialTheme.typography.bodySmall)
         Surface(Modifier.fillMaxWidth()) {
             Column(Modifier.horizontalScroll(rememberScrollState())) {
-                TableRow(listOf(if (state.lineupEnabled) "選手" else "打順", "完了打席", "セーフ安打", "四球", "三振", "本塁打"), records = true, firstWide = state.lineupEnabled)
-                pennantPlayers(state, club).forEach { row ->
+                TableRow(listOf(if (lineupEnabled) "選手" else "打順", "完了打席", "セーフ安打", "四球", "三振", "本塁打"), records = true, firstWide = lineupEnabled)
+                players.forEach { row ->
                     val c = row.counts
-                    TableRow(listOf(if (state.lineupEnabled) row.playerId else row.slot.toString(), c.completedPlateAppearances.toString(), c.safeHitEvents.toString(),
-                        c.walkEvents.toString(), c.strikeoutEvents.toString(), c.homeRunEvents.toString()), records = true, firstWide = state.lineupEnabled)
+                    TableRow(listOf(if (lineupEnabled) row.playerId else row.slot.toString(), c.completedPlateAppearances.toString(), c.safeHitEvents.toString(),
+                        c.walkEvents.toString(), c.strikeoutEvents.toString(), c.homeRunEvents.toString()), records = true, firstWide = lineupEnabled)
                 }
             }
         }

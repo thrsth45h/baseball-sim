@@ -23,12 +23,23 @@ import org.json.JSONObject
 import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
+import org.junit.rules.ExternalResource
+import org.junit.rules.RuleChain
 import org.junit.runner.RunWith
 
 /** Host-only: standard connected tests explicitly exclude this class. */
 @RunWith(AndroidJUnit4::class)
 class PennantProcessRecoveryTest {
-    @get:Rule val compose = createAndroidComposeRule<MainActivity>()
+    private val compose = createAndroidComposeRule<MainActivity>()
+    @get:Rule val setup: RuleChain = RuleChain.outerRule(object : ExternalResource() {
+        override fun before() {
+            val args = InstrumentationRegistry.getArguments()
+            if (args.getString("world_format") == "annual" &&
+                args.getString("class")?.endsWith("#prepareDurableCheckpointBeforeHostKill") == true) {
+                runBlocking { prepareAnnualWorld() }
+            }
+        }
+    }).around(compose)
     private val context get() = InstrumentationRegistry.getInstrumentation().targetContext
     private fun ready(): PennantViewModel {
         compose.waitUntil(120_000) { val s = compose.activity.pennantViewModel.state.value; s.loaded && !s.busy }
@@ -94,23 +105,23 @@ class PennantProcessRecoveryTest {
         persist()
     }
     @Test fun prepareDurableCheckpointBeforeHostKill() {
-        compose.onNodeWithTag("mode_pennant").performClick(); val vm = ready()
         val format = InstrumentationRegistry.getArguments().getString("world_format") ?: "v1"
-        require(format in setOf("v1", "v2", "v3"))
+        require(format in setOf("v1", "v2", "v3", "annual"))
+        compose.onNodeWithTag("mode_pennant").performClick(); val vm = ready()
         if (format == "v3") {
             compose.runOnUiThread { vm.changeSeed("42"); vm.execute(PennantCommand.CREATE, replacementConfirmed = true) }; ready()
-        } else {
+        } else if (format != "annual") {
             runBlocking { if (format == "v2") createLineupTargetWorld() else createLegacyTargetWorld() }
             compose.runOnUiThread { vm.reload() }; ready()
         }
-        if (format != "v1") {
+        if (format == "v2" || format == "v3") {
             val token = vm.state.value.display!!.stored.token
             // v3 uses a nonstandard starter; v2 retains its earlier P10 checkpoint reference.
             val people = (listOf(if (format == "v3") 11 else 10) + (2..9)).map { "L1-T01-P${it.toString().padStart(2, '0')}" }
             compose.runOnUiThread { vm.applyLineup(token, "L1-T01", people) }; ready()
         }
         assertEquals(format != "v1", vm.state.value.season!!.lineupEnabled)
-        assertEquals(format == "v3", vm.state.value.season!!.profilesEnabled)
+        assertEquals(format in setOf("v3", "annual"), vm.state.value.season!!.profilesEnabled)
         compose.runOnUiThread { vm.execute(PennantCommand.OPEN_SELECTED) }; ready()
         compose.runOnUiThread { vm.execute(PennantCommand.PLATE_APPEARANCE) }; ready()
         compose.runOnUiThread { vm.execute(PennantCommand.PITCH) }; ready()
@@ -120,12 +131,18 @@ class PennantProcessRecoveryTest {
             .put("generation", stored.token.generationId).put("revision", stored.token.revision)
             .put("game_id", active.game.fixture.gameId).put("checkpoint_sha256", active.stateHash)
             .put("pitches", active.snapshot.pitchesAccepted).put("advance_calls", active.advanceCalls)
-            .put("world_format", format).put("lineup_world", format != "v1").put("profiles_world", format == "v3")
+            .put("world_format", format).put("lineup_world", format != "v1").put("profiles_world", format in setOf("v3", "annual"))
             .put("away_lineup", JSONArray(active.lineup.away)).put("home_lineup", JSONArray(active.lineup.home))
         active.profileInput?.let {
             proof.put("away_profiles", JSONArray(it.away.map { p -> p.profileId })).put("home_profiles", JSONArray(it.home.map { p -> p.profileId }))
                 .put("table_version", it.tableVersion).put("source_version", it.sourceVersion)
-            assertEquals("contact", it.profile("home", 1))
+            if (format == "v3") assertEquals("contact", it.profile("home", 1))
+        }
+        if (format == "annual") {
+            val timeline = stored.timeline!!
+            assertEquals(2L, timeline.year)
+            assertEquals(listOf(1L), runBlocking { vm.historyYears(stored.token) })
+            proof.put("annual_year", timeline.year).put("root_seed", timeline.rootSeed).put("previous_archive", timeline.previous)
         }
         compose.pennantScreenshot("pennant-before-process-kill.png")
         // This is intentionally a live setup probe, not a completed JUnit assertion case.
@@ -156,6 +173,12 @@ class PennantProcessRecoveryTest {
             assertEquals(expected.getJSONArray("home_profiles").toString(), JSONArray(it.home.map { p -> p.profileId }).toString())
             assertEquals(expected.getString("table_version"), it.tableVersion); assertEquals(expected.getString("source_version"), it.sourceVersion)
         }
+        val annual = expected.getString("world_format") == "annual"
+        if (annual) {
+            assertEquals(SeasonTimeline(expected.getString("root_seed"), expected.getLong("annual_year"),
+                expected.getString("previous_archive")), stored.timeline)
+            assertEquals(listOf(1L), runBlocking { vm.historyYears(stored.token) })
+        }
         val replay = active.recover(stored.state.masterSeed); replay.advanceOnePitch()
         val expectedNext: GameCheckpoint = replay.checkpoint()
         compose.runOnUiThread { vm.execute(PennantCommand.PITCH) }; ready()
@@ -165,7 +188,28 @@ class PennantProcessRecoveryTest {
         val proof = JSONObject().put("previous_pid", expected.getInt("pid")).put("new_pid", Process.myPid())
             .put("saved_checkpoint_sha256", active.stateHash).put("next_checkpoint_sha256", next.state.active!!.stateHash)
             .put("same_world_generation_and_checkpoint", true).put("one_additional_pitch_only", true)
+        if (annual) {
+            assertEquals(stored.timeline, next.timeline)
+            assertEquals(listOf(1L), runBlocking { vm.historyYears(next.token) })
+            proof.put("annual_year", next.timeline!!.year).put("previous_archive", next.timeline!!.previous)
+        }
         File(context.filesDir, "pennant-process-proof.json").writeText(proof.toString(2))
         compose.pennantScreenshot("pennant-after-process-kill.png")
+    }
+
+    private suspend fun prepareAnnualWorld() {
+        val name = "annual-recovery-fixture-${UUID.randomUUID()}.db"
+        installCompletedV3Fixture(context, name)
+        val fixture = PennantDatabase.open(context, name)
+        val completed = try { RoomSeasonStore(fixture).read()!!.state }
+        finally { fixture.close(); context.deleteDatabase(name) }
+        assertEquals(completedV3FrameHash, hash(CheckpointCodec.encodeSeason(completed)))
+        val database = PennantDatabase.open(context)
+        try {
+            val store = RoomSeasonStore(database)
+            val before = store.read()!!
+            val positioned = replaceFixture(database, before, completed, TimelineColumns())
+            assertEquals(2L, SeasonCoordinator(store).nextYear(positioned).timeline?.year)
+        } finally { database.close() }
     }
 }
