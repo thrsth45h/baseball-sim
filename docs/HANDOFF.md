@@ -10,6 +10,8 @@
 
 ## 現在の到達点
 
+- **2026-11-23：ペナントのホームと下部ナビゲーション。** 本人がPennant Spiritsのメイン画面を添付し「メイン画面こんな感じ+ボトムナビゲーション」と指定した。D060の既存画面・D063までの公開データ/操作を用いる[ホームとタブの設計](PENNANT_DASHBOARD_DESIGN.md)に基づいて、表示と画面遷移の整理を進める。受け入れ条件には閲覧時の無書き込み・回転・既存の保存/年度移行・GitHub Releasesへの検証APK配布を含む。
+
 - **2026-11-23：D063の実装と独立レビューを完了。** [実装PR #56](https://github.com/thrsth45h/baseball-sim/pull/56)で、完走済みv3から同じ球団・選手・打順で翌年を開始し、年度別成績を保存・閲覧できる。API35で2年目720試合、3年目への移行、手動セーブ・ロードと強制終了復旧を確認。配布APKのビルド元は `8205744`。移行後の版番号を参照するテスト2件を修正した `9e62d0e` で、通常の端末試験63件と全11ワークフローが成功した。コードと配布APKの詳細、旧デバッグ版と署名が異なることによる上書き不可は[検証記録](season-history/VALIDATION.md)・[APKと操作](season-history/README.md)を参照。新しいゲーム仕様はD063の限定範囲まで。
 
 - **2026-11-22：翌年への移行と年度別成績を本人承認。** 打者タイプ実装 [PR #53](https://github.com/thrsth45h/baseball-sim/pull/53) は `0c63966` に統合済み。[設計PR #55](https://github.com/thrsth45h/baseball-sim/pull/55)の[限定範囲](SEASON_HISTORY_DESIGN.md)とworker実装〜独立レビュー・APK公開を提示後、本人が「はい」と回答した。D063 CONFIRMED・ADR-0021 Accepted。設計を統合してから専用workerへ委任する。APKは [PR #54で確定した配布手順](APK_RELEASES.md) に沿ってGitHub Releasesに添付する。
