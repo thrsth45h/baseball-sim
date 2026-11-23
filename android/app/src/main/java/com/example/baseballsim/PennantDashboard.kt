@@ -1,18 +1,24 @@
 package com.example.baseballsim
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import com.example.baseballsim.core.Status
 import com.example.baseballsim.season.CalendarDay
 import com.example.baseballsim.season.PennantSchedule
@@ -36,15 +42,26 @@ private enum class BottomTab(val label: String, val page: PennantPage, val icon:
         PennantPage.STANDINGS, PennantPage.RECORDS, PennantPage.HISTORY -> BottomTab.RECORDS
         PennantPage.SETTINGS -> BottomTab.SETTINGS
     }
-    NavigationBar(Modifier.testTag(PennantTags.BOTTOM_NAV), containerColor = MaterialTheme.colorScheme.surface) {
+    val colors = MaterialTheme.colorScheme
+    NavigationBar(Modifier.zIndex(1f).testTag(PennantTags.BOTTOM_NAV), containerColor = colors.surface) {
         BottomTab.entries.forEach { tab ->
-            NavigationBarItem(
-                selected = tab == selected,
-                onClick = { open(tab.page) },
-                modifier = Modifier.testTag(tab.tag),
-                icon = { Icon(painterResource(tab.icon), contentDescription = null, modifier = Modifier.size(22.dp)) },
-                label = { Text(tab.label, maxLines = 1) },
-            )
+            val active = tab == selected
+            Column(
+                Modifier.weight(1f).heightIn(min = 72.dp).testTag(tab.tag)
+                    .selectable(selected = active, role = Role.Tab, onClick = { open(tab.page) })
+                    .padding(vertical = 6.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterVertically),
+            ) {
+                Box(Modifier.fillMaxWidth(.82f).height(32.dp)
+                    .background(if (active) colors.primaryContainer else Color.Transparent, CircleShape),
+                    contentAlignment = Alignment.Center) {
+                    Icon(painterResource(tab.icon), contentDescription = null, modifier = Modifier.size(22.dp),
+                        tint = if (active) colors.onPrimaryContainer else colors.onSurfaceVariant)
+                }
+                Text(tab.label, maxLines = 1, style = MaterialTheme.typography.labelSmall,
+                    color = if (active) colors.onPrimaryContainer else colors.onSurfaceVariant)
+            }
         }
     }
 }
@@ -103,8 +120,7 @@ private enum class BottomTab(val label: String, val page: PennantPage, val icon:
             }
         }
         BoxWithConstraints(Modifier.fillMaxWidth()) {
-            val sideBySide = calendar != null && maxWidth >= (650 * LocalDensity.current.fontScale).dp
-            if (sideBySide && calendar != null) {
+            if (calendar != null && maxWidth >= (650 * LocalDensity.current.fontScale).dp) {
                 Row(horizontalArrangement = Arrangement.spacedBy(14.dp)) {
                     TodayGames(season, state.display, calendar, Modifier.weight(3f))
                     HomeStandings(team.leagueId, team.id, season.standings, Modifier.weight(2f))
@@ -154,8 +170,8 @@ private enum class BottomTab(val label: String, val page: PennantPage, val icon:
                     Surface(color = if (isOwn) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surface) {
                         Row(Modifier.fillMaxWidth().testTag(PennantTags.todayGame(fixture.gameId))
                             .then(if (isOwn) Modifier.semantics { stateDescription = "操作球団の試合" } else Modifier)
-                            .padding(horizontal = 12.dp, vertical = 8.dp),
-                            verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            .padding(horizontal = 8.dp, vertical = 8.dp),
+                            verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                             Text(PennantSchedule.club(fixture.awayClubId).displayName, Modifier.weight(1f), style = MaterialTheme.typography.bodyMedium,
                                 fontWeight = if (ownAway) FontWeight.SemiBold else null)
                             Column(Modifier.weight(1f), horizontalAlignment = Alignment.CenterHorizontally) {

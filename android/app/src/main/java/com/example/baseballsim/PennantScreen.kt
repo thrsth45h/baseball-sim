@@ -14,6 +14,7 @@ import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import com.example.baseballsim.data.StoreToken
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -157,48 +158,51 @@ private val ConfirmationSaver = listSaver<PennantConfirmation?, String>(
                 }
                 state.notice?.let { Text(it, color = MaterialTheme.colorScheme.primary) }
             }
-            pages.SaveableStateProvider(if (season == null) "startup" else "${navigation.worldId}/${navigation.generationId}/${navigation.page}") {
-                Column(Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()).padding(horizontal = 16.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                    if (season == null) {
-                        Text("仮の12球団で1シーズンを進めます。各球団120試合、打者の3タイプは試作用の仮設定です。")
-                        SeasonSettings(state, changeSeed, selectClub, { command(PennantCommand.CREATE) }, {}, {})
-                    } else when (navigation.page) {
-                        PennantPage.HOME -> PennantDashboard(state, season, ::command,
-                            openMatch = { open(PennantPage.MATCH) },
-                            openSelected = { open(PennantPage.MATCH); command(PennantCommand.OPEN_SELECTED) },
-                            nextYear = { token?.let { confirmation = PennantConfirmation(PennantCommand.NEXT_YEAR, it) } })
-                        PennantPage.LINEUP -> {
-                            NavigationButton("選手一覧", PennantTags.NAV_PLAYERS) { open(PennantPage.PLAYERS) }
-                            token?.let { LineupPanel(state, it, applyLineup) }
-                        }
-                        PennantPage.PLAYERS -> PlayersPanel(season, navigation.browseClubId,
-                            { savedNavigation = navigation.browse(it) }, { savedNavigation = navigation.player(it) })
-                        PennantPage.PLAYER_DETAIL -> PlayerPanel(pennantPlayers(season, navigation.browseClubId).first { it.playerId == navigation.playerId }, season)
-                        PennantPage.SCHEDULE -> SchedulePanel(season)
-                        PennantPage.STANDINGS -> {
-                            NavigationButton("個人成績", PennantTags.NAV_RECORDS) { open(PennantPage.RECORDS) }
-                            if (timeline != null && timeline.year > 1) {
-                                NavigationButton("年度別成績", PennantTags.NAV_HISTORY) { open(PennantPage.HISTORY) }
+            // Keep the scroll destination's surfaces and touch targets inside its viewport.
+            Box(Modifier.weight(1f).fillMaxWidth().clipToBounds()) {
+                pages.SaveableStateProvider(if (season == null) "startup" else "${navigation.worldId}/${navigation.generationId}/${navigation.page}") {
+                    Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = 16.dp),
+                        verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                        if (season == null) {
+                            Text("仮の12球団で1シーズンを進めます。各球団120試合、打者の3タイプは試作用の仮設定です。")
+                            SeasonSettings(state, changeSeed, selectClub, { command(PennantCommand.CREATE) }, {}, {})
+                        } else when (navigation.page) {
+                            PennantPage.HOME -> PennantDashboard(state, season, ::command,
+                                openMatch = { open(PennantPage.MATCH) },
+                                openSelected = { open(PennantPage.MATCH); command(PennantCommand.OPEN_SELECTED) },
+                                nextYear = { token?.let { confirmation = PennantConfirmation(PennantCommand.NEXT_YEAR, it) } })
+                            PennantPage.LINEUP -> {
+                                NavigationButton("選手一覧", PennantTags.NAV_PLAYERS) { open(PennantPage.PLAYERS) }
+                                token?.let { LineupPanel(state, it, applyLineup) }
                             }
-                            StandingsPanel(season.standings)
+                            PennantPage.PLAYERS -> PlayersPanel(season, navigation.browseClubId,
+                                { savedNavigation = navigation.browse(it) }, { savedNavigation = navigation.player(it) })
+                            PennantPage.PLAYER_DETAIL -> PlayerPanel(pennantPlayers(season, navigation.browseClubId).first { it.playerId == navigation.playerId }, season)
+                            PennantPage.SCHEDULE -> SchedulePanel(season)
+                            PennantPage.STANDINGS -> {
+                                NavigationButton("個人成績", PennantTags.NAV_RECORDS) { open(PennantPage.RECORDS) }
+                                if (timeline != null && timeline.year > 1) {
+                                    NavigationButton("年度別成績", PennantTags.NAV_HISTORY) { open(PennantPage.HISTORY) }
+                                }
+                                StandingsPanel(season.standings)
+                            }
+                            PennantPage.RECORDS -> RecordsPanel(pennantPlayers(season, navigation.browseClubId), season.lineupEnabled,
+                                navigation.browseClubId) { savedNavigation = navigation.browse(it) }
+                            PennantPage.HISTORY -> if (token != null && timeline != null && timeline.year > 1) {
+                                HistoryPanel(token, state.canUse, navigation.browseClubId, { savedNavigation = navigation.browse(it) }, historyYears, historyYear)
+                            } else Unit
+                            PennantPage.MATCH -> {
+                                state.display?.let { GameCard(it) }
+                                ProgressButton("1球", PennantTags.PITCH, state.canAdvanceMatch, Modifier.fillMaxWidth()) { command(PennantCommand.PITCH) }
+                                ProgressButton("1打席", PennantTags.PA, state.canAdvanceMatch, Modifier.fillMaxWidth()) { command(PennantCommand.PLATE_APPEARANCE) }
+                                ProgressButton("最後まで", PennantTags.FINISH_GAME, state.canAdvanceMatch, Modifier.fillMaxWidth()) { command(PennantCommand.GAME) }
+                            }
+                            PennantPage.SETTINGS -> SeasonSettings(state, changeSeed, selectClub,
+                                { token?.let { confirmation = PennantConfirmation(PennantCommand.CREATE, it) } },
+                                { command(PennantCommand.SAVE) }, { token?.let { confirmation = PennantConfirmation(PennantCommand.LOAD, it) } })
                         }
-                        PennantPage.RECORDS -> RecordsPanel(pennantPlayers(season, navigation.browseClubId), season.lineupEnabled,
-                            navigation.browseClubId) { savedNavigation = navigation.browse(it) }
-                        PennantPage.HISTORY -> if (token != null && timeline != null && timeline.year > 1) {
-                            HistoryPanel(token, state.canUse, navigation.browseClubId, { savedNavigation = navigation.browse(it) }, historyYears, historyYear)
-                        } else Unit
-                        PennantPage.MATCH -> {
-                            state.display?.let { GameCard(it) }
-                            ProgressButton("1球", PennantTags.PITCH, state.canAdvanceMatch, Modifier.fillMaxWidth()) { command(PennantCommand.PITCH) }
-                            ProgressButton("1打席", PennantTags.PA, state.canAdvanceMatch, Modifier.fillMaxWidth()) { command(PennantCommand.PLATE_APPEARANCE) }
-                            ProgressButton("最後まで", PennantTags.FINISH_GAME, state.canAdvanceMatch, Modifier.fillMaxWidth()) { command(PennantCommand.GAME) }
-                        }
-                        PennantPage.SETTINGS -> SeasonSettings(state, changeSeed, selectClub,
-                            { token?.let { confirmation = PennantConfirmation(PennantCommand.CREATE, it) } },
-                            { command(PennantCommand.SAVE) }, { token?.let { confirmation = PennantConfirmation(PennantCommand.LOAD, it) } })
+                        Spacer(Modifier.height(16.dp))
                     }
-                    Spacer(Modifier.height(16.dp))
                 }
             }
             if (season != null) PennantBottomNavigation(navigation.page, ::open)
