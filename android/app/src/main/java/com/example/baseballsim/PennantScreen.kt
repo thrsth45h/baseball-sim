@@ -1,6 +1,5 @@
 package com.example.baseballsim
 
-import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
@@ -122,24 +121,24 @@ private val ConfirmationSaver = listSaver<PennantConfirmation?, String>(
         if (state.loaded && (state.display != null || state.error == null) && confirmation?.token != token) confirmation = null
     }
     val back = {
-        val current = savedNavigation.bind(state)
+        val current = savedNavigation.bind(latestPublished)
         if (current.page == PennantPage.LINEUP) pages.removeState("${current.worldId}/${current.generationId}/${current.page}")
         savedNavigation = current.back()
     }
     BackHandler(enabled = season != null && confirmation == null && navigation.page != PennantPage.HOME) { back() }
     fun command(value: PennantCommand) { execute(value, false, null) }
     fun open(page: PennantPage) {
-        if (season == null) return
-        val current = savedNavigation.bind(state)
-        Log.i("DashboardTouchProbe", "open ${current.page} -> $page; captured=${state.display?.stored?.token}; " +
-            "latest=${latestPublished.display?.stored?.token}; bound=$current")
+        // A tab keeps the same destination when the displayed save generation changes.
+        val published = latestPublished
+        val currentSeason = published.season ?: return
+        val current = savedNavigation.bind(published)
         if (current.page == page) return
         if (page in listOf(PennantPage.PLAYERS, PennantPage.RECORDS, PennantPage.LINEUP, PennantPage.HISTORY)) {
             pages.removeState("${current.worldId}/${current.generationId}/$page")
         }
-        savedNavigation = current.open(page, season)
+        savedNavigation = current.open(page, currentSeason)
     }
-    Surface(Modifier.fillMaxSize().testTag(PennantTags.SCREEN).traceDashboardTouch("root"), color = MaterialTheme.colorScheme.background) {
+    Surface(Modifier.fillMaxSize().testTag(PennantTags.SCREEN), color = MaterialTheme.colorScheme.background) {
         Column(Modifier.fillMaxSize()) {
             // Common state and stop stay reachable independently of the page's scroll position.
             Column(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -209,7 +208,7 @@ private val ConfirmationSaver = listSaver<PennantConfirmation?, String>(
                     }
                 }
             }
-            if (season != null) PennantBottomNavigation(navigation.page, ::open)
+            if (season != null) PennantBottomNavigation(navigation.page) { open(it) }
         }
     }
     confirmation?.takeIf { season != null && state.loaded && it.token == token &&

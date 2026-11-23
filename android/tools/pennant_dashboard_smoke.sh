@@ -6,7 +6,7 @@ set -euo pipefail
 report=app/build/dashboard-navigation-smoke
 device_output=/sdcard/Android/media/com.example.baseballsim/dashboard_navigation_smoke
 mkdir -p "$report"
-trap 'adb logcat -d -s DashboardTouchProbe:I > "$report/touch-trace.txt"; adb pull "$device_output" "$report/screens" || true' EXIT
+trap 'adb pull "$device_output" "$report/screens" || true' EXIT
 
 adb install -r -t app/build/outputs/apk/debug/app-debug.apk
 adb install -r -t app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk

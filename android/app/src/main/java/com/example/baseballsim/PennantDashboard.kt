@@ -1,23 +1,14 @@
 package com.example.baseballsim
 
-import android.util.Log
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.selection.selectable
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.PointerEventPass
-import androidx.compose.ui.input.pointer.PointerEventType
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -46,42 +37,15 @@ private enum class BottomTab(val label: String, val page: PennantPage, val icon:
         PennantPage.STANDINGS, PennantPage.RECORDS, PennantPage.HISTORY -> BottomTab.RECORDS
         PennantPage.SETTINGS -> BottomTab.SETTINGS
     }
-    val colors = MaterialTheme.colorScheme
-    NavigationBar(Modifier.zIndex(1f).testTag(PennantTags.BOTTOM_NAV), containerColor = colors.surface) {
+    NavigationBar(Modifier.zIndex(1f).testTag(PennantTags.BOTTOM_NAV), containerColor = MaterialTheme.colorScheme.surface) {
         BottomTab.entries.forEach { tab ->
-            val active = tab == selected
-            Column(
-                Modifier.weight(1f).heightIn(min = 72.dp).testTag(tab.tag).traceDashboardTouch(tab.tag)
-                    .selectable(selected = active, role = Role.Tab, onClick = {
-                        Log.i("DashboardTouchProbe", "tab onClick ${tab.tag} from $page")
-                        open(tab.page)
-                    })
-                    .padding(vertical = 6.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterVertically),
-            ) {
-                Box(Modifier.fillMaxWidth(.82f).height(32.dp)
-                    .background(if (active) colors.primaryContainer else Color.Transparent, CircleShape),
-                    contentAlignment = Alignment.Center) {
-                    Icon(painterResource(tab.icon), contentDescription = null, modifier = Modifier.size(22.dp),
-                        tint = if (active) colors.onPrimaryContainer else colors.onSurfaceVariant)
-                }
-                Text(tab.label, maxLines = 1, style = MaterialTheme.typography.labelSmall,
-                    color = if (active) colors.onPrimaryContainer else colors.onSurfaceVariant)
-            }
-        }
-    }
-}
-
-internal fun Modifier.traceDashboardTouch(target: String) = pointerInput(target) {
-    awaitPointerEventScope {
-        while (true) {
-            val initial = awaitPointerEvent(PointerEventPass.Initial)
-            val final = awaitPointerEvent(PointerEventPass.Final)
-            if (initial.type in listOf(PointerEventType.Press, PointerEventType.Release)) {
-                Log.i("DashboardTouchProbe", "$target ${initial.type} local=${initial.changes.firstOrNull()?.position} " +
-                    "consumedAtFinal=${final.changes.any { it.isConsumed }}")
-            }
+            NavigationBarItem(
+                selected = tab == selected,
+                onClick = { open(tab.page) },
+                modifier = Modifier.testTag(tab.tag),
+                icon = { Icon(painterResource(tab.icon), contentDescription = null, modifier = Modifier.size(22.dp)) },
+                label = { Text(tab.label, maxLines = 1) },
+            )
         }
     }
 }
