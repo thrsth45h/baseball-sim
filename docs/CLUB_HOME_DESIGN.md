@@ -1,5 +1,7 @@
 # 球団ホーム・選手一覧/詳細をつなぐ設計案
 
+最新のホーム画面と下部ナビゲーションは[ペナントのメイン画面設計](PENNANT_DASHBOARD_DESIGN.md)を参照。
+
 2026-11-17。**Accepted / D060 CONFIRMED（限定UI）。設計PRは文書のみ、実装へ進む。** 基準mainは `edc803ed16a57339e4b87330ae0c83fe86900756`（[PR #47](https://github.com/thrsth45h/baseball-sim/pull/47)）。[Pennant Spiritsを主基準とする完成像](PENNANT_SPIRITS_BASELINE.md)の段階Aを具体化する。[ADR-0018](adr/0018-club-home-player-browser.md)も参照。
 
 当初の「続けて」は具体設計の指示だった。その後、[設計PR #48](https://github.com/thrsth45h/baseball-sim/pull/48)と、起動後ホーム優先/旧1試合保持、固定108人の一覧/詳細、日程/順位/記録/観戦/保存への移動、閲覧で操作球団や進行を変えない範囲を提示し、本人が「はい」と回答した。既存のworker委任・継続的マージ許可に基づき、設計統合→worker実装/CI/APK→責任者独立レビュー/必要修正→問題のないPR統合まで進める。内部の全技術細目を本人が個別精査したとは記録せず、以下の限定UIと既存契約維持を採用範囲とする。
