@@ -225,7 +225,7 @@ private val ConfirmationSaver = listSaver<PennantConfirmation?, String>(
                                 val selectedId = navigation.matchId
                                 val result = if (selectedId == null) null else season.results.firstOrNull { it.game.fixture.gameId == selectedId }
                                 val match = state.display?.takeIf { selectedId == null || it.fixture?.gameId == selectedId }
-                                if (result != null) CompletedGameCard(result) else match?.let { GameCard(it) }
+                                if (match != null) GameCard(match) else if (result != null) CompletedGameCard(result)
                                 val canAdvance = state.canAdvanceMatch && result == null && match != null
                                 ProgressButton("1球", PennantTags.PITCH, canAdvance, Modifier.fillMaxWidth()) { command(PennantCommand.PITCH) }
                                 ProgressButton("1打席", PennantTags.PA, canAdvance, Modifier.fillMaxWidth()) { command(PennantCommand.PLATE_APPEARANCE) }

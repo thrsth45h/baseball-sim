@@ -54,9 +54,11 @@ jobs:
             python3 tools/pennant_source_info.py
             (cd app/build/outputs/apk/debug && sha256sum app-debug.apk > app-debug.apk.sha256)
             "$ANDROID_HOME/build-tools/35.0.0/apksigner" verify --print-certs app/build/outputs/apk/debug/app-debug.apk > app/build/outputs/apk/debug/apk-signer.txt
+            bash tools/pennant_dashboard_smoke.sh
             bash tools/pennant_process_recovery.sh
       - name: Stage the verified APK
         run: |
+          cmp app/build/outputs/apk/debug/app-debug.apk.sha256 app/build/dashboard-navigation-smoke/installed-apk.sha256
           mkdir -p build/pennant-distribution
           cp app/build/outputs/apk/debug/app-debug.apk app/build/outputs/apk/debug/app-debug.apk.sha256 app/build/outputs/apk/debug/source-info.json app/build/outputs/apk/debug/pennant-source-info.json app/build/outputs/apk/debug/offline-manifest-check.json build/pennant-distribution/
           cp app/build/pennant-process-proof/verification.json build/pennant-distribution/process-recovery-verification.json
@@ -73,4 +75,10 @@ jobs:
           name: pennant-process-proof-${{ env.SOURCE_SHA }}
           path: android/app/build/pennant-process-proof/
           if-no-files-found: error
+          retention-days: 14
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: always()
+        with:
+          name: pennant-verified-day-flow-${{ env.SOURCE_SHA }}
+          path: android/app/build/dashboard-navigation-smoke/
           retention-days: 14
