@@ -26,6 +26,12 @@ class PennantViewModelTest {
         var stoppedAtEntry = false
         override suspend fun read(): StoredSeason? { check(!readError); return stored }
         override suspend fun hasSlot() = slot != null
+        override suspend fun advanceVisibleDay(expected: StoreToken, dayIndex: Int, stop: () -> Boolean,
+            progress: suspend (StoredSeason) -> Unit): StoredSeason {
+            val current = checkNotNull(stored)
+            if (current.token != expected || current.state.dayIndex != dayIndex) throw StoreConflict("Stale day")
+            return execute(PennantCommand.DAY, current.state.masterSeed, current.state.selectedClubId, false, stop, progress)
+        }
         override suspend fun execute(command: PennantCommand, seed: String, club: String, replacement: Boolean,
             stop: () -> Boolean, progress: suspend (StoredSeason) -> Unit): StoredSeason {
             calls++; callback = progress; gate?.await(); stoppedAtEntry = stop()
@@ -169,5 +175,29 @@ class PennantViewModelTest {
         assertEquals(calls + 1, fake.calls)
         vm.execute(PennantCommand.CREATE, true, confirmationToken = vm.state.value.display!!.stored.token)
         advanceUntilIdle(); assertEquals(calls + 2, fake.calls)
+    }
+
+    @Test fun finalGameDayRemainsVisibleUntilAcknowledgedAndRejectsDuplicateTap() = runTest(main.dispatcher) {
+        val finished = SeasonSession().finishSeason()
+        val startOfFinalDay = SeasonState.restore(finished.masterSeed, finished.selectedClubId, 140,
+            finished.results.dropLast(6), null)
+        val initial = StoredSeason(StoreToken("world", "generation", 10), startOfFinalDay, "initial")
+        val fake = FakeActions(initial)
+        val vm = PennantViewModel(fake, main.dispatcher); advanceUntilIdle()
+        assertTrue(vm.advanceVisibleDay(initial.token, 140))
+        assertFalse(vm.advanceVisibleDay(initial.token, 140))
+        advanceUntilIdle()
+        val published = vm.state.value
+        assertEquals(SeasonStatus.COMPLETE, published.season!!.status)
+        assertEquals(140, published.resultDay)
+        assertEquals(finished.results, published.season!!.results)
+        val saved = published.display!!.stored
+        assertEquals(1, fake.calls)
+        assertTrue(vm.advanceVisibleDay(saved.token, 140))
+        assertFalse(vm.advanceVisibleDay(saved.token, 140))
+        assertNull(vm.state.value.resultDay)
+        assertEquals(141, vm.state.value.visibleDay)
+        assertSame(saved, vm.state.value.display!!.stored)
+        assertEquals(1, fake.calls)
     }
 }

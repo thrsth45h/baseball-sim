@@ -18,7 +18,7 @@ class PennantLineupActivityTest {
     private fun click(tag: String) = compose.clickPennant(tag)
     private fun home() { while (compose.onAllNodesWithTag(PennantTags.BACK).fetchSemanticsNodes().isNotEmpty()) click(PennantTags.BACK) }
     private fun fresh(): PennantViewModel {
-        compose.onNodeWithTag("mode_pennant").performClick(); val vm = ready(); home()
+        compose.enterPennantMode(); val vm = ready(); home()
         val exists = vm.state.value.season != null
         if (exists) click(PennantTags.NAV_SETTINGS)
         compose.onNodeWithTag(PennantTags.SEED).performScrollTo().performTextReplacement("42")
@@ -51,7 +51,7 @@ class PennantLineupActivityTest {
         compose.pennantScreenshot("lineup-applied.png")
         click(PennantTags.BACK); click(PennantTags.NAV_LINEUP); click(PennantTags.NAV_PLAYERS); click(PennantTags.player("L1-T01-P10"))
         compose.onNodeWithTag("player_slot").assertTextEquals("1番")
-        home(); click(PennantTags.OPEN); ready()
+        home(); compose.openNextOwnGame(); ready()
         home(); click(PennantTags.NAV_LINEUP)
         compose.onNodeWithTag(PennantTags.APPLY_LINEUP).performScrollTo().assertIsNotEnabled()
         compose.onNodeWithTag("lineup_replace_1").performScrollTo().assertIsNotEnabled()

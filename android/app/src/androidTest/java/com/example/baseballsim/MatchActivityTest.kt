@@ -8,6 +8,8 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextReplacement
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertSame
@@ -20,7 +22,7 @@ class MatchActivityTest {
     @get:Rule val compose = createAndroidComposeRule<MainActivity>()
 
     private fun awaitReady(): MatchViewModel {
-        compose.onNodeWithTag("mode_match").performClick()
+        compose.enterStandaloneMatch()
         compose.waitUntil(15_000) {
             val state = compose.activity.matchViewModel.state.value
             !state.isBusy && state.game != null
@@ -66,6 +68,11 @@ class MatchActivityTest {
         compose.onNodeWithTag(MatchTags.SEED_ERROR).performScrollTo().assertIsDisplayed()
         assertSame(before, vm.state.value.game)
         assertEquals(MatchViewModel.SEED_ERROR, vm.state.value.seedError)
+        // The runner reuses this emulator for the following Activity's Back-key test.
+        compose.runOnIdle {
+            val window = compose.activity.window
+            WindowCompat.getInsetsController(window, window.decorView).hide(WindowInsetsCompat.Type.ime())
+        }
     }
 
     @Test

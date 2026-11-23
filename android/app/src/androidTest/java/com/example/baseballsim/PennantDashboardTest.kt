@@ -75,9 +75,12 @@ class PennantDashboardTest {
         compose.pennantScreenshot("dashboard-today-320-font150.png")
 
         val bottom = compose.onNodeWithTag(PennantTags.BOTTOM_NAV)
+        val top = compose.onNodeWithTag(PennantTags.TOP_BAR)
         val beforeScroll = bottom.fetchSemanticsNode().boundsInRoot.bottom
+        val topBeforeScroll = top.fetchSemanticsNode().boundsInRoot.top
         compose.onNodeWithText("リーグ1の順位").performScrollTo().assertIsDisplayed()
         assertTrue(beforeScroll == bottom.fetchSemanticsNode().boundsInRoot.bottom)
+        assertTrue(topBeforeScroll == top.fetchSemanticsNode().boundsInRoot.top)
         compose.pennantScreenshot("dashboard-standings-320-font150.png")
 
         compose.clickPennant(PennantTags.NAV_MATCH)

@@ -84,6 +84,40 @@ class SeasonCoordinatorTest {
         pause.complete(Unit); running.await()
         assertEquals(1L, store.saved!!.state.active!!.snapshot.pitchesAccepted)
     }
+    @Test fun dayAndOwnFixtureCommandsRejectOutdatedOrForeignRequestsBeforeAnyWrite() = runBlocking {
+        val store = FakeStore(); val coordinator = coordinator(store)
+        val initial = coordinator.create(selectedClubId = "L2-T04")
+        val target = initial.state.games[5].fixture.gameId
+        assertThrows(StoreConflict::class.java) { runBlocking {
+            coordinator.advanceVisibleDay(initial.token, 2, { false }) {}
+        } }
+        val day2 = coordinator.advanceVisibleDay(initial.token, 1, { false }) {}
+        val foreign = day2.state.games.first().fixture.gameId
+        val tomorrow = day2.state.games[11].fixture.gameId
+        assertThrows(StoreConflict::class.java) { runBlocking { coordinator.openOwnGame(initial.token, target, { false }) {} } }
+        for (invalid in listOf(foreign, tomorrow)) {
+            assertThrows(IllegalArgumentException::class.java) { runBlocking {
+                coordinator.openOwnGame(day2.token, invalid, { false }) {}
+            } }
+        }
+        assertEquals(day2, store.saved)
+        assertEquals(1, store.writes)
+    }
+    @Test fun ownFixtureStopDoesNotStartTargetAndResumeStaysOnThatFixture() = runBlocking {
+        val store = FakeStore(); val coordinator = coordinator(store)
+        val initial = coordinator.create(selectedClubId = "L2-T04")
+        val day2 = coordinator.advanceVisibleDay(initial.token, 1, { false }) {}
+        val target = day2.state.games[5].fixture
+        var stop = false
+        val paused = coordinator.openOwnGame(day2.token, target.gameId, { stop }) { stop = true }
+        assertEquals(1, paused.state.results.size)
+        assertEquals(2, paused.state.dayIndex)
+        assertNull(paused.state.active)
+        val resumed = coordinator.openOwnGame(paused.token, target.gameId, { false }) {}
+        assertEquals(5, resumed.state.results.size)
+        assertEquals(target, resumed.state.active!!.game.fixture)
+        assertEquals(0L, resumed.state.active!!.snapshot.pitchesAccepted)
+    }
     @Test fun cancellationAfterCommitDoesNotRollBackOrKeepAMutableCandidate() = runBlocking {
         val store = FakeStore(); val coordinator = coordinator(store)
         coordinator.create(); store.cancelAfterWrite = 2

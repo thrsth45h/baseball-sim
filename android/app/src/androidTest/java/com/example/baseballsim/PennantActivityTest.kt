@@ -1,6 +1,7 @@
 package com.example.baseballsim
 
 import android.graphics.Bitmap
+import android.os.ParcelFileDescriptor
 import android.os.SystemClock
 import android.util.Log
 import androidx.compose.ui.graphics.asAndroidBitmap
@@ -49,6 +50,12 @@ class PennantActivityTest {
             compose.onNodeWithTag(PennantTags.BACK).performClick()
     }
     private fun page(tag: String) { home(); compose.clickPennant(tag) }
+    private fun pressSystemBack() {
+        // Let Android dispatch Back to whichever app window is active, including the confirmation dialog.
+        val output = InstrumentationRegistry.getInstrumentation().uiAutomation.executeShellCommand("input keyevent KEYCODE_BACK")
+        ParcelFileDescriptor.AutoCloseInputStream(output).use { it.readBytes() }
+        compose.waitForIdle()
+    }
     private fun click(tag: String) {
         if (compose.onAllNodesWithTag(tag).fetchSemanticsNodes().isEmpty()) {
             when (tag) {
@@ -60,7 +67,7 @@ class PennantActivityTest {
         compose.clickPennant(tag)
     }
     private fun fresh(): PennantViewModel {
-        compose.onNodeWithTag("mode_pennant").performClick()
+        compose.enterPennantMode()
         val vm = ready()
         // Preserve the legacy 108-person/full-frame regression. New UI CREATE is tested separately as v2.
         kotlinx.coroutines.runBlocking { createLegacyTargetWorld() }
@@ -72,7 +79,7 @@ class PennantActivityTest {
     @Test fun realActivityUsesAllThreeMatchOperationsAndRetainsRotationState() {
         val vm = fresh()
         compose.pennantScreenshot("pennant-created.png")
-        click(PennantTags.OPEN); ready()
+        compose.openNextOwnGame(); ready()
         assertEquals(0L, vm.state.value.season!!.active!!.snapshot.pitchesAccepted)
         click(PennantTags.PITCH); ready()
         assertEquals(1L, vm.state.value.season!!.active!!.snapshot.pitchesAccepted)
@@ -92,7 +99,7 @@ class PennantActivityTest {
         val vm = fresh()
         click(PennantTags.SAVE); ready()
         val savedGeneration = vm.state.value.display!!.stored.token.generationId
-        click(PennantTags.OPEN); ready(); click(PennantTags.PITCH); ready()
+        compose.openNextOwnGame(); ready(); click(PennantTags.PITCH); ready()
         page(PennantTags.NAV_SETTINGS)
         compose.onNodeWithTag(PennantTags.SAVE).performScrollTo().assertIsNotEnabled()
         compose.onNodeWithTag(PennantTags.LOAD).performScrollTo().assertIsNotEnabled()
@@ -127,7 +134,7 @@ class PennantActivityTest {
     @Test fun coldLaunchPrefersPennantAndRestoredStandaloneModeKeepsItsViewModel() {
         ready()
         compose.onNodeWithTag(PennantTags.SCREEN).assertIsDisplayed()
-        compose.onNodeWithTag("mode_match").performClick()
+        compose.enterStandaloneMatch()
         val vm = compose.activity.matchViewModel
         compose.waitUntil(15_000) { !vm.state.value.isBusy && vm.state.value.game != null }
         val game = vm.state.value.game
@@ -139,19 +146,19 @@ class PennantActivityTest {
     @Test fun androidBackReturnsDetailToListAndDismissesTheConfirmationBeforeLeavingSettings() {
         val vm = fresh(); val before = vm.state.value.display
         click(PennantTags.NAV_LINEUP); click(PennantTags.NAV_PLAYERS); click(PennantTags.player("L1-T01-P09"))
-        androidx.test.espresso.Espresso.pressBack()
+        pressSystemBack()
         compose.onNodeWithTag(PennantTags.PLAYERS).assertExists()
         compose.onNodeWithTag(PennantTags.PLAYER_DETAIL).assertDoesNotExist()
-        androidx.test.espresso.Espresso.pressBack()
+        pressSystemBack()
         compose.onNodeWithTag(PennantTags.HOME).assertExists()
         compose.onNodeWithTag(PennantTags.BACK).assertDoesNotExist()
         click(PennantTags.NAV_SETTINGS); click(PennantTags.CREATE)
         compose.onNodeWithTag(PennantTags.CONFIRM_CREATE).assertExists()
-        androidx.test.espresso.Espresso.pressBack()
+        pressSystemBack()
         compose.onNodeWithTag(PennantTags.CONFIRM_CREATE).assertDoesNotExist()
         compose.onNodeWithTag(PennantTags.SEED).assertExists()
         assertSame(before, vm.state.value.display)
-        androidx.test.espresso.Espresso.pressBack()
+        pressSystemBack()
         compose.onNodeWithTag(PennantTags.HOME).assertExists()
         assertSame(before, vm.state.value.display)
     }
@@ -165,7 +172,7 @@ class PennantActivityTest {
         page(PennantTags.NAV_STANDINGS); click(PennantTags.NAV_RECORDS)
         compose.onNodeWithTag(PennantTags.RECORDS).performScrollTo().assertIsDisplayed()
         compose.onNodeWithText("記録を見る球団：仮球団1").performClick()
-        compose.onNodeWithText("仮球団12", useUnmergedTree = true).performScrollTo().performClick()
+        compose.choosePennantClub("仮球団12")
         assertEquals(108, vm.state.value.season!!.playerCounts.size)
         compose.pennantScreenshot("pennant-records.png")
     }

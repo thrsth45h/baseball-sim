@@ -46,12 +46,12 @@ class PennantLineupFullSeasonTest {
         assertEquals(numbers.map { "L1-T01-P${it.toString().padStart(2, '0')}" }, vm.state.value.season!!.lineup("L1-T01"))
     }
     @Test fun editedParticipantsComplete720RealGamesAndKeepAll144PersonRecords() {
-        compose.onNodeWithTag("mode_pennant").performClick(); val vm = ready()
+        compose.enterPennantMode(); val vm = ready()
         // UI CREATE now makes v3. Preserve this old v2 acceptance case explicitly.
         runBlocking { createLineupTargetWorld() }
         compose.runOnUiThread { vm.reload() }; ready()
         assertTrue(vm.state.value.season!!.lineupEnabled); assertFalse(vm.state.value.season!!.profilesEnabled)
-        fun ownGame() { home(); click(PennantTags.OPEN); ready(); click(PennantTags.FINISH_GAME); ready() }
+        fun ownGame() { home(); compose.openNextOwnGame(); ready(); click(PennantTags.FINISH_GAME); ready() }
         ownGame()
         val first = CheckpointCodec.encodeSummary(vm.state.value.season!!.results.first())
         setOrder(listOf(9, 2, 3, 4, 5, 6, 7, 8, 1)); ownGame()

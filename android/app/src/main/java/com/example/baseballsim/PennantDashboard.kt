@@ -1,5 +1,6 @@
 package com.example.baseballsim
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -51,44 +52,50 @@ private enum class BottomTab(val label: String, val page: PennantPage, val icon:
 }
 
 @OptIn(ExperimentalLayoutApi::class)
+@Composable internal fun PennantTopBar(state: PennantUiState, season: SeasonState, visibleDay: Int,
+    advance: () -> Unit, nextYear: () -> Unit) {
+    val team = PennantSchedule.club(season.selectedClubId)
+    val standing = season.standings.first { it.totals.clubId == team.id }
+    val calendar = PennantSchedule.calendar.getOrNull(visibleDay - 1)
+    Surface(Modifier.fillMaxWidth().testTag(PennantTags.TOP_BAR), color = MaterialTheme.colorScheme.primaryContainer) {
+        Row(Modifier.padding(horizontal = 16.dp, vertical = 10.dp), horizontalArrangement = Arrangement.spacedBy(12.dp),
+            verticalAlignment = Alignment.CenterVertically) {
+            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
+                Text(team.displayName, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
+                Text("${standing.rank?.let { "${it}位" } ?: "順位 —"} · ${recordText(standing)}", style = MaterialTheme.typography.bodyMedium)
+                FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    state.timeline?.let { Text("${it.year}年目", Modifier.testTag(PennantTags.YEAR), style = MaterialTheme.typography.labelMedium) }
+                    val day = if (calendar == null) "シーズン終了" else "第${calendar.week}週 ${weekday(calendar.weekday)}"
+                    Text(day, Modifier.testTag(PennantTags.VISIBLE_DAY), style = MaterialTheme.typography.labelMedium)
+                    if (state.resultDay != null) Text("試合後", style = MaterialTheme.typography.labelMedium)
+                }
+            }
+            when {
+                state.resultDay != null -> ProgressButton(if (season.status == SeasonStatus.COMPLETE) "終了画面へ" else "翌日へ",
+                    PennantTags.NEXT_DAY, state.canUse, Modifier, advance)
+                season.status == SeasonStatus.IN_PROGRESS -> ProgressButton("進行", PennantTags.DAY, state.canProgress, Modifier, advance)
+                season.status == SeasonStatus.COMPLETE && state.timeline != null ->
+                    ProgressButton("翌年へ", PennantTags.NEXT_YEAR, state.canAdvanceYear, Modifier, nextYear)
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalLayoutApi::class)
 @Composable internal fun PennantDashboard(
     state: PennantUiState,
     season: SeasonState,
-    advance: (PennantCommand) -> Unit,
+    finishSeason: () -> Unit,
     openMatch: () -> Unit,
-    openSelected: () -> Unit,
-    nextYear: () -> Unit,
+    openOwnGame: (String) -> Unit,
 ) {
     val team = PennantSchedule.club(season.selectedClubId)
-    val standing = season.standings.first { it.totals.clubId == team.id }
-    val calendar = PennantSchedule.calendar.getOrNull(season.dayIndex - 1)
+    val calendar = PennantSchedule.calendar.getOrNull(checkNotNull(state.visibleDay) - 1)
     Column(Modifier.fillMaxWidth().testTag(PennantTags.HOME), verticalArrangement = Arrangement.spacedBy(14.dp)) {
-        Card(
-            Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
-        ) {
-            Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                FlowRow(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                    state.timeline?.let { Text("${it.year}年目", Modifier.testTag(PennantTags.YEAR), style = MaterialTheme.typography.labelLarge) }
-                    Text(if (calendar == null) "シーズン終了" else "第${calendar.week}週 ${weekday(calendar.weekday)}",
-                        style = MaterialTheme.typography.labelLarge)
-                }
-                Text(team.displayName, style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
-                Text(listOfNotNull(standing.rank?.let { "${it}位" }, recordText(standing)).joinToString("  ·  "))
-                Text("${season.results.size} / ${season.games.size}試合完了 · seed ${season.masterSeed}",
-                    Modifier.testTag(PennantTags.PROGRESS), style = MaterialTheme.typography.bodySmall)
-            }
-        }
+        Text("${season.results.size} / ${season.games.size}試合完了 · seed ${season.masterSeed}",
+            Modifier.testTag(PennantTags.PROGRESS), style = MaterialTheme.typography.bodySmall)
         Column {
-            when (season.status) {
-                SeasonStatus.IN_PROGRESS -> ProgressButton("1日進める", PennantTags.DAY, state.canProgress, Modifier.fillMaxWidth()) {
-                    advance(PennantCommand.DAY)
-                }
-                SeasonStatus.COMPLETE -> if (state.timeline != null) {
-                    ProgressButton("翌年へ進む", PennantTags.NEXT_YEAR, state.canAdvanceYear, Modifier.fillMaxWidth(), nextYear)
-                }
-                SeasonStatus.BLOCKED -> BlockedDiagnostic(state)
-            }
+            if (season.status == SeasonStatus.BLOCKED) BlockedDiagnostic(state)
             FlowRow(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                 if (state.display?.fixture != null) {
                     TextButton(openMatch, Modifier.testTag(PennantTags.NAV_MATCH)) {
@@ -96,8 +103,7 @@ private enum class BottomTab(val label: String, val page: PennantPage, val icon:
                     }
                 }
                 if (season.status == SeasonStatus.IN_PROGRESS) {
-                    TextButton(openSelected, Modifier.testTag(PennantTags.OPEN), enabled = state.canProgress) { Text("自球団戦へ進む") }
-                    TextButton({ advance(PennantCommand.SEASON) }, Modifier.testTag(PennantTags.SEASON), enabled = state.canProgress) {
+                    TextButton(finishSeason, Modifier.testTag(PennantTags.SEASON), enabled = state.canProgress) {
                         Text("シーズン終了まで")
                     }
                 }
@@ -106,12 +112,12 @@ private enum class BottomTab(val label: String, val page: PennantPage, val icon:
         BoxWithConstraints(Modifier.fillMaxWidth()) {
             if (calendar != null && maxWidth >= (650 * LocalDensity.current.fontScale).dp) {
                 Row(horizontalArrangement = Arrangement.spacedBy(14.dp)) {
-                    TodayGames(season, state.display, calendar, Modifier.weight(3f))
+                    TodayGames(state, season, calendar, openOwnGame, Modifier.weight(3f))
                     HomeStandings(team.leagueId, team.id, season.standings, Modifier.weight(2f))
                 }
             } else {
                 Column(verticalArrangement = Arrangement.spacedBy(14.dp)) {
-                    if (calendar != null) TodayGames(season, state.display, calendar)
+                    if (calendar != null) TodayGames(state, season, calendar, openOwnGame)
                     HomeStandings(team.leagueId, team.id, season.standings)
                 }
             }
@@ -119,10 +125,10 @@ private enum class BottomTab(val label: String, val page: PennantPage, val icon:
     }
 }
 
-@Composable private fun TodayGames(season: SeasonState, display: PennantDisplay?, day: CalendarDay, modifier: Modifier = Modifier) {
+@Composable private fun TodayGames(state: PennantUiState, season: SeasonState, day: CalendarDay,
+    openOwnGame: (String) -> Unit, modifier: Modifier = Modifier) {
     // A day's scheduled ordinals and the published results identify the same fixtures.
     val fixtures = day.gameOrdinals.map { season.games[it - 1].fixture }
-    val results = season.results.takeLast(day.gameOrdinals.size).associateBy { it.game.fixture.gameId }
     val active = season.active
     Column(modifier.fillMaxWidth().testTag(PennantTags.TODAY), verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Text("当日の試合", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
@@ -136,9 +142,9 @@ private enum class BottomTab(val label: String, val page: PennantPage, val icon:
             OutlinedCard(Modifier.fillMaxWidth()) {
                 games.forEachIndexed { index, fixture ->
                     if (index > 0) HorizontalDivider()
-                    val result = results[fixture.gameId]
+                    val result = season.results.getOrNull(fixture.ordinal - 1)
                     val checkpoint = active?.takeIf { it.game.fixture.gameId == fixture.gameId }
-                    val score = result?.score ?: display?.takeIf {
+                    val score = result?.score ?: state.display?.takeIf {
                         checkpoint != null && it.fixture?.gameId == fixture.gameId
                     }?.snapshot?.score
                     val status = when {
@@ -151,9 +157,13 @@ private enum class BottomTab(val label: String, val page: PennantPage, val icon:
                     val ownAway = season.selectedClubId == fixture.awayClubId
                     val ownHome = season.selectedClubId == fixture.homeClubId
                     val isOwn = ownAway || ownHome
-                    Surface(color = if (isOwn) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surface) {
-                        Row(Modifier.fillMaxWidth().testTag(PennantTags.todayGame(fixture.gameId))
-                            .then(if (isOwn) Modifier.semantics { stateDescription = "操作球団の試合" } else Modifier)
+                    Surface(modifier = Modifier.testTag(PennantTags.todayGame(fixture.gameId))
+                        .then(if (isOwn) Modifier.semantics { stateDescription = "操作球団の試合" } else Modifier),
+                        color = if (isOwn) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surface) {
+                        Row(Modifier.fillMaxWidth().then(if (isOwn) Modifier.testTag(PennantTags.OPEN)
+                            .clickable(enabled = state.canUse && (result != null || checkpoint != null || state.canProgress),
+                                onClickLabel = if (result != null) "試合結果を見る" else "試合を開く") { openOwnGame(fixture.gameId) }
+                            else Modifier)
                             .padding(horizontal = 8.dp, vertical = 8.dp),
                             verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                             Text(PennantSchedule.club(fixture.awayClubId).displayName, Modifier.weight(1f), style = MaterialTheme.typography.bodyMedium,

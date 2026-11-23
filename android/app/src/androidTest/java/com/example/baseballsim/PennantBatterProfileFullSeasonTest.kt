@@ -46,14 +46,14 @@ class PennantBatterProfileFullSeasonTest {
         assertEquals(numbers.map { "L1-T01-P${it.toString().padStart(2, '0')}" }, vm.state.value.season!!.lineup("L1-T01"))
     }
     @Test fun profileParticipantsComplete720RealGamesAndKeepAll144PersonTypesAndRecords() {
-        compose.onNodeWithTag("mode_pennant").performClick(); val vm = ready()
+        compose.enterPennantMode(); val vm = ready()
         val exists = vm.state.value.season != null
         if (exists) { home(); click(PennantTags.NAV_SETTINGS) }
         compose.onNodeWithTag(PennantTags.SEED).performScrollTo().performTextReplacement("42")
         click(PennantTags.CREATE)
         if (exists) compose.onNodeWithTag(PennantTags.CONFIRM_CREATE).performClick()
         ready(); assertTrue(vm.state.value.season!!.lineupEnabled); assertTrue(vm.state.value.season!!.profilesEnabled)
-        fun ownGame() { home(); click(PennantTags.OPEN); ready(); click(PennantTags.FINISH_GAME); ready() }
+        fun ownGame() { home(); compose.openNextOwnGame(); ready(); click(PennantTags.FINISH_GAME); ready() }
         ownGame()
         val first = CheckpointCodec.encodeSummary(vm.state.value.season!!.results.first())
         setOrder(listOf(9, 2, 3, 4, 5, 6, 7, 8, 1)); ownGame()
