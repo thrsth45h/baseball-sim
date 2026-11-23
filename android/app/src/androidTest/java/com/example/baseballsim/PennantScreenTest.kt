@@ -27,15 +27,14 @@ class PennantScreenTest {
         compose.setContent { BaseballTheme {
             Box(Modifier.width(320.dp)) { PennantScreen(state, {}, {}, { _, _, _ -> }, {}, {}) }
         } }
-        compose.onNodeWithTag(PennantTags.NAV_STANDINGS).performScrollTo().performClick()
+        compose.clickPennant(PennantTags.NAV_STANDINGS)
         compose.onNodeWithTag(PennantTags.STANDINGS).performScrollTo().assertIsDisplayed()
         val panel = compose.onNodeWithTag(PennantTags.STANDINGS).fetchSemanticsNode().boundsInRoot
         val viewport = compose.onNodeWithTag(PennantTags.SCREEN).fetchSemanticsNode().boundsInRoot
         assertTrue(panel.left >= viewport.left && panel.right <= viewport.right + 1)
         compose.onNodeWithText("勝率").performScrollTo().assertIsDisplayed()
         compose.pennantScreenshot("pennant-narrow320.png")
-        compose.onNodeWithTag(PennantTags.BACK).performClick()
-        compose.onNodeWithTag(PennantTags.NAV_RECORDS).performScrollTo().performClick()
+        compose.clickPennant(PennantTags.NAV_RECORDS)
         compose.onNodeWithText("本塁打").performScrollTo().assertIsDisplayed()
         compose.pennantScreenshot("pennant-narrow320-records.png")
     }
@@ -54,7 +53,7 @@ class PennantScreenTest {
         compose.onNodeWithTag(PennantTags.NAV_MATCH).performScrollTo().performClick()
         compose.onNodeWithTag(PennantTags.PITCH).performScrollTo().assertIsNotEnabled()
         compose.onNodeWithTag(PennantTags.BACK).performClick()
-        compose.onNodeWithTag(PennantTags.NAV_SETTINGS).performScrollTo().performClick()
+        compose.clickPennant(PennantTags.NAV_SETTINGS)
         compose.onNodeWithTag(PennantTags.SAVE).performScrollTo().assertIsNotEnabled()
         compose.onNodeWithTag(PennantTags.LOAD).performScrollTo().assertIsNotEnabled()
         compose.pennantScreenshot("pennant-blocked-settings.png")

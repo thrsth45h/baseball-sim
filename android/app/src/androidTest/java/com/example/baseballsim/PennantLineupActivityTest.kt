@@ -15,11 +15,7 @@ class PennantLineupActivityTest {
         compose.waitUntil(120_000) { val s = compose.activity.pennantViewModel.state.value; s.loaded && !s.busy }
         return compose.activity.pennantViewModel.also { assertNull(it.state.value.error) }
     }
-    private fun click(tag: String) {
-        val node = compose.onNodeWithTag(tag)
-        if (tag != PennantTags.BACK) node.performScrollTo()
-        node.performClick()
-    }
+    private fun click(tag: String) = compose.clickPennant(tag)
     private fun home() { while (compose.onAllNodesWithTag(PennantTags.BACK).fetchSemanticsNodes().isNotEmpty()) click(PennantTags.BACK) }
     private fun fresh(): PennantViewModel {
         compose.onNodeWithTag("mode_pennant").performClick(); val vm = ready(); home()
@@ -53,7 +49,7 @@ class PennantLineupActivityTest {
         assertEquals("L1-T01-P10", vm.state.value.season!!.lineup("L1-T01").first())
         assertEquals(before.stored.state.results, vm.state.value.season!!.results)
         compose.pennantScreenshot("lineup-applied.png")
-        click(PennantTags.BACK); click(PennantTags.NAV_PLAYERS); click(PennantTags.player("L1-T01-P10"))
+        click(PennantTags.BACK); click(PennantTags.NAV_LINEUP); click(PennantTags.NAV_PLAYERS); click(PennantTags.player("L1-T01-P10"))
         compose.onNodeWithTag("player_slot").assertTextEquals("1番")
         home(); click(PennantTags.OPEN); ready()
         home(); click(PennantTags.NAV_LINEUP)

@@ -23,11 +23,7 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class PennantLineupScreenTest {
     @get:Rule val compose = createComposeRule()
-    private fun click(tag: String) {
-        val node = compose.onNodeWithTag(tag)
-        if (tag != PennantTags.BACK) node.performScrollTo()
-        node.performClick()
-    }
+    private fun click(tag: String) = compose.clickPennant(tag)
     @Test fun narrowEnlargedDraftRestorationAndRevisionChangeNeverApplyAutomatically() {
         val initial = PennantUiState(loaded = true, display = pennantDisplay(StoredSeason(StoreToken("world", "gen", 0), SeasonState.initialLineup(), "initial")))
         val ui = mutableStateOf(initial)

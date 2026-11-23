@@ -22,11 +22,7 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class PennantBatterProfileScreenTest {
     @get:Rule val compose = createComposeRule()
-    private fun click(tag: String) {
-        val node = compose.onNodeWithTag(tag)
-        if (tag != PennantTags.BACK) node.performScrollTo()
-        node.performClick()
-    }
+    private fun click(tag: String) = compose.clickPennant(tag)
     @Test fun narrowEnlargedProfileDraftSurvivesRotationWithoutChangingThePublishedPersonTypes() {
         val world = SeasonState.initialBatterProfile()
         val initial = PennantUiState(loaded = true, display = pennantDisplay(StoredSeason(StoreToken("world", "generation", 0), world, "initial")))
@@ -51,7 +47,7 @@ class PennantBatterProfileScreenTest {
         click(PennantTags.BACK); click(PennantTags.NAV_LINEUP)
         compose.onNodeWithTag("lineup_player_1").assertTextEquals("1番  L1-T01-P01")
         compose.onNodeWithTag("lineup_profile_1").assertTextEquals("標準")
-        click(PennantTags.BACK); click(PennantTags.NAV_PLAYERS); click(PennantTags.player("L1-T01-P03"))
+        click(PennantTags.BACK); click(PennantTags.NAV_LINEUP); click(PennantTags.NAV_PLAYERS); click(PennantTags.player("L1-T01-P03"))
         compose.onNodeWithTag("player_profile").assertTextEquals("長打型")
         compose.pennantScreenshot("batter-profile-player-320-font150.png")
         assertEquals(0, applies)

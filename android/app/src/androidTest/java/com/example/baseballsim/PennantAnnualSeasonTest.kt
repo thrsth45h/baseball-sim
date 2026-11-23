@@ -33,7 +33,7 @@ class PennantAnnualSeasonTest {
         compose.waitUntil(120_000) { vm.state.value.loaded && !vm.state.value.busy }
         assertNull(vm.state.value.error)
     }
-    private fun click(tag: String) = compose.onNodeWithTag(tag).performScrollTo().performClick()
+    private fun click(tag: String) = compose.clickPennant(tag)
     private fun back() = compose.onNodeWithTag(PennantTags.BACK).performClick()
     private fun stored() = vm.state.value.display!!.stored
 
@@ -104,7 +104,7 @@ class PennantAnnualSeasonTest {
         assertEquals(second.state.clubLineups, third.state.clubLineups)
         compose.onNodeWithTag(PennantTags.YEAR).assertTextEquals("3年目")
 
-        click(PennantTags.NAV_HISTORY)
+        click(PennantTags.NAV_STANDINGS); click(PennantTags.NAV_HISTORY)
         compose.waitUntil(120_000) { compose.onAllNodesWithTag(PennantTags.historyYear(1)).fetchSemanticsNodes().size == 1 }
         compose.pennantScreenshot("annual-year-list.png")
         click(PennantTags.historyYear(1))
