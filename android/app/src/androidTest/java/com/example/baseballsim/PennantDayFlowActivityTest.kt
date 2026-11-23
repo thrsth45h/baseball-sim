@@ -22,6 +22,12 @@ class PennantDayFlowActivityTest {
         return vm.state.value.also { assertNull(it.error) }
     }
 
+    private fun tapControl(tag: String, inScrollPage: Boolean = false) {
+        val control = compose.onNodeWithTag(tag)
+        if (inScrollPage) control.performScrollTo()
+        control.assertIsDisplayed().performTouchInput { click() }
+    }
+
     private fun fresh(club: String) {
         compose.enterPennantMode()
         ready()
@@ -33,7 +39,7 @@ class PennantDayFlowActivityTest {
         assertEquals(1, initial.visibleDay)
         assertEquals(club, initial.season!!.selectedClubId)
         compose.onNodeWithText("休養日").assertExists()
-        compose.clickPennant(PennantTags.DAY)
+        tapControl(PennantTags.DAY)
         val day = ready()
         assertEquals(2, day.visibleDay)
         assertTrue(day.season!!.results.isEmpty())
@@ -58,7 +64,7 @@ class PennantDayFlowActivityTest {
                 useUnmergedTree = true).fetchSemanticsNodes().isEmpty())
         }
         compose.pennantScreenshot("day-flow-before.png")
-        compose.clickPennant(PennantTags.DAY)
+        tapControl(PennantTags.DAY)
         val scores = ready()
         assertEquals(2, scores.resultDay)
         assertEquals(2, scores.visibleDay)
@@ -85,15 +91,16 @@ class PennantDayFlowActivityTest {
         compose.onNodeWithTag(PennantTags.SCHEDULE).assertExists()
         compose.clickPennant(PennantTags.NAV_HOME)
         assertEquals(initialLabel, visibleDay())
-        compose.clickPennant(PennantTags.OPEN)
+        tapControl(PennantTags.OPEN, inScrollPage = true)
         compose.onNodeWithTag(PennantTags.GAME).assertExists()
         val shown = compose.onNode(hasText("3 − 5") and hasAnyAncestor(hasTestTag(PennantTags.GAME)), useUnmergedTree = true)
             .fetchSemanticsNode().config[SemanticsProperties.Text].single().text
         compose.onNodeWithText("仮球団6 − 仮球団1").assertExists()
         compose.onNodeWithTag(PennantTags.PITCH).assertIsNotEnabled()
-        assertEquals(saved, ready().display!!.stored)
+        val afterResultTap = ready().display!!.stored
+        assertEquals(saved, afterResultTap)
         compose.clickPennant(PennantTags.NAV_HOME)
-        compose.clickPennant(PennantTags.NEXT_DAY)
+        tapControl(PennantTags.NEXT_DAY)
         val next = ready()
         val nextLabel = visibleDay()
         assertEquals("第1週 水曜", nextLabel)
@@ -111,7 +118,7 @@ class PennantDayFlowActivityTest {
             .put("ack_preserved_store_token", saved.token == next.display!!.stored.token)
             .put("own_fixture", own)
             .put("own_result_text", shown)
-            .put("own_card_left_same_save", saved == next.display!!.stored)
+            .put("own_card_left_same_save", saved == afterResultTap)
         File(pennantTestOutputDirectory(), "day-flow-evidence.json").writeText(evidence.toString(2))
     }
 
@@ -119,7 +126,7 @@ class PennantDayFlowActivityTest {
         fresh("L2-T04")
         val before = ready()
         val own = before.season!!.games[5].fixture
-        compose.clickPennant(PennantTags.OPEN)
+        tapControl(PennantTags.OPEN, inScrollPage = true)
         val started = ready()
         compose.onNodeWithTag(PennantTags.GAME).assertExists()
         assertEquals(5, started.season!!.results.size)
@@ -127,15 +134,22 @@ class PennantDayFlowActivityTest {
         assertEquals(own, started.season!!.active!!.game.fixture)
         assertEquals(0L, started.season!!.active!!.snapshot.pitchesAccepted)
         compose.clickPennant(PennantTags.NAV_HOME)
-        compose.clickPennant(PennantTags.OPEN)
+        tapControl(PennantTags.OPEN, inScrollPage = true)
         compose.onNodeWithTag(PennantTags.GAME).assertExists()
-        assertEquals(started.display!!.stored, ready().display!!.stored)
-        compose.clickPennant(PennantTags.FINISH_GAME)
+        val rejoined = ready().display!!.stored
+        assertEquals(started.display!!.stored, rejoined)
+        tapControl(PennantTags.FINISH_GAME, inScrollPage = true)
         val finished = ready()
         assertEquals(6, finished.season!!.results.size)
         assertEquals(own, finished.season!!.results.last().game.fixture)
         assertEquals(2, finished.resultDay)
         compose.onNodeWithTag(PennantTags.PITCH).assertIsNotEnabled()
         compose.onNodeWithText("5 − 4").assertExists()
+        val evidence = JSONObject()
+            .put("own_fixture", started.season!!.active!!.game.fixture.gameId)
+            .put("completed_predecessors", started.season!!.results.size)
+            .put("pitches_at_start", started.season!!.active!!.snapshot.pitchesAccepted)
+            .put("rejoin_preserved_store", started.display!!.stored == rejoined)
+        File(pennantTestOutputDirectory(), "own-active-evidence.json").writeText(evidence.toString(2))
     }
 }
