@@ -14,15 +14,17 @@ adb install -r -t app/build/outputs/apk/androidTest/debug/app-debug-androidTest.
 
 prefix=com.example.baseballsim
 classes=(
+    "$prefix.MatchActivityTest"
     "$prefix.PennantActivityTest#androidBackReturnsDetailToListAndDismissesTheConfirmationBeforeLeavingSettings"
     "$prefix.PennantActivityTest#calendarStandingsAndAllClubsRecordsAreReachable"
     "$prefix.PennantActivityTest#manualSaveLoadIsOutsideMatchesAndChangesTheDurableGeneration"
     "$prefix.PennantRestorationTest"
     "$prefix.PennantDashboardTest"
     "$prefix.PennantDayFlowActivityTest"
+    "$prefix.PennantBrowseStoreTest"
 )
 class_filter=$(IFS=,; echo "${classes[*]}")
 adb shell am instrument -w -r -e class "$class_filter" \
     -e additionalTestOutputDir "$device_output" \
     com.example.baseballsim.test/androidx.test.runner.AndroidJUnitRunner | tee "$report/instrumentation.txt"
-grep -F 'OK (7 tests)' "$report/instrumentation.txt"
+grep -F 'OK (11 tests)' "$report/instrumentation.txt"

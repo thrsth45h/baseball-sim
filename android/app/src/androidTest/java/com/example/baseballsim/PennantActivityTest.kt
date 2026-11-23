@@ -165,7 +165,7 @@ class PennantActivityTest {
         page(PennantTags.NAV_STANDINGS); click(PennantTags.NAV_RECORDS)
         compose.onNodeWithTag(PennantTags.RECORDS).performScrollTo().assertIsDisplayed()
         compose.onNodeWithText("記録を見る球団：仮球団1").performClick()
-        compose.onNodeWithText("仮球団12", useUnmergedTree = true).performScrollTo().performClick()
+        compose.choosePennantClub("仮球団12")
         assertEquals(108, vm.state.value.season!!.playerCounts.size)
         compose.pennantScreenshot("pennant-records.png")
     }

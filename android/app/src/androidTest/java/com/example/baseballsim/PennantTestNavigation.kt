@@ -3,6 +3,9 @@ package com.example.baseballsim
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsSelected
+import androidx.compose.ui.test.hasAnyAncestor
+import androidx.compose.ui.test.hasText
+import androidx.compose.ui.test.isPopup
 import androidx.compose.ui.test.junit4.AndroidComposeTestRule
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithTag
@@ -26,10 +29,15 @@ internal fun ComposeContentTestRule.enterPennantMode() {
 }
 
 internal fun <R : TestRule> AndroidComposeTestRule<R, MainActivity>.enterStandaloneMatch() {
+    if (onAllNodesWithTag(MatchTags.SCREEN).fetchSemanticsNodes().isNotEmpty()) return
     val vm = activity.pennantViewModel
     waitUntil(90_000) { vm.state.value.loaded && !vm.state.value.busy }
     if (vm.state.value.season != null) clickPennant(PennantTags.NAV_SETTINGS)
     clickPennant("mode_match")
+}
+
+internal fun ComposeContentTestRule.choosePennantClub(name: String) {
+    onNode(hasText(name) and hasAnyAncestor(isPopup()), useUnmergedTree = true).performScrollTo().performClick()
 }
 
 internal fun <R : TestRule> AndroidComposeTestRule<R, MainActivity>.openNextOwnGame() {

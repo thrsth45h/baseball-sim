@@ -19,7 +19,7 @@ internal fun ComposeContentTestRule.observeAllPlayerDetails(expected: SeasonStat
     val observed = JSONArray()
     PennantSchedule.clubs.forEach { club ->
         click(PennantTags.BROWSE_CLUB)
-        onNodeWithText(club.displayName, useUnmergedTree = true).performScrollTo().performClick()
+        choosePennantClub(club.displayName)
         val people = expected.playerIds(club.id)
         assertEquals(if (expected.lineupEnabled) 12 else 9, people.size)
         people.forEach { id ->

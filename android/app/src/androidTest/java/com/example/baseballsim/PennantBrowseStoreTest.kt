@@ -84,7 +84,7 @@ class PennantBrowseStoreTest {
             click(PennantTags.NAV_LINEUP); click(PennantTags.NAV_PLAYERS)
             PennantSchedule.clubs.forEach { club ->
                 click(PennantTags.BROWSE_CLUB)
-                compose.onNodeWithText(club.displayName, useUnmergedTree = true).performScrollTo().performClick()
+                compose.choosePennantClub(club.displayName)
                 club.players.forEach { player ->
                     click(PennantTags.player(player.id))
                     compose.onNodeWithTag(PennantTags.PLAYER_DETAIL).assertExists()
