@@ -104,28 +104,35 @@ private val ConfirmationSaver = listSaver<PennantConfirmation?, String>(
     historyYear: suspend (StoreToken, Long) -> SeasonYear = { _, _ -> error("Annual history is unavailable") }) {
     var savedNavigation by rememberSaveable(stateSaver = NavigationSaver) { mutableStateOf(PennantNavigation()) }
     var confirmation by rememberSaveable(stateSaver = ConfirmationSaver) { mutableStateOf<PennantConfirmation?>(null) }
-    val navigation = savedNavigation.bind(state)
+    val restoredNavigation = savedNavigation
+    val navigation = restoredNavigation.bind(state)
     val season = state.season
     val token = state.display?.stored?.token
     val timeline = state.timeline
     val pages = rememberSaveableStateHolder()
-    LaunchedEffect(navigation) { savedNavigation = navigation }
+    SideEffect {
+        // Only persist a rebinding if the user has not already chosen another page.
+        if (navigation != restoredNavigation && savedNavigation == restoredNavigation) savedNavigation = navigation
+    }
     // Do not discard OS restoration candidates until the startup identity is known.
     LaunchedEffect(state.loaded, state.error, token) {
         if (state.loaded && (state.display != null || state.error == null) && confirmation?.token != token) confirmation = null
     }
     val back = {
-        if (navigation.page == PennantPage.LINEUP) pages.removeState("${navigation.worldId}/${navigation.generationId}/${navigation.page}")
-        savedNavigation = navigation.back()
+        val current = savedNavigation.bind(state)
+        if (current.page == PennantPage.LINEUP) pages.removeState("${current.worldId}/${current.generationId}/${current.page}")
+        savedNavigation = current.back()
     }
     BackHandler(enabled = season != null && confirmation == null && navigation.page != PennantPage.HOME) { back() }
     fun command(value: PennantCommand) { execute(value, false, null) }
     fun open(page: PennantPage) {
-        if (season == null || navigation.page == page) return
+        if (season == null) return
+        val current = savedNavigation.bind(state)
+        if (current.page == page) return
         if (page in listOf(PennantPage.PLAYERS, PennantPage.RECORDS, PennantPage.LINEUP, PennantPage.HISTORY)) {
-            pages.removeState("${navigation.worldId}/${navigation.generationId}/$page")
+            pages.removeState("${current.worldId}/${current.generationId}/$page")
         }
-        savedNavigation = navigation.open(page, season)
+        savedNavigation = current.open(page, season)
     }
     Surface(Modifier.fillMaxSize().testTag(PennantTags.SCREEN), color = MaterialTheme.colorScheme.background) {
         Column(Modifier.fillMaxSize()) {
