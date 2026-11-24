@@ -6,6 +6,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
@@ -190,7 +191,12 @@ private enum class BottomTab(val label: String, val page: PennantPage, val icon:
         else MatchClubName(away, compact, away == selected, TextAlign.Start, Modifier.weight(1f))
         Column(Modifier.weight(1f), horizontalAlignment = Alignment.CenterHorizontally) {
             Text(score, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center, minLines = 1, maxLines = 1)
-            Text(status, style = MaterialTheme.typography.labelMedium, textAlign = TextAlign.Center, minLines = 1, maxLines = 1)
+            // Use the same Japanese glyph metrics for empty placeholders.
+            val hasStatus = status.isNotEmpty()
+            Text(status.ifEmpty { "休養日" },
+                modifier = if (hasStatus) Modifier else Modifier.clearAndSetSemantics {},
+                color = if (hasStatus) Color.Unspecified else Color.Transparent,
+                style = MaterialTheme.typography.labelMedium, textAlign = TextAlign.Center, minLines = 1, maxLines = 1)
         }
         if (home == null) Spacer(Modifier.weight(1f))
         else MatchClubName(home, compact, home == selected, TextAlign.End, Modifier.weight(1f))

@@ -76,7 +76,8 @@ class PennantDashboardTest {
         val completed = partialDay.state.results.first()
         val completedTag = PennantTags.todayGame(completed.game.fixture.gameId)
         val activeTag = PennantTags.todayGame(partialDay.state.active!!.game.fixture.gameId)
-        compose.onNodeWithContentDescription("福岡ソフトバンクホークス", useUnmergedTree = true).assertExists()
+        compose.onNode(hasContentDescription("福岡ソフトバンクホークス") and hasAnyAncestor(hasTestTag(PennantTags.TODAY)),
+            useUnmergedTree = true).assertExists()
         compose.onNodeWithTag(completedTag, useUnmergedTree = true)
             .assert(SemanticsMatcher.expectValue(SemanticsProperties.StateDescription, "操作球団の試合"))
         compose.onNode(hasText("${completed.score.away} – ${completed.score.home}") and hasAnyAncestor(hasTestTag(completedTag)),
