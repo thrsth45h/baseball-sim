@@ -90,6 +90,8 @@ class PennantDashboardTest {
         val beforeScroll = bottom.fetchSemanticsNode().boundsInRoot.bottom
         val topBeforeScroll = top.fetchSemanticsNode().boundsInRoot.top
         compose.onNodeWithTag(PennantTags.HOME_STANDINGS).performScrollTo().assertIsDisplayed()
+        compose.onNode(hasText("1.000") and hasAnyAncestor(hasTestTag("pennant_standing_L1-T01")),
+            useUnmergedTree = true).assertTextFits()
         assertTrue(beforeScroll == bottom.fetchSemanticsNode().boundsInRoot.bottom)
         assertTrue(topBeforeScroll == top.fetchSemanticsNode().boundsInRoot.top)
         compose.pennantScreenshot("dashboard-standings-320-font150.png")

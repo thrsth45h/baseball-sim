@@ -201,7 +201,7 @@ private fun otherLeague(league: String) = if (league == "L1") "L2" else "L1"
 @Composable internal fun PennantStandings(club: String, standings: List<Standing>, tag: String) {
     val own = PennantSchedule.club(club).leagueId
     BoxWithConstraints(Modifier.fillMaxWidth().testTag(tag)) {
-        val minWidth = (180 * LocalDensity.current.fontScale).dp * 2 + 8.dp
+        val minWidth = (184 * LocalDensity.current.fontScale).dp * 2 + 8.dp
         val tableWidth = maxOf(maxWidth, minWidth)
         Box(Modifier.horizontalScroll(rememberScrollState())) {
             Row(Modifier.width(tableWidth), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -238,10 +238,10 @@ private fun standingClubName(id: String) = when (id) {
 
 @Composable private fun StandingCells(values: List<String>) {
     val fontScale = LocalDensity.current.fontScale
-    val fixedWidths = listOf(22, 0, 49, 26, 25)
-    val textStyle = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp)
-    Row(Modifier.fillMaxWidth().padding(horizontal = 3.dp, vertical = 6.dp),
-        horizontalArrangement = Arrangement.spacedBy(2.dp), verticalAlignment = Alignment.CenterVertically) {
+    val fixedWidths = listOf(21, 0, 52, 31, 29)
+    val textStyle = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp, letterSpacing = 0.sp)
+    Row(Modifier.fillMaxWidth().padding(horizontal = 2.dp, vertical = 6.dp),
+        horizontalArrangement = Arrangement.spacedBy(1.dp), verticalAlignment = Alignment.CenterVertically) {
         values.forEachIndexed { index, value ->
             val modifier = if (index == 1) Modifier.weight(1f) else Modifier.width((fixedWidths[index] * fontScale).dp)
             Text(value, if (value == "差") modifier.semantics { contentDescription = "首位とのゲーム差" } else modifier,

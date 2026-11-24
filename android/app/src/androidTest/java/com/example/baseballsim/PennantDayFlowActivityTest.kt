@@ -102,6 +102,8 @@ class PennantDayFlowActivityTest {
             texts.single { it.matches(Regex("[0-9]+ – [0-9]+")) }
         }
         assertEquals(listOf("3 – 5", "2 – 5", "4 – 3", "3 – 2", "2 – 3", "5 – 4"), scoreTexts)
+        compose.onNode(hasText("1.000") and hasAnyAncestor(hasTestTag("pennant_standing_L1-T01")),
+            useUnmergedTree = true).assertTextFits()
         compose.pennantScreenshot("day-flow-scores.png")
         val saved = scores.display!!.stored
         compose.activityRule.scenario.recreate()

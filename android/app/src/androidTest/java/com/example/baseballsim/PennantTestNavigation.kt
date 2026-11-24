@@ -12,8 +12,14 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
+import androidx.compose.ui.test.SemanticsNodeInteraction
+import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.test.printToString
+import androidx.compose.ui.semantics.SemanticsActions
+import androidx.compose.ui.text.TextLayoutResult
 import java.io.File
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.rules.TestRule
 
 private val pennantTabs = setOf(
@@ -38,6 +44,12 @@ internal fun <R : TestRule> AndroidComposeTestRule<R, MainActivity>.enterStandal
 
 internal fun ComposeContentTestRule.choosePennantClub(name: String) {
     onNode(hasText(name) and hasAnyAncestor(isPopup()), useUnmergedTree = true).performScrollTo().performClick()
+}
+
+internal fun SemanticsNodeInteraction.assertTextFits() {
+    val layouts = mutableListOf<TextLayoutResult>()
+    performSemanticsAction(SemanticsActions.GetTextLayoutResult) { assertTrue(it(layouts)) }
+    assertFalse("Text is clipped", layouts.single().hasVisualOverflow)
 }
 
 internal fun <R : TestRule> AndroidComposeTestRule<R, MainActivity>.openNextOwnGame() {
