@@ -11,11 +11,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import com.example.baseballsim.core.Status
 import com.example.baseballsim.season.CalendarDay
@@ -189,11 +191,15 @@ private fun standingClubName(id: String) = when (id) {
 }
 
 @Composable private fun StandingCells(values: List<String>) {
-    val weights = listOf(0.63f, 1.24f, 1f, 0.75f, 0.65f)
-    Row(Modifier.fillMaxWidth().padding(horizontal = 4.dp, vertical = 6.dp),
+    val fontScale = LocalDensity.current.fontScale
+    val fixedWidths = listOf(22, 0, 49, 26, 25)
+    val textStyle = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp)
+    Row(Modifier.fillMaxWidth().padding(horizontal = 3.dp, vertical = 6.dp),
         horizontalArrangement = Arrangement.spacedBy(2.dp), verticalAlignment = Alignment.CenterVertically) {
         values.forEachIndexed { index, value ->
-            Text(value, Modifier.weight(weights[index]), style = MaterialTheme.typography.labelSmall,
+            val modifier = if (index == 1) Modifier.weight(1f) else Modifier.width((fixedWidths[index] * fontScale).dp)
+            Text(value, if (value == "差") modifier.semantics { contentDescription = "首位とのゲーム差" } else modifier,
+                style = textStyle,
                 textAlign = if (index == 1) TextAlign.Start else TextAlign.End, maxLines = 1)
         }
     }

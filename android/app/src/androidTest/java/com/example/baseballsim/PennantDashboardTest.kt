@@ -48,6 +48,7 @@ class PennantDashboardTest {
             }
         } }
         compose.onNodeWithTag(PennantTags.VISIBLE_DAY).assertTextEquals("2026年3月26日（木）")
+        compose.onNodeWithTag(PennantTags.DAY).assertIsDisplayed()
         compose.onNodeWithText("休養日").performScrollTo().assertIsDisplayed()
 
         session.advanceDay()
@@ -58,6 +59,10 @@ class PennantDashboardTest {
         compose.clickPennant(PennantTags.DAY)
         assertTrue(commands == listOf(PennantCommand.DAY))
         commands.clear()
+        compose.runOnUiThread { state.value = state.value.copy(busy = true, bulk = true, dailyProgress = true) }
+        compose.onNodeWithTag(PennantTags.STOP).assertDoesNotExist()
+        compose.onNodeWithTag(PennantTags.DAY).assertIsNotEnabled()
+        compose.runOnUiThread { state.value = state.value.copy(busy = false, bulk = false, dailyProgress = false) }
 
         val count = PennantSchedule.calendar[partialDay.state.dayIndex - 1].gameOrdinals
         assertTrue(count.size == 6)

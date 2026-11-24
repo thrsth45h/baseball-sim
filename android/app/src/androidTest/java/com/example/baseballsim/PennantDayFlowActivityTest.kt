@@ -55,7 +55,7 @@ class PennantDayFlowActivityTest {
         val leftNode = compose.onNodeWithTag("pennant_league_standings_$left", useUnmergedTree = true).fetchSemanticsNode()
         val rightNode = compose.onNodeWithTag("pennant_league_standings_$right", useUnmergedTree = true).fetchSemanticsNode()
         assertTrue(leftNode.positionInRoot.x < rightNode.positionInRoot.x)
-        assertEquals(leftNode.positionInRoot.y, rightNode.positionInRoot.y)
+        assertTrue(leftNode.positionInRoot.y == rightNode.positionInRoot.y)
     }
 
     @Test fun progressShowsAllSixScoresAtTheSameDateAndNextDayDoesNotWrite() {

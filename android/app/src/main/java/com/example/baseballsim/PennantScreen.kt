@@ -217,7 +217,8 @@ private val ConfirmationSaver = listSaver<PennantConfirmation?, String>(
                             PennantPage.RECORDS -> RecordsPanel(pennantPlayers(season, navigation.browseClubId), season.lineupEnabled,
                                 navigation.browseClubId) { savedNavigation = navigation.browse(it) }
                             PennantPage.HISTORY -> if (token != null && timeline != null && timeline.year > 1) {
-                                HistoryPanel(token, state.canUse, navigation.browseClubId, { savedNavigation = navigation.browse(it) }, historyYears, historyYear)
+                                HistoryPanel(token, state.canUse, season.selectedClubId, navigation.browseClubId,
+                                    { savedNavigation = navigation.browse(it) }, historyYears, historyYear)
                             } else Unit
                             PennantPage.MATCH -> {
                                 val selectedId = navigation.matchId
@@ -259,7 +260,7 @@ private val ConfirmationSaver = listSaver<PennantConfirmation?, String>(
 
 private data class ConfirmationText(val title: String, val message: String, val button: String, val tag: String)
 
-@Composable private fun HistoryPanel(token: StoreToken, canRead: Boolean, club: String, browse: (String) -> Unit,
+@Composable private fun HistoryPanel(token: StoreToken, canRead: Boolean, operatingClub: String, club: String, browse: (String) -> Unit,
     listYears: suspend (StoreToken) -> List<Long>, loadYear: suspend (StoreToken, Long) -> SeasonYear) {
     var requested by rememberSaveable { mutableStateOf<Long?>(null) }
     // Ordinary play can publish hundreds of revisions while skipping a season. A history
@@ -282,7 +283,7 @@ private data class ConfirmationText(val title: String, val message: String, val 
             val year = loaded
             if (year == null) Text("成績を読み込み中") else {
                 Text("${year.number}年目", style = MaterialTheme.typography.titleLarge)
-                PennantStandings(club, year.standings, PennantTags.STANDINGS)
+                PennantStandings(operatingClub, year.standings, PennantTags.STANDINGS)
                 RecordsPanel(year.players.filter { it.clubId == club }, true, club, browse)
             }
         }
