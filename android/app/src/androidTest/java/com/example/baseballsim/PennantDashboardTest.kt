@@ -55,7 +55,7 @@ class PennantDashboardTest {
         compose.onNodeWithText("休養日").performScrollTo().assertIsDisplayed()
 
         session.advanceDay()
-        session.finishCurrent()
+        repeat(5) { session.finishCurrent() }
         session.advanceOnePitch()
         val partialDay = published(3)
         compose.runOnUiThread { state.value = state.value.copy(display = pennantDisplay(partialDay)) }
@@ -73,7 +73,7 @@ class PennantDashboardTest {
             val fixture = partialDay.state.games[ordinal - 1].fixture
             compose.onNodeWithTag(PennantTags.todayGame(fixture.gameId), useUnmergedTree = true).assertExists()
         }
-        val completed = partialDay.state.results.single()
+        val completed = partialDay.state.results.first()
         val completedTag = PennantTags.todayGame(completed.game.fixture.gameId)
         val activeTag = PennantTags.todayGame(partialDay.state.active!!.game.fixture.gameId)
         compose.onNodeWithContentDescription("福岡ソフトバンクホークス", useUnmergedTree = true).assertExists()
@@ -90,7 +90,10 @@ class PennantDashboardTest {
         val beforeScroll = bottom.fetchSemanticsNode().boundsInRoot.bottom
         val topBeforeScroll = top.fetchSemanticsNode().boundsInRoot.top
         compose.onNodeWithTag(PennantTags.HOME_STANDINGS).performScrollTo().assertIsDisplayed()
+        compose.verifyFixedStandings(PennantTags.HOME_STANDINGS)
         compose.onNode(hasText("1.000") and hasAnyAncestor(hasTestTag("pennant_standing_L1-T01")),
+            useUnmergedTree = true).assertTextFits()
+        compose.onNode(hasText("1.000") and hasAnyAncestor(hasTestTag("pennant_standing_L2-T05")),
             useUnmergedTree = true).assertTextFits()
         assertTrue(beforeScroll == bottom.fetchSemanticsNode().boundsInRoot.bottom)
         assertTrue(topBeforeScroll == top.fetchSemanticsNode().boundsInRoot.top)

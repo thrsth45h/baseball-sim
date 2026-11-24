@@ -3,6 +3,7 @@ package com.example.baseballsim
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.unit.IntSize
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import java.io.File
 import org.json.JSONArray
@@ -28,7 +29,7 @@ class PennantDayFlowActivityTest {
         control.assertIsDisplayed().performTouchInput { click() }
     }
 
-    private fun fresh(club: String) {
+    private fun fresh(club: String, observeRestDay: () -> Unit = {}) {
         compose.enterPennantMode()
         ready()
         compose.runOnUiThread {
@@ -39,6 +40,7 @@ class PennantDayFlowActivityTest {
         assertEquals(1, initial.visibleDay)
         assertEquals(club, initial.season!!.selectedClubId)
         compose.onNodeWithText("休養日").assertExists()
+        observeRestDay()
         tapControl(PennantTags.DAY)
         val day = ready()
         assertEquals(2, day.visibleDay)
@@ -59,13 +61,29 @@ class PennantDayFlowActivityTest {
     }
 
     @Test fun progressShowsAllSixScoresAtTheSameDateAndNextDayDoesNotWrite() {
-        fresh("L1-T01")
+        val restSizes = mutableListOf<IntSize>()
+        var restStandingsY = 0f
+        fresh("L1-T01") {
+            for (slot in 0..5) {
+                val tag = hasTestTag("pennant_rest_card_$slot")
+                val row = compose.onNode(tag, useUnmergedTree = true).fetchSemanticsNode()
+                restSizes += row.size
+                compose.onAllNodes(hasClickAction() and (tag or hasAnyAncestor(tag)), useUnmergedTree = true)
+                    .assertCountEquals(0)
+            }
+            compose.onAllNodesWithText("休養日", useUnmergedTree = true).assertCountEquals(1)
+            compose.onNodeWithTag(PennantTags.OPEN).assertDoesNotExist()
+            restStandingsY = compose.onNodeWithTag(PennantTags.HOME_STANDINGS).fetchSemanticsNode().positionInRoot.y
+            compose.pennantScreenshot("day-flow-rest.png")
+        }
         val before = ready()
         val fixtureIds = before.season!!.games.take(6).map { it.fixture.gameId }
         val initialLabel = visibleDay()
         assertEquals("2026年3月27日（金）", initialLabel)
         val cardSizes = fixtureIds.map { fixtureNode(it).size }
         assertTrue(cardSizes.all { it.width > 0 && it.height > 0 })
+        assertEquals(restSizes, cardSizes)
+        assertEquals(restStandingsY, compose.onNodeWithTag(PennantTags.HOME_STANDINGS).fetchSemanticsNode().positionInRoot.y, 0f)
         verifyLeagueTables("L1", "L2")
         for (tag in listOf(PennantTags.PROGRESS, PennantTags.NAV_MATCH, PennantTags.SEASON, PennantTags.STOP, PennantTags.YEAR)) {
             compose.onNodeWithTag(tag).assertDoesNotExist()
@@ -92,6 +110,7 @@ class PennantDayFlowActivityTest {
         compose.onNodeWithTag(PennantTags.NEXT_DAY).assertIsDisplayed()
         val finalSizes = fixtureIds.map { fixtureNode(it).size }
         assertEquals(cardSizes, finalSizes)
+        assertEquals(restStandingsY, compose.onNodeWithTag(PennantTags.HOME_STANDINGS).fetchSemanticsNode().positionInRoot.y, 0f)
         val scoreTexts = fixtureIds.map { id ->
             val tag = hasTestTag(PennantTags.todayGame(id))
             val rows = compose.onAllNodes(hasAnyAncestor(tag), useUnmergedTree = true).fetchSemanticsNodes()
@@ -102,9 +121,12 @@ class PennantDayFlowActivityTest {
             texts.single { it.matches(Regex("[0-9]+ – [0-9]+")) }
         }
         assertEquals(listOf("3 – 5", "2 – 5", "4 – 3", "3 – 2", "2 – 3", "5 – 4"), scoreTexts)
+        compose.pennantScreenshot("day-flow-scores.png")
+        compose.verifyFixedStandings(PennantTags.HOME_STANDINGS)
         compose.onNode(hasText("1.000") and hasAnyAncestor(hasTestTag("pennant_standing_L1-T01")),
             useUnmergedTree = true).assertTextFits()
-        compose.pennantScreenshot("day-flow-scores.png")
+        compose.onNode(hasText("1.000") and hasAnyAncestor(hasTestTag("pennant_standing_L2-T04")),
+            useUnmergedTree = true).assertTextFits()
         val saved = scores.display!!.stored
         compose.activityRule.scenario.recreate()
         assertEquals(saved, ready().display!!.stored)
@@ -134,7 +156,10 @@ class PennantDayFlowActivityTest {
             .put("scores_day", scoresLabel)
             .put("next_day", nextLabel)
             .put("scores", JSONArray(scoreTexts))
-            .put("box_sizes_preserved", cardSizes == finalSizes)
+            .put("box_sizes_preserved", restSizes == cardSizes && cardSizes == finalSizes)
+            .put("rest_card_widths", JSONArray(restSizes.map { it.width }))
+            .put("rest_card_heights", JSONArray(restSizes.map { it.height }))
+            .put("rest_standings_y", restStandingsY.toDouble())
             .put("score_phase_result_count", scores.season!!.results.size)
             .put("calendar_index_after_games", scores.season!!.dayIndex)
             .put("ack_preserved_store_token", saved.token == next.display!!.stored.token)

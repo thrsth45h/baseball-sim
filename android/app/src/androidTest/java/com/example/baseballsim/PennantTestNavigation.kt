@@ -1,21 +1,10 @@
 package com.example.baseballsim
 
-import androidx.compose.ui.test.junit4.ComposeContentTestRule
-import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.assertIsSelected
-import androidx.compose.ui.test.hasAnyAncestor
-import androidx.compose.ui.test.hasText
-import androidx.compose.ui.test.isPopup
-import androidx.compose.ui.test.junit4.AndroidComposeTestRule
-import androidx.compose.ui.test.onAllNodesWithTag
-import androidx.compose.ui.test.onNodeWithTag
-import androidx.compose.ui.test.onRoot
-import androidx.compose.ui.test.performClick
-import androidx.compose.ui.test.performScrollTo
-import androidx.compose.ui.test.SemanticsNodeInteraction
-import androidx.compose.ui.test.performSemanticsAction
-import androidx.compose.ui.test.printToString
 import androidx.compose.ui.semantics.SemanticsActions
+import androidx.compose.ui.semantics.SemanticsProperties
+import androidx.compose.ui.test.*
+import androidx.compose.ui.test.junit4.AndroidComposeTestRule
+import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.text.TextLayoutResult
 import java.io.File
 import org.junit.Assert.assertFalse
@@ -44,6 +33,27 @@ internal fun <R : TestRule> AndroidComposeTestRule<R, MainActivity>.enterStandal
 
 internal fun ComposeContentTestRule.choosePennantClub(name: String) {
     onNode(hasText(name) and hasAnyAncestor(isPopup()), useUnmergedTree = true).performScrollTo().performClick()
+}
+
+internal fun ComposeContentTestRule.verifyFixedStandings(panelTag: String) {
+    val table = hasTestTag(panelTag)
+    val descendants = hasAnyAncestor(table)
+    onAllNodes(SemanticsMatcher.keyIsDefined(SemanticsProperties.HorizontalScrollAxisRange) and (table or descendants),
+        useUnmergedTree = true).assertCountEquals(0)
+    val header = hasAnyAncestor(hasTestTag("pennant_standings_header"))
+    onAllNodes(hasText("順位表") and header, useUnmergedTree = true).assertCountEquals(1)
+    onAllNodes(hasText("差") and header, useUnmergedTree = true).assertCountEquals(1)
+    for (former in listOf("順位", "球団名", "勝敗分", "勝率")) {
+        onAllNodes(hasText(former) and descendants, useUnmergedTree = true).assertCountEquals(0)
+    }
+    val viewport = onNodeWithTag(panelTag).fetchSemanticsNode()
+    for ((club, short) in listOf("L1-T05" to "ヤクルト", "L2-T02" to "日本ハム")) {
+        val name = onNode(hasText(short) and hasAnyAncestor(hasTestTag("pennant_standing_$club")), useUnmergedTree = true)
+        name.assertTextFits()
+        val node = name.fetchSemanticsNode()
+        val left = viewport.positionInRoot.x
+        assertTrue(node.positionInRoot.x >= left && node.positionInRoot.x + node.size.width <= left + viewport.size.width + 1f)
+    }
 }
 
 internal fun SemanticsNodeInteraction.assertTextFits() {
