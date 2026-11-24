@@ -74,7 +74,7 @@ class PennantBatterProfileFullSeasonTest {
             Log.i("BatterProfileSeason", "elapsed_ms,completed_games,busy=$sample")
             lastSample = elapsed
         }
-        home(); click(PennantTags.SEASON)
+        home(); compose.runOnUiThread { vm.execute(PennantCommand.SEASON) }
         try {
             // The disposable emulator's previous 20-minute allowance expired during this run.
             compose.waitUntil(1_920_000) {

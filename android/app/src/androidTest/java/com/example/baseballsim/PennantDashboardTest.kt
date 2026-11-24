@@ -41,11 +41,17 @@ class PennantDashboardTest {
             CompositionLocalProvider(LocalDensity provides Density(density.density, 1.5f)) {
                 Box(Modifier.width(320.dp)) {
                     PennantScreen(state.value, {}, { error("A tab must not select a club") },
-                        { command, _, _ -> commands += command }, {}, { error("A tab must not reload") })
+                        { command, _, _ -> commands += command }, {}, { error("A tab must not reload") },
+                        openOwnGame = { _, id -> state.value = state.value.copy(openedGameId = id); true },
+                        consumeOpenedGame = { _, _ -> state.value = state.value.copy(openedGameId = null); true })
                 }
             }
         } }
-        compose.onNodeWithTag(PennantTags.YEAR).assertTextEquals("1年目")
+        compose.onNodeWithTag(PennantTags.VISIBLE_DAY).assertTextEquals("2026年3月26日（木）")
+        compose.onNodeWithTag(PennantTags.DAY).assertIsDisplayed()
+        val dateBounds = compose.onNodeWithTag(PennantTags.VISIBLE_DAY).fetchSemanticsNode().boundsInRoot
+        val dayButtonBounds = compose.onNodeWithTag(PennantTags.DAY).fetchSemanticsNode().boundsInRoot
+        assertTrue(dateBounds.right <= dayButtonBounds.left)
         compose.onNodeWithText("休養日").performScrollTo().assertIsDisplayed()
 
         session.advanceDay()
@@ -56,6 +62,10 @@ class PennantDashboardTest {
         compose.clickPennant(PennantTags.DAY)
         assertTrue(commands == listOf(PennantCommand.DAY))
         commands.clear()
+        compose.runOnUiThread { state.value = state.value.copy(busy = true, bulk = true, dailyProgress = true) }
+        compose.onNodeWithTag(PennantTags.STOP).assertDoesNotExist()
+        compose.onNodeWithTag(PennantTags.DAY).assertIsNotEnabled()
+        compose.runOnUiThread { state.value = state.value.copy(busy = false, bulk = false, dailyProgress = false) }
 
         val count = PennantSchedule.calendar[partialDay.state.dayIndex - 1].gameOrdinals
         assertTrue(count.size == 6)
@@ -66,6 +76,7 @@ class PennantDashboardTest {
         val completed = partialDay.state.results.single()
         val completedTag = PennantTags.todayGame(completed.game.fixture.gameId)
         val activeTag = PennantTags.todayGame(partialDay.state.active!!.game.fixture.gameId)
+        compose.onNodeWithContentDescription("福岡ソフトバンクホークス", useUnmergedTree = true).assertExists()
         compose.onNodeWithTag(completedTag, useUnmergedTree = true)
             .assert(SemanticsMatcher.expectValue(SemanticsProperties.StateDescription, "操作球団の試合"))
         compose.onNode(hasText("${completed.score.away} – ${completed.score.home}") and hasAnyAncestor(hasTestTag(completedTag)),
@@ -78,12 +89,14 @@ class PennantDashboardTest {
         val top = compose.onNodeWithTag(PennantTags.TOP_BAR)
         val beforeScroll = bottom.fetchSemanticsNode().boundsInRoot.bottom
         val topBeforeScroll = top.fetchSemanticsNode().boundsInRoot.top
-        compose.onNodeWithText("リーグ1の順位").performScrollTo().assertIsDisplayed()
+        compose.onNodeWithTag(PennantTags.HOME_STANDINGS).performScrollTo().assertIsDisplayed()
+        compose.onNode(hasText("1.000") and hasAnyAncestor(hasTestTag("pennant_standing_L1-T01")),
+            useUnmergedTree = true).assertTextFits()
         assertTrue(beforeScroll == bottom.fetchSemanticsNode().boundsInRoot.bottom)
         assertTrue(topBeforeScroll == top.fetchSemanticsNode().boundsInRoot.top)
         compose.pennantScreenshot("dashboard-standings-320-font150.png")
 
-        compose.clickPennant(PennantTags.NAV_MATCH)
+        compose.clickPennant(PennantTags.OPEN)
         compose.onNodeWithTag(PennantTags.GAME).assertExists()
         compose.onNodeWithTag(PennantTags.NAV_HOME).assertIsSelected()
         compose.clickPennant(PennantTags.NAV_SCHEDULE)

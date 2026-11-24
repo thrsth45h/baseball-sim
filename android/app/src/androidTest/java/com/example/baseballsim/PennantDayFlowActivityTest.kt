@@ -48,12 +48,29 @@ class PennantDayFlowActivityTest {
     private fun visibleDay(): String = compose.onNodeWithTag(PennantTags.VISIBLE_DAY)
         .fetchSemanticsNode().config[SemanticsProperties.Text].single().text
 
+    private fun fixtureNode(id: String) =
+        compose.onNodeWithTag(PennantTags.todayGame(id), useUnmergedTree = true).fetchSemanticsNode()
+
+    private fun verifyLeagueTables(left: String, right: String) {
+        val leftNode = compose.onNodeWithTag("pennant_league_standings_$left", useUnmergedTree = true).fetchSemanticsNode()
+        val rightNode = compose.onNodeWithTag("pennant_league_standings_$right", useUnmergedTree = true).fetchSemanticsNode()
+        assertTrue(leftNode.positionInRoot.x < rightNode.positionInRoot.x)
+        assertTrue(leftNode.positionInRoot.y == rightNode.positionInRoot.y)
+    }
+
     @Test fun progressShowsAllSixScoresAtTheSameDateAndNextDayDoesNotWrite() {
         fresh("L1-T01")
         val before = ready()
         val fixtureIds = before.season!!.games.take(6).map { it.fixture.gameId }
         val initialLabel = visibleDay()
-        assertEquals("第1週 火曜", initialLabel)
+        assertEquals("2026年3月27日（金）", initialLabel)
+        val cardSizes = fixtureIds.map { fixtureNode(it).size }
+        assertTrue(cardSizes.all { it.width > 0 && it.height > 0 })
+        verifyLeagueTables("L1", "L2")
+        for (tag in listOf(PennantTags.PROGRESS, PennantTags.NAV_MATCH, PennantTags.SEASON, PennantTags.STOP, PennantTags.YEAR)) {
+            compose.onNodeWithTag(tag).assertDoesNotExist()
+        }
+        for (label in listOf("当日の試合", "リーグ1", "リーグ2")) compose.onNodeWithText(label).assertDoesNotExist()
         fixtureIds.forEach { id ->
             compose.onNode(hasText("試合前") and hasAnyAncestor(hasTestTag(PennantTags.todayGame(id))),
                 useUnmergedTree = true).assertExists()
@@ -72,7 +89,9 @@ class PennantDayFlowActivityTest {
         assertEquals(6, scores.season!!.results.size)
         val scoresLabel = visibleDay()
         assertEquals(initialLabel, scoresLabel)
-        compose.onNodeWithText("試合後").assertExists()
+        compose.onNodeWithTag(PennantTags.NEXT_DAY).assertIsDisplayed()
+        val finalSizes = fixtureIds.map { fixtureNode(it).size }
+        assertEquals(cardSizes, finalSizes)
         val scoreTexts = fixtureIds.map { id ->
             val tag = hasTestTag(PennantTags.todayGame(id))
             val rows = compose.onAllNodes(hasAnyAncestor(tag), useUnmergedTree = true).fetchSemanticsNodes()
@@ -83,6 +102,8 @@ class PennantDayFlowActivityTest {
             texts.single { it.matches(Regex("[0-9]+ – [0-9]+")) }
         }
         assertEquals(listOf("3 – 5", "2 – 5", "4 – 3", "3 – 2", "2 – 3", "5 – 4"), scoreTexts)
+        compose.onNode(hasText("1.000") and hasAnyAncestor(hasTestTag("pennant_standing_L1-T01")),
+            useUnmergedTree = true).assertTextFits()
         compose.pennantScreenshot("day-flow-scores.png")
         val saved = scores.display!!.stored
         compose.activityRule.scenario.recreate()
@@ -95,7 +116,7 @@ class PennantDayFlowActivityTest {
         compose.onNodeWithTag(PennantTags.GAME).assertExists()
         val shown = compose.onNode(hasText("3 − 5") and hasAnyAncestor(hasTestTag(PennantTags.GAME)), useUnmergedTree = true)
             .fetchSemanticsNode().config[SemanticsProperties.Text].single().text
-        compose.onNodeWithText("仮球団6 − 仮球団1").assertExists()
+        compose.onNodeWithText("中日ドラゴンズ − 読売ジャイアンツ").assertExists()
         compose.onNodeWithTag(PennantTags.PITCH).assertIsNotEnabled()
         val afterResultTap = ready().display!!.stored
         assertEquals(saved, afterResultTap)
@@ -103,7 +124,7 @@ class PennantDayFlowActivityTest {
         tapControl(PennantTags.NEXT_DAY)
         val next = ready()
         val nextLabel = visibleDay()
-        assertEquals("第1週 水曜", nextLabel)
+        assertEquals("2026年3月28日（土）", nextLabel)
         assertEquals(3, next.visibleDay)
         assertNull(next.resultDay)
         assertEquals(saved, next.display!!.stored)
@@ -113,6 +134,7 @@ class PennantDayFlowActivityTest {
             .put("scores_day", scoresLabel)
             .put("next_day", nextLabel)
             .put("scores", JSONArray(scoreTexts))
+            .put("box_sizes_preserved", cardSizes == finalSizes)
             .put("score_phase_result_count", scores.season!!.results.size)
             .put("calendar_index_after_games", scores.season!!.dayIndex)
             .put("ack_preserved_store_token", saved.token == next.display!!.stored.token)
@@ -126,6 +148,11 @@ class PennantDayFlowActivityTest {
         fresh("L2-T04")
         val before = ready()
         val own = before.season!!.games[5].fixture
+        verifyLeagueTables("L2", "L1")
+        val ordered = before.season!!.games.take(6).map { it.fixture.gameId }
+            .sortedBy { fixtureNode(it).positionInRoot.y }
+        assertEquals(listOf(own.gameId) + before.season!!.games.take(5).map { it.fixture }
+            .sortedBy { it.leagueId != "L2" }.map { it.gameId }, ordered)
         tapControl(PennantTags.OPEN, inScrollPage = true)
         val started = ready()
         compose.onNodeWithTag(PennantTags.GAME).assertExists()

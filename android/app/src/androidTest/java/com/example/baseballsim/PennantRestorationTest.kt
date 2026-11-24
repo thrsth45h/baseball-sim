@@ -65,7 +65,7 @@ class PennantRestorationTest {
         compose.runOnUiThread { state.value = original.copy(display = pennantDisplay(newWorld)) }
         compose.onNodeWithTag(PennantTags.HOME).assertExists()
         click(PennantTags.NAV_LINEUP); click(PennantTags.NAV_PLAYERS)
-        compose.onNodeWithTag(PennantTags.BROWSE_CLUB).assertTextEquals("閲覧球団：仮球団12")
+        compose.onNodeWithTag(PennantTags.BROWSE_CLUB).assertTextEquals("閲覧球団：埼玉西武ライオンズ")
         assertEquals(0f, offset(), 1f)
         click(PennantTags.BACK); click(PennantTags.NAV_SETTINGS); click(PennantTags.CREATE)
         compose.onNodeWithTag(PennantTags.CONFIRM_CREATE).assertExists()

@@ -61,7 +61,7 @@ class PennantLineupFullSeasonTest {
         val progress = File(output, "lineup-real-season-42-progress.csv")
         progress.writeText("elapsed_ms,completed_games,busy\n")
         val started = SystemClock.elapsedRealtime(); var lastSample = 0L
-        home(); click(PennantTags.SEASON)
+        home(); compose.runOnUiThread { vm.execute(PennantCommand.SEASON) }
         compose.waitUntil(1_200_000) {
             val now = SystemClock.elapsedRealtime(); val current = vm.state.value
             if (now - lastSample >= 10_000) { progress.appendText("${now - started},${current.season!!.results.size},${current.busy}\n"); lastSample = now }

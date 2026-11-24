@@ -2,6 +2,7 @@ package com.example.baseballsim
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.width
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
@@ -32,7 +33,8 @@ class PennantScreenTest {
         val panel = compose.onNodeWithTag(PennantTags.STANDINGS).fetchSemanticsNode().boundsInRoot
         val viewport = compose.onNodeWithTag(PennantTags.SCREEN).fetchSemanticsNode().boundsInRoot
         assertTrue(panel.left >= viewport.left && panel.right <= viewport.right + 1)
-        compose.onNodeWithText("勝率").performScrollTo().assertIsDisplayed()
+        compose.onNode(hasText("勝率") and hasAnyAncestor(hasTestTag("pennant_league_standings_L2")),
+            useUnmergedTree = true).performScrollTo().assertIsDisplayed()
         compose.pennantScreenshot("pennant-narrow320.png")
         compose.clickPennant(PennantTags.NAV_RECORDS)
         compose.onNodeWithText("本塁打").performScrollTo().assertIsDisplayed()
@@ -46,11 +48,16 @@ class PennantScreenTest {
         val source = ToyPitchSource(game.seed)
         source.nextPitch(PitchContext(SequenceState(), Score(), "away", "away_1", 1))
         val blocked = initial.checkpoint(GameCheckpoint(game, 10_000, 1, SnapshotDto.fromCore(snapshot), SourceCursor.capture(source)))
-        compose.setContent { BaseballTheme { PennantScreen(ui(blocked), {}, {}, { _, _, _ -> }, {}, {}) } }
+        val state = mutableStateOf(ui(blocked))
+        compose.setContent { BaseballTheme {
+            PennantScreen(state.value, {}, {}, { _, _, _ -> }, {}, {},
+                openOwnGame = { _, id -> state.value = state.value.copy(openedGameId = id); true },
+                consumeOpenedGame = { _, _ -> state.value = state.value.copy(openedGameId = null); true })
+        } }
         compose.onNodeWithText("試合ID：${game.fixture.gameId}").performScrollTo().assertIsDisplayed()
         compose.onNodeWithText("理由：投球処理でエラーが発生しました（source_error）").performScrollTo().assertIsDisplayed()
         compose.pennantScreenshot("pennant-blocked-home.png")
-        compose.onNodeWithTag(PennantTags.NAV_MATCH).performScrollTo().performClick()
+        compose.clickPennant(PennantTags.OPEN)
         compose.onNodeWithTag(PennantTags.PITCH).performScrollTo().assertIsNotEnabled()
         compose.onNodeWithTag(PennantTags.BACK).performClick()
         compose.clickPennant(PennantTags.NAV_SETTINGS)

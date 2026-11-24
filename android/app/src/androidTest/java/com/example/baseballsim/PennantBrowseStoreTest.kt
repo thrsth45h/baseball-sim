@@ -84,12 +84,12 @@ class PennantBrowseStoreTest {
             click(PennantTags.NAV_LINEUP); click(PennantTags.NAV_PLAYERS)
             PennantSchedule.clubs.forEach { club ->
                 click(PennantTags.BROWSE_CLUB)
-                compose.choosePennantClub(club.displayName)
+                compose.choosePennantClub(expectedPennantClubName(club.id))
                 club.players.forEach { player ->
                     click(PennantTags.player(player.id))
                     compose.onNodeWithTag(PennantTags.PLAYER_DETAIL).assertExists()
                     compose.onNodeWithTag("player_id").assertTextEquals(player.id)
-                    compose.onNodeWithTag("player_club").assertTextEquals(club.displayName)
+                    compose.onNodeWithTag("player_club").assertTextEquals(expectedPennantClubName(club.id))
                     compose.onNodeWithTag("player_slot").assertTextEquals("固定打順 ${player.slot}")
                     val expected = paused.state.playerCounts.single { it.playerId == player.id }.counts
                     val values = listOf("player_completed_pa" to expected.completedPlateAppearances, "player_safe_hits" to expected.safeHitEvents,
@@ -112,7 +112,7 @@ class PennantBrowseStoreTest {
             compose.onNodeWithTag(PennantTags.PLAYER_DETAIL).assertExists()
             compose.onNodeWithText("L2-T06-P09", substring = true).assertExists()
             home()
-            for (tag in listOf(PennantTags.NAV_LINEUP, PennantTags.NAV_SCHEDULE, PennantTags.NAV_STANDINGS, PennantTags.NAV_RECORDS, PennantTags.NAV_MATCH, PennantTags.NAV_SETTINGS)) {
+            for (tag in listOf(PennantTags.NAV_LINEUP, PennantTags.NAV_SCHEDULE, PennantTags.NAV_STANDINGS, PennantTags.NAV_RECORDS, PennantTags.NAV_SETTINGS)) {
                 if (tag == PennantTags.NAV_RECORDS) click(PennantTags.NAV_STANDINGS)
                 click(tag); home()
             }

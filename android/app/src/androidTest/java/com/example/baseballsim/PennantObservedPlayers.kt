@@ -19,13 +19,13 @@ internal fun ComposeContentTestRule.observeAllPlayerDetails(expected: SeasonStat
     val observed = JSONArray()
     PennantSchedule.clubs.forEach { club ->
         click(PennantTags.BROWSE_CLUB)
-        choosePennantClub(club.displayName)
+        choosePennantClub(expectedPennantClubName(club.id))
         val people = expected.playerIds(club.id)
         assertEquals(if (expected.lineupEnabled) 12 else 9, people.size)
         people.forEach { id ->
             click(PennantTags.player(id))
             onNodeWithTag("player_id").assertTextEquals(id)
-            onNodeWithTag("player_club").assertTextEquals(club.displayName)
+            onNodeWithTag("player_club").assertTextEquals(expectedPennantClubName(club.id))
             val row = expected.playerCounts.single { it.playerId == id }
             onNodeWithTag("player_slot").assertTextEquals(playerRoleLabel(expected, row))
             val count = row.counts

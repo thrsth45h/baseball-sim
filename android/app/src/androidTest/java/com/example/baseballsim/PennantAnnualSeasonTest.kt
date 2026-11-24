@@ -44,7 +44,7 @@ class PennantAnnualSeasonTest {
         assertEquals(1L, first.timeline!!.year)
         assertEquals(720, first.state.results.size)
         assertEquals(completedV3FrameHash, hash(CheckpointCodec.encodeSeason(first.state)))
-        compose.onNodeWithTag(PennantTags.YEAR).assertTextEquals("1年目")
+        compose.onNodeWithTag(PennantTags.VISIBLE_DAY).assertTextEquals("2026年8月12日（水）")
         click(PennantTags.NEXT_YEAR)
         compose.pennantScreenshot("annual-confirm.png")
         compose.onNodeWithText("戻る").performClick()
@@ -64,7 +64,7 @@ class PennantAnnualSeasonTest {
         assertEquals(first.token.revision + 1, second.token.revision)
         assertTrue(second.state.results.isEmpty())
         assertTrue(second.state.playerCounts.all { it.counts.completedPlateAppearances == 0L })
-        compose.onNodeWithTag(PennantTags.YEAR).assertTextEquals("2年目")
+        compose.onNodeWithTag(PennantTags.VISIBLE_DAY).assertTextEquals("2027年3月26日（金）")
 
         val output = pennantTestOutputDirectory()
         val progress = File(output, "annual-year-2-progress.csv")
@@ -76,7 +76,7 @@ class PennantAnnualSeasonTest {
             lastSample = SystemClock.elapsedRealtime() - started
             progress.appendText("$lastSample,${state.season?.results?.size},${state.busy}\n")
         }
-        click(PennantTags.SEASON)
+        compose.runOnUiThread { vm.execute(PennantCommand.SEASON) }
         try {
             compose.waitUntil(2_280_000) {
                 if (SystemClock.elapsedRealtime() - started - lastSample >= 10_000L) sample()
@@ -102,7 +102,7 @@ class PennantAnnualSeasonTest {
         assertEquals(3L, third.timeline!!.year)
         assertTrue(third.state.results.isEmpty())
         assertEquals(second.state.clubLineups, third.state.clubLineups)
-        compose.onNodeWithTag(PennantTags.YEAR).assertTextEquals("3年目")
+        compose.onNodeWithTag(PennantTags.VISIBLE_DAY).assertTextEquals("2028年3月26日（日）")
 
         click(PennantTags.NAV_STANDINGS); click(PennantTags.NAV_HISTORY)
         compose.waitUntil(120_000) { compose.onAllNodesWithTag(PennantTags.historyYear(1)).fetchSemanticsNodes().size == 1 }
