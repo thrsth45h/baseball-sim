@@ -74,6 +74,7 @@
 | D061 | CONFIRMED | [打順・出場選手](docs/LINEUP_ROSTER_DESIGN.md)・[ADR-0019](docs/adr/0019-lineup-roster.md)・[設計PR #50](https://github.com/thrsth45h/baseball-sim/pull/50)。2026-11-17、打者12人/球団（出場9＋控え3）の試作、試合前の打順/入替えと個人記録、旧セーブ継続、仮確率据置きで戦力差はまだない範囲とworker実装〜検証APKを提示した確認に本人が「はい」と回答。開始時の出場者を凍結し個人IDで集計、新形式と旧v1の保存併存を採用。旧比較の適用限界も正本に明示。内部細目の個別精査は主張しない。投手/守備位置/途中交代/一二軍/能力/年次/製品DBは含めず、D029/D030/D031/D056 OPENを維持する。 |
 | D062 | CONFIRMED | [打者の試作用タイプ](docs/BATTER_PROFILE_DESIGN.md)・[ADR-0020](docs/adr/0020-batter-profile.md)・[設計PR #52](https://github.com/thrsth45h/baseball-sim/pull/52)。2026-11-17、本人が標準/ミート型/長打型の未較正仮分布・新規v3/旧セーブ維持・worker実装〜検証APKの範囲確認に『この範囲で進める（推奨）』と回答。人物へ結び付けた三タイプを逐球生成だけで1回適用し、編成・記録・保存・APKへ接続する限定試作を採用。内部細目の個別精査、能力1〜20/選球眼/積極性の代理・研究採用・MLB妥当性の承認へ広げず、D029/D030/D031/D056はOPEN。旧v1/v2は旧sourceのまま保持する。 |
 | D063 | CONFIRMED | [翌年への移行と年度別成績](docs/SEASON_HISTORY_DESIGN.md)・[ADR-0021](docs/adr/0021-season-history.md)・[設計PR #55](https://github.com/thrsth45h/baseball-sim/pull/55)。2026-11-22、完走済みv3から同じ選手・打順で翌年へ進み、年度別の順位・既存5件数を保持する限定試作と、worker実装から独立レビュー・APK公開までを提示し、本人が「はい」と回答した。年次保存・旧保存互換・分岐・再現性を検証する。D029/D030/D031/D056はOPEN。 |
+| D064 | CONFIRMED | 2026-11-24の本人指示に沿い、Android検証版に年月日、簡潔な対戦カード、日次結果の一括表示、2リーグの横並び順位表、現実のNPB12球団の表示名を採用する。[範囲と受入条件](docs/PENNANT_HOME_2026_DESIGN.md)。試合エンジン、保存形式、実際の選手や日程の採用、製品向け配布方針の決定は含めない。 |
 
 D036は当時承認された研究範囲の記録として保持する。「通常スイングのみ」「fair_in_play＝物理的フェア」という解釈は保証できないことを後に確認した。実際の5description母集団と旧数値は変えず、[設計書冒頭の注記](docs/PHASE2A_DESIGN.md)を優先して解釈する。
 
