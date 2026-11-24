@@ -32,7 +32,7 @@ private val DraftSaver = listSaver<LineupDraft?, String>(
     val editable = ui.canEditLineup
     val bench = season.playerIds(club).filter { it !in draft.players }
     Column(Modifier.fillMaxWidth().testTag(PennantTags.LINEUP), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-        Text(com.example.baseballsim.season.PennantSchedule.club(club).displayName, style = MaterialTheme.typography.titleLarge)
+        Text(pennantClubLabel(club).full, style = MaterialTheme.typography.titleLarge)
         if (season.profilesEnabled) Text("試作用タイプ", style = MaterialTheme.typography.bodySmall)
         if (!season.lineupEnabled) Text("旧形式の固定オーダーです。新シーズンから編成を変更できます。")
         else if (!editable) Text(if (season.active != null) "試合中は変更できません" else "現在は変更できません")

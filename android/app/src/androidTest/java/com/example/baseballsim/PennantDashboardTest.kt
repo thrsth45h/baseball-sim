@@ -41,11 +41,13 @@ class PennantDashboardTest {
             CompositionLocalProvider(LocalDensity provides Density(density.density, 1.5f)) {
                 Box(Modifier.width(320.dp)) {
                     PennantScreen(state.value, {}, { error("A tab must not select a club") },
-                        { command, _, _ -> commands += command }, {}, { error("A tab must not reload") })
+                        { command, _, _ -> commands += command }, {}, { error("A tab must not reload") },
+                        openOwnGame = { _, id -> state.value = state.value.copy(openedGameId = id); true },
+                        consumeOpenedGame = { _, _ -> state.value = state.value.copy(openedGameId = null); true })
                 }
             }
         } }
-        compose.onNodeWithTag(PennantTags.YEAR).assertTextEquals("1年目")
+        compose.onNodeWithTag(PennantTags.VISIBLE_DAY).assertTextEquals("2026年3月26日（木）")
         compose.onNodeWithText("休養日").performScrollTo().assertIsDisplayed()
 
         session.advanceDay()
@@ -78,12 +80,12 @@ class PennantDashboardTest {
         val top = compose.onNodeWithTag(PennantTags.TOP_BAR)
         val beforeScroll = bottom.fetchSemanticsNode().boundsInRoot.bottom
         val topBeforeScroll = top.fetchSemanticsNode().boundsInRoot.top
-        compose.onNodeWithText("リーグ1の順位").performScrollTo().assertIsDisplayed()
+        compose.onNodeWithTag(PennantTags.HOME_STANDINGS).performScrollTo().assertIsDisplayed()
         assertTrue(beforeScroll == bottom.fetchSemanticsNode().boundsInRoot.bottom)
         assertTrue(topBeforeScroll == top.fetchSemanticsNode().boundsInRoot.top)
         compose.pennantScreenshot("dashboard-standings-320-font150.png")
 
-        compose.clickPennant(PennantTags.NAV_MATCH)
+        compose.clickPennant(PennantTags.OPEN)
         compose.onNodeWithTag(PennantTags.GAME).assertExists()
         compose.onNodeWithTag(PennantTags.NAV_HOME).assertIsSelected()
         compose.clickPennant(PennantTags.NAV_SCHEDULE)

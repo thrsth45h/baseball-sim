@@ -60,7 +60,7 @@ class PennantActivityTest {
         if (compose.onAllNodesWithTag(tag).fetchSemanticsNodes().isEmpty()) {
             when (tag) {
                 PennantTags.SEED, PennantTags.CREATE, PennantTags.SAVE, PennantTags.LOAD -> page(PennantTags.NAV_SETTINGS)
-                PennantTags.PITCH, PennantTags.PA, PennantTags.FINISH_GAME -> page(PennantTags.NAV_MATCH)
+                PennantTags.PITCH, PennantTags.PA, PennantTags.FINISH_GAME -> { home(); compose.clickPennant(PennantTags.OPEN) }
                 else -> home()
             }
         }
@@ -115,7 +115,7 @@ class PennantActivityTest {
         compose.onNodeWithTag(PennantTags.SEED).performScrollTo().performTextReplacement("18446744073709551616")
         click(PennantTags.CREATE); compose.onNodeWithTag(PennantTags.CONFIRM_CREATE).performClick()
         assertSame(before, vm.state.value.display); assertNotNull(vm.state.value.seedError)
-        click(PennantTags.SEASON)
+        compose.runOnUiThread { vm.execute(PennantCommand.SEASON) }
         compose.waitUntil(15_000) { vm.state.value.busy && vm.state.value.bulk }
         click(PennantTags.NAV_LINEUP); click(PennantTags.NAV_PLAYERS)
         click(PennantTags.player("L1-T01-P09"))
@@ -167,12 +167,12 @@ class PennantActivityTest {
         click(PennantTags.DAY); ready(); assertEquals(2, vm.state.value.season!!.dayIndex)
         page(PennantTags.NAV_STANDINGS)
         compose.onNodeWithTag(PennantTags.STANDINGS).performScrollTo().assertIsDisplayed()
-        compose.onNodeWithText("リーグ2").performClick()
+        compose.onNodeWithTag("pennant_league_standings_L2").performScrollTo().assertIsDisplayed()
         compose.pennantScreenshot("pennant-standings.png")
         page(PennantTags.NAV_STANDINGS); click(PennantTags.NAV_RECORDS)
         compose.onNodeWithTag(PennantTags.RECORDS).performScrollTo().assertIsDisplayed()
-        compose.onNodeWithText("記録を見る球団：仮球団1").performClick()
-        compose.choosePennantClub("仮球団12")
+        compose.onNodeWithText("記録を見る球団：読売ジャイアンツ").performClick()
+        compose.choosePennantClub("埼玉西武ライオンズ")
         assertEquals(108, vm.state.value.season!!.playerCounts.size)
         compose.pennantScreenshot("pennant-records.png")
     }
@@ -183,7 +183,7 @@ class PennantActivityTest {
         val progress = File(directory, "pennant-real-season-42-progress.csv")
         progress.writeText("elapsed_ms,completed_games,day_index,busy,active_game_id,active_pitches,used_heap_bytes\n")
         var lastSample = 0L
-        click(PennantTags.SEASON)
+        compose.runOnUiThread { vm.execute(PennantCommand.SEASON) }
         try {
             compose.waitUntil(1_200_000) {
                 val now = SystemClock.elapsedRealtime()
@@ -231,7 +231,7 @@ class PennantActivityTest {
                     .put("walk_events", c.walkEvents).put("strikeout_events", c.strikeoutEvents).put("home_run_events", c.homeRunEvents))
             } }).put("full_frame_file", "pennant-real-season-42.bin").put("physical_device", false)
         File(directory, "pennant-real-season-42.json").writeText(evidence.toString(2))
-        compose.onNodeWithTag(PennantTags.PROGRESS).performScrollTo().assertTextEquals("720 / 720試合完了 · seed 42")
+        compose.onNodeWithTag(PennantTags.PROGRESS).assertDoesNotExist()
         compose.pennantScreenshot("pennant-season-completed.png")
         val afterSeason = vm.state.value.display
         compose.observeAllPlayerDetails(state, "player-detail-final720-observed-108.json")

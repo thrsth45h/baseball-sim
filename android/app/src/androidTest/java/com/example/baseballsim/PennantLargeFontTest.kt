@@ -32,7 +32,9 @@ class PennantLargeFontTest {
         compose.setContent { BaseballTheme {
             val density = LocalDensity.current
             CompositionLocalProvider(LocalDensity provides Density(density.density, 1.5f)) {
-                Box(Modifier.width(320.dp)) { PennantScreen(state.value, {}, {}, { _, _, _ -> commands++ }, { stops++ }, {}) }
+                Box(Modifier.width(320.dp)) { PennantScreen(state.value, {}, {}, { _, _, _ -> commands++ }, { stops++ }, {},
+                    openOwnGame = { _, id -> state.value = state.value.copy(openedGameId = id); true },
+                    consumeOpenedGame = { _, _ -> state.value = state.value.copy(openedGameId = null); true }) }
             }
         } }
         compose.pennantScreenshot("pennant-home-320-font150.png")
@@ -70,7 +72,7 @@ class PennantLargeFontTest {
         click(PennantTags.BACK); click(PennantTags.BACK)
         compose.onNodeWithText("試合ID：${game.fixture.gameId}").performScrollTo().assertIsDisplayed()
         compose.pennantScreenshot("pennant-blocked-home-320-font150.png")
-        click(PennantTags.NAV_MATCH)
+        click(PennantTags.OPEN)
         compose.onNodeWithText("理由：投球処理でエラーが発生しました（source_error）").performScrollTo().assertIsDisplayed()
         compose.pennantScreenshot("pennant-blocked-match-320-font150.png")
         compose.onNodeWithTag(PennantTags.PITCH).performScrollTo().assertIsNotEnabled()

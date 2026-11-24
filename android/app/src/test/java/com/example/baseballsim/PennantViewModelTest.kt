@@ -65,6 +65,30 @@ class PennantViewModelTest {
     private fun initial(active: Boolean = false): StoredSeason = StoredSeason(StoreToken("world", "generation", 0),
         SeasonState.initial().let { if (active) it.beginNext() else it }, "initial")
 
+    @Test fun visibleDayPublishesAllScoresAndStandingsOnlyAfterCompletion() = runTest(main.dispatcher) {
+        val before = initial().let { it.copy(state = SeasonSession(it.state).advanceDay()) }
+        val partial = before.copy(token = before.token.copy(revision = 1),
+            state = SeasonSession(before.state).finishCurrent())
+        val fake = FakeActions(before).apply { gate = CompletableDeferred() }
+        val vm = PennantViewModel(fake, main.dispatcher)
+        advanceUntilIdle()
+        val visible = vm.state.value.display
+        assertTrue(vm.advanceVisibleDay(before.token, 2))
+        runCurrent()
+        checkNotNull(fake.callback).invoke(partial)
+        assertTrue(vm.state.value.dailyProgress)
+        assertSame(visible, vm.state.value.display)
+        assertEquals(0, vm.state.value.season!!.results.size)
+        assertTrue(vm.state.value.season!!.standings.all { it.totals.played == 0L })
+        assertFalse(vm.advanceVisibleDay(before.token, 2))
+        fake.gate!!.complete(Unit)
+        advanceUntilIdle()
+        assertFalse(vm.state.value.dailyProgress)
+        assertEquals(2, vm.state.value.resultDay)
+        assertEquals(6, vm.state.value.season!!.results.size)
+        assertTrue(vm.state.value.season!!.standings.all { it.totals.played == 1L })
+    }
+
     @Test fun synchronousBusyClaimDropsNewProgressLoadAndSeedEdits() = runTest(main.dispatcher) {
         val fake = FakeActions(initial(active = true))
         val vm = PennantViewModel(fake, main.dispatcher)

@@ -116,7 +116,7 @@ data class PennantUiState(
     val display: PennantDisplay? = null, val busy: Boolean = false, val bulk: Boolean = false,
     val stopRequested: Boolean = false, val hasSlot: Boolean = false, val loaded: Boolean = false,
     val seedError: String? = null, val error: String? = null, val notice: String? = null,
-    val resultDay: Int? = null, val openedGameId: String? = null,
+    val resultDay: Int? = null, val openedGameId: String? = null, val dailyProgress: Boolean = false,
 ) {
     val season get() = display?.stored?.state
     val visibleDay get() = resultDay ?: season?.dayIndex
@@ -153,11 +153,11 @@ class PennantViewModel(private val actions: PennantActions,
             stopping.set(true); mutable.value = mutable.value.copy(stopRequested = true)
         }
     }
-    private fun claim(bulk: Boolean, allowError: Boolean = false): Long? = synchronized(lock) {
+    private fun claim(bulk: Boolean, allowError: Boolean = false, dailyProgress: Boolean = false): Long? = synchronized(lock) {
         if (cleared || mutable.value.busy || (!allowError && (!mutable.value.loaded || mutable.value.error != null))) return null
         generation = Math.addExact(generation, 1)
         stopping.set(false)
-        mutable.value = mutable.value.copy(busy = true, bulk = bulk, stopRequested = false, error = null, notice = null, openedGameId = null)
+        mutable.value = mutable.value.copy(busy = true, bulk = bulk, dailyProgress = dailyProgress, stopRequested = false, error = null, notice = null, openedGameId = null)
         generation
     }
     private fun current(token: Long) = !cleared && generation == token
@@ -179,7 +179,7 @@ class PennantViewModel(private val actions: PennantActions,
             selectedClubInput = value?.stored?.state?.selectedClubId ?: old.selectedClubInput,
             seedError = if (inputs && value != null) null else old.seedError,
             loaded = true, busy = !finished, bulk = if (finished) false else old.bulk,
-            stopRequested = if (finished) false else old.stopRequested, error = null, notice = notice, resultDay = retainedDay,
+            dailyProgress = !finished && old.dailyProgress, stopRequested = if (finished) false else old.stopRequested, error = null, notice = notice, resultDay = retainedDay,
             openedGameId = openedGameId?.takeIf { sameSave && saved?.state?.active?.game?.fixture?.gameId == it })
     }
     fun reload() {
@@ -247,7 +247,7 @@ class PennantViewModel(private val actions: PennantActions,
     private fun dispatch(command: PennantCommand, before: PennantUiState, replacementConfirmed: Boolean, club: String,
         confirmationToken: StoreToken?, ownGameId: String? = null, dayIndex: Int? = null): Boolean {
         val bulk = command in listOf(PennantCommand.OPEN_SELECTED, PennantCommand.DAY, PennantCommand.SEASON)
-        val token = claim(bulk) ?: return false
+        val token = claim(bulk, dailyProgress = dayIndex != null) ?: return false
         if (command == PennantCommand.SEASON) mutable.value = mutable.value.copy(resultDay = null)
         val finishingDay = when (command) {
             PennantCommand.DAY, PennantCommand.GAME, PennantCommand.PITCH, PennantCommand.PLATE_APPEARANCE -> before.season?.dayIndex
@@ -257,7 +257,8 @@ class PennantViewModel(private val actions: PennantActions,
             try {
                 val (display, slot) = withContext(computation) {
                     val progress: suspend (StoredSeason) -> Unit = { value ->
-                        publish(token, pennantDisplay(value), finishingDay = finishingDay)
+                        // Keep each durable checkpoint while publishing the day as one presentation.
+                        if (dayIndex == null) publish(token, pennantDisplay(value), finishingDay = finishingDay)
                     }
                     val committed = when {
                         ownGameId != null -> actions.openOwnGame(checkNotNull(confirmationToken), ownGameId, stopping::get, progress)
@@ -307,7 +308,7 @@ class PennantViewModel(private val actions: PennantActions,
         }
     }
     private fun failed(token: Long) = synchronized(lock) {
-        if (current(token)) mutable.value = mutable.value.copy(busy = false, bulk = false, stopRequested = false,
+        if (current(token)) mutable.value = mutable.value.copy(busy = false, bulk = false, dailyProgress = false, stopRequested = false,
             loaded = true, error = "保存データを確認できませんでした。データを残したまま停止しています。")
     }
     override fun onCleared() {

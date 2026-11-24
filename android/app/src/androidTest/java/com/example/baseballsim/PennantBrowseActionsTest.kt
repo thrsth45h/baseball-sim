@@ -51,7 +51,7 @@ class PennantBrowseActionsTest {
             compose.onNodeWithTag(PennantTags.PLAYER_DETAIL).assertExists()
             click(PennantTags.BACK); click(PennantTags.BACK)
             assertEquals(baseline, fake.calls()); assertSame(initial, vm.state.value.display)
-            click(PennantTags.SEASON)
+            compose.runOnUiThread { vm.execute(PennantCommand.SEASON) }
             // Busy is published before the worker coroutine enters execute(). Observe
             // that first command before taking the no-additional-actions baseline.
             compose.waitUntil(15_000) { vm.state.value.busy && vm.state.value.bulk && fake.commands.get() == 1 }
