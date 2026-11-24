@@ -266,6 +266,7 @@ private fun standingClubName(id: String) = when (id) {
     val rate = winPercentage(row)
     val gap = gamesBehind(row, leader)
     val fontScale = LocalDensity.current.fontScale
+    val rateWidth = Modifier.width((31 * fontScale).dp)
     Column(Modifier.fillMaxWidth().padding(horizontal = 3.dp, vertical = 4.dp)) {
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(1.dp),
             verticalAlignment = Alignment.CenterVertically) {
@@ -273,7 +274,7 @@ private fun standingClubName(id: String) = when (id) {
             StandingText(standingClubName(club), pennantClubLabel(club).full, Modifier.weight(1f), TextAlign.Start)
             if (!compact) {
                 StandingText(record, recordDescription, Modifier.width((47 * fontScale).dp))
-                StandingText(rate, "勝率 $rate", Modifier.width((31 * fontScale).dp))
+                StandingText(rate, "勝率 $rate", rateWidth)
             }
             StandingText(gap, "首位との差 $gap", Modifier.width((29 * fontScale).dp))
         }
@@ -281,7 +282,7 @@ private fun standingClubName(id: String) = when (id) {
             Row(Modifier.fillMaxWidth().padding(start = (15 * fontScale).dp),
                 horizontalArrangement = Arrangement.spacedBy(3.dp)) {
                 StandingText(record, recordDescription, Modifier.weight(1f), TextAlign.Start)
-                StandingText(rate, "勝率 $rate")
+                StandingText(rate, "勝率 $rate", rateWidth)
             }
         }
     }

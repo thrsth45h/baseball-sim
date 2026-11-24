@@ -59,7 +59,8 @@ internal fun ComposeContentTestRule.verifyFixedStandings(panelTag: String) {
 internal fun SemanticsNodeInteraction.assertTextFits() {
     val layouts = mutableListOf<TextLayoutResult>()
     performSemanticsAction(SemanticsActions.GetTextLayoutResult) { assertTrue(it(layouts)) }
-    assertFalse("Text is clipped", layouts.single().hasVisualOverflow)
+    val layout = layouts.single()
+    assertFalse("Text is clipped: ${layout.layoutInput.text} in ${layout.size}", layout.hasVisualOverflow)
 }
 
 internal fun <R : TestRule> AndroidComposeTestRule<R, MainActivity>.openNextOwnGame() {
