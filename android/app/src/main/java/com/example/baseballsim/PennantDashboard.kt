@@ -11,11 +11,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
@@ -59,41 +61,79 @@ private enum class BottomTab(val label: String, val page: PennantPage, val icon:
     advance: () -> Unit, nextYear: () -> Unit) {
     val standing = season.standings.first { it.totals.clubId == season.selectedClubId }
     val calendarDay = visibleDay.coerceAtMost(PennantSchedule.calendar.size)
-    val buttonWidth = Modifier.widthIn(min = (88 * LocalDensity.current.fontScale).dp)
+    val fontScale = LocalDensity.current.fontScale
+    val date = pennantDate(state.timeline?.year ?: 1L, calendarDay)
+    val buttonWidth = Modifier.widthIn(min = (88 * fontScale).dp)
     Surface(Modifier.fillMaxWidth().testTag(PennantTags.TOP_BAR), color = MaterialTheme.colorScheme.primaryContainer) {
-        Row(Modifier.padding(horizontal = 10.dp, vertical = 8.dp), horizontalArrangement = Arrangement.spacedBy(6.dp),
-            verticalAlignment = Alignment.CenterVertically) {
-            Column(Modifier.weight(1f)) {
-                Text(pennantClubLabel(season.selectedClubId).short, style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold)
-                Text("${standing.rank?.let { "${it}位" } ?: "順位 —"} · ${recordText(standing)}",
-                    style = MaterialTheme.typography.labelMedium)
-            }
-            Text(pennantDate(state.timeline?.year ?: 1L, calendarDay), Modifier.weight(1.1f).testTag(PennantTags.VISIBLE_DAY),
-                style = MaterialTheme.typography.labelMedium, textAlign = TextAlign.End)
-            when {
-                state.resultDay != null -> ProgressButton(if (season.status == SeasonStatus.COMPLETE) "終了画面へ" else "翌日へ",
-                    PennantTags.NEXT_DAY, state.canUse, buttonWidth, advance)
-                season.status == SeasonStatus.IN_PROGRESS -> ProgressButton("進行", PennantTags.DAY, state.canProgress,
-                    buttonWidth.then(if (state.dailyProgress) Modifier.semantics { stateDescription = "進行中" } else Modifier), advance)
-                season.status == SeasonStatus.COMPLETE && state.timeline != null ->
-                    ProgressButton("翌年へ", PennantTags.NEXT_YEAR, state.canAdvanceYear, buttonWidth, nextYear)
+        BoxWithConstraints(Modifier.fillMaxWidth().padding(horizontal = 10.dp, vertical = 8.dp)) {
+            if (maxWidth / fontScale < 270.dp) {
+                Column {
+                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
+                        ClubTitle(season.selectedClubId)
+                        ClubRecord(standing)
+                    }
+                    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalAlignment = Alignment.CenterVertically) {
+                        HeaderDate(date, Modifier.weight(1f))
+                        DayControl(state, season.status, buttonWidth, advance, nextYear)
+                    }
+                }
+            } else {
+                Row(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Column(Modifier.weight(1f)) {
+                        ClubTitle(season.selectedClubId)
+                        ClubRecord(standing)
+                    }
+                    HeaderDate(date, Modifier.weight(1.1f))
+                    DayControl(state, season.status, buttonWidth, advance, nextYear)
+                }
             }
         }
     }
 }
 
+@Composable private fun ClubTitle(club: String) {
+    val name = pennantClubLabel(club)
+    Text(name.short, Modifier.clearAndSetSemantics { contentDescription = name.full },
+        style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+}
+
+@Composable private fun ClubRecord(standing: Standing) {
+    val rank = standing.rank?.let { "${it}位" } ?: "順位 —"
+    Text("$rank · ${recordText(standing)}", style = MaterialTheme.typography.labelMedium)
+}
+
+@Composable private fun HeaderDate(date: String, modifier: Modifier) {
+    Text(date, modifier.testTag(PennantTags.VISIBLE_DAY),
+        style = MaterialTheme.typography.labelMedium, textAlign = TextAlign.End)
+}
+
+@Composable private fun DayControl(state: PennantUiState, status: SeasonStatus, modifier: Modifier,
+    advance: () -> Unit, nextYear: () -> Unit) {
+    when {
+        state.resultDay != null -> ProgressButton(if (status == SeasonStatus.COMPLETE) "終了画面へ" else "翌日へ",
+            PennantTags.NEXT_DAY, state.canUse, modifier, advance)
+        status == SeasonStatus.IN_PROGRESS -> ProgressButton("進行", PennantTags.DAY, state.canProgress,
+            modifier.then(if (state.dailyProgress) Modifier.semantics { stateDescription = "進行中" } else Modifier), advance)
+        status == SeasonStatus.COMPLETE && state.timeline != null ->
+            ProgressButton("翌年へ", PennantTags.NEXT_YEAR, state.canAdvanceYear, modifier, nextYear)
+    }
+}
+
 @Composable internal fun PennantDashboard(state: PennantUiState, season: SeasonState, openOwnGame: (String) -> Unit) {
     val calendar = PennantSchedule.calendar.getOrNull(checkNotNull(state.visibleDay) - 1)
-    Column(Modifier.fillMaxWidth().testTag(PennantTags.HOME), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-        if (season.status == SeasonStatus.BLOCKED) BlockedDiagnostic(state)
-        if (calendar != null) TodayGames(state, season, calendar, openOwnGame)
-        PennantStandings(season.selectedClubId, season.standings, PennantTags.HOME_STANDINGS)
+    BoxWithConstraints(Modifier.fillMaxWidth().testTag(PennantTags.HOME)) {
+        val compactNames = maxWidth / LocalDensity.current.fontScale < 260.dp
+        Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+            if (season.status == SeasonStatus.BLOCKED) BlockedDiagnostic(state)
+            if (calendar != null) TodayGames(state, season, calendar, compactNames, openOwnGame)
+            PennantStandings(season.selectedClubId, season.standings, PennantTags.HOME_STANDINGS)
+        }
     }
 }
 
 @Composable private fun TodayGames(state: PennantUiState, season: SeasonState, day: CalendarDay,
-    openOwnGame: (String) -> Unit) {
+    compactNames: Boolean, openOwnGame: (String) -> Unit) {
     val club = season.selectedClubId
     val league = PennantSchedule.club(club).leagueId
     val fixtures = day.gameOrdinals.map { season.games[it - 1].fixture }
@@ -133,21 +173,27 @@ private enum class BottomTab(val label: String, val page: PennantPage, val icon:
                                 onClickLabel = if (result != null) "試合結果を見る" else "試合を開く") { openOwnGame(fixture.gameId) }
                             else Modifier).padding(horizontal = 8.dp, vertical = 4.dp),
                             verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-                            Text(pennantClubLabel(fixture.awayClubId).short, Modifier.weight(1f), style = MaterialTheme.typography.bodyMedium,
-                                fontWeight = if (ownAway) FontWeight.SemiBold else null, maxLines = 1)
+                            MatchClubName(fixture.awayClubId, compactNames, ownAway, TextAlign.Start, Modifier.weight(1f))
                             Column(Modifier.weight(1f), horizontalAlignment = Alignment.CenterHorizontally) {
                                 Text(score?.let { "${it.away} – ${it.home}" }.orEmpty(), fontWeight = FontWeight.SemiBold,
                                     textAlign = TextAlign.Center, minLines = 1, maxLines = 1)
                                 Text(status, style = MaterialTheme.typography.labelMedium, textAlign = TextAlign.Center, maxLines = 1)
                             }
-                            Text(pennantClubLabel(fixture.homeClubId).short, Modifier.weight(1f), style = MaterialTheme.typography.bodyMedium,
-                                fontWeight = if (ownHome) FontWeight.SemiBold else null, textAlign = TextAlign.End, maxLines = 1)
+                            MatchClubName(fixture.homeClubId, compactNames, ownHome, TextAlign.End, Modifier.weight(1f))
                         }
                     }
                 }
             }
         }
     }
+}
+
+@Composable private fun MatchClubName(id: String, compact: Boolean, own: Boolean, align: TextAlign, modifier: Modifier) {
+    val name = pennantClubLabel(id)
+    Text(if (compact) standingClubName(id) else name.short,
+        modifier.clearAndSetSemantics { contentDescription = name.full },
+        style = if (compact) MaterialTheme.typography.bodySmall else MaterialTheme.typography.bodyMedium,
+        fontWeight = if (own) FontWeight.SemiBold else null, textAlign = align, maxLines = 1, overflow = TextOverflow.Ellipsis)
 }
 
 private fun otherLeague(league: String) = if (league == "L1") "L2" else "L1"

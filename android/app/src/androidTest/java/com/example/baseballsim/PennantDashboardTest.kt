@@ -49,6 +49,9 @@ class PennantDashboardTest {
         } }
         compose.onNodeWithTag(PennantTags.VISIBLE_DAY).assertTextEquals("2026年3月26日（木）")
         compose.onNodeWithTag(PennantTags.DAY).assertIsDisplayed()
+        val dateBounds = compose.onNodeWithTag(PennantTags.VISIBLE_DAY).fetchSemanticsNode().boundsInRoot
+        val dayButtonBounds = compose.onNodeWithTag(PennantTags.DAY).fetchSemanticsNode().boundsInRoot
+        assertTrue(dateBounds.right <= dayButtonBounds.left)
         compose.onNodeWithText("休養日").performScrollTo().assertIsDisplayed()
 
         session.advanceDay()
@@ -73,6 +76,7 @@ class PennantDashboardTest {
         val completed = partialDay.state.results.single()
         val completedTag = PennantTags.todayGame(completed.game.fixture.gameId)
         val activeTag = PennantTags.todayGame(partialDay.state.active!!.game.fixture.gameId)
+        compose.onNodeWithContentDescription("福岡ソフトバンクホークス", useUnmergedTree = true).assertExists()
         compose.onNodeWithTag(completedTag, useUnmergedTree = true)
             .assert(SemanticsMatcher.expectValue(SemanticsProperties.StateDescription, "操作球団の試合"))
         compose.onNode(hasText("${completed.score.away} – ${completed.score.home}") and hasAnyAncestor(hasTestTag(completedTag)),
