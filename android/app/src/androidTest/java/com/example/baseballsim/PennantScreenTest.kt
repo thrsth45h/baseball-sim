@@ -33,8 +33,7 @@ class PennantScreenTest {
         val panel = compose.onNodeWithTag(PennantTags.STANDINGS).fetchSemanticsNode().boundsInRoot
         val viewport = compose.onNodeWithTag(PennantTags.SCREEN).fetchSemanticsNode().boundsInRoot
         assertTrue(panel.left >= viewport.left && panel.right <= viewport.right + 1)
-        compose.onNode(hasText("勝率") and hasAnyAncestor(hasTestTag("pennant_league_standings_L2")),
-            useUnmergedTree = true).performScrollTo().assertIsDisplayed()
+        compose.verifyFixedStandings(PennantTags.STANDINGS)
         compose.pennantScreenshot("pennant-narrow320.png")
         compose.clickPennant(PennantTags.NAV_RECORDS)
         compose.onNodeWithText("本塁打").performScrollTo().assertIsDisplayed()

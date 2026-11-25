@@ -1,13 +1,12 @@
 package com.example.baseballsim
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
@@ -139,15 +138,18 @@ private enum class BottomTab(val label: String, val page: PennantPage, val icon:
     val fixtures = day.gameOrdinals.map { season.games[it - 1].fixture }
     val active = season.active
     Column(Modifier.fillMaxWidth().testTag(PennantTags.TODAY), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-        if (day.isRestDay) {
-            OutlinedCard(Modifier.fillMaxWidth()) {
-                Text("休養日", Modifier.padding(horizontal = 12.dp, vertical = 8.dp))
-            }
-        }
-        for (group in listOf(league, otherLeague(league))) {
+        listOf(league, otherLeague(league)).forEachIndexed { groupIndex, group ->
             val games = fixtures.filter { it.leagueId == group }.sortedBy { club != it.awayClubId && club != it.homeClubId }
-            if (games.isEmpty()) continue
             OutlinedCard(Modifier.fillMaxWidth()) {
+                if (day.isRestDay) {
+                    repeat(3) { index ->
+                        if (index > 0) HorizontalDivider()
+                        val slot = groupIndex * 3 + index
+                        Surface(Modifier.testTag("pennant_rest_card_$slot")) {
+                            MatchRow("", if (slot == 0) "休養日" else "", compactNames)
+                        }
+                    }
+                }
                 games.forEachIndexed { index, fixture ->
                     if (index > 0) HorizontalDivider()
                     val result = season.results.getOrNull(fixture.ordinal - 1)
@@ -165,26 +167,39 @@ private enum class BottomTab(val label: String, val page: PennantPage, val icon:
                     val ownAway = club == fixture.awayClubId
                     val ownHome = club == fixture.homeClubId
                     val isOwn = ownAway || ownHome
+                    val action = if (isOwn) Modifier.testTag(PennantTags.OPEN)
+                        .clickable(enabled = state.canUse && (result != null || checkpoint != null || state.canProgress),
+                            onClickLabel = if (result != null) "試合結果を見る" else "試合を開く") { openOwnGame(fixture.gameId) }
+                    else Modifier
                     Surface(modifier = Modifier.testTag(PennantTags.todayGame(fixture.gameId))
                         .then(if (isOwn) Modifier.semantics { stateDescription = "操作球団の試合" } else Modifier),
                         color = if (isOwn) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surface) {
-                        Row(Modifier.fillMaxWidth().then(if (isOwn) Modifier.testTag(PennantTags.OPEN)
-                            .clickable(enabled = state.canUse && (result != null || checkpoint != null || state.canProgress),
-                                onClickLabel = if (result != null) "試合結果を見る" else "試合を開く") { openOwnGame(fixture.gameId) }
-                            else Modifier).padding(horizontal = 8.dp, vertical = 4.dp),
-                            verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-                            MatchClubName(fixture.awayClubId, compactNames, ownAway, TextAlign.Start, Modifier.weight(1f))
-                            Column(Modifier.weight(1f), horizontalAlignment = Alignment.CenterHorizontally) {
-                                Text(score?.let { "${it.away} – ${it.home}" }.orEmpty(), fontWeight = FontWeight.SemiBold,
-                                    textAlign = TextAlign.Center, minLines = 1, maxLines = 1)
-                                Text(status, style = MaterialTheme.typography.labelMedium, textAlign = TextAlign.Center, maxLines = 1)
-                            }
-                            MatchClubName(fixture.homeClubId, compactNames, ownHome, TextAlign.End, Modifier.weight(1f))
-                        }
+                        MatchRow(score?.let { "${it.away} – ${it.home}" }.orEmpty(), status, compactNames, action,
+                            fixture.awayClubId, fixture.homeClubId, club)
                     }
                 }
             }
         }
+    }
+}
+
+@Composable private fun MatchRow(score: String, status: String, compact: Boolean, modifier: Modifier = Modifier,
+    away: String? = null, home: String? = null, selected: String? = null) {
+    Row(Modifier.fillMaxWidth().then(modifier).padding(horizontal = 8.dp, vertical = 4.dp),
+        verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+        if (away == null) Spacer(Modifier.weight(1f))
+        else MatchClubName(away, compact, away == selected, TextAlign.Start, Modifier.weight(1f))
+        Column(Modifier.weight(1f), horizontalAlignment = Alignment.CenterHorizontally) {
+            Text(score, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center, minLines = 1, maxLines = 1)
+            // Use the same Japanese glyph metrics for empty placeholders.
+            val hasStatus = status.isNotEmpty()
+            Text(status.ifEmpty { "休養日" },
+                modifier = if (hasStatus) Modifier else Modifier.clearAndSetSemantics {},
+                color = if (hasStatus) Color.Unspecified else Color.Transparent,
+                style = MaterialTheme.typography.labelMedium, textAlign = TextAlign.Center, minLines = 1, maxLines = 1)
+        }
+        if (home == null) Spacer(Modifier.weight(1f))
+        else MatchClubName(home, compact, home == selected, TextAlign.End, Modifier.weight(1f))
     }
 }
 
@@ -201,30 +216,37 @@ private fun otherLeague(league: String) = if (league == "L1") "L2" else "L1"
 @Composable internal fun PennantStandings(club: String, standings: List<Standing>, tag: String) {
     val own = PennantSchedule.club(club).leagueId
     BoxWithConstraints(Modifier.fillMaxWidth().testTag(tag)) {
-        val minWidth = (184 * LocalDensity.current.fontScale).dp * 2 + 8.dp
-        val tableWidth = maxOf(maxWidth, minWidth)
-        Box(Modifier.horizontalScroll(rememberScrollState())) {
-            Row(Modifier.width(tableWidth), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                LeagueStandings(own, club, standings, Modifier.weight(1f))
-                LeagueStandings(otherLeague(own), club, standings, Modifier.weight(1f))
+        val compact = maxWidth / LocalDensity.current.fontScale < 368.dp
+        OutlinedCard(Modifier.fillMaxWidth()) {
+            Row(Modifier.fillMaxWidth().testTag("pennant_standings_header")
+                .padding(horizontal = 8.dp, vertical = 5.dp),
+                horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
+                Text("順位表", style = MaterialTheme.typography.labelLarge)
+                Text("差", Modifier.semantics { contentDescription = "首位とのゲーム差" },
+                    style = MaterialTheme.typography.labelLarge)
+            }
+            HorizontalDivider()
+            Row(Modifier.height(IntrinsicSize.Min)) {
+                LeagueStandings(own, club, standings, compact, Modifier.weight(1f))
+                VerticalDivider()
+                LeagueStandings(otherLeague(own), club, standings, compact, Modifier.weight(1f))
             }
         }
     }
 }
 
-@Composable private fun LeagueStandings(league: String, club: String, standings: List<Standing>, modifier: Modifier) {
+@Composable private fun LeagueStandings(league: String, club: String, standings: List<Standing>,
+    compact: Boolean, modifier: Modifier) {
     val rows = standings.filter { PennantSchedule.club(it.totals.clubId).leagueId == league }
     val leader = rows.firstOrNull { it.rank == 1 }
-    OutlinedCard(modifier.testTag("pennant_league_standings_$league")) {
-        StandingCells(listOf("順位", "球団名", "勝敗分", "勝率", "差"))
-        rows.forEach { row ->
-            HorizontalDivider()
+    Column(modifier.testTag("pennant_league_standings_$league")) {
+        rows.forEachIndexed { index, row ->
+            if (index > 0) HorizontalDivider()
             val selected = row.totals.clubId == club
             Surface(Modifier.testTag("pennant_standing_${row.totals.clubId}").then(
                 if (selected) Modifier.semantics { stateDescription = "操作球団" } else Modifier),
                 color = if (selected) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surface) {
-                StandingCells(listOf(row.rank?.toString() ?: "—", standingClubName(row.totals.clubId),
-                    with(row.totals) { "$wins/$losses/$draws" }, winPercentage(row), gamesBehind(row, leader)))
+                StandingCells(row, leader, compact)
             }
         }
     }
@@ -236,19 +258,41 @@ private fun standingClubName(id: String) = when (id) {
     else -> pennantClubLabel(id).short
 }
 
-@Composable private fun StandingCells(values: List<String>) {
+@Composable private fun StandingCells(row: Standing, leader: Standing?, compact: Boolean) {
+    val club = row.totals.clubId
+    val rank = row.rank?.toString() ?: "—"
+    val record = with(row.totals) { "$wins/$losses/$draws" }
+    val recordDescription = with(row.totals) { "$wins 勝 $losses 敗 $draws 分" }
+    val rate = winPercentage(row)
+    val gap = gamesBehind(row, leader)
     val fontScale = LocalDensity.current.fontScale
-    val fixedWidths = listOf(21, 0, 52, 31, 29)
-    val textStyle = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp, letterSpacing = 0.sp)
-    Row(Modifier.fillMaxWidth().padding(horizontal = 2.dp, vertical = 6.dp),
-        horizontalArrangement = Arrangement.spacedBy(1.dp), verticalAlignment = Alignment.CenterVertically) {
-        values.forEachIndexed { index, value ->
-            val modifier = if (index == 1) Modifier.weight(1f) else Modifier.width((fixedWidths[index] * fontScale).dp)
-            Text(value, if (value == "差") modifier.semantics { contentDescription = "首位とのゲーム差" } else modifier,
-                style = textStyle,
-                textAlign = if (index == 1) TextAlign.Start else TextAlign.End, maxLines = 1)
+    val rateWidth = Modifier.width((31 * fontScale).dp)
+    Column(Modifier.fillMaxWidth().padding(horizontal = 3.dp, vertical = 4.dp)) {
+        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(1.dp),
+            verticalAlignment = Alignment.CenterVertically) {
+            StandingText(rank, "順位 $rank", Modifier.width((15 * fontScale).dp))
+            StandingText(standingClubName(club), pennantClubLabel(club).full, Modifier.weight(1f), TextAlign.Start)
+            if (!compact) {
+                StandingText(record, recordDescription, Modifier.width((47 * fontScale).dp))
+                StandingText(rate, "勝率 $rate", rateWidth)
+            }
+            StandingText(gap, "首位との差 $gap", Modifier.width((29 * fontScale).dp))
+        }
+        if (compact) {
+            Row(Modifier.fillMaxWidth().padding(start = (15 * fontScale).dp),
+                horizontalArrangement = Arrangement.spacedBy(3.dp)) {
+                StandingText(record, recordDescription, Modifier.weight(1f), TextAlign.Start)
+                StandingText(rate, "勝率 $rate", rateWidth)
+            }
         }
     }
+}
+
+@Composable private fun StandingText(text: String, description: String, modifier: Modifier = Modifier,
+    align: TextAlign = TextAlign.End) {
+    Text(text, modifier.semantics { contentDescription = description },
+        style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp, letterSpacing = 0.sp),
+        textAlign = align, maxLines = 1)
 }
 
 private fun recordText(row: Standing): String = with(row.totals) { "${wins}勝 ${losses}敗 ${draws}分" }
