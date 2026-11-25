@@ -104,6 +104,9 @@ private fun clubCalendarGame(cards: List<ScheduledCard>, club: String): ClubCale
 private val calendarClubNames = PennantSchedule.clubIds.zip(
     listOf("巨人", "阪神", "De", "広島", "ヤク", "中日", "ソフ", "日ハ", "オリ", "楽天", "ロッ", "西武")
 ).toMap()
+private val compactCalendarClubNames = PennantSchedule.clubIds.zip(
+    listOf("巨", "神", "De", "広", "ヤ", "中", "ソ", "日", "オ", "楽", "ロ", "西")
+).toMap()
 private val scheduleWeekdays = listOf("日", "月", "火", "水", "木", "金", "土")
 
 @Composable
@@ -212,17 +215,20 @@ private fun ScheduleDayCell(date: LocalDate, day: CalendarDay?, game: ClubCalend
         .semantics { contentDescription = description; if (today) stateDescription = "当日" }
         .heightIn(min = 62.dp).padding(horizontal = 1.dp, vertical = 4.dp),
         horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(date.dayOfMonth.toString(), style = MaterialTheme.typography.labelMedium,
+        Text(date.dayOfMonth.toString(), Modifier.fillMaxWidth(),
+            style = MaterialTheme.typography.labelMedium, textAlign = TextAlign.Center,
             color = if (today) palette.primary else palette.onSurface,
             fontWeight = if (today || selected) FontWeight.Bold else FontWeight.Normal)
         if (game != null) {
-            val namesAndResult = calendarClubNames.getValue(game.opponent) + (score?.symbol ?: "")
-            Text(namesAndResult, style = MaterialTheme.typography.labelSmall, textAlign = TextAlign.Center)
+            val names = if (compact) compactCalendarClubNames else calendarClubNames
+            val namesAndResult = names.getValue(game.opponent) + (score?.symbol ?: "")
+            Text(namesAndResult, Modifier.fillMaxWidth(), style = MaterialTheme.typography.labelSmall, textAlign = TextAlign.Center)
         }
         if (score != null) {
             val long = score.own >= 10 || score.opponent >= 10
             val join = if (long && compact) "–\n" else "–"
-            Text("${score.own}$join${score.opponent}", style = MaterialTheme.typography.labelSmall, textAlign = TextAlign.Center)
+            Text("${score.own}$join${score.opponent}", Modifier.fillMaxWidth(),
+                style = MaterialTheme.typography.labelSmall, textAlign = TextAlign.Center)
         }
     }
 }

@@ -61,11 +61,11 @@ class MonthlyScheduleActivityTest {
         openingCell.assertContentDescriptionEquals(openedLabel).assertIsSelected()
         val future = compose.onNodeWithTag(MonthlyScheduleTags.day(opening.plusDays(1)))
         future.assertContentDescriptionEquals("2026年3月28日（土）、対中日ドラゴンズ、試合前")
+        compose.pennantScreenshot("monthly-schedule.png")
         compose.onNode(hasText("中日○") and hasAnyAncestor(hasTestTag(MonthlyScheduleTags.day(opening))),
             useUnmergedTree = true).assertTextFits()
         compose.onNode(hasText("5–3") and hasAnyAncestor(hasTestTag(MonthlyScheduleTags.day(opening))),
             useUnmergedTree = true).assertTextFits()
-        compose.pennantScreenshot("monthly-schedule.png")
 
         compose.onNodeWithTag(MonthlyScheduleTags.day(opening.minusDays(1))).tapSchedule(inScrollPage = true)
         val details = hasAnyAncestor(hasTestTag(MonthlyScheduleTags.DETAILS))
@@ -149,12 +149,12 @@ class MonthlyScheduleNarrowTest {
         compose.onAllNodes(SemanticsMatcher.keyIsDefined(SemanticsProperties.HorizontalScrollAxisRange) and
             (grid or hasAnyAncestor(grid)), useUnmergedTree = true).assertCountEquals(0)
         val scope = hasAnyAncestor(hasTestTag(MonthlyScheduleTags.day(opening)))
-        for (text in listOf("27", "中日○", "5–3")) {
+        compose.pennantScreenshot("monthly-schedule-320-font150.png")
+        for (text in listOf("27", "中○", "5–3")) {
             compose.onNode(hasText(text) and scope, useUnmergedTree = true).assertTextFits()
         }
         compose.onNodeWithTag(MonthlyScheduleTags.day(opening.plusDays(1))).tapSchedule()
         compose.onNodeWithTag(MonthlyScheduleTags.day(opening.plusDays(1))).assertIsSelected()
-        compose.pennantScreenshot("monthly-schedule-320-font150.png")
     }
 }
 
