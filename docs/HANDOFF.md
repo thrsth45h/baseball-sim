@@ -10,6 +10,8 @@
 
 ## 現在の到達点
 
+- **2026-11-25　休養日のカードと一体型順位表を検証。** 同じ6枠と、左右を横スクロールなしで表示する共通順位表を追加。配布APK 0.10-fixed-home-tech のビルド元は b464817。0.9とは署名が異なるため上書きできない。[実装PR #64](https://github.com/thrsth45h/baseball-sim/pull/64)・[操作とAPK](pennant-dashboard/README.md)・[検証](pennant-dashboard/FIXED_HOME_VALIDATION.md)
+
 - **2026-11-24：D064のホーム表示を更新。** 実在の12球団名、2026年の年月日と曜日、自球団カードの最上段固定、横並びの順位表を追加した。同日の全スコアと成績を一括表示し、前後のカード寸法と旧保存互換を検証した。配布APK `0.9-home-2026-tech` のビルド元は `d8a4fee`。旧版0.8とは署名が異なるため上書きできない。[実装PR #62と統合記録](https://github.com/thrsth45h/baseball-sim/pull/62)・[設計](PENNANT_HOME_2026_DESIGN.md)・[操作とAPK](pennant-dashboard/README.md)・[検証](pennant-dashboard/HOME_2026_VALIDATION.md)
 
 - **2026-11-24：上部バー・当日の二段階表示・自球団カードの実装と検証を完了。** 実装 `f111ebd` で操作球団の順位・勝敗と進行ボタンを固定し、当日の6スコア表示から「翌日へ」で次の試合前へ進む操作を追加した。自球団のカードから該当試合を開ける。配布APK `0.8-day-flow-tech` のビルド元は `6669da5`。配布するAPKで先行端末試験11件と4保存世代の強制終了復旧を確認した。旧版0.7とはデバッグ署名が異なるため上書きできない。[実装PR #60と統合記録](https://github.com/thrsth45h/baseball-sim/pull/60)・[設計](PENNANT_DAY_FLOW_DESIGN.md)・[操作とAPK](pennant-dashboard/README.md)・[検証記録](pennant-dashboard/DAY_FLOW_VALIDATION.md)
