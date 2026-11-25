@@ -10,6 +10,8 @@
 
 ## 現在の到達点
 
+- **2026-11-26　日程タブの月間カレンダーを検証。** 自球団の相手と自球団側の得点、選択日の全カードとイニング別得点を読み取り専用で閲覧する。表示位置は画面再作成やタブ往復で保持する。配布APK 0.11-monthly-schedule-tech のビルド元は `5ae62c5`。0.10と署名が異なるため上書きできない。[実装PR #66](https://github.com/thrsth45h/baseball-sim/pull/66)・[操作とAPK](pennant-dashboard/README.md)・[検証](pennant-dashboard/MONTHLY_SCHEDULE_VALIDATION.md)
+
 - **2026-11-25　休養日のカードと一体型順位表を検証。** 同じ6枠と、左右を横スクロールなしで表示する共通順位表を追加。配布APK 0.10-fixed-home-tech のビルド元は b464817。0.9とは署名が異なるため上書きできない。[実装PR #64](https://github.com/thrsth45h/baseball-sim/pull/64)・[操作とAPK](pennant-dashboard/README.md)・[検証](pennant-dashboard/FIXED_HOME_VALIDATION.md)
 
 - **2026-11-24：D064のホーム表示を更新。** 実在の12球団名、2026年の年月日と曜日、自球団カードの最上段固定、横並びの順位表を追加した。同日の全スコアと成績を一括表示し、前後のカード寸法と旧保存互換を検証した。配布APK `0.9-home-2026-tech` のビルド元は `d8a4fee`。旧版0.8とは署名が異なるため上書きできない。[実装PR #62と統合記録](https://github.com/thrsth45h/baseball-sim/pull/62)・[設計](PENNANT_HOME_2026_DESIGN.md)・[操作とAPK](pennant-dashboard/README.md)・[検証](pennant-dashboard/HOME_2026_VALIDATION.md)

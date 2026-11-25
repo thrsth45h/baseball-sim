@@ -1,6 +1,6 @@
 # ペナントのホームとナビゲーション
 
-[休養日のカード寸法と順位表の設計](../PENNANT_FIXED_HOME_DESIGN.md)・[実装PR #64](https://github.com/thrsth45h/baseball-sim/pull/64)
+[月間日程表の設計](../PENNANT_MONTHLY_SCHEDULE_DESIGN.md)・[実装PR #66](https://github.com/thrsth45h/baseball-sim/pull/66)
 
 ## 操作
 
@@ -10,7 +10,7 @@
 
 最上段のカードは自球団の試合です。タップするとその試合の開始画面、進行中の試合、または確定結果を開きます。順位表は一つの枠に、左が自リーグ、右がもう一方です。上のバーには「順位表」と「差」を表示します。狭い画面では各球団の情報が2行に分かれ、両リーグが画面の幅に収まります。
 
-- **日程**から前日・翌日の対戦を確認できます。
+- **日程**は当月のカレンダーを開きます。前月・翌月、または年月のボタンで月を切り替えます。日付のマスには自球団の相手と、試合終了後の勝ち○・負け●・引き分け△、自球団側からのスコアが表示されます。日付を押すと全対戦カードが下に出ます。確定したカードを押すとイニング別得点を見られます。月や試合結果を見ても日程は進みません。
 - **編成**から打順と出場選手を変更し、選手一覧と詳細を開けます。旧固定オーダーでは選手情報を閲覧できます。
 - **成績**から順位と個人成績を確認できます。完了年があるセーブでは年度別成績を閲覧できます。
 - **設定**から操作球団や新シーズンを選べます。試合外では手動セーブ・ロードも使えます。単独の「1試合」もここから開けます。
@@ -19,6 +19,6 @@
 
 ## APK
 
-検証版 `0.10-fixed-home-tech` はGitHub Releasesから取得できます。[APKをダウンロード](https://github.com/thrsth45h/baseball-sim/releases/download/android-v0.10-fixed-home-tech/app-debug.apk)
+検証版 `0.11-monthly-schedule-tech` はGitHub Releasesから取得できます。[APKをダウンロード](https://github.com/thrsth45h/baseball-sim/releases/download/android-v0.11-monthly-schedule-tech/app-debug.apk)
 
-0.9検証版と署名が異なるため、上書きインストールはできません。旧版の端末内セーブを残す場合は、旧版を残してください。[0.10の検証記録](FIXED_HOME_VALIDATION.md)・[0.9の検証記録](HOME_2026_VALIDATION.md)・[0.8の検証記録](DAY_FLOW_VALIDATION.md)・[0.7の検証記録](VALIDATION.md)
+0.10検証版と署名が異なるため、上書きインストールはできません。旧版の端末内セーブを残す場合は、旧版を残してください。[0.11の検証記録](MONTHLY_SCHEDULE_VALIDATION.md)・[0.10の検証記録](FIXED_HOME_VALIDATION.md)・[0.9の検証記録](HOME_2026_VALIDATION.md)・[0.8の検証記録](DAY_FLOW_VALIDATION.md)・[0.7の検証記録](VALIDATION.md)
