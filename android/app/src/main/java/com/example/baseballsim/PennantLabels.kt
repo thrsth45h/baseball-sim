@@ -27,8 +27,12 @@ internal fun pennantClubLabel(id: String) = clubLabels.getValue(id)
 
 private val dateFormat = DateTimeFormatter.ofPattern("uuuu年M月d日（E）", Locale.JAPANESE)
 
-internal fun pennantDate(year: Long, dayIndex: Int): String =
-    LocalDate.of(Math.toIntExact(2025L + year), 3, 27).plusDays(dayIndex.toLong() - 2L).format(dateFormat)
+internal fun pennantLocalDate(year: Long, dayIndex: Int): LocalDate =
+    LocalDate.of(Math.toIntExact(2025L + year), 3, 27).plusDays(dayIndex.toLong() - 2L)
+
+internal fun pennantDate(date: LocalDate): String = date.format(dateFormat)
+
+internal fun pennantDate(year: Long, dayIndex: Int): String = pennantDate(pennantLocalDate(year, dayIndex))
 
 internal fun winPercentage(row: Standing): String {
     val ratio = row.totals.ratio ?: return "—"
