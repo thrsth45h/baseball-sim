@@ -206,7 +206,7 @@ private val ConfirmationSaver = listSaver<PennantConfirmation?, String>(
                             PennantPage.PLAYERS -> PlayersPanel(season, navigation.browseClubId,
                                 { savedNavigation = navigation.browse(it) }, { savedNavigation = navigation.player(it) })
                             PennantPage.PLAYER_DETAIL -> PlayerPanel(pennantPlayers(season, navigation.browseClubId).first { it.playerId == navigation.playerId }, season)
-                            PennantPage.SCHEDULE -> SchedulePanel(season, checkNotNull(state.visibleDay), timeline?.year ?: 1L)
+                            PennantPage.SCHEDULE -> MonthlySchedule(season, checkNotNull(state.visibleDay), timeline?.year ?: 1L)
                             PennantPage.STANDINGS -> {
                                 NavigationButton("個人成績", PennantTags.NAV_RECORDS) { open(PennantPage.RECORDS) }
                                 if (timeline != null && timeline.year > 1) {
@@ -403,7 +403,7 @@ private data class ConfirmationText(val title: String, val message: String, val 
     }
 }
 
-@Composable private fun CompletedGameCard(result: GameSummary) {
+@Composable internal fun CompletedGameCard(result: GameSummary) {
     val fixture = result.game.fixture
     Card(Modifier.fillMaxWidth().testTag(PennantTags.GAME)) {
         Column(Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -420,27 +420,6 @@ private data class ConfirmationText(val title: String, val message: String, val 
         Text("回\n表\n裏")
         for (inning in 0..8) Text("${inning + 1}\n${lineScore[inning * 2] ?: "—"}\n${lineScore[inning * 2 + 1] ?: "—"}", fontFamily = FontFamily.Monospace)
         Text("計\n$away\n$home", fontFamily = FontFamily.Monospace, fontWeight = FontWeight.Bold)
-    }
-}
-
-@Composable private fun SchedulePanel(state: SeasonState, visibleDay: Int, year: Long) {
-    var day by rememberSaveable(visibleDay) { mutableIntStateOf(minOf(visibleDay, PennantSchedule.calendar.size)) }
-    val calendar = PennantSchedule.calendar[day - 1]
-    Column(Modifier.testTag(PennantTags.SCHEDULE), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-            TextButton({ day-- }, enabled = day > 1) { Text("前日") }
-            Text(pennantDate(year, day), modifier = Modifier.padding(top = 12.dp))
-            TextButton({ day++ }, enabled = day < PennantSchedule.calendar.size) { Text("翌日") }
-        }
-        if (calendar.isRestDay) Text("休養日")
-        val results = state.results.associateBy { it.game.fixture.gameId }
-        calendar.gameOrdinals.forEach { ordinal ->
-            val fixture = state.games[ordinal - 1].fixture
-            val result = results[fixture.gameId]
-            val active = state.active?.game?.fixture?.gameId == fixture.gameId
-            val score = result?.let { "${it.score.away} − ${it.score.home}" } ?: if (active) "進行中" else "未開始"
-            Text("${pennantClubLabel(fixture.awayClubId).full}  $score  ${pennantClubLabel(fixture.homeClubId).full}")
-        }
     }
 }
 
