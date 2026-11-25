@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
@@ -134,7 +135,7 @@ class MonthlyScheduleNarrowTest {
             BaseballTheme {
                 val density = LocalDensity.current
                 CompositionLocalProvider(LocalDensity provides Density(density.density, 1.5f)) {
-                    Box(Modifier.width(320.dp).padding(horizontal = 16.dp)) {
+                    Box(Modifier.width(320.dp).testTag(PennantTags.SCREEN).padding(horizontal = 16.dp)) {
                         MonthlySchedule(season.state, visibleDay = 2, year = 1L)
                     }
                 }
